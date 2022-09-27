@@ -15,10 +15,15 @@ public class FPS_Camera : MonoBehaviour
     public FPS_Movement fpsMovement;
     public FixedTouchField touchArea;
 
+    public bool can_move = true;
+
     void Update()
     {
-        HandleInput();
-        HandleRotation();
+        if (can_move)
+        {
+            HandleInput();
+            HandleRotation();
+        }
     }
 
     void HandleInput()

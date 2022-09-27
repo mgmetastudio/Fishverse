@@ -12,19 +12,23 @@ public class FPS_Movement : MonoBehaviour
     private Vector3 velocity;
 
     public FixedJoystick moveJoystick;
+    public bool can_move = true;
 
-    private void Awake()
+    private void Start()
     {
         controller = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        controller.enabled = true;
-        HandleInput();
-        HandleMovement();
-        HandleGravity();
-        controller.enabled = false;
+        if (can_move)
+        {
+            controller.enabled = true;
+            HandleInput();
+            HandleMovement();
+            HandleGravity();
+            controller.enabled = false;
+        }
     }
 
     public bool IsMoving()

@@ -84,7 +84,7 @@ public class Player_Root : MonoBehaviour
 
     public void SwitchState_GroundWalking()
     {
-        player_state = PlayerState.BoatWalking;
+        player_state = PlayerState.GroundWalking;
 
         foreach (GameObject ui_control in fps_ui_controls)
         {
@@ -132,6 +132,34 @@ public class Player_Root : MonoBehaviour
         foreach (GameObject ui_control in boat_ui_controls)
         {
             ui_control.SetActive(true);
+        }
+    }
+
+    public void DisableMovement()
+    {
+        if (player_state == PlayerState.GroundWalking || player_state == PlayerState.BoatWalking)
+        {
+            player_controller.can_move = false;
+            player_camera.GetComponent<FPS_Camera>().can_move = false;
+
+            foreach (GameObject ui_control in fps_ui_controls)
+            {
+                ui_control.SetActive(false);
+            }
+        }
+    }
+
+    public void EnableMovement()
+    {
+        if (player_state == PlayerState.GroundWalking || player_state == PlayerState.BoatWalking)
+        {
+            player_controller.can_move = true;
+            player_camera.GetComponent<FPS_Camera>().can_move = true;
+
+            foreach (GameObject ui_control in fps_ui_controls)
+            {
+                ui_control.SetActive(true);
+            }
         }
     }
 }

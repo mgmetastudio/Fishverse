@@ -18,7 +18,7 @@ public class Player_Root : MonoBehaviour
     public Boat_Movement boat_controller;
     public GameObject boat_camera;
     public GameObject[] boat_ui_controls;
-    public Vector3 player_position_boat = new Vector3(-0.08f, 1.48f, 0f);
+    public Transform player_position_boat;
     public Vector3 player_position_platform;
     public Transform boat_floating_root;
     public GameObject boat_character;
@@ -72,7 +72,7 @@ public class Player_Root : MonoBehaviour
 
         player_controller.gameObject.SetActive(true);
         player_controller.transform.SetParent(boat_floating_root);
-        player_controller.transform.localPosition = player_position_boat;
+        player_controller.transform.localPosition = player_position_boat.localPosition;
 
         player_camera.gameObject.SetActive(true);
 

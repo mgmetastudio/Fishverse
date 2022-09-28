@@ -66,6 +66,10 @@ public class Fishing_API : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            fishing_ui.Hide_StartFishingBtn();
+        }
     }
 
     private void Update_UI_Visibility()

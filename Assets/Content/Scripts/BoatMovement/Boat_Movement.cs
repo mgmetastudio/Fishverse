@@ -14,7 +14,6 @@ public class Boat_Movement : MonoBehaviour
     private Vector3 velocity;
 
     public FixedJoystick moveJoystick;
-    public FixedJoystick rotationJoystick;
 
     private void Awake()
     {
@@ -55,7 +54,7 @@ public class Boat_Movement : MonoBehaviour
         {
             if (moveJoystick)
             {
-                sideInput = rotationJoystick.Horizontal;
+                sideInput = moveJoystick.Horizontal;
                 forwardInput = moveJoystick.Vertical;
                 return;
             }

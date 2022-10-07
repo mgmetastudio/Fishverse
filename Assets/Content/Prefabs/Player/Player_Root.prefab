@@ -2994,7 +2994,7 @@ GameObject:
   - component: {fileID: 1434236917}
   - component: {fileID: 1434236916}
   m_Layer: 5
-  m_Name: Btn_1
+  m_Name: Btn_Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3018,7 +3018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 119, y: -71.99283}
+  m_AnchoredPosition: {x: 118, y: -71.99283}
   m_SizeDelta: {x: 164.1566, y: 69.6336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1434236918
@@ -4601,7 +4601,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4034772949229601432
@@ -6146,7 +6146,7 @@ GameObject:
   - component: {fileID: 5208618193472731499}
   m_Layer: 9
   m_Name: Player_Boat
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6198,6 +6198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
+  lerp_speed_forward: 1
+  lerp_speed_side: 1.4
   rotation_speed: 60
   gravity: -16
   useKeyboardInput: 0
@@ -7146,6 +7148,10 @@ MonoBehaviour:
   btn_pull: {fileID: 529167615}
   panel_success: {fileID: 593378824}
   panel_failed: {fileID: 123622871}
+  ui_hide_when_fishing:
+  - {fileID: 1434236914}
+  - {fileID: 559928662}
+  - {fileID: 477105648}
 --- !u!114 &4769943002612259002
 MonoBehaviour:
   m_ObjectHideFlags: 0

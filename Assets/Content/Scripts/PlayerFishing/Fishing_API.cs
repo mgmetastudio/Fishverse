@@ -143,6 +143,8 @@ public class Fishing_API : MonoBehaviour
         {
             fishing_state = FishingState.Waiting;
             fishing_ui.Hide_StartFishingBtn();
+            fishing_ui.OnStartFishing();
+
             player_root.DisableMovement();
             fishing_animations.PlayAnim_StartFishing();
 
@@ -177,6 +179,8 @@ public class Fishing_API : MonoBehaviour
         {
             fishing_ui.Show_FailedPanel();
         }
+
+        fishing_ui.OnFinishFishing();
 
         yield return new WaitForSeconds(1f);
         fishing_state = FishingState.None;

@@ -8,6 +8,7 @@ public class Fishing_UI : MonoBehaviour
     public GameObject btn_pull;
     public GameObject panel_success;
     public GameObject panel_failed;
+    public GameObject[] ui_hide_when_fishing;
 
     private Fishing_API fishing_api;
     
@@ -63,5 +64,21 @@ public class Fishing_UI : MonoBehaviour
     public void Event_PullFish()
     {
         fishing_api.Add_Pull_Value();
+    }
+
+    public void OnStartFishing()
+    {
+        foreach (GameObject ui in ui_hide_when_fishing)
+        {
+            ui.SetActive(false);
+        }
+    }
+
+    public void OnFinishFishing()
+    {
+        foreach (GameObject ui in ui_hide_when_fishing)
+        {
+            ui.SetActive(true);
+        }
     }
 }

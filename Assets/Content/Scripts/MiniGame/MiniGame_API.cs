@@ -10,10 +10,16 @@ public class MiniGame_API : MonoBehaviour
     public float score_add_rate = 1f;
 
     private MiniGame_UI minigame_ui;
-    public GameObject joystick;
+    public CharacterController boat_controller;
+    public float best_score;
 
     IEnumerator Start()
     {
+        if (PlayerPrefs.HasKey(("minigame_best")))
+        {
+            best_score = Mathf.Round(PlayerPrefs.GetFloat("minigame_best"));
+        }
+        
         minigame_ui = GetComponent<MiniGame_UI>();
         yield return new WaitForSeconds(0.75f);
         StartGame();
@@ -27,8 +33,16 @@ public class MiniGame_API : MonoBehaviour
 
     public void EndGame()
     {
-        joystick.SetActive(false);
+        boat_controller.enabled = false;
         game_started = false;
+
+        if (score > best_score)
+        {
+            best_score = score;
+            PlayerPrefs.SetFloat("minigame_best", best_score);
+        }
+        
+        minigame_ui.ShowEndingScreen();
     }
 
     private void Update()

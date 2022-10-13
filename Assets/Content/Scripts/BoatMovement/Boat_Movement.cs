@@ -21,6 +21,8 @@ public class Boat_Movement : MonoBehaviour
     private Vector3 velocity;
 
     public FixedJoystick moveJoystick;
+    public UI_InputButton button_input_forward;
+    public UI_InputButton button_input_backward;
 
     private void Awake()
     {
@@ -61,8 +63,27 @@ public class Boat_Movement : MonoBehaviour
         {
             if (moveJoystick)
             {
-                sideInput = moveJoystick.Horizontal;
-                forwardInput = moveJoystick.Vertical;
+                if (button_input_forward && button_input_backward)
+                {
+                    if (button_input_forward.value != 0)
+                    {
+                        forwardInput = button_input_forward.value;
+                    }
+                    else if (button_input_backward.value != 0)
+                    {
+                        forwardInput = button_input_backward.value;
+                    }
+                    else
+                    {
+                        forwardInput = 0;
+                    }
+                     sideInput = moveJoystick.Horizontal;
+                }
+                else
+                {
+                    sideInput = moveJoystick.Horizontal;
+                    forwardInput = moveJoystick.Vertical;
+                }
 
                 side_input_lerp = Mathf.Lerp(side_input_lerp, sideInput, Time.deltaTime * lerp_speed_side);
                 forward_input_lerp = Mathf.Lerp(forward_input_lerp, forwardInput, Time.deltaTime * lerp_speed_forward);

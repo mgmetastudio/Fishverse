@@ -22,6 +22,7 @@ public class Player_Root : MonoBehaviour
     public Vector3 player_position_platform;
     public Transform boat_floating_root;
     public GameObject boat_character;
+    public Collider boat_collider_interaction;
 
     private float boat_collider_radius = 2;
     private Vector3 boat_collider_center;
@@ -70,6 +71,9 @@ public class Player_Root : MonoBehaviour
         boat_camera.SetActive(false);
         boat_character.SetActive(false);
 
+        boat_collider_interaction.enabled = false;
+
+
         player_controller.gameObject.SetActive(true);
         player_controller.transform.SetParent(boat_floating_root);
         player_controller.transform.localPosition = player_position_boat.localPosition;
@@ -97,6 +101,8 @@ public class Player_Root : MonoBehaviour
         boat_camera.SetActive(false);
         boat_character.SetActive(false);
 
+        boat_collider_interaction.enabled = true;
+
         player_controller.gameObject.SetActive(true);
         player_controller.transform.SetParent(transform);
         player_controller.transform.position = player_position_platform;
@@ -123,6 +129,8 @@ public class Player_Root : MonoBehaviour
         boat_controller.controller.center = boat_collider_center;
         boat_camera.SetActive(true);
         boat_character.SetActive(true);
+
+        boat_collider_interaction.enabled = false;
 
         player_controller.gameObject.SetActive(false);
         player_controller.transform.SetParent(boat_floating_root);

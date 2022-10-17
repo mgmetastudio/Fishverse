@@ -42,7 +42,7 @@ public class Fishing_API : MonoBehaviour
         {
             if (fishing_state == FishingState.None)
             {
-                raycaster.Cast();
+                raycaster.Cast_Water();
                 Update_FishingPoint_Visibility();
                 Update_UI_Visibility();
                 Update_FishingPoint_Position();
@@ -74,7 +74,7 @@ public class Fishing_API : MonoBehaviour
 
     private void Update_UI_Visibility()
     {
-        if (raycaster.is_hitting_water && raycaster.isHit)
+        if (raycaster.data_water.is_hitting && raycaster.isHit)
         {
             fishing_ui.Show_StartFishingBtn();
         }
@@ -86,7 +86,7 @@ public class Fishing_API : MonoBehaviour
 
     private void Update_FishingPoint_Visibility()
     {
-        if (raycaster.is_hitting_water && raycaster.isHit)
+        if (raycaster.data_water.is_hitting && raycaster.isHit)
         {
             ShowFishingPoint();
         }

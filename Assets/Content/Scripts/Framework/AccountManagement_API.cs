@@ -24,6 +24,7 @@ public class AccountManagement_API : MonoBehaviour
         if (PlayerPrefs.HasKey("log_em"))
         {
             account_ui.input_email.text = PlayerPrefs.GetString("log_em");
+            Fishverse_Core.instance.account_email = account_ui.input_email.text;
         }
         if (PlayerPrefs.HasKey("log_ps"))
         {
@@ -34,6 +35,7 @@ public class AccountManagement_API : MonoBehaviour
     public void SaveData(string email, string password)
     {
         PlayerPrefs.SetString("log_em", email);
+        Fishverse_Core.instance.account_email = email;
         PlayerPrefs.SetString("log_ps", password);
     }
 
@@ -55,37 +57,37 @@ public class AccountManagement_API : MonoBehaviour
             {
                 JSON json_account_data = JSON.ParseString(dashboard_login_request.downloadHandler.text);
                 string access_token;
+                string username;
+
                 access_token = json_account_data.GetString("access_token");
-                print(access_token);
+                username = json_account_data.GetJSON("user").GetString("username");
+
+                Fishverse_Core.instance.account_username = username;
+
+                print(username);
 
                 if (access_token != null)
-                {
-                    //LOGIN SUCCESS
-                    SaveData(email, password);
-                    account_ui.OnLoginSuccess();
-                    
-                    /*
+                {                    
                     //LOGIN DB
                     
                     WWWForm login_form = new WWWForm();
                     login_form.AddField("apikey", Fishverse_Core.instance.api_key);
                     login_form.AddField("email", email);
-                    //login_form.AddField("username", password);
+                    login_form.AddField("username", username);
 
                     UnityWebRequest login_request =
                         UnityWebRequest.Post(Fishverse_Core.instance.server + "account_login.php", login_form);
                     yield return login_request.SendWebRequest();
                     
-                    print(dashboard_login_request.downloadHandler.text);
-                    
-                    if (dashboard_login_request.error == null)
+                    if (login_request.error == null)
                     {
-                        if (dashboard_login_request.downloadHandler.text == "login-success")
+                        if (login_request.downloadHandler.text == "login-success")
                         {
                             //LOGIN SUCCESS
+                            SaveData(email, password);
                             account_ui.OnLoginSuccess();
                         }
-                    }*/
+                    }
                 }
             }
         }

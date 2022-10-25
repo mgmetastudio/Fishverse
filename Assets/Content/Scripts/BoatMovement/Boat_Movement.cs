@@ -101,12 +101,14 @@ public class Boat_Movement : MonoBehaviour
     void HandleMovement()
     {
         movement = transform.forward * forward_input_lerp;
-        controller.Move(movement * speed * Time.deltaTime);
+        if(controller.enabled)
+            controller.Move(movement * speed * Time.deltaTime);
     }
 
     void HandleGravity()
     {
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        if (controller.enabled)
+            controller.Move(velocity * Time.deltaTime);
     }
 }

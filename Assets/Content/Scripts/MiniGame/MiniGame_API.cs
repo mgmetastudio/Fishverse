@@ -15,10 +15,7 @@ public class MiniGame_API : MonoBehaviour
 
     IEnumerator Start()
     {
-        if (PlayerPrefs.HasKey(("minigame_best")))
-        {
-            best_score = Mathf.Round(PlayerPrefs.GetFloat("minigame_best"));
-        }
+        GetComponent<MiniGameServer_API>().GetBestScore();
         
         minigame_ui = GetComponent<MiniGame_UI>();
         yield return new WaitForSeconds(0.75f);
@@ -39,7 +36,7 @@ public class MiniGame_API : MonoBehaviour
         if (score > best_score)
         {
             best_score = score;
-            PlayerPrefs.SetFloat("minigame_best", best_score);
+            GetComponent<MiniGameServer_API>().SubmitScore(Mathf.Round(best_score));
         }
         
         minigame_ui.ShowEndingScreen();

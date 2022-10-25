@@ -7,6 +7,8 @@ public class Fishverse_Core : MonoBehaviour
     public string api_key = "fish_mIbtvtlo6E";
     public string server = "https://mglabs.tinymagicians.com/fishverse/";
     public string dashboard_server = "https://api-fisher.thefishverse.com/rest-auth/login/";
+    public string account_email = "";
+    public string account_username = "";
 
     private void Awake()
     {
@@ -17,7 +19,7 @@ public class Fishverse_Core : MonoBehaviour
         else
         {
             instance = this;
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

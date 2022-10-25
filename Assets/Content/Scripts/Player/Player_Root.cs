@@ -71,8 +71,8 @@ public class Player_Root : MonoBehaviour
         boat_camera.SetActive(false);
         boat_character.SetActive(false);
 
-        boat_collider_interaction.enabled = false;
-
+        if(boat_collider_interaction)
+            boat_collider_interaction.enabled = false;
 
         player_controller.gameObject.SetActive(true);
         player_controller.transform.SetParent(boat_floating_root);
@@ -101,7 +101,8 @@ public class Player_Root : MonoBehaviour
         boat_camera.SetActive(false);
         boat_character.SetActive(false);
 
-        boat_collider_interaction.enabled = true;
+        if(boat_collider_interaction)
+            boat_collider_interaction.enabled = true;
 
         player_controller.gameObject.SetActive(true);
         player_controller.transform.SetParent(transform);
@@ -130,7 +131,8 @@ public class Player_Root : MonoBehaviour
         boat_camera.SetActive(true);
         boat_character.SetActive(true);
 
-        boat_collider_interaction.enabled = false;
+        if(boat_collider_interaction)
+            boat_collider_interaction.enabled = false;
 
         player_controller.gameObject.SetActive(false);
         player_controller.transform.SetParent(boat_floating_root);

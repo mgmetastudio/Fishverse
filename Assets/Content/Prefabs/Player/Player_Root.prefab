@@ -1098,7 +1098,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &547777265
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1175,6 +1175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fpsText: {fileID: 547777267}
   _hudRefreshRate: 1
+  app_settings: {fileID: 11400000, guid: 23faf5002de28a348986d77611c57901, type: 2}
 --- !u!1 &593378824
 GameObject:
   m_ObjectHideFlags: 0
@@ -8486,7 +8487,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5208618194045744761}
   - component: {fileID: 5208618194045744758}
-  - component: {fileID: 3480555883919891246}
   - component: {fileID: 1317168430}
   - component: {fileID: 1048470342}
   - component: {fileID: 1154117463}
@@ -8551,18 +8551,6 @@ MonoBehaviour:
   boat_floating_root: {fileID: 5208618193515107373}
   boat_character: {fileID: 5208618194180073806}
   boat_collider_interaction: {fileID: 1229568074}
---- !u!114 &3480555883919891246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5208618194045744760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1592940491b5cf4ba75c15d69ec8d25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1317168430
 MonoBehaviour:
   m_ObjectHideFlags: 0

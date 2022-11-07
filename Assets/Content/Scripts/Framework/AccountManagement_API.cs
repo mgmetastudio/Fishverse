@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using Leguar.TotalJSON;
+using UnityEngine.SceneManagement;
 
 public class AccountManagement_API : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class AccountManagement_API : MonoBehaviour
     {
         account_ui = GetComponent<AccountManagement_UI>();
         LoadData();
-        //Login("john404test@gmail.com", "aJ4JQr2faCyMiKzuXSBeLXeQTb5q5jha");
+        //Login("john404_test@gmail.com", "aJ4JQr2_faCyMiK_zuXSBeLXe_QTb5q5jha");
     }
 
     public void Login(string email, string password)
@@ -30,6 +31,22 @@ public class AccountManagement_API : MonoBehaviour
         {
             account_ui.input_password.text = PlayerPrefs.GetString("log_ps");
         }
+        if (PlayerPrefs.HasKey("log_auto"))
+        {
+            if (PlayerPrefs.GetInt("log_auto") == 1)
+            {
+                //AUTO LOGIN
+                Login(account_ui.input_email.text, account_ui.input_password.text);
+            }
+        }
+    }
+
+    public void LogOut()
+    {
+        PlayerPrefs.SetString("log_em", "");
+        PlayerPrefs.SetString("log_ps", "");
+        PlayerPrefs.SetInt("log_auto", 0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
     public void SaveData(string email, string password)
@@ -37,6 +54,7 @@ public class AccountManagement_API : MonoBehaviour
         PlayerPrefs.SetString("log_em", email);
         Fishverse_Core.instance.account_email = email;
         PlayerPrefs.SetString("log_ps", password);
+        PlayerPrefs.SetInt("log_auto", 1);
     }
 
     IEnumerator LoginRequest(string email, string password)
@@ -62,14 +80,13 @@ public class AccountManagement_API : MonoBehaviour
                 access_token = json_account_data.GetString("access_token");
                 username = json_account_data.GetJSON("user").GetString("username");
 
+                //SAVE USERNAME
                 Fishverse_Core.instance.account_username = username;
 
-                print(username);
-
                 if (access_token != null)
-                {                    
+                {
                     //LOGIN DB
-                    
+
                     WWWForm login_form = new WWWForm();
                     login_form.AddField("apikey", Fishverse_Core.instance.api_key);
                     login_form.AddField("email", email);
@@ -78,7 +95,7 @@ public class AccountManagement_API : MonoBehaviour
                     UnityWebRequest login_request =
                         UnityWebRequest.Post(Fishverse_Core.instance.server + "account_login.php", login_form);
                     yield return login_request.SendWebRequest();
-                    
+
                     if (login_request.error == null)
                     {
                         if (login_request.downloadHandler.text == "login-success")
@@ -87,60 +104,29 @@ public class AccountManagement_API : MonoBehaviour
                             SaveData(email, password);
                             account_ui.OnLoginSuccess();
                         }
+                        else
+                        {
+                            account_ui.OnLoginFailed();
+                        }
+                    }
+                    else
+                    {
+                        account_ui.OnLoginFailed();
                     }
                 }
+                else
+                {
+                    account_ui.OnLoginFailed();
+                }
             }
-        }
-    }
-
-
-    /*WWWForm loginForm = new WWWForm();
-
-    loginForm.AddField("apikey", OBS_Core.instance.appData.api_key);
-    loginForm.AddField("email", email);
-    loginForm.AddField("password", password);
-
-    string adress = OBS_Core.instance.appData.server + "account_login.php";
-
-    UnityWebRequest loginPostRequest = UnityWebRequest.Post(adress, loginForm);
-    yield return loginPostRequest.SendWebRequest();
-
-    if (loginPostRequest.error == null)
-    {
-        if (loginPostRequest.downloadHandler.text == "login-success")
-        {
-            account_ui.OnLoginSuccess();
-
-            OBS_Core.instance.userData.password = password;
-            OBS_Core.instance.userData.email = email;
-            account_ui.OnProfileDataUpdate();
-            SaveData(email, password);
-
-            StartCoroutine(GetAccountDataRequest());
-
-            GetComponent<EconomyManagement_API>().GetEconomyData();
+            else
+            {
+                account_ui.OnLoginFailed();
+            }
         }
         else
         {
-            switch (loginPostRequest.downloadHandler.text)
-            {
-                case "user-does-not-exist":
-                    account_ui.OnFail("This user not exist");
-                    break;
-
-                case "wrong-password":
-                    account_ui.OnFail("Wrong password");
-                    break;
-
-                default:
-                    account_ui.OnFail(loginPostRequest.downloadHandler.text);
-                    break;
-            }
+            account_ui.OnLoginFailed();
         }
     }
-    else
-    {
-        account_ui.OnFail(loginPostRequest.error);
-    }
-}*/
 }

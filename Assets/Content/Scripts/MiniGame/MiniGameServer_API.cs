@@ -80,7 +80,6 @@ public class MiniGameServer_API : MonoBehaviour
             if (score_form_request.downloadHandler.text != "")
             {
                 leaderboard_users.Clear();
-                print(score_form_request.downloadHandler.text);
 
                 leadearboard_string = score_form_request.downloadHandler.text.Remove(0,3).Split(":::");
 

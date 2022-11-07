@@ -4,11 +4,13 @@ using TMPro;
 
 public class AccountManagement_UI : MonoBehaviour
 {
-    [Header("EVENTS:")]
+    [Header("Refs:")]
     public TMP_InputField input_email;
     public TMP_InputField input_password;
     public GameObject panel_loading;
-    
+    public TMP_Text text_profile_username;
+    public UI_InfoMessage info_message;
+
     [Space(8)]
     [Header("EVENTS:")]
     public UnityEvent on_login_success;
@@ -37,7 +39,14 @@ public class AccountManagement_UI : MonoBehaviour
     
     public void OnLoginSuccess()
     {
+        text_profile_username.text = Fishverse_Core.instance.account_username;
         on_login_success.Invoke();
+    }
+
+    public void OnLoginFailed()
+    {
+        panel_loading.SetActive(false);
+        info_message.ShowMessage("Login failed");
     }
     
     private bool ValidateLoginInfo()

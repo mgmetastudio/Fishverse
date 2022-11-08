@@ -35,6 +35,7 @@ public class MiniMap_Object : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(ui_dot.gameObject);
+        if(ui_dot)
+            Destroy(ui_dot.gameObject);
     }
 }

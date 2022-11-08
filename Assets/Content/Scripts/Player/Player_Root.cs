@@ -11,6 +11,7 @@ public class Player_Root : MonoBehaviour
     [Header("FPS Player")]
     public FPS_Movement player_controller;
     public GameObject player_camera;
+    public GameObject fps_ui_fishing_btn;
     public GameObject[] fps_ui_controls;
 
     [Space(10)]
@@ -65,6 +66,9 @@ public class Player_Root : MonoBehaviour
             ui_control.SetActive(true);
         }
 
+        if (fps_ui_fishing_btn)
+            fps_ui_fishing_btn.SetActive(true);
+
         boat_controller.enabled = false;
         boat_controller.controller.radius = 0;
         boat_controller.controller.center = new Vector3(0, 999, 0);
@@ -95,6 +99,9 @@ public class Player_Root : MonoBehaviour
             ui_control.SetActive(true);
         }
 
+        if (fps_ui_fishing_btn)
+            fps_ui_fishing_btn.SetActive(true);
+
         boat_controller.enabled = false;
         boat_controller.controller.radius = 0;
         boat_controller.controller.center = new Vector3(0, 999, 0);
@@ -124,6 +131,9 @@ public class Player_Root : MonoBehaviour
         {
             ui_control.SetActive(false);
         }
+
+        if(fps_ui_fishing_btn)
+            fps_ui_fishing_btn.SetActive(false);
 
         boat_controller.enabled = true;
         boat_controller.controller.radius = boat_collider_radius;

@@ -70,4 +70,9 @@ public class FPS_Movement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+    /*void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        print(hit.gameObject.name);
+    }*/
 }

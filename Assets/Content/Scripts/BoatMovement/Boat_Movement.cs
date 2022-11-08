@@ -111,4 +111,9 @@ public class Boat_Movement : MonoBehaviour
         if (controller.enabled)
             controller.Move(velocity * Time.deltaTime);
     }
+
+    public void SetSpeed(float new_speed)
+    {
+        speed = new_speed;
+    }
 }

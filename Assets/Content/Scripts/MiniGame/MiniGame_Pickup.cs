@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MiniGame_Pickup : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class MiniGame_Pickup : MonoBehaviour
     public bool pickup_energy;
     public bool pickup_score;
     public bool pickup_question;
+    public UnityEvent on_pickup;
 
     void Update()
     {
@@ -28,6 +30,8 @@ public class MiniGame_Pickup : MonoBehaviour
         {
             FindObjectOfType<MiniGame_API>().RandomBonus();
         }
+
+        on_pickup.Invoke();
 
         Destroy(gameObject);
     }

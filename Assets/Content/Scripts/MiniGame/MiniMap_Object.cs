@@ -30,6 +30,13 @@ public class MiniMap_Object : MonoBehaviour
             float pos_x = position_relative.x * minimap_size;
             float pos_y = position_relative.z * minimap_size;
             ui_dot.anchoredPosition = new Vector2(pos_x, pos_y) * distance_lerp;
+
+            Vector3 pos_3d = ui_dot.anchoredPosition3D;
+            pos_3d.z = 0;
+
+            ui_dot.anchoredPosition3D = pos_3d;
+            ui_dot.localRotation = Quaternion.identity;
+            ui_dot.localScale = Vector3.one;
         }
     }
 

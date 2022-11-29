@@ -9,6 +9,8 @@ public class Fishverse_Core : MonoBehaviour
     public string dashboard_server = "https://api-fisher.thefishverse.com/rest-auth/login/";
     public string account_email = "";
     public string account_username = "";
+    public string app_version = "";
+    public string app_version_local = "0.13";
 
     private void Awake()
     {
@@ -21,5 +23,10 @@ public class Fishverse_Core : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

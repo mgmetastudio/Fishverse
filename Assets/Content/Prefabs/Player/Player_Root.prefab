@@ -443,6 +443,7 @@ GameObject:
   - component: {fileID: 328014232}
   - component: {fileID: 1593764245201779936}
   - component: {fileID: 3456259570049268655}
+  - component: {fileID: 3170262453414688125}
   m_Layer: 5
   m_Name: Touch_Action_Fishing
   m_TagString: Untagged
@@ -582,6 +583,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3170262453414688125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328014230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bf6430389dd4773a80a95272ba26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touch_field: {fileID: 5208618194103709879}
 --- !u!1 &376752449
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,6 +685,7 @@ GameObject:
   - component: {fileID: 377512543}
   - component: {fileID: 4029665185566505946}
   - component: {fileID: 8992103755194068241}
+  - component: {fileID: 3873723921125001908}
   m_Layer: 5
   m_Name: Touch_Action_Interaction
   m_TagString: Untagged
@@ -810,6 +825,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3873723921125001908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377512540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bf6430389dd4773a80a95272ba26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touch_field: {fileID: 5208618194103709879}
 --- !u!1 &492279505
 GameObject:
   m_ObjectHideFlags: 0
@@ -7551,7 +7579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5208618193472731501}
   m_LocalRotation: {x: -0, y: -0.12728138, z: -0, w: 0.9918667}
-  m_LocalPosition: {x: 25.57, y: -0.4, z: -11.16}
+  m_LocalPosition: {x: 25.67, y: -0.4, z: -11.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8290,7 +8318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -214, y: 229}
+  m_AnchoredPosition: {x: -1862, y: 253}
   m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5208618193864008522
@@ -10937,6 +10965,7 @@ GameObject:
   - component: {fileID: 2817225120546255885}
   - component: {fileID: 564918461035494994}
   - component: {fileID: 339946977661382782}
+  - component: {fileID: 487784834007145103}
   m_Layer: 5
   m_Name: Touch_Boat_ButtonBackward
   m_TagString: Untagged
@@ -10962,7 +10991,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 294.14374, y: 135.94371}
+  m_AnchoredPosition: {x: 1942.1438, y: 200.94373}
   m_SizeDelta: {x: 169.8009, y: 169.8009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9139938599307950445
@@ -11105,6 +11134,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 0
+--- !u!114 &487784834007145103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5736209186872445887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bf6430389dd4773a80a95272ba26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touch_field: {fileID: 8486111396533875549}
 --- !u!1 &5834627111173797615
 GameObject:
   m_ObjectHideFlags: 0
@@ -11119,6 +11161,7 @@ GameObject:
   - component: {fileID: 4702622430217418462}
   - component: {fileID: 782195367440699950}
   - component: {fileID: 309043871025194450}
+  - component: {fileID: 6094577024869337687}
   m_Layer: 5
   m_Name: Touch_Boat_ButtonForward
   m_TagString: Untagged
@@ -11144,7 +11187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 229.00003, y: 337}
+  m_AnchoredPosition: {x: 1877, y: 402}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7287324265063760714
@@ -11287,6 +11330,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 0
+--- !u!114 &6094577024869337687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5834627111173797615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bf6430389dd4773a80a95272ba26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touch_field: {fileID: 8486111396533875549}
 --- !u!1 &5877731425934116045
 GameObject:
   m_ObjectHideFlags: 0
@@ -12754,6 +12810,7 @@ GameObject:
   - component: {fileID: 977188636045377508}
   - component: {fileID: 2523391003440906848}
   - component: {fileID: 8440714924087166879}
+  - component: {fileID: 4034485234402321646}
   m_Layer: 5
   m_Name: Touch_Action_Walk
   m_TagString: Untagged
@@ -12780,7 +12837,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -149.3, y: 528}
+  m_AnchoredPosition: {x: -141, y: 649}
   m_SizeDelta: {x: 190, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8658209530872206714
@@ -12893,6 +12950,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4034485234402321646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8281105177294065115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bf6430389dd4773a80a95272ba26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touch_field: {fileID: 8486111396533875549}
 --- !u!1 &8491788223646181966
 GameObject:
   m_ObjectHideFlags: 0

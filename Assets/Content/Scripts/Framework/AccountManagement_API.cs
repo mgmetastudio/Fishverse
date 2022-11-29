@@ -11,8 +11,9 @@ public class AccountManagement_API : MonoBehaviour
     private void Start()
     {
         account_ui = GetComponent<AccountManagement_UI>();
-        LoadData();
-        //Login("john404_test@gmail.com", "aJ4JQr2_faCyMiK_zuXSBeLXe_QTb5q5jha");
+        StartCoroutine(CheckVersionRequest());
+        //LoadData();
+        //Login("john404_test@gmail.com", "_aJ4JQr2faCyMiKzuXSBeLXeQTb5q5jha");
     }
 
     public void Login(string email, string password)
@@ -35,6 +36,7 @@ public class AccountManagement_API : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("log_auto") == 1)
             {
+                account_ui.panel_loading.SetActive(true);
                 //AUTO LOGIN
                 Login(account_ui.input_email.text, account_ui.input_password.text);
             }
@@ -106,27 +108,61 @@ public class AccountManagement_API : MonoBehaviour
                         }
                         else
                         {
-                            account_ui.OnLoginFailed();
+                            account_ui.OnLoginFailed(1);
                         }
                     }
                     else
                     {
-                        account_ui.OnLoginFailed();
+                        account_ui.OnLoginFailed(2);
                     }
                 }
                 else
                 {
-                    account_ui.OnLoginFailed();
+                    account_ui.OnLoginFailed(3);
                 }
             }
             else
             {
-                account_ui.OnLoginFailed();
+                account_ui.OnLoginFailed(4);
             }
         }
         else
         {
-            account_ui.OnLoginFailed();
+            account_ui.OnLoginFailed(5);
+        }
+    }
+
+    IEnumerator CheckVersionRequest()
+    {
+        WWWForm login_form = new WWWForm();
+        login_form.AddField("apikey", Fishverse_Core.instance.api_key);
+
+        UnityWebRequest login_request =
+            UnityWebRequest.Post(Fishverse_Core.instance.server + "app_get_version.php", login_form);
+        yield return login_request.SendWebRequest();
+
+        if (login_request.error == null)
+        {
+            if (login_request.downloadHandler.text != "")
+            {
+                Fishverse_Core.instance.app_version = login_request.downloadHandler.text;
+                if(Fishverse_Core.instance.app_version != Fishverse_Core.instance.app_version_local)
+                {
+                    account_ui.ShowCrashPopup("Current version is outdated.\nTo use this application you must update it");
+                }
+                else
+                {
+                    LoadData();
+                }
+            }
+            else
+            {
+                account_ui.ShowCrashPopup("Server connection error");
+            }
+        }
+        else
+        {
+            account_ui.ShowCrashPopup("Server connection error");
         }
     }
 }

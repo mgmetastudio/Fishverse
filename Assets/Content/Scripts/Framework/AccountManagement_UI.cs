@@ -10,6 +10,7 @@ public class AccountManagement_UI : MonoBehaviour
     public GameObject panel_loading;
     public TMP_Text text_profile_username;
     public UI_InfoMessage info_message;
+    public UI_CrashMessage crash_message;
 
     [Space(8)]
     [Header("EVENTS:")]
@@ -43,10 +44,15 @@ public class AccountManagement_UI : MonoBehaviour
         on_login_success.Invoke();
     }
 
-    public void OnLoginFailed()
+    public void OnLoginFailed(int error_code = 0)
     {
         panel_loading.SetActive(false);
-        info_message.ShowMessage("Login failed");
+        info_message.ShowMessage("Login failed.\nError Code: " + error_code.ToString());
+    }
+
+    public void ShowCrashPopup(string text)
+    {
+        crash_message.ShowMessage(text);
     }
     
     private bool ValidateLoginInfo()

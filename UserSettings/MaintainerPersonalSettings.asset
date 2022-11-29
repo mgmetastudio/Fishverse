@@ -142,11 +142,86 @@ MonoBehaviour:
         m_ClientGUIView: {fileID: 0}
       m_SearchString: 
     sceneReferencesTreeHeaderState:
-      m_Columns: []
-      m_VisibleColumns: 
-      m_SortedColumns: 
+      m_Columns:
+      - width: 22
+        sortedAscending: 0
+        headerContent:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 'Referenced Object kind: Game Object or Component'
+        contextMenuText: Icon
+        headerTextAlignment: 1
+        sortingArrowAlignment: 1
+        minWidth: 22
+        maxWidth: 22
+        autoResize: 0
+        allowToggleVisibility: 0
+        canSort: 0
+        userData: 0
+      - width: 200
+        sortedAscending: 1
+        headerContent:
+          m_Text: Game Object
+          m_Image: {fileID: 0}
+          m_Tooltip: Game Object name including full hierarchy path
+        contextMenuText: 
+        headerTextAlignment: 0
+        sortingArrowAlignment: 1
+        minWidth: 200
+        maxWidth: 1000000
+        autoResize: 1
+        allowToggleVisibility: 0
+        canSort: 1
+        userData: 0
+      - width: 100
+        sortedAscending: 1
+        headerContent:
+          m_Text: Component
+          m_Image: {fileID: 0}
+          m_Tooltip: Component name
+        contextMenuText: 
+        headerTextAlignment: 0
+        sortingArrowAlignment: 1
+        minWidth: 90
+        maxWidth: 1000000
+        autoResize: 0
+        allowToggleVisibility: 1
+        canSort: 1
+        userData: 0
+      - width: 100
+        sortedAscending: 1
+        headerContent:
+          m_Text: Property
+          m_Image: {fileID: 0}
+          m_Tooltip: Full property path to the referenced item
+        contextMenuText: 
+        headerTextAlignment: 0
+        sortingArrowAlignment: 1
+        minWidth: 90
+        maxWidth: 1000000
+        autoResize: 0
+        allowToggleVisibility: 1
+        canSort: 1
+        userData: 0
+      - width: 33
+        sortedAscending: 0
+        headerContent:
+          m_Text: Refs
+          m_Image: {fileID: 0}
+          m_Tooltip: Shows how much times object was referenced in the scene
+        contextMenuText: 
+        headerTextAlignment: 0
+        sortingArrowAlignment: 1
+        minWidth: 33
+        maxWidth: 50
+        autoResize: 0
+        allowToggleVisibility: 1
+        canSort: 1
+        userData: 0
+      m_VisibleColumns: 0000000001000000020000000300000004000000
+      m_SortedColumns: 0400000001000000
     splitterState: '{"ID":5650,"splitterInitialOffset":0.0,"currentActiveSplitter":-1,"realSizes":[457.0,228.0],"relativeSizes":[0.6666666865348816,0.3333333134651184],"minSizes":[90.0,47.0],"maxSizes":[0.0,0.0],"lastTotalSize":685.0,"splitSize":6.0,"xOffset":0.0,"m_Version":1,"oldRealSizes":[],"oldMinSizes":[],"oldMaxSizes":[],"oldSplitSize":0}'
-    selectedTab: 0
+    selectedTab: 1
   projectCleanerSettings:
     filtersTabIndex: 0
     firstTime: 1

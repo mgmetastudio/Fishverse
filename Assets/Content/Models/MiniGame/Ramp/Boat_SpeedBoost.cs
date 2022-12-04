@@ -11,6 +11,12 @@ public class Boat_SpeedBoost : MonoBehaviour
     {
         if (other.CompareTag("Boat"))
         {
+            if (other.GetComponent<ArcadeVehicleController_Network>())
+            {
+                OnTriggerEnter_MP(other);
+                return;
+            }
+
             boat = other.GetComponent<ArcadeVehicleController>();
 
             max_speed_normal = boat.MaxSpeed;
@@ -25,12 +31,43 @@ public class Boat_SpeedBoost : MonoBehaviour
     {
         if (other.CompareTag("Boat"))
         {
+            if (other.GetComponent<ArcadeVehicleController_Network>())
+            {
+                OnTriggerExit_MP(other);
+                return;
+            }
+
             if (boat)
             {
                 boat.MaxSpeed = max_speed_normal;
                 boat.accelaration = acceleration_normal;
                 boat = null;
             }
+        }
+    }
+
+    private void OnTriggerEnter_MP(Collider other)
+    {
+        if (other.CompareTag("Boat"))
+        {
+            ArcadeVehicleController_Network boat_mp = other.GetComponent<ArcadeVehicleController_Network>();
+
+            max_speed_normal = boat_mp.MaxSpeed;
+            acceleration_normal = boat_mp.accelaration;
+
+            boat_mp.MaxSpeed *= speed_mp;
+            boat_mp.accelaration *= speed_mp;
+        }
+    }
+
+    private void OnTriggerExit_MP(Collider other)
+    {
+        if (other.CompareTag("Boat"))
+        {
+            ArcadeVehicleController_Network boat_mp = other.GetComponent<ArcadeVehicleController_Network>();
+
+            boat_mp.MaxSpeed = max_speed_normal;
+            boat_mp.accelaration = acceleration_normal;
         }
     }
 }

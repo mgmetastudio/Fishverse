@@ -1,7 +1,7 @@
 using UnityEngine;
-using Unity.Netcode;
+using Photon.Pun;
 
-public class ArcadeVehicleController_Network : NetworkBehaviour
+public class ArcadeVehicleController_Network : MonoBehaviour
 {
     public enum groundCheck { rayCast, sphereCaste };
     public enum MovementMode { Velocity, AngularVelocity };
@@ -35,14 +35,18 @@ public class ArcadeVehicleController_Network : NetworkBehaviour
 
     private float radius, horizontalInput, verticalInput;
     private Vector3 origin;
+    private PhotonView photon_view;
 
     private void Start()
     {
-        if (!IsOwner)
+        photon_view = GetComponent<PhotonView>();
+
+        if (!photon_view.IsMine)
         {
             rb.isKinematic = true;
             carBody.isKinematic = true;
             virtual_camera.SetActive(false);
+            engineSound.volume = 0.65f;
         }
         else
         {
@@ -57,7 +61,7 @@ public class ArcadeVehicleController_Network : NetworkBehaviour
     }
     private void Update()
     {
-        if (!IsOwner)
+        if (!photon_view.IsMine)
         {
             return;
         }
@@ -76,7 +80,7 @@ public class ArcadeVehicleController_Network : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsOwner)
+        if (!photon_view.IsMine)
         {
             return;
         }

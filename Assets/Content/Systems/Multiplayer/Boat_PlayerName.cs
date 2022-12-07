@@ -1,31 +1,20 @@
 using UnityEngine;
+using Photon.Pun;
 using TMPro;
-using Unity.Netcode;
 
-public class Boat_PlayerName : NetworkBehaviour
+public class Boat_PlayerName : MonoBehaviour
 {
-    public NetworkVariable<string> player_name = new NetworkVariable<string>("Player", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private PhotonView photon_view;
     public TMP_Text text_name;
-
-    public override void OnNetworkSpawn()
-    {
-        player_name.OnValueChanged += (string old_name, string new_name) =>
-        {
-            RefreshNameUI();
-        };
-    }
 
     private void Start()
     {
-        if (IsOwner)
-        {
-            int random_index = Random.Range(1000, 10000);
-            player_name.Value = "Guest_" + random_index.ToString();
-        }
+        photon_view = GetComponent<PhotonView>();
+        RefreshNameUI();
     }
 
     private void RefreshNameUI()
     {
-        text_name.text = player_name.Value;
+        text_name.text = photon_view.Owner.NickName;
     }
 }

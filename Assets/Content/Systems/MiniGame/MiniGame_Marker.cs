@@ -9,6 +9,7 @@ public class MiniGame_Marker : MonoBehaviour
     public Vector3 offset;
     public Image img;
     public TMP_Text text_distance;
+    public int distance_text_offset = -15;
 
     private void Start()
     {
@@ -24,17 +25,18 @@ public class MiniGame_Marker : MonoBehaviour
         
         Vector3 screen_pos = main_camera.WorldToScreenPoint(world_target.position + offset);
 
-        if(Vector3.Dot((world_target.position - main_camera.transform.position), main_camera.transform.forward) < 0)
+        //Check if object is visible
+        Vector3 vpPos = main_camera.WorldToViewportPoint(world_target.position);
+
+        if (vpPos.x >= 0.05f && vpPos.x <= 0.95f && vpPos.y >= 0.05f && vpPos.y <= 0.95f && vpPos.z > 0.05f)
         {
-            //Target is behind camera
-            if (screen_pos.x < Screen.width / 2)
-            {
-                screen_pos.x = max_x;
-            }
-            else
-            {
-                screen_pos.x = min_x;
-            }
+            img.enabled = true;
+            text_distance.enabled = true;
+        }
+        else
+        {
+            img.enabled = false;
+            text_distance.enabled = false;
         }
 
         screen_pos.x = Mathf.Clamp(screen_pos.x, min_x, max_x);
@@ -45,6 +47,6 @@ public class MiniGame_Marker : MonoBehaviour
             transform.position = screen_pos;
         }
 
-        text_distance.text = ((int)Vector3.Distance(world_target.position, main_camera.transform.position)).ToString() + "m";
+        text_distance.text = (Mathf.Clamp((int)Vector3.Distance(world_target.position, main_camera.transform.position) + distance_text_offset, 0, 9999)).ToString() + "m";
     }
 }

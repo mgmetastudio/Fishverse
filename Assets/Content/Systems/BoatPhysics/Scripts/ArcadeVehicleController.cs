@@ -30,7 +30,8 @@ public class ArcadeVehicleController : MonoBehaviour
     [Range(1, 3)]
     public float MaxPitch;
 
-    private float radius, horizontalInput, verticalInput;
+    [HideInInspector]
+    public float radius, horizontalInput, verticalInput;
     private Vector3 origin;
 
     private void Start()

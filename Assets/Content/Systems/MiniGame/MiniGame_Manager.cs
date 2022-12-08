@@ -56,6 +56,7 @@ public class MiniGame_Manager : MonoBehaviour
             panel_game_started.SetActive(true);
             panel_score.SetActive(true);
             panel_time.SetActive(true);
+            ui_marker.gameObject.SetActive(true);
             game_started = true;
         }
         else

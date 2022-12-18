@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &616962716
 Transform:
   m_ObjectHideFlags: 0
@@ -5995,6 +5995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2024115492444961655}
   - component: {fileID: 6525443718307523682}
+  - component: {fileID: 1818675659}
   m_Layer: 0
   m_Name: Fishes
   m_TagString: Untagged
@@ -6035,6 +6036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67ae99e2570a1f4facfaebf3d3f11fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game_manager: {fileID: 0}
   fish_child:
   - {fileID: 8651369806517183442}
   - {fileID: 4301667708235399914}
@@ -6096,6 +6098,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   btn_catch: {fileID: 0}
+--- !u!135 &1818675659
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024115492444961654}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 7.78
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2024115492468006289
 GameObject:
   m_ObjectHideFlags: 0

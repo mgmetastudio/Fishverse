@@ -1,7 +1,9 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class MiniGame_Fishes : MonoBehaviour
 {
+    public MiniGame_Manager game_manager;
     public GameObject[] fish_child;
     public Transform[] fish_spawn_points;
     private int fishes_catched = 0;
@@ -38,10 +40,20 @@ public class MiniGame_Fishes : MonoBehaviour
 
     public void CatchFish()
     {
-        fishes_catched++;
-        if (fishes_catched >= 5)
+        if(game_manager.fishes < 20)
         {
-            Reset();
+            fishes_catched++;
+
+            game_manager.AddFish();
+
+            fish_child[fishes_catched - 1].SetActive(false);
+
+            DOTween.Restart("fish_" + fishes_catched);
+
+            if (fishes_catched >= 5)
+            {
+                Reset();
+            }
         }
     }
 }

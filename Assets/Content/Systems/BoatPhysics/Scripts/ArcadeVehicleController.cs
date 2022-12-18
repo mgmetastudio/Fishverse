@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ArcadeVehicleController : MonoBehaviour
 {
+    public Joystick joystick;
+    public bool is_mobile;
     public enum groundCheck { rayCast, sphereCaste };
     public enum MovementMode { Velocity, AngularVelocity };
     public MovementMode movementMode;
@@ -44,8 +46,16 @@ public class ArcadeVehicleController : MonoBehaviour
     }
     private void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal"); //turning input
-        verticalInput = Input.GetAxis("Vertical");     //accelaration input
+        if(is_mobile)
+        {
+            horizontalInput = joystick.Horizontal;
+            verticalInput = joystick.Vertical;
+        }
+        else
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+        }
         Visuals();
         AudioManager();
 

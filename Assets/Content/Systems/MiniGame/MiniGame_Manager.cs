@@ -8,6 +8,7 @@ public class MiniGame_Manager : MonoBehaviour
     public GameObject panel_game_started;
     public GameObject camera_spectator;
     public GameObject panel_score;
+    public GameObject panel_fishes;
     public GameObject panel_time;
     public GameObject panel_add_score;
 
@@ -15,10 +16,12 @@ public class MiniGame_Manager : MonoBehaviour
     [Header("Texts Refs:")]
     public TMP_Text text_score;
     public TMP_Text text_time;
+    public TMP_Text text_fishes;
 
     [Space(10)]
     [Header("Game Data:")]
     public int score;
+    public int fishes;
     public int start_time = 45;
     public int time = 25;
     public bool start_instant = false;
@@ -34,8 +37,11 @@ public class MiniGame_Manager : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
+
         ui_marker.gameObject.SetActive(false);
 
+        fishes = 0;
         score = 0;
         time = start_time;
 
@@ -56,6 +62,7 @@ public class MiniGame_Manager : MonoBehaviour
             panel_game_started.SetActive(true);
             panel_score.SetActive(true);
             panel_time.SetActive(true);
+            panel_fishes.SetActive(true);
             ui_marker.gameObject.SetActive(true);
             game_started = true;
         }
@@ -76,6 +83,7 @@ public class MiniGame_Manager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         panel_score.SetActive(true);
         panel_time.SetActive(true);
+        panel_fishes.SetActive(true);
 
         yield return new WaitForSeconds(0.5f);
         ui_marker.gameObject.SetActive(true);
@@ -124,6 +132,16 @@ public class MiniGame_Manager : MonoBehaviour
         ui_marker.world_target = all_pickups[pickup_index].transform;
     }
 
+    public void AddFish()
+    {
+        if(fishes < 20)
+        {
+            fishes += 1;
+
+            RefreshTexts_UI();
+        }
+    }
+
     public void AddScore()
     {
         panel_add_score.SetActive(false);
@@ -141,5 +159,16 @@ public class MiniGame_Manager : MonoBehaviour
     {
         text_score.text = score.ToString();
         text_time.text = time.ToString();
+
+        if(fishes < 20)
+        {
+            text_fishes.color = Color.white;
+            text_fishes.text = fishes.ToString() + "/20";
+        }
+        else
+        {
+            text_fishes.color = Color.red;
+            text_fishes.text = fishes.ToString() + "/20 (FULL)";
+        }
     }
 }

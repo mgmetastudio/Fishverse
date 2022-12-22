@@ -9,6 +9,13 @@ public class MiniGame_Fishes : MonoBehaviour
     private int fishes_catched = 0;
     public GameObject btn_catch;
 
+    private int max_fish_count = 5;
+
+    private void Start()
+    {
+        Reset();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Boat") && gameObject.activeSelf)
@@ -35,6 +42,26 @@ public class MiniGame_Fishes : MonoBehaviour
             fish.SetActive(true);
         }
 
+        float random = Random.value;
+
+        if (random < 0.35f)
+        {
+            max_fish_count = 3;
+            fish_child[3].SetActive(false);
+            fish_child[4].SetActive(false);
+        }
+
+        else if(random < 0.65f)
+        {
+            max_fish_count = 4;
+            fish_child[4].SetActive(false);
+        }
+
+        else
+        {
+            max_fish_count = 5;
+        }
+
         fishes_catched = 0;
     }
 
@@ -50,7 +77,7 @@ public class MiniGame_Fishes : MonoBehaviour
 
             DOTween.Restart("fish_" + fishes_catched);
 
-            if (fishes_catched >= 5)
+            if (fishes_catched >= max_fish_count)
             {
                 Reset();
             }

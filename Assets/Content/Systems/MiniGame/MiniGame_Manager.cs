@@ -1,93 +1,121 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class MiniGame_Manager : MonoBehaviour
 {
     [Header("Scene Refs:")]
+    public ArcadeVehicleController vehicle_controller;
+    public ArcadeVehicleNitro vehicle_nitro;
     public GameObject panel_game_started;
     public GameObject camera_spectator;
     public GameObject panel_score;
     public GameObject panel_fishes;
     public GameObject panel_time;
     public GameObject panel_add_score;
+    public GameObject joystick;
+    public GameObject btn_boost;
 
     [Space(10)]
     [Header("Texts Refs:")]
     public TMP_Text text_score;
     public TMP_Text text_time;
     public TMP_Text text_fishes;
+    public TMP_Text text_bonus;
+
+    [Header("Ending Screen")]
+    public GameObject panel_end_screen;
+    public TMP_Text text_ending_score;
+    public TMP_Text text_best_score;
 
     [Space(10)]
     [Header("Game Data:")]
     public int score;
+    public int best_score;
     public int fishes;
-    public int start_time = 45;
-    public int time = 25;
+    public int start_time = 90;
+    public int time = 90;
     public bool start_instant = false;
 
     [Space(10)]
-    [Header("Pickups:")]
-    public GameObject[] all_pickups;
-    public MiniGame_Marker ui_marker;
+    [Header("Bonuses:")]
+    public GameObject[] all_bonuses;
 
     private bool game_started = false;
     private float timer = 0;
-    private int pickup_index = 0;
+
+    //Text Animations
+    DOTweenAnimation text_score_anim;
+    DOTweenAnimation text_fish_anim;
 
     private void Start()
     {
+        //Init Components
+        text_score_anim = text_score.GetComponent<DOTweenAnimation>();
+        text_fish_anim = text_fishes.GetComponent<DOTweenAnimation>();
+
+        if (Fishverse_Core.instance)
+            GetComponent<MiniGameServer_API>().GetBestScore();
+
+        //Set FPS
         Application.targetFrameRate = 60;
 
-        ui_marker.gameObject.SetActive(false);
-
+        //Set Default Parameters
         fishes = 0;
         score = 0;
         time = start_time;
 
-        all_pickups.Shuffle(40);
-        foreach (GameObject pickup in all_pickups)
+        //Shuffle Bonuses
+        all_bonuses.Shuffle(60);
+
+        foreach (GameObject bonus in all_bonuses)
         {
-            pickup.SetActive(false);
+            bonus.SetActive(false);
         }
 
-        all_pickups[pickup_index].SetActive(true);
-        ui_marker.world_target = all_pickups[pickup_index].transform;
+        for (int i = 0; i < 22; i++)
+        {
+            all_bonuses[i].SetActive(true);
+        }
 
         RefreshTexts_UI();
+        StartCoroutine(StartGame(start_instant));
+    }
 
-        if (start_instant)
+    IEnumerator StartGame(bool instant = false)
+    {
+        if (instant)
         {
+            yield return new WaitForSeconds(0.01f);
             camera_spectator.SetActive(false);
             panel_game_started.SetActive(true);
             panel_score.SetActive(true);
             panel_time.SetActive(true);
             panel_fishes.SetActive(true);
-            ui_marker.gameObject.SetActive(true);
+            joystick.SetActive(true);
+            btn_boost.SetActive(true);
             game_started = true;
         }
         else
         {
-            StartCoroutine(StartGame());
+            yield return new WaitForSeconds(3f);
+            camera_spectator.SetActive(false);
+
+            yield return new WaitForSeconds(2f);
+            panel_game_started.SetActive(true);
+
+            yield return new WaitForSeconds(0.5f);
+            panel_score.SetActive(true);
+            panel_time.SetActive(true);
+            panel_fishes.SetActive(true);
+
+            yield return new WaitForSeconds(0.5f);
+            joystick.SetActive(true);
+            btn_boost.SetActive(true);
+
+            game_started = true;
         }
-    }
-
-    IEnumerator StartGame()
-    {
-        yield return new WaitForSeconds(3f);
-        camera_spectator.SetActive(false);
-        
-        yield return new WaitForSeconds(2f);
-        panel_game_started.SetActive(true);
-
-        yield return new WaitForSeconds(0.5f);
-        panel_score.SetActive(true);
-        panel_time.SetActive(true);
-        panel_fishes.SetActive(true);
-
-        yield return new WaitForSeconds(0.5f);
-        ui_marker.gameObject.SetActive(true);
-        game_started = true;
     }
 
     private void Update()
@@ -98,7 +126,7 @@ public class MiniGame_Manager : MonoBehaviour
             if (timer > 1f)
             {
                 timer = 0;
-                time = Mathf.Clamp(time - 1, 0, 99);
+                time = Mathf.Clamp(time - 1, 0, 999);
                 RefreshTexts_UI();
 
                 if (time == 0)
@@ -112,24 +140,18 @@ public class MiniGame_Manager : MonoBehaviour
     public void EndGame()
     {
         game_started = false;
-    }
 
-    public void ShowNextPickup()
-    {
-        pickup_index++;
+        vehicle_controller.enabled = false;
 
-        if (pickup_index >= all_pickups.Length)
+        if (score > best_score)
         {
-            all_pickups.Shuffle(15);
-
-            foreach (GameObject pickup in all_pickups)
-            {
-                pickup.SetActive(false);
-            }
+            best_score = score;
+            GetComponent<MiniGameServer_API>().SubmitScore(best_score);
         }
 
-        all_pickups[pickup_index].SetActive(true);
-        ui_marker.world_target = all_pickups[pickup_index].transform;
+        text_ending_score.text = "Score: " + score;
+        text_best_score.text = "Your Best: " + best_score;
+        panel_end_screen.SetActive(true);
     }
 
     public void AddFish()
@@ -139,20 +161,85 @@ public class MiniGame_Manager : MonoBehaviour
             fishes += 1;
 
             RefreshTexts_UI();
+
+            //Play texts animations
+
+            if (text_fish_anim)
+            {
+                text_fish_anim.DORestart();
+            }
         }
     }
 
-    public void AddScore()
-    {
-        panel_add_score.SetActive(false);
-        panel_add_score.SetActive(true);
+    private int fishes_score_combo = 0;
 
-        score += 10;
-        time += 10;
+    public void AddScore(bool remove_fish = false)
+    {
+        //Convert fishes to score
+
+        if (remove_fish)
+        {
+            fishes--;
+            fishes = Mathf.Clamp(fishes, 0, 9999);
+        }
+
+        score += (10 + fishes_score_combo);
+
+        if (fishes > 0)
+        {
+            fishes_score_combo ++;
+        }
+        else
+        {
+            fishes_score_combo = 0;
+        }
 
         RefreshTexts_UI();
 
-        ShowNextPickup();
+
+        //Play texts animations
+
+        if (text_score_anim)
+        {
+            text_score_anim.DORestart();
+        }
+
+        if (text_fish_anim && remove_fish)
+        {
+            text_fish_anim.DORestart();
+        }
+    }
+
+    public void AddBonus(MiniGame_Bonus.BonusType bonus_type)
+    {
+        if (bonus_type == MiniGame_Bonus.BonusType.Time)
+        {
+            time += 20;
+            text_bonus.text = "+20 Seconds";
+        }
+
+        else if (bonus_type == MiniGame_Bonus.BonusType.Coins)
+        {
+            score += 15;
+            text_bonus.text = "+15 Points";
+        }
+
+        else if (bonus_type == MiniGame_Bonus.BonusType.CoinsBig)
+        {
+            score += 35;
+            text_bonus.text = "+35 Points";
+        }
+
+        else if (bonus_type == MiniGame_Bonus.BonusType.Nitro)
+        {
+            vehicle_nitro.nitro = 1;
+            text_bonus.text = "Nitro Refilled";
+        }
+
+        panel_add_score.SetActive(false);
+        panel_add_score.SetActive(true);
+
+        RefreshTexts_UI();
     }
 
     public void RefreshTexts_UI()

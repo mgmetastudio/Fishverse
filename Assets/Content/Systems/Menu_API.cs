@@ -10,4 +10,10 @@ public class Menu_API : MonoBehaviour
         loadingScreen.SetActive(true);
         SceneManager.LoadScene(buildIndex);
     }
+
+    public void OpenSceneByName(string scene_name)
+    {
+        loadingScreen.SetActive(true);
+        SceneManager.LoadScene(scene_name);
+    }
 }

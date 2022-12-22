@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class MiniGame_Pickup : MonoBehaviour
+public class MiniGame_Bonus : MonoBehaviour
 {
     public float rotation_speed = 20f;
     public MiniGame_Manager minigame_manager;
+    public BonusType current_type;
+    public enum BonusType {Time, Coins, CoinsBig, Nitro}
 
     void Update()
     {
@@ -14,13 +16,13 @@ public class MiniGame_Pickup : MonoBehaviour
     {
         if (other.CompareTag("Boat") && gameObject.activeSelf)
         {
-            Pickup();
+            PickupBonus(current_type);
         }
     }
 
-    public void Pickup()
+    public void PickupBonus(BonusType bonus_type)
     {
-        minigame_manager.AddScore();
+        minigame_manager.AddBonus(bonus_type);
         gameObject.SetActive(false);
     }
 }

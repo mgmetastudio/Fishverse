@@ -11,6 +11,7 @@ public class ArcadeVehicleController : MonoBehaviour
     public LayerMask drivableSurface;
 
     public float MaxSpeed, accelaration, accelaration_reverse, turn, gravity = 7f;
+    public float speed_boost = 1;
     public Rigidbody rb, carBody;
     
     [HideInInspector]
@@ -29,7 +30,7 @@ public class ArcadeVehicleController : MonoBehaviour
     public AudioSource engineSound;
     [Range(0, 1)]
     public float minPitch;
-    [Range(1, 3)]
+    [Range(0, 2)]
     public float MaxPitch;
 
     [HideInInspector]
@@ -42,6 +43,11 @@ public class ArcadeVehicleController : MonoBehaviour
         if (movementMode == MovementMode.AngularVelocity)
         {
             Physics.defaultMaxAngularSpeed = 100;
+        }
+
+        if (Application.isEditor)
+        {
+            is_mobile = false;
         }
     }
     private void Update()
@@ -62,7 +68,7 @@ public class ArcadeVehicleController : MonoBehaviour
     }
     public void AudioManager()
     {
-        engineSound.pitch = Mathf.Lerp(minPitch, MaxPitch, Mathf.Abs(carVelocity.z) / MaxSpeed);
+        engineSound.pitch = Mathf.Lerp(minPitch, MaxPitch, Mathf.Abs(carVelocity.z) / MaxSpeed * speed_boost);
     }
 
 
@@ -81,7 +87,7 @@ public class ArcadeVehicleController : MonoBehaviour
         {
             //turnlogic
             float sign = Mathf.Sign(carVelocity.z);
-            float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude/ MaxSpeed);
+            float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude/ MaxSpeed * speed_boost);
             if (verticalInput > 0.1f || carVelocity.z >1)
             {
                 carBody.AddTorque(Vector3.up * horizontalInput * sign * turn*100* TurnMultiplyer);
@@ -114,14 +120,14 @@ public class ArcadeVehicleController : MonoBehaviour
             {
                 if (Mathf.Abs(verticalInput) > 0.1f)
                 {
-                    rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * verticalInput * MaxSpeed/radius, current_acceleration * Time.deltaTime);
+                    rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * verticalInput * MaxSpeed * speed_boost / radius, current_acceleration * Time.deltaTime);
                 }
             }
             else if (movementMode == MovementMode.Velocity)
             {
                 if (Mathf.Abs(verticalInput) > 0.1f && Input.GetAxis("Jump")<0.1f)
                 {
-                    rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * verticalInput * MaxSpeed, current_acceleration / 10 * Time.deltaTime);
+                    rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * verticalInput * MaxSpeed * speed_boost, current_acceleration / 10 * Time.deltaTime);
                 }
             }
 
@@ -140,7 +146,7 @@ public class ArcadeVehicleController : MonoBehaviour
         //Body
         if(carVelocity.z > 1)
         {
-            BodyMesh.localRotation = Quaternion.Slerp(BodyMesh.localRotation, Quaternion.Euler(Mathf.Lerp(0, -5, carVelocity.z / MaxSpeed),
+            BodyMesh.localRotation = Quaternion.Slerp(BodyMesh.localRotation, Quaternion.Euler(Mathf.Lerp(0, -5, carVelocity.z / MaxSpeed * speed_boost),
                                BodyMesh.localRotation.eulerAngles.y, BodyTilt * horizontalInput), 0.05f);
         }
         else

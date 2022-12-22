@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1028891350979068417}
   - component: {fileID: 1028891350979068418}
+  - component: {fileID: 7892231617639788644}
+  - component: {fileID: 1028891350178257430}
   m_Layer: 0
   m_Name: MiniGame_Manager
   m_TagString: Untagged
@@ -44,21 +46,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fb36c85311afb04d8bfc6ec12a0f10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vehicle_nitro: {fileID: 0}
   panel_game_started: {fileID: 0}
   camera_spectator: {fileID: 0}
   panel_score: {fileID: 0}
   panel_fishes: {fileID: 0}
   panel_time: {fileID: 0}
   panel_add_score: {fileID: 0}
+  joystick: {fileID: 0}
+  btn_boost: {fileID: 0}
   text_score: {fileID: 0}
   text_time: {fileID: 0}
   text_fishes: {fileID: 0}
+  text_bonus: {fileID: 0}
+  panel_end_screen: {fileID: 0}
+  text_ending_score: {fileID: 0}
+  text_best_score: {fileID: 0}
   score: 0
+  best_score: 0
   fishes: 0
-  start_time: 45
-  time: 25
+  start_time: 120
+  time: 120
   start_instant: 0
-  all_pickups:
+  all_bonuses:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -133,4 +143,31 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  ui_marker: {fileID: 0}
+--- !u!114 &7892231617639788644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028891350979068416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3402ae6b13c1f4eed88c38abc082ee07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leadearboard_string: []
+  leaderboard_users: []
+  leaderboard_UI: {fileID: 0}
+--- !u!114 &1028891350178257430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028891350979068416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4635bd6952e5a3478d7822c14666db4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingScreen: {fileID: 0}

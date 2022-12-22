@@ -59,9 +59,9 @@ public class MiniGameServer_API : MonoBehaviour
         {
             if (score_form_request.downloadHandler.text != "")
             {
-                if (GetComponent<MiniGame_API>())
+                if (GetComponent<MiniGame_Manager>())
                 {
-                    GetComponent<MiniGame_API>().best_score = Mathf.Round(float.Parse(score_form_request.downloadHandler.text));
+                    GetComponent<MiniGame_Manager>().best_score = int.Parse(score_form_request.downloadHandler.text);
                 }
             }
         }

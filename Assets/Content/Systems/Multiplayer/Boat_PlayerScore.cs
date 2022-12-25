@@ -23,14 +23,14 @@ public class Boat_PlayerScore : MonoBehaviour
     {
         if (photon_view.IsMine)
         {
-            photon_view.RPC("RPC_ScoreIncrese", RpcTarget.All);
+            photon_view.RPC("RPC_ScoreIncrese", RpcTarget.All, score + 10);
         }
     }
 
     [PunRPC]
-    public void RPC_ScoreIncrese()
+    public void RPC_ScoreIncrese(int new_score)
     {
-        score = score + 10;
+        score = new_score;
         
         if (userlist_manager)
         {

@@ -70873,13 +70873,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1794457507785003551}
+  - component: {fileID: 1794457507785003552}
   m_Layer: 0
   m_Name: Bonuses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1794457507785003551
 Transform:
   m_ObjectHideFlags: 0
@@ -70968,6 +70969,96 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1794457507785003552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794457507785003536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7095e3878b5ba4a9fe233e4d2fc0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  is_master: 0
+  current_pickups: []
+  pickup_prefab: MP_BonusPickup
+  spawn_points:
+  - {fileID: 1794457508567238746}
+  - {fileID: 1794457509141444251}
+  - {fileID: 1794457509478931244}
+  - {fileID: 1794457507868330437}
+  - {fileID: 1794457509638273032}
+  - {fileID: 1794457509584285030}
+  - {fileID: 1794457507858021820}
+  - {fileID: 1794457509542828830}
+  - {fileID: 1794457508861887454}
+  - {fileID: 1794457508351294720}
+  - {fileID: 1794457508201299038}
+  - {fileID: 1794457509173014418}
+  - {fileID: 1794457509369974361}
+  - {fileID: 1794457508702558285}
+  - {fileID: 1794457509687914469}
+  - {fileID: 1794457508136193376}
+  - {fileID: 1794457507890032212}
+  - {fileID: 1794457508854435878}
+  - {fileID: 1794457508592830499}
+  - {fileID: 1794457509376680646}
+  - {fileID: 1794457507882598382}
+  - {fileID: 1794457508975373586}
+  - {fileID: 1794457507747140800}
+  - {fileID: 1794457508923866002}
+  - {fileID: 1794457507904408284}
+  - {fileID: 1794457509188487375}
+  - {fileID: 1794457508004036726}
+  - {fileID: 1794457509475608285}
+  - {fileID: 1794457509610678897}
+  - {fileID: 1794457508867711987}
+  - {fileID: 1794457509245205177}
+  - {fileID: 1794457508525440477}
+  - {fileID: 1794457507629903568}
+  - {fileID: 1794457508055654239}
+  - {fileID: 1794457509307697527}
+  - {fileID: 1794457508972850313}
+  - {fileID: 1794457508406034700}
+  - {fileID: 1794457508045839508}
+  - {fileID: 1794457509159486477}
+  - {fileID: 1794457508843351474}
+  - {fileID: 1794457508581263439}
+  - {fileID: 1794457507931664837}
+  - {fileID: 1794457508173071216}
+  - {fileID: 1794457509079269423}
+  - {fileID: 1794457509596758484}
+  - {fileID: 1794457509636823097}
+  - {fileID: 1794457508576674911}
+  - {fileID: 1794457508815673271}
+  - {fileID: 1794457508234969070}
+  - {fileID: 1794457508516458441}
+  - {fileID: 1794457508701487255}
+  - {fileID: 1794457508738709783}
+  - {fileID: 1794457508307674083}
+  - {fileID: 1794457509302576155}
+  - {fileID: 1794457508843169578}
+  - {fileID: 1794457509177059090}
+  - {fileID: 1794457509502464537}
+  - {fileID: 1794457509004358372}
+  - {fileID: 1794457509682454254}
+  - {fileID: 1794457508450757836}
+  - {fileID: 1794457508929574879}
+  - {fileID: 1794457508189730694}
+  - {fileID: 1794457509485689659}
+  - {fileID: 1794457509193599716}
+  - {fileID: 1794457507870484481}
+  - {fileID: 1794457507601195814}
+  - {fileID: 1794457507810619025}
+  - {fileID: 1794457508031890361}
+  - {fileID: 1794457507652883700}
+  - {fileID: 1794457508890932229}
+  - {fileID: 1794457508033049573}
+  - {fileID: 1794457508609317581}
+  - {fileID: 1794457508071164561}
+  spawn_index: 0
 --- !u!1 &1794457507810619024
 GameObject:
   m_ObjectHideFlags: 0

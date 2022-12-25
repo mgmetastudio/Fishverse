@@ -95,7 +95,7 @@ public class AccountManagement_API : MonoBehaviour
                     login_form.AddField("username", username);
 
                     UnityWebRequest login_request =
-                        UnityWebRequest.Post(Fishverse_Core.instance.server + "account_login.php", login_form);
+                        UnityWebRequest.Post(Fishverse_Core.instance.server + "users/login.php", login_form);
                     yield return login_request.SendWebRequest();
 
                     if (login_request.error == null)
@@ -138,7 +138,7 @@ public class AccountManagement_API : MonoBehaviour
         login_form.AddField("apikey", Fishverse_Core.instance.api_key);
 
         UnityWebRequest login_request =
-            UnityWebRequest.Post(Fishverse_Core.instance.server + "app_get_version.php", login_form);
+            UnityWebRequest.Post(Fishverse_Core.instance.server + "app/get_version.php", login_form);
         yield return login_request.SendWebRequest();
 
         if (login_request.error == null)

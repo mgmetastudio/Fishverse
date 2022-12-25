@@ -20,19 +20,24 @@ public class ArcadeVehicleNitro : MonoBehaviour
         vehicle_controller = GetComponent<ArcadeVehicleController>();
     }
 
+    public void RefreshNitroUI()
+    {
+        if (progress_bars.Length > 0)
+        {
+            foreach (Image pb in progress_bars)
+            {
+                pb.fillAmount = nitro;
+            }
+        }
+    }
+
     public void Update()
     {
         if (nitro_activated)
         {
             nitro = Mathf.Max(0, nitro - nitro_usage * Time.deltaTime);
 
-            if (progress_bars.Length > 0)
-            {
-                foreach (Image pb in progress_bars)
-                {
-                    pb.fillAmount = nitro;
-                }
-            }
+            RefreshNitroUI();
 
             if (nitro <= 0)
             {

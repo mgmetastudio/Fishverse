@@ -45,7 +45,7 @@ public class MiniGame_API : MonoBehaviour
         if (score > best_score)
         {
             best_score = score;
-            GetComponent<MiniGameServer_API>().SubmitScore(Mathf.Round(best_score));
+            //GetComponent<MiniGameServer_API>().SubmitScore(Mathf.Round(best_score));
         }
         
         minigame_ui.ShowEndingScreen();

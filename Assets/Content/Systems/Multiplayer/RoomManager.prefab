@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3774863882200281765}
   - component: {fileID: 4128588443371032427}
+  - component: {fileID: 1492279408}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -110,13 +111,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb314f6061d9999449878d7618671e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu_scene: MP_Lobby
+  menu_scene: Main_Menu
   player_prefab: {fileID: 8787277135012178891, guid: e4d706e9480610c4a8fda42628d23f05, type: 3}
   spawn_points:
   - {fileID: 1272890230839369193}
   - {fileID: 6760537250780621992}
   - {fileID: 1215188432968069038}
   - {fileID: 444439776756595755}
+--- !u!114 &1492279408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3774863882200281763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a497230dfa1e9943a8863307a038ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texts_all_users:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &4757961981158668363
 GameObject:
   m_ObjectHideFlags: 0

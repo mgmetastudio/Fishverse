@@ -11,6 +11,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        GetComponent<UserListManager>().RefreshUserList();
+
         if (!PhotonNetwork.IsConnected)
         {
             return;
@@ -35,16 +37,21 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene(menu_scene);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.LogFormat("Player {0} entered room", newPlayer.NickName);
+
+        GetComponent<UserListManager>().RefreshUserList();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
+
+        GetComponent<UserListManager>().RefreshUserList();
     }
 }

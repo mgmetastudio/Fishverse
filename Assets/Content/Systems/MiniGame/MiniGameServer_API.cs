@@ -14,7 +14,7 @@ public class MiniGameServer_API : MonoBehaviour
         StartCoroutine(GetLeaderboardRequest());
     }
 
-    public void SubmitScore(float score)
+    public void SubmitScore(int score)
     {
         StartCoroutine(SubmitScoreRequest(score));
     }
@@ -24,15 +24,16 @@ public class MiniGameServer_API : MonoBehaviour
         StartCoroutine(GetBestScoreRequest());
     }
 
-    IEnumerator SubmitScoreRequest(float score)
+    IEnumerator SubmitScoreRequest(int score)
     {
         WWWForm score_form = new WWWForm();
         score_form.AddField("apikey", Fishverse_Core.instance.api_key);
         score_form.AddField("email", Fishverse_Core.instance.account_email);
-        score_form.AddField("new_score", score.ToString());
+        score_form.AddField("username", Fishverse_Core.instance.account_username);
+        score_form.AddField("score", score.ToString());
 
         UnityWebRequest score_form_request =
-            UnityWebRequest.Post(Fishverse_Core.instance.server + "account_update_minigame_score.php", score_form);
+            UnityWebRequest.Post(Fishverse_Core.instance.server + "minigame/set_score.php", score_form);
         yield return score_form_request.SendWebRequest();
 
         if (score_form_request.error == null)
@@ -52,7 +53,7 @@ public class MiniGameServer_API : MonoBehaviour
         score_form.AddField("email", Fishverse_Core.instance.account_email);
 
         UnityWebRequest score_form_request =
-            UnityWebRequest.Post(Fishverse_Core.instance.server + "account_minigame_getscore.php", score_form);
+            UnityWebRequest.Post(Fishverse_Core.instance.server + "minigame/get_score.php", score_form);
         yield return score_form_request.SendWebRequest();
 
         if (score_form_request.error == null)
@@ -73,7 +74,7 @@ public class MiniGameServer_API : MonoBehaviour
         score_form.AddField("apikey", Fishverse_Core.instance.api_key);
 
         UnityWebRequest score_form_request =
-            UnityWebRequest.Post(Fishverse_Core.instance.server + "minigame_getscores_realtime.php", score_form);
+            UnityWebRequest.Post(Fishverse_Core.instance.server + "minigame/get_scores_unity.php", score_form);
         yield return score_form_request.SendWebRequest();
 
         if (score_form_request.error == null)

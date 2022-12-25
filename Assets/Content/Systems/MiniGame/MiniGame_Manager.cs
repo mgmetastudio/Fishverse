@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class MiniGame_Manager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class MiniGame_Manager : MonoBehaviour
     public GameObject panel_add_score;
     public GameObject joystick;
     public GameObject btn_boost;
+    public GameObject btn_pause;
 
     [Space(10)]
     [Header("Texts Refs:")]
@@ -37,13 +39,20 @@ public class MiniGame_Manager : MonoBehaviour
     public int start_time = 90;
     public int time = 90;
     public bool start_instant = false;
+    public GameObject[] all_fishes;
 
     [Space(10)]
     [Header("Bonuses:")]
     public GameObject[] all_bonuses;
 
+    [Space(10)]
+    [Header("Events:")]
+    public UnityEvent on_catch_fish;
+    public UnityEvent on_remove_fish;
+
     private bool game_started = false;
     private float timer = 0;
+    private int fishes_score_combo = 0;
 
     //Text Animations
     DOTweenAnimation text_score_anim;
@@ -95,6 +104,7 @@ public class MiniGame_Manager : MonoBehaviour
             panel_fishes.SetActive(true);
             joystick.SetActive(true);
             btn_boost.SetActive(true);
+            btn_pause.SetActive(true);
             game_started = true;
         }
         else
@@ -113,6 +123,7 @@ public class MiniGame_Manager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             joystick.SetActive(true);
             btn_boost.SetActive(true);
+            btn_pause.SetActive(true);
 
             game_started = true;
         }
@@ -141,7 +152,7 @@ public class MiniGame_Manager : MonoBehaviour
     {
         game_started = false;
 
-        vehicle_controller.enabled = false;
+        vehicle_controller.gameObject.SetActive(false);
 
         if (score > best_score)
         {
@@ -160,6 +171,13 @@ public class MiniGame_Manager : MonoBehaviour
         {
             fishes += 1;
 
+            if (all_fishes[fishes - 1])
+            {
+                all_fishes[fishes - 1].SetActive(true);
+            }
+
+            on_catch_fish.Invoke();
+
             RefreshTexts_UI();
 
             //Play texts animations
@@ -171,16 +189,21 @@ public class MiniGame_Manager : MonoBehaviour
         }
     }
 
-    private int fishes_score_combo = 0;
-
     public void AddScore(bool remove_fish = false)
     {
         //Convert fishes to score
 
         if (remove_fish)
         {
+            if (all_fishes[Mathf.Max(fishes - 1, 0)])
+            {
+                all_fishes[Mathf.Max(fishes - 1, 0)].SetActive(false);
+            }
+
             fishes--;
             fishes = Mathf.Clamp(fishes, 0, 9999);
+
+            on_remove_fish.Invoke();
         }
 
         score += (10 + fishes_score_combo);
@@ -233,6 +256,8 @@ public class MiniGame_Manager : MonoBehaviour
         else if (bonus_type == MiniGame_Bonus.BonusType.Nitro)
         {
             vehicle_nitro.nitro = 1;
+            vehicle_nitro.RefreshNitroUI();
+
             text_bonus.text = "Nitro Refilled";
         }
 

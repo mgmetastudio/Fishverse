@@ -4,6 +4,7 @@ using Photon.Realtime;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    public bool auto_connect = false;
     public string game_scene_name = "MP_Playground";
 
     [Space(10)]
@@ -12,14 +13,44 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject panel_loading;
     public UI_InfoMessage panel_info_message;
 
-    private void Start()
+    public void Start()
+    {
+        if (auto_connect)
+        {
+            Connect();
+        }
+    }
+
+    public void Connect()
     {
         panel_lobby.SetActive(false);
         panel_loading.SetActive(true);
+        
+        //Set Username
 
-        PhotonNetwork.NickName = "Guest_" + Random.Range(1000, 9999);
+        if (Fishverse_Core.instance)
+        {
+            if (Fishverse_Core.instance.account_username != "")
+            {
+                PhotonNetwork.NickName = Fishverse_Core.instance.account_username;
+            }
+            else
+            {
+                PhotonNetwork.NickName = "Guest_" + Random.Range(1000, 9999);
+            }
+        }
+        else
+        {
+            PhotonNetwork.NickName = "Guest_" + Random.Range(1000, 9999);
+        }
+
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public void Disconnect()
+    {
+        PhotonNetwork.Disconnect();
     }
 
     public override void OnConnectedToMaster()
@@ -37,10 +68,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         panel_loading.SetActive(false);
         panel_lobby.SetActive(true);
     }
-    public void JoinRoom()
+    public void JoinRoom(string room_name)
     {
         panel_loading.SetActive(true);
-        PhotonNetwork.JoinOrCreateRoom("TestRoom", new Photon.Realtime.RoomOptions { MaxPlayers = 2 }, null);
+        PhotonNetwork.JoinOrCreateRoom(room_name, new Photon.Realtime.RoomOptions { MaxPlayers = 2 }, null);
     }
 
     public override void OnJoinedRoom()

@@ -6,9 +6,9 @@ public class MiniGame_Fishes : MonoBehaviour
     public MiniGame_Manager game_manager;
     public GameObject[] fish_child;
     public Transform[] fish_spawn_points;
-    private int fishes_catched = 0;
     public GameObject btn_catch;
 
+    private int fishes_catched = 0;
     private int max_fish_count = 5;
 
     private void Start()

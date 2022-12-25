@@ -37,7 +37,7 @@ public class ArcadeVehicleController : MonoBehaviour
     public float radius, horizontalInput, verticalInput;
     private Vector3 origin;
 
-    private void Start()
+    public virtual void Start()
     {
         radius = rb.GetComponent<SphereCollider>().radius;
         if (movementMode == MovementMode.AngularVelocity)
@@ -50,7 +50,7 @@ public class ArcadeVehicleController : MonoBehaviour
             is_mobile = false;
         }
     }
-    private void Update()
+    public virtual void Update()
     {
         if(is_mobile)
         {
@@ -72,7 +72,7 @@ public class ArcadeVehicleController : MonoBehaviour
     }
 
 
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         carVelocity = carBody.transform.InverseTransformDirection(carBody.velocity);
 

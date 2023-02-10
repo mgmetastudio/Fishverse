@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LincolnCpp.HUDIndicator {
-	public class IndicatorCanvasOffScreen : IndicatorCanvas {
+namespace LincolnCpp.HUDIndicator
+{
+    public class IndicatorCanvasOffScreen : IndicatorCanvas
+    {
 
         private IndicatorOffScreen indicatorOffScreen;
 
@@ -19,7 +21,10 @@ namespace LincolnCpp.HUDIndicator {
         private RectTransform arrowRectTransform;
         private IndicatorArrowStyle arrowStyle;
 
-        public override void Create(Indicator indicator, IndicatorRenderer renderer) {
+        
+
+        public override void Create(Indicator indicator, IndicatorRenderer renderer)
+        {
             base.Create(indicator, renderer);
 
             indicatorOffScreen = indicator as IndicatorOffScreen;
@@ -51,43 +56,58 @@ namespace LincolnCpp.HUDIndicator {
             arrowRectTransform = arrowGameObject.GetComponent<RectTransform>();
             arrowRectTransform.localScale = Vector3.one;
 
+            destanceGameObject = new GameObject($"IndicatorOffScreen:Text:{indicator.gameObject.name}");
+            destanceGameObject.transform.SetParent(gameObject.transform);
+            distanceText = destanceGameObject.AddComponent<TMPro.TextMeshProUGUI>();
+            distanceText.fontSize = 17;
+            distanceText.alignment = TMPro.TextAlignmentOptions.BottomGeoAligned;
+            distanceText.rectTransform.SetHeight(60);
+
 
             // Update icon and arrow style
             UpdateStyle();
             UpdateArrowStyle();
         }
 
-        public override void Update() {
-            if(!active) return;
+        public override void LateUpdate()
+        {
+            if (!active) return;
 
-            if(IsVisible()) {
+            if (IsVisible())
+            {
                 // Update icon style
                 UpdateStyle();
 
                 // Update arrow style and show/hide arrow
-                if(indicatorOffScreen.showArrow) {
+                if (indicatorOffScreen.showArrow)
+                {
                     arrowGameObject.SetActive(true);
                     UpdateArrowStyle();
-				}
-				else {
+                }
+                else
+                {
                     arrowGameObject.SetActive(false);
                 }
 
                 // Update icon position
                 UpdatePosition();
+                UpdateDistance();
             }
-            else {
+            else
+            {
                 gameObject.SetActive(false);
             }
         }
 
-        private void UpdateStyle() {
+        private void UpdateStyle()
+        {
             rectTransform.sizeDelta = new Vector2(style.width, style.height);
             rawImage.texture = style.texture;
             rawImage.color = style.color;
         }
 
-        private void UpdateArrowStyle() {
+        private void UpdateArrowStyle()
+        {
             arrowRectTransform.sizeDelta = new Vector2(arrowStyle.width, arrowStyle.height);
             arrowRectTransform.pivot = new Vector2(0.5f, 1 + ((style.height + style.width) / 4f + arrowStyle.margin) / arrowStyle.height);
 
@@ -95,9 +115,12 @@ namespace LincolnCpp.HUDIndicator {
             arrowRawImage.color = arrowStyle.color;
         }
 
-        private void UpdatePosition() {
+        
+
+        private void UpdatePosition()
+        {
             Rect rendererRect = renderer.GetRect();
-            Vector3 pos = renderer.GetRectTransform().InverseTransformPoint(renderer.camera.WorldToScreenPoint(indicator.gameObject.transform.position));
+            Vector3 pos = renderer.GetRectTransform().InverseTransformPoint(renderer.camera.WorldToScreenPoint(indicator.gameObject.transform.position + indicatorOffScreen.offset));
 
             rendererRect.x += style.width / 2f;
             rendererRect.y += style.height / 2f;
@@ -105,14 +128,17 @@ namespace LincolnCpp.HUDIndicator {
             rendererRect.height -= style.height;
 
             // On-screen (Hide)
-            if(pos.z >= 0 && pos.x >= rendererRect.x && pos.x <= rendererRect.x + rendererRect.width && pos.y >= rendererRect.y && pos.y <= rendererRect.y + rendererRect.height) {
+            if (pos.z >= 0 && pos.x >= rendererRect.x && pos.x <= rendererRect.x + rendererRect.width && pos.y >= rendererRect.y && pos.y <= rendererRect.y + rendererRect.height)
+            {
                 gameObject.SetActive(false);
             }
             // Off-screen (Show)
-            else {
+            else
+            {
                 gameObject.SetActive(true);
 
-                if(pos.z < 0) {
+                if (pos.z < 0)
+                {
                     pos *= -1;
                 }
 
@@ -120,28 +146,34 @@ namespace LincolnCpp.HUDIndicator {
                 float b = pos.y / rendererRect.height;
 
                 // The indicator lies on left or right corner
-                if(Mathf.Abs(a) > Mathf.Abs(b)) {
+                if (Mathf.Abs(a) > Mathf.Abs(b))
+                {
 
                     // Right corner
-                    if(a > 0) {
+                    if (a > 0)
+                    {
                         float y = rendererRect.width / 2f * pos.y / pos.x;
                         pos = new Vector2(rendererRect.width / 2f, y);
                     }
                     // Left corner
-                    else {
+                    else
+                    {
                         float y = -rendererRect.width / 2f * pos.y / pos.x;
                         pos = new Vector2(-rendererRect.width / 2f, y);
                     }
                 }
                 // The indicator lies on top or bottom corner
-                else {
+                else
+                {
                     // Top corner
-                    if(b > 0) {
+                    if (b > 0)
+                    {
                         float x = rendererRect.height / 2f * pos.x / pos.y;
                         pos = new Vector2(x, rendererRect.height / 2f);
                     }
                     // Bottom corner
-                    else {
+                    else
+                    {
                         float x = -rendererRect.height / 2f * pos.x / pos.y;
                         pos = new Vector2(x, -rendererRect.height / 2f);
                     }

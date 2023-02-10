@@ -16,7 +16,7 @@ public class MiniGame_Marker : MonoBehaviour
         main_camera = Camera.main;
     }
 
-    void Update()
+    void LateUpdate()
     {
         float min_x = img.GetPixelAdjustedRect().width / 2;
         float max_x = Screen.width - min_x;

@@ -40,6 +40,7 @@ public class MiniGame_Manager : MonoBehaviour
     public int time = 90;
     public bool start_instant = false;
     public bool unlimitedTime;
+    public int maxFish = 20;
     public GameObject[] all_fishes;
 
     [Space(10)]
@@ -50,6 +51,7 @@ public class MiniGame_Manager : MonoBehaviour
     [Header("Events:")]
     public UnityEvent on_catch_fish;
     public UnityEvent on_remove_fish;
+    public UnityEvent onMaxFish;
 
     private bool game_started = false;
     private float timer = 0;
@@ -172,7 +174,7 @@ public class MiniGame_Manager : MonoBehaviour
 
     public void AddFish()
     {
-        if (fishes < 20)
+        if (fishes < maxFish)
         {
             fishes += 1;
 
@@ -182,6 +184,9 @@ public class MiniGame_Manager : MonoBehaviour
             }
 
             on_catch_fish.Invoke();
+
+            if (fishes >= maxFish)
+                onMaxFish.Invoke();
 
             RefreshTexts_UI();
 
@@ -277,15 +282,15 @@ public class MiniGame_Manager : MonoBehaviour
         text_score.text = score.ToString();
         text_time.text = time.ToString();
 
-        if (fishes < 20)
+        if (fishes < maxFish)
         {
             text_fishes.color = Color.white;
-            text_fishes.text = fishes.ToString() + "/20";
+            text_fishes.text = fishes.ToString() + $"/{maxFish}";
         }
         else
         {
             text_fishes.color = Color.red;
-            text_fishes.text = fishes.ToString() + "/20 (FULL)";
+            text_fishes.text = fishes.ToString() + $"/{maxFish} (FULL)";
         }
     }
 }

@@ -8,20 +8,25 @@ namespace LincolnCpp.HUDIndicator {
     [System.Serializable]
     public abstract class Indicator : MonoBehaviour {
 
-        public bool visible = true;
+        private bool visible = true;
         [SerializeField] private List<IndicatorRenderer> renderers;
+
+        [Space]
+        public Vector3 offset;
         
         protected Dictionary<IndicatorRenderer, IndicatorCanvas> indicatorsCanvas = new Dictionary<IndicatorRenderer, IndicatorCanvas>();
 
-		private void Start() {
+        public bool Visible { get => visible; set => visible = value; }
+
+        private void Start() {
             foreach(IndicatorRenderer renderer in renderers) {
                 CreateIndicatorCanvas(renderer);
             }
         }
 
-		private void Update() {
+		private void LateUpdate() {
             foreach(KeyValuePair<IndicatorRenderer, IndicatorCanvas> element in indicatorsCanvas) {
-                element.Value.Update();
+                element.Value.LateUpdate();
             }
         }
 

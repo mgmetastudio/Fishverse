@@ -2,33 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LincolnCpp.HUDIndicator {
+namespace LincolnCpp.HUDIndicator
+{
 
-    public class IndicatorRenderer : MonoBehaviour {
+    public class IndicatorRenderer : MonoBehaviour
+    {
         public bool visible = true;
         public float margin = 32f;
-        public Color canvasColor = new Color(0, 207f/255f, 1f, 27f/255f);
+        public Color canvasColor = new Color(0, 207f / 255f, 1f, 27f / 255f);
         public new Camera camera;
 
         private RectTransform rectTransform;
 
-        void Awake() {
+        void Awake()
+        {
             rectTransform = GetComponent<RectTransform>();
 
-            if (camera == null) {
+            if (camera == null)
+            {
                 camera = Camera.main;
-			}
+            }
         }
 
-		public Rect GetRect() {
+        public Rect GetRect()
+        {
             return SetMarginToRect(rectTransform.rect, margin);
-		}
+        }
 
-        public RectTransform GetRectTransform() {
+        public RectTransform GetRectTransform()
+        {
             return rectTransform;
-		}
+        }
 
-        private Rect SetMarginToRect(Rect rect, float margin) {
+        private Rect SetMarginToRect(Rect rect, float margin)
+        {
             rect.x += margin;
             rect.y += margin;
             rect.width -= margin * 2f;
@@ -36,7 +43,8 @@ namespace LincolnCpp.HUDIndicator {
             return rect;
         }
 
-        private void OnDrawGizmosSelected() {
+        private void OnDrawGizmosSelected()
+        {
             rectTransform = GetComponent<RectTransform>();
             Rect rect = SetMarginToRect(rectTransform.rect, margin);
 

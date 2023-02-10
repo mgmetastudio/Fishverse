@@ -8,8 +8,12 @@ public class MiniGame_Fishes : MonoBehaviour
     public Transform[] fish_spawn_points;
     public GameObject btn_catch;
 
+    [SerializeField] FishCatchVFXController fishVFX;
+
     private int fishes_catched = 0;
     private int max_fish_count = 5;
+
+    GameObject playerBoat;
 
     private void Start()
     {
@@ -20,6 +24,7 @@ public class MiniGame_Fishes : MonoBehaviour
     {
         if (other.CompareTag("Boat") && gameObject.activeSelf)
         {
+            playerBoat = other.gameObject;
             btn_catch.SetActive(true);
         }
     }
@@ -29,6 +34,7 @@ public class MiniGame_Fishes : MonoBehaviour
         if (other.CompareTag("Boat"))
         {
             btn_catch.SetActive(false);
+            playerBoat = null;
         }
     }
 
@@ -51,7 +57,7 @@ public class MiniGame_Fishes : MonoBehaviour
             fish_child[4].SetActive(false);
         }
 
-        else if(random < 0.65f)
+        else if (random < 0.65f)
         {
             max_fish_count = 4;
             fish_child[4].SetActive(false);
@@ -67,7 +73,7 @@ public class MiniGame_Fishes : MonoBehaviour
 
     public void CatchFish()
     {
-        if(game_manager.fishes < 20)
+        if (game_manager.fishes < 20)
         {
             fishes_catched++;
 
@@ -75,7 +81,8 @@ public class MiniGame_Fishes : MonoBehaviour
 
             fish_child[fishes_catched - 1].SetActive(false);
 
-            DOTween.Restart("fish_" + fishes_catched);
+            // DOTween.Restart("fish_" + fishes_catched);
+            fishVFX.Play(fish_child[fishes_catched - 1].transform.position ,playerBoat.transform.position);
 
             if (fishes_catched >= max_fish_count)
             {

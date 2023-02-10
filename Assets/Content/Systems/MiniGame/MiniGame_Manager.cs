@@ -39,6 +39,7 @@ public class MiniGame_Manager : MonoBehaviour
     public int start_time = 90;
     public int time = 90;
     public bool start_instant = false;
+    public bool unlimitedTime;
     public GameObject[] all_fishes;
 
     [Space(10)]
@@ -60,6 +61,10 @@ public class MiniGame_Manager : MonoBehaviour
 
     private void Start()
     {
+#if !UNITY_EDITOR
+        unlimitedTime = false;
+#endif
+
         //Init Components
         text_score_anim = text_score.GetComponent<DOTweenAnimation>();
         text_fish_anim = text_fishes.GetComponent<DOTweenAnimation>();
@@ -140,7 +145,7 @@ public class MiniGame_Manager : MonoBehaviour
                 time = Mathf.Clamp(time - 1, 0, 999);
                 RefreshTexts_UI();
 
-                if (time == 0)
+                if (time == 0 && !unlimitedTime)
                 {
                     EndGame();
                 }
@@ -167,7 +172,7 @@ public class MiniGame_Manager : MonoBehaviour
 
     public void AddFish()
     {
-        if(fishes < 20)
+        if (fishes < 20)
         {
             fishes += 1;
 
@@ -210,7 +215,7 @@ public class MiniGame_Manager : MonoBehaviour
 
         if (fishes > 0)
         {
-            fishes_score_combo ++;
+            fishes_score_combo++;
         }
         else
         {
@@ -272,7 +277,7 @@ public class MiniGame_Manager : MonoBehaviour
         text_score.text = score.ToString();
         text_time.text = time.ToString();
 
-        if(fishes < 20)
+        if (fishes < 20)
         {
             text_fishes.color = Color.white;
             text_fishes.text = fishes.ToString() + "/20";

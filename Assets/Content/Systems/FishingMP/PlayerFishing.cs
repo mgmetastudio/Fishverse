@@ -48,7 +48,7 @@ public class PlayerFishing : NetworkBehaviour {
 	private void Start() {
 		if (isLocalPlayer) {
 			_floatDemo = Instantiate(_floatDemoPrefab);
-			_localCamera = GetComponentInChildren<Camera>().transform;
+			_localCamera = Camera.main.transform;//GetComponentInChildren<Camera>().transform;
 		}
 	}
 

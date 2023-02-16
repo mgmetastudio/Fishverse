@@ -62,6 +62,7 @@ public class Inventory : NetworkBehaviour
     {
         Manager = GameObject.FindGameObjectWithTag("Manager");
         PlayerName = Manager.GetComponent<OpenWorldManager>().PlayerName;
+        Camera = Camera.main;
 
         SetPlayerName(PlayerName);
 

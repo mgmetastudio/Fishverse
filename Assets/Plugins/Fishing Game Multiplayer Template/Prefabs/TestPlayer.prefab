@@ -5341,7 +5341,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.32
   m_SlopeLimit: 45
   m_StepOffset: 0
   m_SkinWidth: 0.0001
@@ -5394,6 +5394,10 @@ MonoBehaviour:
   syncInterval: 0.1
   isGround: 0
   groundAngle: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  groundCheckDist: 0.66
   ProjectMoveOnGround: 0
   moveInput: {x: 0, y: 0, z: 0}
   slopeLimit: 40
@@ -5418,7 +5422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpHeight: 15
+  jumpHeight: 7
   physicalCC: {fileID: 322622734152566779}
   bodyRender: {fileID: 6278981193374282100}
   isSitting: 0
@@ -5594,7 +5598,6 @@ GameObject:
   - component: {fileID: 2643130202510283253}
   - component: {fileID: 2643130202510283250}
   - component: {fileID: 2643130202510283251}
-  - component: {fileID: 2643130202510283252}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -5667,20 +5670,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2643130202510283252
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2643130202510283254}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.54
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2643130203272408292
 GameObject:
   m_ObjectHideFlags: 0

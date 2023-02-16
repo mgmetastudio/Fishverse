@@ -12,6 +12,8 @@ public class PhysicalCC : NetworkBehaviour
 	public bool isGround;
 	public float groundAngle;
 	public Vector3 groundNormal { get; private set; }
+	public LayerMask groundMask;
+	public float groundCheckDist = 1f;
 
 	[Header("Movement")]
 	public bool ProjectMoveOnGround;
@@ -46,7 +48,7 @@ public class PhysicalCC : NetworkBehaviour
 		{
 			moveVelocity = ProjectMoveOnGround? Vector3.ProjectOnPlane (moveInput, groundNormal) : moveInput;
 
-			if (groundAngle < slopeLimit && inertiaVelocity != Vector3.zero) InertiaDamping();
+			// if (groundAngle < slopeLimit && inertiaVelocity != Vector3.zero) InertiaDamping();
 		}
 
 		GravityUpdate();
@@ -80,7 +82,7 @@ public class PhysicalCC : NetworkBehaviour
 
 	private void GroundCheck()
 	{
-		if (Physics.SphereCast(transform.position, cc.radius, Vector3.down, out RaycastHit hit, cc.height / 2 - cc.radius + 0.01f))
+		if (Physics.SphereCast(transform.position - Vector3.up * .1f, cc.radius, Vector3.down, out RaycastHit hit, groundCheckDist, groundMask))
 		{
 			isGround = true;
 			groundAngle = Vector3.Angle(Vector3.up, hit.normal);
@@ -100,6 +102,7 @@ public class PhysicalCC : NetworkBehaviour
 		{
 			platformVelocity = Vector3.zero;
 			isGround = false;
+			print("GHJKLHGJK");
 		}
 	}
 

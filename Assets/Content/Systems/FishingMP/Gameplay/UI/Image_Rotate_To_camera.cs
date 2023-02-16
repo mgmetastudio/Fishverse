@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class Image_Rotate_To_camera : MonoBehaviour
@@ -8,13 +9,18 @@ public class Image_Rotate_To_camera : MonoBehaviour
 
     public void Start()
     {
-        if (Cam == null)
-            Cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        if (GetComponentInParent<NetworkIdentity>().isLocalPlayer)
+        {
+            gameObject.SetInactive();
+            return;
+        }
+
+        Cam = Camera.main.transform;
     }
 
     void Update()
     {
-        if(Cam == null)
+        if (Cam == null)
         {
             transform.rotation = Quaternion.LookRotation(-Camera.main.transform.forward, Camera.main.transform.up);
         }

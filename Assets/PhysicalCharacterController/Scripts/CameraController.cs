@@ -5,44 +5,52 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform cameraTransform;
-    public float maxVerticalAngle;
-    public Transform body;
+    // public Transform cameraTransform;
+    // public float maxVerticalAngle;
+    // public Transform body;
 
     [SerializeField] Cinemachine.CinemachineVirtualCamera firstPerson;
-    [SerializeField] Cinemachine.CinemachineVirtualCamera thirdPerson;
+    [SerializeField] Cinemachine.CinemachineFreeLook thirdPerson;
+    [SerializeField] List<SkinnedMeshRenderer> rend;
 
-    private float _mouseVerticalValue;
-    private float MouseVerticalValue
-    {
-        get => _mouseVerticalValue;
-        set
-        {
-            if (value == 0) return;
+    // private float _mouseVerticalValue;
+    // private float MouseVerticalValue
+    // {
+    //     get => _mouseVerticalValue;
+    //     set
+    //     {
+    //         if (value == 0) return;
 
-            float verticalAngle = _mouseVerticalValue + value;
-            verticalAngle = Mathf.Clamp(verticalAngle, -maxVerticalAngle, maxVerticalAngle);
-            _mouseVerticalValue = verticalAngle;
-        }
-    }
+    //         float verticalAngle = _mouseVerticalValue + value;
+    //         verticalAngle = Mathf.Clamp(verticalAngle, -maxVerticalAngle, maxVerticalAngle);
+    //         _mouseVerticalValue = verticalAngle;
+    //     }
+    // }
 
-    public float sensitivity;
+    // public float sensitivity;
 
     // Update is called once per frame
+
+    void Start()
+    {
+        SetShadowMode(UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+
+
+    }
     void Update()
     {
-        MouseVerticalValue = Input.GetAxis("Mouse Y");
+        // MouseVerticalValue = Input.GetAxis("Mouse Y");
 
-        Quaternion finalRotation = Quaternion.Euler(
-            -MouseVerticalValue * sensitivity,
-        0, 0);
+        // Quaternion finalRotation = Quaternion.Euler(
+        //     -MouseVerticalValue * sensitivity,
+        // 0, 0);
 
-        cameraTransform.localRotation = finalRotation;
+        // cameraTransform.localRotation = finalRotation;
 
-        body.rotation = Quaternion.Euler(
-        0,
-        body.localRotation.eulerAngles.y + Input.GetAxis("Mouse X") * sensitivity,
-        0);
+        // body.rotation = Quaternion.Euler(
+        // 0,
+        // body.localRotation.eulerAngles.y + Input.GetAxis("Mouse X") * sensitivity,
+        // 0);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -61,13 +69,23 @@ public class CameraController : MonoBehaviour
             {
                 firstPerson.Priority = 10;
                 thirdPerson.Priority = 0;
+                SetShadowMode(UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+
             }
             else
             {
                 firstPerson.Priority = 0;
                 thirdPerson.Priority = 10;
+                SetShadowMode(UnityEngine.Rendering.ShadowCastingMode.On);
             }
         }
+
+    }
+    
+    void SetShadowMode(UnityEngine.Rendering.ShadowCastingMode mode)
+    {
+        foreach (var item in rend)
+            item.shadowCastingMode = mode;
     }
 
 

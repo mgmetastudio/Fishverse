@@ -106,7 +106,10 @@ public class FishEntity : NetworkBehaviour
             {
                 if (controller.target != null && Random.Range(.0f, 1f) > .4f)
                 {
-                    Bite(controller.target.gameObject.GetComponent<FishingFloat>());
+                    if (controller.target.gameObject.TryGetComponent<FishingFloat>(out FishingFloat fishingFloat))
+                        Bite(fishingFloat);
+
+                    // Bite(controller.target.gameObject.GetComponent<FishingFloat>());
                 }
             }
         }

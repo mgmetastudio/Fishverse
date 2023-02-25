@@ -84,7 +84,7 @@ public class FishAIController : MonoBehaviour
         return 2f;
     }
 
-    private bool inWater = true;
+    [SerializeField]  private bool inWater = true;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Water"))

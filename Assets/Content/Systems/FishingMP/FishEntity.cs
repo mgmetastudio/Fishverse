@@ -143,12 +143,18 @@ public class FishEntity : NetworkBehaviour
                 }
                 if (Vector3.Distance(transform.position, _hookedTo._owner._rodEndPoint.position) < 2.3f)
                 {
+                    var anim = _hookedTo._owner.GetComponent<PlayerAnimator>();
+                    Inventory inv = _hookedTo._owner.GetComponent<Inventory>();
+
+                    FishAIController ai = this.GetComponent<FishAIController>();
+
                     Debug.Log("Fish with ID " + this.GetComponent<FishAIController>()._scriptable.uniqueId + " caught!");
-                    _hookedTo._owner.GetComponent<Animator>().Play(_hookedTo._owner.GetComponent<Inventory>().FishHolderAnimationName);
-                    _hookedTo._owner.GetComponent<Inventory>().HoldCaughtFish(this.GetComponent<FishAIController>()._scriptable.uniqueId);
-                    _hookedTo._owner.GetComponent<Inventory>().AddFishItem(this.GetComponent<FishAIController>()._scriptable.uniqueId, this.GetComponent<FishAIController>()._scriptable.FishName, this.GetComponent<FishAIController>()._scriptable.FishLength, "Weight: " + this.GetComponent<FishAIController>()._scriptable.FishWeight, this.GetComponent<FishAIController>()._scriptable.FishRetailValue, this.GetComponent<FishAIController>()._scriptable.FishSprite);
-                    RpcHoldCaughtFish(this.GetComponent<FishAIController>()._scriptable.uniqueId);
-                    Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + _hookedTo._owner.GetComponent<Inventory>().PlayerName + "</color>" + " caught a " + "<color=green>" + this.GetComponent<FishAIController>()._scriptable.FishWeight + "</color>" + " " + "<color=green>" + this.GetComponent<FishAIController>()._scriptable.FishName + "</color>";
+
+                    anim.FishCatch();
+                    inv.HoldCaughtFish(ai._scriptable.uniqueId);
+                    inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, ai._scriptable.FishLength, "Weight: " + ai._scriptable.FishWeight, ai._scriptable.FishRetailValue, ai._scriptable.FishSprite);
+                    RpcHoldCaughtFish(ai._scriptable.uniqueId);
+                    Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.PlayerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
                     _hookedTo._owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
                     NetworkServer.Destroy(gameObject);
                 }

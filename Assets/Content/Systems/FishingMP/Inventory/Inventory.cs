@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using Cysharp.Threading.Tasks;
 
 public class Inventory : NetworkBehaviour
 {
@@ -58,6 +59,11 @@ public class Inventory : NetworkBehaviour
     public string PlayerName;
     public Text PlayerNameText;
 
+    [Space]
+    [SerializeField] float fishHoldTime = 2f;
+
+    int _lastUniqueId = -1;
+
     private void Start()
     {
         Manager = GameObject.FindGameObjectWithTag("Manager");
@@ -104,7 +110,7 @@ public class Inventory : NetworkBehaviour
     {
         for (int i = 0; i < Floats.Length; i++)
         {
-            if(Floats[i].ID == CurrentSelectedFloat)
+            if (Floats[i].ID == CurrentSelectedFloat)
             {
                 SpawnedLineEndPrefab = Instantiate(Floats[i].LineEndPrefab, transform.position + (transform.forward * 2), Floats[i].LineEndPrefab.transform.rotation);
             }
@@ -330,13 +336,16 @@ public class Inventory : NetworkBehaviour
 
         HoldCaughtFish(uniqueId);
 
+
         SpawnedInventoryFish = Instantiate(InventoryFishPrefab);
+        var invFish = SpawnedInventoryFish.GetComponent<InventoryFish>();
+
         SpawnedInventoryFish.transform.SetParent(Content);
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishName.text = FishName;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishLength.text = FishLength;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishWeight.text = "Weight: " + FishWeight;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishRetailValue.text = FishRetailValue;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishImage.sprite = FishSprite;
+        invFish.FishName.text = FishName;
+        invFish.FishLength.text = FishLength;
+        invFish.FishWeight.text = "Weight: " + FishWeight;
+        invFish.FishRetailValue.text = FishRetailValue;
+        invFish.FishImage.sprite = FishSprite;
 
         CmdHoldCaughtFish(uniqueId);
 
@@ -345,10 +354,23 @@ public class Inventory : NetworkBehaviour
         CheckForItems();
     }
 
-    public void HoldCaughtFish(int uniqueId)
+    public async void HoldCaughtFish(int uniqueId)
     {
+        _lastUniqueId = uniqueId;
+
         FishHolder.SetActive(true);
         Fishes[uniqueId].gameObject.SetActive(true);
+
+        await UniTask.WaitForSeconds(fishHoldTime);
+
+        HideFish();
+    }
+
+    public void HideFish()
+    {
+        FishHolder.SetActive(false);
+        if (_lastUniqueId != -1)
+            Fishes[_lastUniqueId].gameObject.SetActive(false);
     }
 
     [Command]

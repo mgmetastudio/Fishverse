@@ -77,6 +77,8 @@ public class PlayerFishing : NetworkBehaviour
                     if (_floatDemo.activeSelf)
                     {
                         // onCast.Invoke();
+                        _inv.HideFish();
+
                         _anim.SetTrigger("FishingCast");
 
 

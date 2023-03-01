@@ -165,22 +165,26 @@ public class FishEntity : NetworkBehaviour
     [ClientRpc]
     public void RpcHoldCaughtFish(int uniqueId)
     {
-        _hookedTo._owner.GetComponent<Inventory>().HoldCaughtFish(uniqueId);
-        _hookedTo._owner.GetComponent<Animator>().Play(_hookedTo._owner.GetComponent<Inventory>().FishHolderAnimationName);
+        var inv = _hookedTo._owner.GetComponent<Inventory>();
+
+        inv.HoldCaughtFish(uniqueId);
+        _hookedTo._owner.GetComponent<Animator>().Play(inv.FishHolderAnimationName);
 
         GameObject SpawnedInventoryFish;
 
-        SpawnedInventoryFish = Instantiate(_hookedTo._owner.GetComponent<Inventory>().InventoryFishPrefab);
-        SpawnedInventoryFish.transform.SetParent(_hookedTo._owner.GetComponent<Inventory>().Content);
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishName.text = _scriptable.FishName;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishLength.text = _scriptable.FishLength;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishWeight.text = "Weight: " + _scriptable.FishWeight;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishRetailValue.text = _scriptable.FishRetailValue;
-        SpawnedInventoryFish.GetComponent<InventoryFish>().FishImage.sprite = _scriptable.FishSprite;
+        SpawnedInventoryFish = Instantiate(inv.InventoryFishPrefab);
+        SpawnedInventoryFish.transform.SetParent(inv.Content);
+
+        var fish = SpawnedInventoryFish.GetComponent<InventoryFish>();
+        fish.FishName.text = _scriptable.FishName;
+        fish.FishLength.text = _scriptable.FishLength;
+        fish.FishWeight.text = "Weight: " + _scriptable.FishWeight;
+        fish.FishRetailValue.text = _scriptable.FishRetailValue;
+        fish.FishImage.sprite = _scriptable.FishSprite;
 
         SpawnedInventoryFish = null;
 
-        _hookedTo._owner.GetComponent<Inventory>().CheckForItems();
+        inv.CheckForItems();
     }
 
     private void OnGUI()

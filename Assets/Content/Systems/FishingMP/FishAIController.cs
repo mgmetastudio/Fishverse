@@ -84,7 +84,7 @@ public class FishAIController : MonoBehaviour
         return 2f;
     }
 
-    [SerializeField]  private bool inWater = true;
+    [SerializeField] private bool inWater = true;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
@@ -147,7 +147,7 @@ public class FishAIController : MonoBehaviour
     public void Setup(FishScriptable fishScriptable)
     {
         _scriptable = fishScriptable;
-        _bounds = new Bounds(transform.position, _scriptable.boundsSize);
+        _bounds = new Bounds(transform.position + _scriptable.boundsSize.y * .5f * Vector3.down, _scriptable.boundsSize);
         StartCoroutine(CustomUpdateLoop());
     }
 

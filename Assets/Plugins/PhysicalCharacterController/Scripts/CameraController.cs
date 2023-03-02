@@ -5,35 +5,14 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // public Transform cameraTransform;
-    // public float maxVerticalAngle;
-    // public Transform body;
-
     [SerializeField] Cinemachine.CinemachineVirtualCamera firstPerson;
     [SerializeField] Cinemachine.CinemachineFreeLook thirdPerson;
-    [SerializeField] List<SkinnedMeshRenderer> rend;
-
-    // private float _mouseVerticalValue;
-    // private float MouseVerticalValue
-    // {
-    //     get => _mouseVerticalValue;
-    //     set
-    //     {
-    //         if (value == 0) return;
-
-    //         float verticalAngle = _mouseVerticalValue + value;
-    //         verticalAngle = Mathf.Clamp(verticalAngle, -maxVerticalAngle, maxVerticalAngle);
-    //         _mouseVerticalValue = verticalAngle;
-    //     }
-    // }
-
-    // public float sensitivity;
-
-    // Update is called once per frame
+    [SerializeField] List<SkinnedMeshRenderer> firstPersonRend;
+    [SerializeField] List<SkinnedMeshRenderer> thirdPersonRend;
 
     void Start()
     {
-        SetShadowMode(UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+        SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
 
 
     }
@@ -69,20 +48,20 @@ public class CameraController : MonoBehaviour
             {
                 firstPerson.Priority = 10;
                 thirdPerson.Priority = 0;
-                SetShadowMode(UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+                SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
 
             }
             else
             {
                 firstPerson.Priority = 0;
                 thirdPerson.Priority = 10;
-                SetShadowMode(UnityEngine.Rendering.ShadowCastingMode.On);
+                SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.On);
             }
         }
 
     }
     
-    void SetShadowMode(UnityEngine.Rendering.ShadowCastingMode mode)
+    void SetShadowMode(List<SkinnedMeshRenderer> rend, UnityEngine.Rendering.ShadowCastingMode mode)
     {
         foreach (var item in rend)
             item.shadowCastingMode = mode;

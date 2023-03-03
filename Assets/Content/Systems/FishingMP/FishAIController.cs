@@ -151,6 +151,11 @@ public class FishAIController : MonoBehaviour
         StartCoroutine(CustomUpdateLoop());
     }
 
+    public void SetBounds(Vector3 newBounds)
+    {
+        _bounds = new Bounds(transform.position, newBounds);
+    }
+
     private void UpdateTarget()
     {
         if (doNotUpdateTarget)

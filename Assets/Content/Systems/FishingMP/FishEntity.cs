@@ -13,6 +13,9 @@ public class FishEntity : NetworkBehaviour
     public GameObject FishCaughtMessage;
     public GameObject FishModel;
 
+    [Space]
+    [SerializeField] float minDist = 2f;
+
     private void Awake()
     {
         if (_fishScriptables == null)
@@ -45,6 +48,14 @@ public class FishEntity : NetworkBehaviour
         }
 
         StartCoroutine(BiteLoop());
+    }
+
+    public void SetBounds(Vector3 bounds)
+    {
+        if (isServer)
+        {
+            controller.SetBounds(bounds);
+        }
     }
 
 #pragma warning disable IDE0051
@@ -139,9 +150,10 @@ public class FishEntity : NetworkBehaviour
                 }
                 if (controller.stamina > 0.7f)
                 {
-                    FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    FishModel.transform.LookAt(_hookedTo._owner._rodEndPoint.position);
+                    // FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
                 }
-                if (Vector3.Distance(transform.position, _hookedTo._owner._rodEndPoint.position) < 2.3f)
+                if (Vector3.Distance(transform.position.WithY(0), _hookedTo._owner._rodEndPoint.position.WithY(0)) < minDist)
                 {
                     var anim = _hookedTo._owner.GetComponent<PlayerAnimator>();
                     Inventory inv = _hookedTo._owner.GetComponent<Inventory>();

@@ -263,11 +263,13 @@ public class Inventory : NetworkBehaviour
 
         SpawnedPrefab = Instantiate(prefab);
         SpawnedPrefab.transform.SetParent(parent);
-        SpawnedPrefab.GetComponent<EquipmentItem>().InventorySystem = this;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentType = "Fishing Rod";
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentID = ID;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentName.text = Name;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentImage = Image;
+
+        var eqItem = SpawnedPrefab.GetComponent<EquipmentItem>();
+        eqItem.InventorySystem = this;
+        eqItem.EquipmentType = "Fishing Rod";
+        eqItem.EquipmentID = ID;
+        eqItem.EquipmentName.text = Name;
+        eqItem.EquipmentImage = Image;
     }
 
     public void SpawnBaitUI(GameObject prefab, Transform parent, int ID, string Name, Sprite Image)
@@ -276,11 +278,13 @@ public class Inventory : NetworkBehaviour
 
         SpawnedPrefab = Instantiate(prefab);
         SpawnedPrefab.transform.SetParent(parent);
-        SpawnedPrefab.GetComponent<EquipmentItem>().InventorySystem = this;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentType = "Bait";
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentID = ID;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentName.text = Name;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentImage = Image;
+
+        var eqItem = SpawnedPrefab.GetComponent<EquipmentItem>();
+        eqItem.InventorySystem = this;
+        eqItem.EquipmentType = "Bait";
+        eqItem.EquipmentID = ID;
+        eqItem.EquipmentName.text = Name;
+        eqItem.EquipmentImage = Image;
     }
 
     private void Update()
@@ -291,17 +295,21 @@ public class Inventory : NetworkBehaviour
             FloatHasChanged = false;
         }
 
-        if (this.GetComponent<PlayerFishing>()._fishingFloat == null)
+        if (LineEnd)
         {
-            _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
-            _rodLineRenderer.SetPosition(1, LineEnd.transform.position);
-            LineEnd.SetActive(true);
-            LineStart.SetActive(true);
-        }
-        else
-        {
-            LineStart.SetActive(false);
-            LineEnd.SetActive(false);
+
+            if (this.GetComponent<PlayerFishing>()._fishingFloat == null)
+            {
+                _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
+                _rodLineRenderer.SetPosition(1, LineEnd.transform.position);
+                LineEnd.SetActive(true);
+                LineStart.SetActive(true);
+            }
+            else
+            {
+                LineStart.SetActive(false);
+                LineEnd.SetActive(false);
+            }
         }
 
         if (!isLocalPlayer)

@@ -27,6 +27,9 @@ public class PlayerFishing : NetworkBehaviour
 
     [SerializeField] float onCastWait;
 
+    [SerializeField] GameObject fishingRod;
+    [SerializeField] GameObject fishingRope;
+
     // public UnityEvent onCast;
 
     public static UnityEvent onLineBroke;
@@ -55,7 +58,7 @@ public class PlayerFishing : NetworkBehaviour
         {
             if (_fishingFloat == null)
             {
-                if (Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
+                if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
                 {
                     if (!Physics.Raycast(_localCamera.position, _localCamera.forward, Vector3.Distance(_localCamera.position, hitInfo.point) + .01f, _obstacleMask))
                     {
@@ -72,7 +75,7 @@ public class PlayerFishing : NetworkBehaviour
                     _floatDemo.SetActive(false);
                 }
 
-                if (Input.GetMouseButtonDown(0))
+                if (fishingRod.activeSelf && Input.GetMouseButtonDown(0))
                 {
                     if (_floatDemo.activeSelf)
                     {
@@ -91,6 +94,12 @@ public class PlayerFishing : NetworkBehaviour
                         }
                         _inv.FishHolder.SetActive(false);
                     }
+                }
+
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    DrawFishingRod(!fishingRod.activeSelf);
+
                 }
             }
             else
@@ -132,6 +141,22 @@ public class PlayerFishing : NetworkBehaviour
             _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
             _rodLineRenderer.SetPosition(1, _fishingFloat.transform.position);
         }
+    }
+
+    public void DrawFishingRod(bool draw)
+    {        
+        fishingRod.SetActive(draw);
+        fishingRope.SetActive(draw);
+
+        var inv = GetComponent<Inventory>();
+
+        if (draw)
+            inv.SetFloat(0);
+        else
+            Destroy(inv.LineEnd);
+
+        _anim.SetLayerWeight(2, draw.Int());
+
     }
 
     [Command(requiresAuthority = true)]

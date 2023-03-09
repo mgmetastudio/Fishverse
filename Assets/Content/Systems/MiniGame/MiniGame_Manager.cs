@@ -159,6 +159,7 @@ public class MiniGame_Manager : MonoBehaviour
     {
         game_started = false;
 
+        if(vehicle_controller)
         vehicle_controller.gameObject.SetActive(false);
 
         if (score > best_score)
@@ -265,6 +266,7 @@ public class MiniGame_Manager : MonoBehaviour
 
         else if (bonus_type == MiniGame_Bonus.BonusType.Nitro)
         {
+            vehicle_nitro = FindObjectOfType<ArcadeVehicleNitro>();
             vehicle_nitro.nitro = 1;
             vehicle_nitro.RefreshNitroUI();
 

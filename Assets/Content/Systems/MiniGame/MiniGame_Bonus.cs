@@ -19,7 +19,7 @@ public class MiniGame_Bonus : MonoBehaviour
     {
         if (other.CompareTag("Boat") && gameObject.activeSelf)
         {
-            PickupBonus(current_type);
+            PickupBonus(current_type, other.gameObject);
 
             on_pickup.Invoke();
 
@@ -30,9 +30,9 @@ public class MiniGame_Bonus : MonoBehaviour
         }
     }
 
-    public void PickupBonus(BonusType bonus_type)
+    public void PickupBonus(BonusType bonus_type, GameObject target)
     {
-        minigame_manager.AddBonus(bonus_type);
+        minigame_manager.AddBonus(bonus_type, target);
         gameObject.SetActive(false);
     }
 }

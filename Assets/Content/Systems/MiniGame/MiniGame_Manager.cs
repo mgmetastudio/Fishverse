@@ -12,6 +12,7 @@ public class MiniGame_Manager : MonoBehaviour
     public GameObject panel_game_started;
     public GameObject camera_spectator;
     public GameObject panel_score;
+    public GameObject panel_pos;
     public GameObject panel_fishes;
     public GameObject panel_time;
     public GameObject panel_add_score;
@@ -24,6 +25,7 @@ public class MiniGame_Manager : MonoBehaviour
     public TMP_Text text_score;
     public TMP_Text text_time;
     public TMP_Text text_fishes;
+    public TMP_Text text_position;
     public TMP_Text text_bonus;
 
     [Header("Ending Screen")]
@@ -53,6 +55,12 @@ public class MiniGame_Manager : MonoBehaviour
     public UnityEvent on_remove_fish;
     public UnityEvent onMaxFish;
 
+    [Space]
+    [SerializeField] float gameStartCameraWait = 3f;
+    [SerializeField] float gameStartPanelWait = 2f;
+    [SerializeField] float gameStartUIWait = .5f;
+    [SerializeField] float gameStartControlsWait = .5f;
+
     private bool game_started = false;
     private float timer = 0;
     private int fishes_score_combo = 0;
@@ -60,6 +68,7 @@ public class MiniGame_Manager : MonoBehaviour
     //Text Animations
     DOTweenAnimation text_score_anim;
     DOTweenAnimation text_fish_anim;
+    DOTweenAnimation text_pos_anim;
 
     private void Start()
     {
@@ -70,6 +79,8 @@ public class MiniGame_Manager : MonoBehaviour
         //Init Components
         text_score_anim = text_score.GetComponent<DOTweenAnimation>();
         text_fish_anim = text_fishes.GetComponent<DOTweenAnimation>();
+        if(text_position.TryGetComponent<DOTweenAnimation>(out DOTweenAnimation anm))
+        text_pos_anim = anm;
 
         if (Fishverse_Core.instance)
             GetComponent<MiniGameServer_API>().GetBestScore();
@@ -90,7 +101,7 @@ public class MiniGame_Manager : MonoBehaviour
             bonus.SetActive(false);
         }
 
-        for (int i = 0; i < 22; i++)
+        for (int i = 0; i < all_bonuses.Length; i++)
         {
             all_bonuses[i].SetActive(true);
         }
@@ -116,18 +127,19 @@ public class MiniGame_Manager : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(gameStartCameraWait);
             camera_spectator.SetActive(false);
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(gameStartPanelWait);
             panel_game_started.SetActive(true);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(gameStartUIWait);
             panel_score.SetActive(true);
             panel_time.SetActive(true);
             panel_fishes.SetActive(true);
+            panel_pos.SetActive(true);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(gameStartControlsWait);
             joystick.SetActive(true);
             btn_boost.SetActive(true);
             btn_pause.SetActive(true);
@@ -244,8 +256,10 @@ public class MiniGame_Manager : MonoBehaviour
         }
     }
 
-    public void AddBonus(MiniGame_Bonus.BonusType bonus_type)
+    public void AddBonus(MiniGame_Bonus.BonusType bonus_type, GameObject target)
     {
+        
+
         if (bonus_type == MiniGame_Bonus.BonusType.Time)
         {
             time += 20;
@@ -266,7 +280,7 @@ public class MiniGame_Manager : MonoBehaviour
 
         else if (bonus_type == MiniGame_Bonus.BonusType.Nitro)
         {
-            vehicle_nitro = FindObjectOfType<ArcadeVehicleNitro>();
+            vehicle_nitro = target.GetComponent<ArcadeVehicleNitro>();
             vehicle_nitro.nitro = 1;
             vehicle_nitro.RefreshNitroUI();
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,18 +12,20 @@ public class ArcadeVehicleNitro : MonoBehaviour
 
     [Space(10)]
     [Header("UI:")]
-    public Image[] progress_bars;
+    public List<Image> progress_bars = new List<Image>();
 
     private ArcadeVehicleController vehicle_controller;
 
     private void Start()
     {
         vehicle_controller = GetComponent<ArcadeVehicleController>();
+
+        FindObjectOfType<BoatNitroUI>(true).Setup(this);
     }
 
     public void RefreshNitroUI()
     {
-        if (progress_bars.Length > 0)
+        if (progress_bars.Count > 0)
         {
             foreach (Image pb in progress_bars)
             {

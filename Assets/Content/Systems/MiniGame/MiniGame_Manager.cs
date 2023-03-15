@@ -79,8 +79,8 @@ public class MiniGame_Manager : MonoBehaviour
         //Init Components
         text_score_anim = text_score.GetComponent<DOTweenAnimation>();
         text_fish_anim = text_fishes.GetComponent<DOTweenAnimation>();
-        if(text_position.TryGetComponent<DOTweenAnimation>(out DOTweenAnimation anm))
-        text_pos_anim = anm;
+        if (text_position && text_position.TryGetComponent<DOTweenAnimation>(out DOTweenAnimation anm))
+            text_pos_anim = anm;
 
         if (Fishverse_Core.instance)
             GetComponent<MiniGameServer_API>().GetBestScore();
@@ -137,7 +137,7 @@ public class MiniGame_Manager : MonoBehaviour
             panel_score.SetActive(true);
             panel_time.SetActive(true);
             panel_fishes.SetActive(true);
-            panel_pos.SetActive(true);
+            if(panel_pos) panel_pos.SetActive(true);
 
             yield return new WaitForSeconds(gameStartControlsWait);
             joystick.SetActive(true);
@@ -171,8 +171,8 @@ public class MiniGame_Manager : MonoBehaviour
     {
         game_started = false;
 
-        if(vehicle_controller)
-        vehicle_controller.gameObject.SetActive(false);
+        if (vehicle_controller)
+            vehicle_controller.gameObject.SetActive(false);
 
         if (score > best_score)
         {
@@ -258,7 +258,7 @@ public class MiniGame_Manager : MonoBehaviour
 
     public void AddBonus(MiniGame_Bonus.BonusType bonus_type, GameObject target)
     {
-        
+
 
         if (bonus_type == MiniGame_Bonus.BonusType.Time)
         {

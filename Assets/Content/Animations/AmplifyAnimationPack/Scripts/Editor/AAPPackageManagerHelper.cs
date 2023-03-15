@@ -1,6 +1,8 @@
 // Amplify Animation Pack - Third-Person Character Controller
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
+#if UNITY_EDITOR
+
 using System;
 using UnityEditor;
 using UnityEditor.EventSystems;
@@ -45,3 +47,5 @@ namespace AmplifyAnimationPack
 		public static bool CanStartImport { get { return m_request == null; } }
 	}
 }
+
+#endif

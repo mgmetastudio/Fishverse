@@ -36744,14 +36744,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077443732}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.5, y: 1.128, z: -269}
+  m_LocalRotation: {x: -0, y: 0.9238789, z: -0, w: 0.3826851}
+  m_LocalPosition: {x: -26.1, y: 1.128, z: -208.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1852644377}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 135, z: 0}
 --- !u!114 &1077443734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50997,6 +50997,7 @@ GameObject:
   - component: {fileID: 1398486052}
   - component: {fileID: 1398486051}
   - component: {fileID: 1398486050}
+  - component: {fileID: 1398486054}
   m_Layer: 5
   m_Name: Btn_BoatNitro
   m_TagString: Untagged
@@ -51044,8 +51045,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ArcadeVehicleNitro, Assembly-CSharp
+        - m_Target: {fileID: 1398486054}
+          m_TargetAssemblyTypeName: BoatNitroUI, Assembly-CSharp
           m_MethodName: StartNitro
           m_Mode: 1
           m_Arguments:
@@ -51060,8 +51061,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: ArcadeVehicleNitro, Assembly-CSharp
+        - m_Target: {fileID: 1398486054}
+          m_TargetAssemblyTypeName: BoatNitroUI, Assembly-CSharp
           m_MethodName: StopNitro
           m_Mode: 1
           m_Arguments:
@@ -51154,6 +51155,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398486047}
   m_CullTransparentMesh: 1
+--- !u!114 &1398486054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398486047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1edd77b36eb514e8823de6cb3fb7a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nitroImg: {fileID: 1689914101}
 --- !u!1 &1400752078
 GameObject:
   m_ObjectHideFlags: 0
@@ -70392,8 +70406,9 @@ Transform:
   - {fileID: 1394264227}
   - {fileID: 433794973}
   - {fileID: 1630274673}
-  - {fileID: 1077443733}
   - {fileID: 2077200747}
+  - {fileID: 1077443733}
+  - {fileID: 2140561074}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -77449,6 +77464,8 @@ GameObject:
   - component: {fileID: 2077200749}
   - component: {fileID: 2077200748}
   - component: {fileID: 2077200751}
+  - component: {fileID: 2077200753}
+  - component: {fileID: 2077200752}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -77557,6 +77574,51 @@ MonoBehaviour:
   NetworkManagerUI: {fileID: 2077200748}
   NetworkManager: {fileID: 2077200750}
   PlayerName: 
+--- !u!114 &2077200752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077200746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c37d3deca7a834d80cfd8d3cfcc510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkDiscovery: {fileID: 2077200753}
+--- !u!114 &2077200753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077200746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c761308e733c51245b2e8bb4201f46dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secretHandshake: 8395595383627070311
+  serverBroadcastListenPort: 47777
+  enableActiveDiscovery: 1
+  ActiveDiscoveryInterval: 3
+  transport: {fileID: 0}
+  OnServerFound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2077200752}
+        m_TargetAssemblyTypeName: Mirror.Discovery.NetworkDiscoveryHUD, Mirror.Components
+        m_MethodName: OnDiscoveredServer
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2078146520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -80326,6 +80388,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1703054070887628725, guid: 329832b8aac07ef45931808f788fc053, type: 3}
   m_PrefabInstance: {fileID: 1703054073021116338}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2140561073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2140561074}
+  - component: {fileID: 2140561075}
+  m_Layer: 0
+  m_Name: StartPos (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2140561074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140561073}
+  m_LocalRotation: {x: -0, y: -0.382685, z: -0, w: 0.9238789}
+  m_LocalPosition: {x: 16.8, y: 1.128, z: -255.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1852644377}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+--- !u!114 &2140561075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140561073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2141159461
 PrefabInstance:
   m_ObjectHideFlags: 0

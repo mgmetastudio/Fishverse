@@ -17434,7 +17434,9 @@ GameObject:
   - component: {fileID: 1668652265441348595}
   - component: {fileID: 1218049456526133845}
   - component: {fileID: 1465907030}
+  - component: {fileID: 3045569785365111168}
   - component: {fileID: 1465907031}
+  - component: {fileID: 4852013447920181633}
   m_Layer: 0
   m_Name: Vehicle_MiniGame_Boat
   m_TagString: Boat
@@ -17485,6 +17487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d69c44041501f4aab1c355410d67b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   joystick: {fileID: 0}
   is_mobile: 1
   movementMode: 0
@@ -17720,13 +17724,42 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 1668652265441348594}
-  clientAuthority: 0
+  clientAuthority: 1
   syncVelocity: 1
   clearVelocity: 0
   velocitySensitivity: 0.1
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
+--- !u!114 &3045569785365111168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668652265441348605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  sendInterval: 0.05
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  bufferTimeMultiplier: 3
+  bufferSizeLimit: 64
+  catchupThreshold: 6
+  catchupMultiplier: 0.1
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!114 &1465907031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17744,6 +17777,22 @@ MonoBehaviour:
   visible: 0
   m_AssetId: d4c85741c20179644ae0f80f5705ddd7
   hasSpawned: 0
+--- !u!114 &4852013447920181633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668652265441348605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec1d29536d3a143ac1393d187d11ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  cams:
+  - {fileID: 1101938953}
 --- !u!1 &1711505208481765316
 GameObject:
   m_ObjectHideFlags: 0

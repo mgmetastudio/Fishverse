@@ -56,7 +56,7 @@ public class OpenWorldManager : MonoBehaviour
     public void EnterServer()
     {
         // NetworkManager.networkAddress = NetworkAddressInputField.text;
-        // NetworkManager.StartClient();
+        NetworkManager.StartClient();
         // Destroy(CreateServerMenu);
     }
 

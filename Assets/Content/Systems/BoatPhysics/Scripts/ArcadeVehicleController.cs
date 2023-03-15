@@ -1,6 +1,7 @@
+using Mirror;
 using UnityEngine;
 
-public class ArcadeVehicleController : MonoBehaviour
+public class ArcadeVehicleController : NetworkBehaviour
 {
     public Joystick joystick;
     public bool is_mobile;
@@ -13,7 +14,7 @@ public class ArcadeVehicleController : MonoBehaviour
     public float MaxSpeed, accelaration, accelaration_reverse, turn, gravity = 7f;
     public float speed_boost = 1;
     public Rigidbody rb, carBody;
-    
+
     [HideInInspector]
     public RaycastHit hit;
     public AnimationCurve frictionCurve;
@@ -23,8 +24,8 @@ public class ArcadeVehicleController : MonoBehaviour
     public Transform BodyMesh;
     [HideInInspector]
     public Vector3 carVelocity;
-    
-    [Range(0,10)]
+
+    [Range(0, 10)]
     public float BodyTilt;
     [Header("Audio settings")]
     public AudioSource engineSound;
@@ -39,6 +40,8 @@ public class ArcadeVehicleController : MonoBehaviour
 
     public virtual void Start()
     {
+        joystick = FindObjectOfType<Joystick>(true);
+
         radius = rb.GetComponent<SphereCollider>().radius;
         if (movementMode == MovementMode.AngularVelocity)
         {
@@ -52,15 +55,20 @@ public class ArcadeVehicleController : MonoBehaviour
     }
     public virtual void Update()
     {
-        if(is_mobile)
+        if (isLocalPlayer)
         {
-            horizontalInput = joystick.Horizontal;
-            verticalInput = joystick.Vertical;
-        }
-        else
-        {
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
+            // horizontalInput = joystick.Horizontal;
+            // verticalInput = joystick.Vertical;
+            // if (is_mobile)
+            // {
+                horizontalInput = joystick.Horizontal;
+                verticalInput = joystick.Vertical;
+            // }
+            // else
+            // {
+            //     horizontalInput = Input.GetAxis("Horizontal");
+            //     verticalInput = Input.GetAxis("Vertical");
+            // }
         }
         Visuals();
         AudioManager();
@@ -79,22 +87,22 @@ public class ArcadeVehicleController : MonoBehaviour
         if (Mathf.Abs(carVelocity.x) > 0)
         {
             //changes friction according to sideways speed of car
-            frictionMaterial.dynamicFriction = frictionCurve.Evaluate(Mathf.Abs(carVelocity.x/100)); 
+            frictionMaterial.dynamicFriction = frictionCurve.Evaluate(Mathf.Abs(carVelocity.x / 100));
         }
-        
-        
+
+
         if (grounded())
         {
             //turnlogic
             float sign = Mathf.Sign(carVelocity.z);
-            float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude/ MaxSpeed * speed_boost);
-            if (verticalInput > 0.1f || carVelocity.z >1)
+            float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed * speed_boost);
+            if (verticalInput > 0.1f || carVelocity.z > 1)
             {
-                carBody.AddTorque(Vector3.up * horizontalInput * sign * turn*100* TurnMultiplyer);
+                carBody.AddTorque(Vector3.up * horizontalInput * sign * turn * 100 * TurnMultiplyer);
             }
             else if (verticalInput < -0.1f || carVelocity.z < -1)
             {
-                carBody.AddTorque(Vector3.up * horizontalInput * sign * turn*100* TurnMultiplyer);
+                carBody.AddTorque(Vector3.up * horizontalInput * sign * turn * 100 * TurnMultiplyer);
             }
 
             //brakelogic
@@ -125,7 +133,7 @@ public class ArcadeVehicleController : MonoBehaviour
             }
             else if (movementMode == MovementMode.Velocity)
             {
-                if (Mathf.Abs(verticalInput) > 0.1f && Input.GetAxis("Jump")<0.1f)
+                if (Mathf.Abs(verticalInput) > 0.1f && Input.GetAxis("Jump") < 0.1f)
                 {
                     rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * verticalInput * MaxSpeed * speed_boost, current_acceleration / 10 * Time.deltaTime);
                 }
@@ -137,23 +145,23 @@ public class ArcadeVehicleController : MonoBehaviour
         else
         {
             carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
-            rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down* gravity, Time.deltaTime * gravity);
+            rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * gravity, Time.deltaTime * gravity);
         }
 
     }
     public void Visuals()
     {
         //Body
-        if(carVelocity.z > 1)
+        if (carVelocity.z > 1)
         {
             BodyMesh.localRotation = Quaternion.Slerp(BodyMesh.localRotation, Quaternion.Euler(Mathf.Lerp(0, -5, carVelocity.z / MaxSpeed * speed_boost),
                                BodyMesh.localRotation.eulerAngles.y, BodyTilt * horizontalInput), 0.05f);
         }
         else
         {
-            BodyMesh.localRotation = Quaternion.Slerp(BodyMesh.localRotation, Quaternion.Euler(0,0,0) , 0.05f);
+            BodyMesh.localRotation = Quaternion.Slerp(BodyMesh.localRotation, Quaternion.Euler(0, 0, 0), 0.05f);
         }
-        
+
 
     }
 
@@ -175,7 +183,7 @@ public class ArcadeVehicleController : MonoBehaviour
             }
         }
 
-        else if(GroundCheck == groundCheck.sphereCaste)
+        else if (GroundCheck == groundCheck.sphereCaste)
         {
             if (Physics.SphereCast(origin, radius + 0.1f, direction, out hit, maxdistance, drivableSurface))
             {
@@ -198,13 +206,13 @@ public class ArcadeVehicleController : MonoBehaviour
         if (!Application.isPlaying)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(rb.transform.position + ((radius + width) * Vector3.down), new Vector3(2 * radius, 2*width, 4 * radius));
+            Gizmos.DrawWireCube(rb.transform.position + ((radius + width) * Vector3.down), new Vector3(2 * radius, 2 * width, 4 * radius));
             if (GetComponent<BoxCollider>())
             {
                 Gizmos.color = Color.green;
                 Gizmos.DrawWireCube(transform.position, GetComponent<BoxCollider>().size);
             }
-            
+
         }
 
     }

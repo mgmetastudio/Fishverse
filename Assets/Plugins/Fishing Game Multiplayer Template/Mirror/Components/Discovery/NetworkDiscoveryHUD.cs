@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Mirror.Discovery
 {
@@ -11,6 +12,8 @@ namespace Mirror.Discovery
     {
         readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
         Vector2 scrollViewPos = Vector2.zero;
+
+        public bool showGUI = true;
 
         public NetworkDiscovery networkDiscovery;
 
@@ -28,7 +31,7 @@ namespace Mirror.Discovery
 
         void OnGUI()
         {
-            if (NetworkManager.singleton == null)
+            if (NetworkManager.singleton == null || !showGUI)
                 return;
 
             if (!NetworkClient.isConnected && !NetworkServer.active && !NetworkClient.active)
@@ -45,24 +48,19 @@ namespace Mirror.Discovery
 
             if (GUILayout.Button("Find Servers"))
             {
-                discoveredServers.Clear();
-                networkDiscovery.StartDiscovery();
+                FindServers();
             }
 
             // LAN Host
             if (GUILayout.Button("Start Host"))
             {
-                discoveredServers.Clear();
-                NetworkManager.singleton.StartHost();
-                networkDiscovery.AdvertiseServer();
+                StartHost();
             }
 
             // Dedicated server
             if (GUILayout.Button("Start Server"))
             {
-                discoveredServers.Clear();
-                NetworkManager.singleton.StartServer();
-                networkDiscovery.AdvertiseServer();
+                StartServer();
             }
 
             GUILayout.EndHorizontal();
@@ -117,10 +115,50 @@ namespace Mirror.Discovery
             GUILayout.EndArea();
         }
 
+        public void StopServer()
+        {
+            NetworkManager.singleton.StopClient();
+            NetworkManager.singleton.StopHost();
+            NetworkManager.singleton.StopServer();
+            networkDiscovery.StopDiscovery();
+        }
+
+        public void FindServers()
+        {
+            discoveredServers.Clear();
+            networkDiscovery.StartDiscovery();
+        }
+
+        public void StartHost()
+        {
+            discoveredServers.Clear();
+            NetworkManager.singleton.StartHost();
+            networkDiscovery.AdvertiseServer();
+        }
+
+        public void StartServer()
+        {
+            discoveredServers.Clear();
+            NetworkManager.singleton.StartServer();
+            networkDiscovery.AdvertiseServer();
+        }
+
         void Connect(ServerResponse info)
         {
             networkDiscovery.StopDiscovery();
             NetworkManager.singleton.StartClient(info.uri);
+        }
+
+        public bool ConnectRandom()
+        {
+            if (discoveredServers.Values.Count == 0)
+                return false;
+
+            //check if only 1 player on server
+            ServerResponse info = discoveredServers.Values.ToList()[Random.Range(0, discoveredServers.Values.Count)];
+            Connect(info);
+
+            return true;
         }
 
         public void OnDiscoveredServer(ServerResponse info)

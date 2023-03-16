@@ -59,15 +59,15 @@ public class ArcadeVehicleController : NetworkBehaviour
         {
             // horizontalInput = joystick.Horizontal;
             // verticalInput = joystick.Vertical;
-            // if (is_mobile)
-            // {
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+            if (is_mobile)
+            {
                 horizontalInput = joystick.Horizontal;
                 verticalInput = joystick.Vertical;
-            // }
+            }
             // else
             // {
-            //     horizontalInput = Input.GetAxis("Horizontal");
-            //     verticalInput = Input.GetAxis("Vertical");
             // }
         }
         Visuals();

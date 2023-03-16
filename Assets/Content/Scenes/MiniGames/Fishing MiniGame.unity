@@ -18729,6 +18729,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2077200752}
+        m_TargetAssemblyTypeName: Mirror.Discovery.NetworkDiscoveryHUD, Mirror.Components
+        m_MethodName: StopServer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1028891350178257430}
         m_TargetAssemblyTypeName: Menu_API, Assembly-CSharp
         m_MethodName: OpenSceneByName
@@ -77555,7 +77567,7 @@ MonoBehaviour:
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 1668652265441348605, guid: d4c85741c20179644ae0f80f5705ddd7, type: 3}
   autoCreatePlayer: 1
-  playerSpawnMethod: 0
+  playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 2783591588762007849, guid: 73945a7fadf0fbe4d9857e6f6ea0f33d, type: 3}
   - {fileID: 9203172982053067441, guid: 23f49ccd71d12564ca0ef8ab356d4361, type: 3}
@@ -77572,6 +77584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManagerUI: {fileID: 2077200748}
+  NetworkDiscoveryUI: {fileID: 2077200752}
   NetworkManager: {fileID: 2077200750}
   PlayerName: 
 --- !u!114 &2077200752
@@ -77586,6 +77599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c37d3deca7a834d80cfd8d3cfcc510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showGUI: 1
   networkDiscovery: {fileID: 2077200753}
 --- !u!114 &2077200753
 MonoBehaviour:

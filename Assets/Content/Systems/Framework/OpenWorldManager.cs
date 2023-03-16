@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class OpenWorldManager : MonoBehaviour
@@ -13,6 +14,8 @@ public class OpenWorldManager : MonoBehaviour
     public Mirror.NetworkManager NetworkManager;
     [Header("Change Name")]
     public string PlayerName;
+
+    public UnityEvent onConnect;
 
     private void Start()
     {
@@ -30,6 +33,8 @@ public class OpenWorldManager : MonoBehaviour
         await UniTask.WaitForSeconds(.5f);
         if (!EnterServer())
             HostServer();
+        else
+            onConnect.Invoke();
     }
 
     public void HostServer()

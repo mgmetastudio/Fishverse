@@ -77561,7 +77561,7 @@ MonoBehaviour:
   onlineScene: 
   transport: {fileID: 2077200749}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 2
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
@@ -77587,6 +77587,21 @@ MonoBehaviour:
   NetworkDiscoveryUI: {fileID: 2077200752}
   NetworkManager: {fileID: 2077200750}
   PlayerName: 
+  onConnect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 810326038}
+        m_TargetAssemblyTypeName: MiniGame_Manager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2077200752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81125,6 +81140,10 @@ PrefabInstance:
       propertyPath: panel_fishes
       value: 
       objectReference: {fileID: 1749852270}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: playerToStart
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: unlimitedTime
       value: 1

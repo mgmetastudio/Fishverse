@@ -3,6 +3,8 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.Events;
+using Mirror;
+using Cysharp.Threading.Tasks;
 
 public class MiniGame_Manager : MonoBehaviour
 {
@@ -70,6 +72,8 @@ public class MiniGame_Manager : MonoBehaviour
     DOTweenAnimation text_fish_anim;
     DOTweenAnimation text_pos_anim;
 
+    public int playerToStart = 2;
+
     private void Start()
     {
 #if !UNITY_EDITOR
@@ -107,6 +111,32 @@ public class MiniGame_Manager : MonoBehaviour
         }
 
         RefreshTexts_UI();
+
+#if UNITY_EDITOR
+        StartGame();
+#else
+if (NetworkManager.singleton.numPlayers < playerToStart)
+        CheckPlayers();
+#endif
+    }
+
+    async void CheckPlayers()
+    {
+        while (true)
+        {
+            await UniTask.WaitForSeconds(.5f);
+
+            if (NetworkManager.singleton.numPlayers == playerToStart)
+            {
+                StartGame();
+                return;
+            }
+        }
+
+    }
+
+    public void StartGame()
+    {
         StartCoroutine(StartGame(start_instant));
     }
 
@@ -137,7 +167,7 @@ public class MiniGame_Manager : MonoBehaviour
             panel_score.SetActive(true);
             panel_time.SetActive(true);
             panel_fishes.SetActive(true);
-            if(panel_pos) panel_pos.SetActive(true);
+            if (panel_pos) panel_pos.SetActive(true);
 
             yield return new WaitForSeconds(gameStartControlsWait);
             joystick.SetActive(true);

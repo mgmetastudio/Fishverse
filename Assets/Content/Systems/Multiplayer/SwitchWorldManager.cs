@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
+using Trisibo;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SwitchWorldManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] NetworkRoomManager manager;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] List<string> scenes;
+
+    public void SwitchScene(int index) => SwitchScene(scenes[index]);
+
+    public void SwitchScene(string scenePath)
     {
-        
+        manager.GameplayScene = scenePath;
     }
 }

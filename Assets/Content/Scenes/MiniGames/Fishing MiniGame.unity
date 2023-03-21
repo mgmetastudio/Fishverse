@@ -10585,6 +10585,7 @@ GameObject:
   - component: {fileID: 224407565}
   - component: {fileID: 224407564}
   - component: {fileID: 224407563}
+  - component: {fileID: 224407566}
   m_Layer: 5
   m_Name: Btn_CatchFish
   m_TagString: Untagged
@@ -10657,8 +10658,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 433794974}
-        m_TargetAssemblyTypeName: MiniGame_Fishes, Assembly-CSharp
+      - m_Target: {fileID: 224407566}
+        m_TargetAssemblyTypeName: CatchFishUI, Assembly-CSharp
         m_MethodName: CatchFish
         m_Mode: 1
         m_Arguments:
@@ -10707,6 +10708,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 224407561}
   m_CullTransparentMesh: 1
+--- !u!114 &224407566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224407561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00de373ba49f3034db25daf881684bf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &229756430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17601,17 +17614,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2024115492444961655, guid: 71964d568316272479c6aa5f7bb4df6b, type: 3}
   m_PrefabInstance: {fileID: 2024115492558525674}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &433794974 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6525443718307523682, guid: 71964d568316272479c6aa5f7bb4df6b, type: 3}
-  m_PrefabInstance: {fileID: 2024115492558525674}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 266046577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b67ae99e2570a1f4facfaebf3d3f11fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &433794976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17674,6 +17676,52 @@ MonoBehaviour:
   fishGfx: {fileID: 7009007021645476167, guid: 63252a8b942aa754b97235cc74d9cb72, type: 3}
   jumpPower: 2
   jumpTime: 0.5
+--- !u!114 &433794980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266046577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  sendInterval: 0.05
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 0
+  interpolateRotation: 0
+  interpolateScale: 0
+  bufferTimeMultiplier: 3
+  bufferSizeLimit: 64
+  catchupThreshold: 6
+  catchupMultiplier: 0.1
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &433794981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266046577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 3717510209
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 71964d568316272479c6aa5f7bb4df6b
+  hasSpawned: 0
 --- !u!1001 &437621282
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18729,7 +18777,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2077200752}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Mirror.Discovery.NetworkDiscoveryHUD, Mirror.Components
         m_MethodName: StopServer
         m_Mode: 1
@@ -70418,7 +70466,6 @@ Transform:
   - {fileID: 1394264227}
   - {fileID: 433794973}
   - {fileID: 1630274673}
-  - {fileID: 2077200747}
   - {fileID: 1077443733}
   - {fileID: 2140561074}
   m_Father: {fileID: 0}
@@ -77463,191 +77510,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6c1b05e4c37313343a725521133ab660, type: 3}
   m_PrefabInstance: {fileID: 2073859474}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2077200746
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2077200747}
-  - component: {fileID: 2077200750}
-  - component: {fileID: 2077200749}
-  - component: {fileID: 2077200748}
-  - component: {fileID: 2077200751}
-  - component: {fileID: 2077200753}
-  - component: {fileID: 2077200752}
-  m_Layer: 0
-  m_Name: NetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2077200747
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1852644377}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2077200748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
---- !u!114 &2077200749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Port: 7777
-  DualMode: 1
-  NoDelay: 1
-  Interval: 10
-  Timeout: 10000
-  FastResend: 2
-  CongestionWindow: 0
-  SendWindowSize: 4096
-  ReceiveWindowSize: 4096
-  NonAlloc: 1
-  debugLog: 0
-  statisticsGUI: 0
-  statisticsLog: 0
---- !u!114 &2077200750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aab4c8111b7c411b9b92cf3dbc5bd4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 0
-  runInBackground: 1
-  autoStartServerBuild: 1
-  serverTickRate: 30
-  offlineScene: 
-  onlineScene: 
-  transport: {fileID: 2077200749}
-  networkAddress: localhost
-  maxConnections: 2
-  disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1668652265441348605, guid: d4c85741c20179644ae0f80f5705ddd7, type: 3}
-  autoCreatePlayer: 1
-  playerSpawnMethod: 1
-  spawnPrefabs:
-  - {fileID: 2783591588762007849, guid: 73945a7fadf0fbe4d9857e6f6ea0f33d, type: 3}
-  - {fileID: 9203172982053067441, guid: 23f49ccd71d12564ca0ef8ab356d4361, type: 3}
---- !u!114 &2077200751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d6984bfe9c9dde4582bfef43b7d9618, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkManagerUI: {fileID: 2077200748}
-  NetworkDiscoveryUI: {fileID: 2077200752}
-  NetworkManager: {fileID: 2077200750}
-  PlayerName: 
-  onConnect:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 810326038}
-        m_TargetAssemblyTypeName: MiniGame_Manager, Assembly-CSharp
-        m_MethodName: StartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2077200752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c37d3deca7a834d80cfd8d3cfcc510, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showGUI: 1
-  networkDiscovery: {fileID: 2077200753}
---- !u!114 &2077200753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077200746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c761308e733c51245b2e8bb4201f46dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  secretHandshake: 8395595383627070311
-  serverBroadcastListenPort: 47777
-  enableActiveDiscovery: 1
-  ActiveDiscoveryInterval: 3
-  transport: {fileID: 0}
-  OnServerFound:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2077200752}
-        m_TargetAssemblyTypeName: Mirror.Discovery.NetworkDiscoveryHUD, Mirror.Components
-        m_MethodName: OnDiscoveredServer
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &2078146520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85083,7 +84945,12 @@ PrefabInstance:
       propertyPath: fish_spawn_points.Array.data[52]
       value: 
       objectReference: {fileID: 420563206}
-    m_RemovedComponents: []
+    - target: {fileID: 7181042319691074385, guid: 71964d568316272479c6aa5f7bb4df6b, type: 3}
+      propertyPath: sceneId
+      value: 4058858485
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7181042319691074385, guid: 71964d568316272479c6aa5f7bb4df6b, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 71964d568316272479c6aa5f7bb4df6b, type: 3}
 --- !u!4 &2267433236522999461

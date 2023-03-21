@@ -112,12 +112,12 @@ public class MiniGame_Manager : MonoBehaviour
 
         RefreshTexts_UI();
 
-#if UNITY_EDITOR
         StartGame();
-#else
-if (NetworkManager.singleton.numPlayers < playerToStart)
-        CheckPlayers();
-#endif
+// #if UNITY_EDITOR
+// #else
+// if (NetworkManager.singleton.numPlayers < playerToStart)
+//         CheckPlayers();
+// #endif
     }
 
     async void CheckPlayers()

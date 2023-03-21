@@ -1,7 +1,8 @@
 using UnityEngine;
 using DG.Tweening;
+using Mirror;
 
-public class MiniGame_Fishes : MonoBehaviour
+public class MiniGame_Fishes : NetworkBehaviour
 {
     public MiniGame_Manager game_manager;
     public GameObject[] fish_child;
@@ -10,7 +11,8 @@ public class MiniGame_Fishes : MonoBehaviour
 
     [SerializeField] FishCatchVFXController fishVFX;
 
-    private int fishes_catched = 0;
+    // [SyncVar]
+    public int fishes_catched = 0;
     private int max_fish_count = 5;
 
     GameObject playerBoat;
@@ -22,7 +24,7 @@ public class MiniGame_Fishes : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Boat") && gameObject.activeSelf)
+        if (other.CompareTag("Boat") && gameObject.activeSelf && other.GetComponent<NetworkIdentity>().isLocalPlayer)
         {
             playerBoat = other.gameObject;
             btn_catch.SetActive(true);
@@ -31,11 +33,18 @@ public class MiniGame_Fishes : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Boat"))
+
+        if (other.CompareTag("Boat") && other.GetComponent<NetworkIdentity>().isLocalPlayer)
         {
             btn_catch.SetActive(false);
             playerBoat = null;
         }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdReset()
+    {
+        Reset();
     }
 
     public void Reset()
@@ -71,8 +80,10 @@ public class MiniGame_Fishes : MonoBehaviour
         fishes_catched = 0;
     }
 
+    // [Command(requiresAuthority = false)]
     public void CatchFish()
     {
+        print("CATCH");
         if (game_manager.fishes < 20)
         {
             fishes_catched++;
@@ -82,11 +93,11 @@ public class MiniGame_Fishes : MonoBehaviour
             fish_child[fishes_catched - 1].SetActive(false);
 
             // DOTween.Restart("fish_" + fishes_catched);
-            fishVFX.Play(fish_child[fishes_catched - 1].transform.position ,playerBoat.transform.position);
+            fishVFX.Play(fish_child[fishes_catched - 1].transform.position, playerBoat.transform.position);
 
             if (fishes_catched >= max_fish_count)
             {
-                Reset();
+                CmdReset();
             }
         }
     }

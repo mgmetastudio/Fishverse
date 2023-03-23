@@ -5,16 +5,25 @@ using Trisibo;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class WorldInfo
+{
+    public string scanePath;
+    public int minPlayers;
+    public GameObject playerPrefab;
+}
 public class SwitchWorldManager : MonoBehaviour
 {
     [SerializeField] NetworkRoomManager manager;
 
-    [SerializeField] List<string> scenes;
+    [SerializeField] List<WorldInfo> worlds;
 
-    public void SwitchScene(int index) => SwitchScene(scenes[index]);
-
-    public void SwitchScene(string scenePath)
+    public void SwitchScene(int index)
     {
-        manager.GameplayScene = scenePath;
+        var world = worlds[index];
+
+        manager.GameplayScene = world.scanePath;
+        manager.playerPrefab = world.playerPrefab;
+        manager.minPlayers = world.minPlayers;
     }
 }

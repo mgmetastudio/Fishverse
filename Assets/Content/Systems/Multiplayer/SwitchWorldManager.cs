@@ -15,6 +15,7 @@ public class WorldInfo
 public class SwitchWorldManager : MonoBehaviour
 {
     [SerializeField] NetworkRoomManager manager;
+    [SerializeField] LobbyManager lobby;
 
     [SerializeField] List<WorldInfo> worlds;
 
@@ -22,8 +23,9 @@ public class SwitchWorldManager : MonoBehaviour
     {
         var world = worlds[index];
 
-        manager.GameplayScene = world.scanePath;
-        manager.playerPrefab = world.playerPrefab;
-        manager.minPlayers = world.minPlayers;
+        LobbyManager.gameplayScene = world.scanePath;
+        // manager.GameplayScene = world.scanePath;
+        // manager.playerPrefab = world.playerPrefab;
+        // manager.minPlayers = world.minPlayers;
     }
 }

@@ -18,8 +18,8 @@ public class ServerDiscoveryUI : MonoBehaviour
 
     void OnEnable()
     {
-        discovery.FindServers();
-        RefreshList();
+        // discovery.FindServers();
+        // RefreshList();
     }
 
     void OnDisable()

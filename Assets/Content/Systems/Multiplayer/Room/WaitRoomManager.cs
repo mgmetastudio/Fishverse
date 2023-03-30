@@ -1,36 +1,27 @@
-using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RoomManager : MonoBehaviourPunCallbacks
+public class WaitRoomManager : MonoBehaviourPunCallbacks
 {
-    public string menu_scene;
-    public GameObject player_prefab;
-    public Transform[] spawn_points;
+    [SerializeField] string menu_scene;
 
-    private void Start()
+    [SerializeField] GameObject panelLoading;
+    [SerializeField] TMPro.TMP_Text roomCode;
+
+    int playersToStart = 2;
+
+    void Start()
     {
+        roomCode.SetText(LobbyManager.lastRoomCode);
+
         GetComponent<UserListManager>().RefreshUserList();
-
-        if (!PhotonNetwork.IsConnected)
-        {
-            return;
-        }
-
-        int i = 0;
-        foreach (var item in PhotonNetwork.CurrentRoom.Players)
-        {
-            if (item.Value.IsLocal)
-                PhotonNetwork.Instantiate(player_prefab.name, spawn_points[i].position, spawn_points[i].rotation);
-            i++;
-        }
-
-        // PhotonNetwork.Instantiate(player_prefab.name,
-        //     spawn_points[Random.Range(0, spawn_points.Length - 1)].position,
-        //     spawn_points[Random.Range(0, spawn_points.Length - 1)].rotation);
     }
 
+    [ContextMenu("Leave Room")]
     public void Leave()
     {
         if (PhotonNetwork.IsConnected)
@@ -54,6 +45,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         Debug.LogFormat("Player {0} entered room", newPlayer.NickName);
 
         GetComponent<UserListManager>().RefreshUserList();
+        
+        if (PhotonNetwork.CurrentRoom.Players.Count >= playersToStart)
+            LoadScene();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -61,5 +55,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
         Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
 
         GetComponent<UserListManager>().RefreshUserList();
+
+    }
+
+    [ContextMenu("Load Game")]
+    public void LoadScene()
+    {
+        PhotonNetwork.LoadLevel(LobbyManager.gameplayScene);
+        panelLoading.SetActive(true);
     }
 }

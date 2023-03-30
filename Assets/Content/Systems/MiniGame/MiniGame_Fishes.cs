@@ -1,8 +1,9 @@
 using UnityEngine;
 using DG.Tweening;
-using Mirror;
+using Photon.Pun;
+// using Mirror;
 
-public class MiniGame_Fishes : NetworkBehaviour
+public class MiniGame_Fishes : MonoBehaviourPun
 {
     public MiniGame_Manager game_manager;
     public GameObject[] fish_child;
@@ -19,12 +20,13 @@ public class MiniGame_Fishes : NetworkBehaviour
 
     private void Start()
     {
-        Reset();
+        // Reset();
+        ResetRPC();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Boat") && gameObject.activeSelf && other.GetComponent<NetworkIdentity>().isLocalPlayer)
+        if (other.CompareTag("Boat") && gameObject.activeSelf)// && other.GetComponent<NetworkIdentity>().isLocalPlayer
         {
             playerBoat = other.gameObject;
             btn_catch.SetActive(true);
@@ -34,19 +36,22 @@ public class MiniGame_Fishes : NetworkBehaviour
     private void OnTriggerExit(Collider other)
     {
 
-        if (other.CompareTag("Boat") && other.GetComponent<NetworkIdentity>().isLocalPlayer)
+        if (other.CompareTag("Boat"))//&& other.GetComponent<NetworkIdentity>().isLocalPlayer
         {
             btn_catch.SetActive(false);
             playerBoat = null;
         }
     }
 
-    [Command(requiresAuthority = false)]
-    public void CmdReset()
+    // [Command(requiresAuthority = false)]
+    public void ResetRPC()
     {
-        Reset();
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("Reset", RpcTarget.All);
+        // Reset();
     }
 
+    [PunRPC]
     public void Reset()
     {
         int random_index = Random.Range(0, fish_spawn_points.Length);
@@ -97,7 +102,8 @@ public class MiniGame_Fishes : NetworkBehaviour
 
             if (fishes_catched >= max_fish_count)
             {
-                CmdReset();
+                // CmdReset();
+                ResetRPC();
             }
         }
     }

@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 
-public class ArcadeVehicleController : NetworkBehaviour
+public class ArcadeVehicleController : MonoBehaviour
 {
     public Joystick joystick;
     public bool is_mobile;
@@ -40,7 +40,7 @@ public class ArcadeVehicleController : NetworkBehaviour
 
     public virtual void Start()
     {
-        joystick = FindObjectOfType<Joystick>(true);
+        // joystick = FindObjectOfType<Joystick>(true);
 
         radius = rb.GetComponent<SphereCollider>().radius;
         if (movementMode == MovementMode.AngularVelocity)
@@ -55,8 +55,8 @@ public class ArcadeVehicleController : NetworkBehaviour
     }
     public virtual void Update()
     {
-        if (isLocalPlayer)
-        {
+        // if (isLocalPlayer)
+        // {
             // horizontalInput = joystick.Horizontal;
             // verticalInput = joystick.Vertical;
             horizontalInput = Input.GetAxis("Horizontal");
@@ -69,7 +69,7 @@ public class ArcadeVehicleController : NetworkBehaviour
             // else
             // {
             // }
-        }
+        // }
         Visuals();
         AudioManager();
 

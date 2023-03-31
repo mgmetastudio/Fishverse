@@ -8,6 +8,7 @@ public class UserListManager : MonoBehaviour
 
     [SerializeField] bool inGame = true;
 
+    [ContextMenu("Refresh")]
     public void RefreshUserList()
     {
         foreach (TMP_Text text in texts_all_users)
@@ -28,10 +29,16 @@ public class UserListManager : MonoBehaviour
         }
         else
         {
-            // for (int i = 0; i < PhotonNetwork.CurrentRoom.Players.Count; i++)
+            int i = 0;
+            foreach (var item in PhotonNetwork.CurrentRoom.Players)
+            {
+                print("player: " + item.Value.NickName);
+                texts_all_users[i].text = item.Value.NickName;
+                i++;
+            }
+            // for (int i = 0; i < .Count; i++)
             // {
-            //     string player_name = PhotonNetwork.CurrentRoom.Players[i].NickName;
-            //     texts_all_users[i].text = player_name;
+            //     PhotonNetwork.CurrentRoom.Players[i].NickName;
             // }
         }
     }

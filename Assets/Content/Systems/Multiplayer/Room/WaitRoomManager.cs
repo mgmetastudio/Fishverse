@@ -16,7 +16,8 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        roomCode.SetText(LobbyManager.lastRoomCode);
+        // roomCode.SetText(LobbyManager.lastRoomCode);
+        roomCode.SetText(PhotonNetwork.CurrentRoom.CustomProperties["RoomCode"].ToString());
 
         GetComponent<UserListManager>().RefreshUserList();
     }
@@ -46,7 +47,7 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
 
         GetComponent<UserListManager>().RefreshUserList();
         
-        if (PhotonNetwork.CurrentRoom.Players.Count >= playersToStart)
+        if (PhotonNetwork.CurrentRoom.Players.Count == PhotonNetwork.CurrentRoom.MaxPlayers)
             LoadScene();
     }
 
@@ -61,7 +62,7 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     [ContextMenu("Load Game")]
     public void LoadScene()
     {
-        PhotonNetwork.LoadLevel(LobbyManager.gameplayScene);
+        PhotonNetwork.LoadLevel("MiniGame_" + PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString());
         panelLoading.SetActive(true);
     }
 }

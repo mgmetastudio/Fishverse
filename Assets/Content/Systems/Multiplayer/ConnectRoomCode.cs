@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class ConnectRoomCode : MonoBehaviour
@@ -10,7 +11,10 @@ public class ConnectRoomCode : MonoBehaviour
     public void Connect()
     {
         string code = roomCode.text.ToUpper();
-
-        lobby.ConnectJoin(code);
+        
+        if (!PhotonNetwork.JoinRoom(code))
+        {
+            print("No such room");
+        }
     }
 }

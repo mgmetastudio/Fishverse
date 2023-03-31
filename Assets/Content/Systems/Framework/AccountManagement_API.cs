@@ -104,6 +104,7 @@ public class AccountManagement_API : MonoBehaviour
                         {
                             //LOGIN SUCCESS
                             SaveData(email, password);
+                            PlayerPrefs.SetString("username", username);
                             account_ui.OnLoginSuccess();
                         }
                         else

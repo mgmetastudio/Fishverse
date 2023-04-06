@@ -16,10 +16,12 @@ public class UserListManager : MonoBehaviour
             text.text = "";
         }
 
-        GameObject[] all_boats = GameObject.FindGameObjectsWithTag("Boat");
 
         if (inGame)
         {
+            print("RefreshUserList");
+            GameObject[] all_boats = GameObject.FindGameObjectsWithTag("Boat");
+
             for (int i = 0; i < all_boats.Length; i++)
             {
                 string player_name = all_boats[i].GetComponent<PhotonView>().Owner.NickName;
@@ -36,10 +38,6 @@ public class UserListManager : MonoBehaviour
                 texts_all_users[i].text = item.Value.NickName;
                 i++;
             }
-            // for (int i = 0; i < .Count; i++)
-            // {
-            //     PhotonNetwork.CurrentRoom.Players[i].NickName;
-            // }
         }
     }
 }

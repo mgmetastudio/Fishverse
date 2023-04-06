@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ArcadeVehicleNitro : MonoBehaviour
+public class ArcadeVehicleNitro : MonoBehaviourPun
 {
     [Header("Settings:")]
     public float nitro;
@@ -16,8 +17,11 @@ public class ArcadeVehicleNitro : MonoBehaviour
 
     private ArcadeVehicleController vehicle_controller;
 
+    PhotonView photon_view;
+
     private void Start()
     {
+        photon_view = GetComponent<PhotonView>();
         vehicle_controller = GetComponent<ArcadeVehicleController>();
 
         FindObjectOfType<BoatNitroUI>(true).Setup(this);
@@ -36,6 +40,12 @@ public class ArcadeVehicleNitro : MonoBehaviour
 
     public void Update()
     {
+        if (photon_view.IsMine)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift)) StartNitro();
+            if (Input.GetKeyUp(KeyCode.LeftShift)) StopNitro();
+        }
+
         if (nitro_activated)
         {
             nitro = Mathf.Max(0, nitro - nitro_usage * Time.deltaTime);

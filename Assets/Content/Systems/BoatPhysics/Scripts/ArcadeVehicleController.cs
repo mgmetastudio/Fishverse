@@ -52,23 +52,27 @@ public class ArcadeVehicleController : MonoBehaviour
         {
             is_mobile = false;
         }
+
+#if UNITY_STANDALONE_WIN
+            is_mobile = false;
+#endif
     }
     public virtual void Update()
     {
         // if (isLocalPlayer)
         // {
-            // horizontalInput = joystick.Horizontal;
-            // verticalInput = joystick.Vertical;
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
-            if (is_mobile)
-            {
-                horizontalInput = joystick.Horizontal;
-                verticalInput = joystick.Vertical;
-            }
-            // else
-            // {
-            // }
+        // horizontalInput = joystick.Horizontal;
+        // verticalInput = joystick.Vertical;
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        if (is_mobile)
+        {
+            horizontalInput = joystick.Horizontal;
+            verticalInput = joystick.Vertical;
+        }
+        // else
+        // {
+        // }
         // }
         Visuals();
         AudioManager();

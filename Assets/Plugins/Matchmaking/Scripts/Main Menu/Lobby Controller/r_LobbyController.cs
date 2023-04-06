@@ -71,8 +71,11 @@ public class r_LobbyController : MonoBehaviour
     #region Handle Lobby
     public void HandleRejoinLobby()
     {
+        print("HandleRejoinLobby");
         if (InGameLobby())
         {
+        print("InGameLobby");
+
             m_RejoinLobby = true;
             EnterLobby();
         }

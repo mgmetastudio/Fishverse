@@ -27,6 +27,15 @@ public class Boat_PlayerScore : MonoBehaviour
         }
     }
 
+    [ContextMenu("Increse Score")]
+    public void AddScore(int scoreAmount)
+    {
+        if (photon_view.IsMine)
+        {
+            photon_view.RPC("RPC_ScoreIncrese", RpcTarget.All, score + scoreAmount);
+        }
+    }
+
     [PunRPC]
     public void RPC_ScoreIncrese(int new_score)
     {

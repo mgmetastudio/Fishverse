@@ -5,6 +5,8 @@ using DG.Tweening;
 using UnityEngine.Events;
 using Mirror;
 using Cysharp.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
 
 public class MiniGame_Manager : MonoBehaviour
 {
@@ -49,7 +51,7 @@ public class MiniGame_Manager : MonoBehaviour
 
     [Space(10)]
     [Header("Bonuses:")]
-    public GameObject[] all_bonuses;
+    public List<MiniGame_Bonus> all_bonuses;
 
     [Space(10)]
     [Header("Events:")]
@@ -98,14 +100,16 @@ public class MiniGame_Manager : MonoBehaviour
         time = start_time;
 
         //Shuffle Bonuses
+
+        all_bonuses = FindObjectsOfType<MiniGame_Bonus>().ToList();
         all_bonuses.Shuffle(60);
 
-        foreach (GameObject bonus in all_bonuses)
+        foreach (var bonus in all_bonuses)
         {
             bonus.SetActive(false);
         }
 
-        for (int i = 0; i < all_bonuses.Length; i++)
+        for (int i = 0; i < all_bonuses.Count; i++)
         {
             all_bonuses[i].SetActive(true);
         }
@@ -113,26 +117,6 @@ public class MiniGame_Manager : MonoBehaviour
         RefreshTexts_UI();
 
         StartGame();
-// #if UNITY_EDITOR
-// #else
-// if (NetworkManager.singleton.numPlayers < playerToStart)
-//         CheckPlayers();
-// #endif
-    }
-
-    async void CheckPlayers()
-    {
-        while (true)
-        {
-            await UniTask.WaitForSeconds(.5f);
-
-            if (NetworkManager.singleton.numPlayers == playerToStart)
-            {
-                StartGame();
-                return;
-            }
-        }
-
     }
 
     public void StartGame()
@@ -147,11 +131,15 @@ public class MiniGame_Manager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
             camera_spectator.SetActive(false);
             panel_game_started.SetActive(true);
-            panel_score.SetActive(true);
+            // panel_score.SetActive(true);
             panel_time.SetActive(true);
             panel_fishes.SetActive(true);
+
+#if UNITY_STANDALONE_WIN
             joystick.SetActive(true);
             btn_boost.SetActive(true);
+#endif
+
             btn_pause.SetActive(true);
             game_started = true;
         }
@@ -164,7 +152,7 @@ public class MiniGame_Manager : MonoBehaviour
             panel_game_started.SetActive(true);
 
             yield return new WaitForSeconds(gameStartUIWait);
-            panel_score.SetActive(true);
+            // panel_score.SetActive(true);
             panel_time.SetActive(true);
             panel_fishes.SetActive(true);
             if (panel_pos) panel_pos.SetActive(true);

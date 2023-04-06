@@ -18,27 +18,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        // int i = 0;
-        // foreach (var item in PhotonNetwork.CurrentRoom.Players)
-        // {
-        //     if (item.Value.IsLocal)
-        //         PhotonNetwork.Instantiate(player_prefab.name, spawn_points[i].position, spawn_points[i].rotation);
-        //     i++;
-        // }
-
-        // PhotonNetwork.Instantiate(player_prefab.name,
-        //     spawn_points[Random.Range(0, spawn_points.Length - 1)].position,
-        //     spawn_points[Random.Range(0, spawn_points.Length - 1)].rotation);
-
         var photonView = PhotonView.Get(this);
         int index = 0;
         if (PhotonNetwork.IsMasterClient)
         {
             foreach (Player pl in PhotonNetwork.PlayerList)
             {
-                //Debug.Log(pl);
                 photonView.RPC("InstantiationPlayer", pl, index);
-
                 index++;
             }
         }
@@ -49,7 +35,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void InstantiationPlayer(int index)
     {
         PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
-        // PhotonNetwork.Instantiate(Playerprefabs[value].name, SpawnPoints[index].transform.position, Quaternion.identity, 0);
     }
 
     public void Leave()

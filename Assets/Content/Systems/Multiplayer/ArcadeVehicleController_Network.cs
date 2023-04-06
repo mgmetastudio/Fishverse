@@ -3,7 +3,7 @@ using Photon.Pun;
 
 public class ArcadeVehicleController_Network : ArcadeVehicleController
 {
-    private PhotonView photon_view;
+    [HideInInspector] public PhotonView photon_view;
     public GameObject virtual_camera;
     public override void Start()
     {
@@ -18,7 +18,7 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
         }
         else
         {
-            joystick = FindObjectOfType<Joystick>();
+            joystick = FindObjectOfType<Joystick>(true);
             radius = rb.GetComponent<SphereCollider>().radius;
             if (movementMode == MovementMode.AngularVelocity)
             {

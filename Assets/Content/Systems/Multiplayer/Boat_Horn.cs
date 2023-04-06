@@ -14,8 +14,8 @@ public class Boat_Horn : MonoBehaviour
 
         if (photon_view.IsMine)
         {
-            button_horn = GameObject.Find("Btn_Horn").GetComponent<Button>();
-            button_horn.onClick.AddListener(PlayHorn);
+            // button_horn = GameObject.Find("Btn_Horn").GetComponent<Button>();
+            // button_horn.onClick.AddListener(PlayHorn);
         }
     }
 

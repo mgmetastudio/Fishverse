@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +8,7 @@ public class MiniGame_Bonus : MonoBehaviour
     public MiniGame_Manager minigame_manager;
     public BonusType current_type;
     public GameObject destroy_fx;
-    public enum BonusType {Time, Coins, CoinsBig, Nitro}
+    public enum BonusType { Time, Coins, CoinsBig, Nitro }
     public UnityEvent on_pickup;
 
     void Update()
@@ -32,7 +33,36 @@ public class MiniGame_Bonus : MonoBehaviour
 
     public void PickupBonus(BonusType bonus_type, GameObject target)
     {
-        minigame_manager.AddBonus(bonus_type, target);
-        gameObject.SetActive(false);
+        if (bonus_type == MiniGame_Bonus.BonusType.Time)
+        {
+            if (target.GetComponent<PhotonView>().IsMine)
+                minigame_manager.AddBonus(bonus_type, target);
+        }
+
+        else if (bonus_type == MiniGame_Bonus.BonusType.Coins)
+        {
+            target.GetComponent<Boat_PlayerScore>().AddScore(15);
+        }
+
+        else if (bonus_type == MiniGame_Bonus.BonusType.CoinsBig)
+        {
+            target.GetComponent<Boat_PlayerScore>().AddScore(35);
+        }
+
+        else if (bonus_type == MiniGame_Bonus.BonusType.Nitro)
+        {
+            if (target.GetComponent<PhotonView>().IsMine)
+            {
+
+                var vehicle_nitro = target.GetComponent<ArcadeVehicleNitro>();
+                vehicle_nitro.nitro = 1;
+                vehicle_nitro.RefreshNitroUI();
+            }
+        }
+        target.GetComponent<Boat_PlayerScore>().AddScore();
+        // gameObject.SetActive(false);
+        PhotonNetwork.Destroy(gameObject);
+
+        FindObjectOfType<UserListManager>().RefreshUserList();
     }
 }

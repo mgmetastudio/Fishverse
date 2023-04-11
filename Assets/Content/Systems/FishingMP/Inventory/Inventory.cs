@@ -67,7 +67,8 @@ public class Inventory : NetworkBehaviour
     private void Start()
     {
         Manager = GameObject.FindGameObjectWithTag("Manager");
-        PlayerName = Manager.GetComponent<OpenWorldManager>().PlayerName;
+        // PlayerName = Manager.GetComponent<OpenWorldManager>().PlayerName;
+        PlayerName = Fishverse_Core.instance.account_username;
         Camera = Camera.main;
 
         SetPlayerName(PlayerName);

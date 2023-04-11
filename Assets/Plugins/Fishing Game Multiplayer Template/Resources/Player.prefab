@@ -5603,9 +5603,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2643130202294811682}
   - component: {fileID: 2643130202294811681}
-  - component: {fileID: -5207808992233664897}
-  - component: {fileID: 1061892035}
-  - component: {fileID: 6867238798284050048}
   - component: {fileID: 4449791172451686112}
   - component: {fileID: 5683908539426016800}
   - component: {fileID: 226107868703521619}
@@ -5615,6 +5612,10 @@ GameObject:
   - component: {fileID: 2312280540582098731}
   - component: {fileID: 5204076070389078679}
   - component: {fileID: 1393101928442627636}
+  - component: {fileID: -5484905149810068428}
+  - component: {fileID: 1852001083096722724}
+  - component: {fileID: 8759904578418332006}
+  - component: {fileID: -7183193864007852214}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -5660,73 +5661,6 @@ MonoBehaviour:
   visible: 0
   m_AssetId: ae803075b5f6a174f8d8b336e0871794
   hasSpawned: 0
---- !u!114 &-5207808992233664897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2643130202294811684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 0
-  bufferTimeMultiplier: 3
-  bufferSizeLimit: 64
-  catchupThreshold: 6
-  catchupMultiplier: 0.1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
---- !u!114 &1061892035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2643130202294811684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  animator: {fileID: 226107868703521619}
---- !u!114 &6867238798284050048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2643130202294811684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  target: {fileID: 2876122507445932263}
-  clientAuthority: 0
-  syncVelocity: 1
-  clearVelocity: 0
-  velocitySensitivity: 0.1
-  syncAngularVelocity: 1
-  clearAngularVelocity: 0
-  angularVelocitySensitivity: 0.1
 --- !u!114 &4449791172451686112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6039,6 +5973,127 @@ MonoBehaviour:
   _strafeSpeedMultiplier: 0.75
   cmWalkingCamera: {fileID: 663208538236664786}
   cmCrouchedCamera: {fileID: 663208538236664786}
+--- !u!114 &-5484905149810068428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2643130202294811684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1852001083096722724}
+  - {fileID: 8759904578418332006}
+  - {fileID: -7183193864007852214}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1852001083096722724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2643130202294811684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &8759904578418332006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2643130202294811684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &-7183193864007852214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2643130202294811684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 2
+    Name: Forward
+  - Type: 1
+    SynchronizeType: 2
+    Name: Turn
+  - Type: 4
+    SynchronizeType: 1
+    Name: Crouch
+  - Type: 4
+    SynchronizeType: 2
+    Name: OnGround
+  - Type: 1
+    SynchronizeType: 1
+    Name: JumpLeg
+  - Type: 9
+    SynchronizeType: 1
+    Name: Fish_Bite
+  - Type: 9
+    SynchronizeType: 1
+    Name: Fishing_Idle
+  - Type: 9
+    SynchronizeType: 1
+    Name: Fish_Caught
+  - Type: 9
+    SynchronizeType: 1
+    Name: Fishing_In
+  - Type: 1
+    SynchronizeType: 1
+    Name: Fishing_Up_Speed
+  - Type: 1
+    SynchronizeType: 2
+    Name: SpeedX
+  - Type: 1
+    SynchronizeType: 2
+    Name: SpeedY
+  - Type: 4
+    SynchronizeType: 2
+    Name: Jump
+  - Type: 9
+    SynchronizeType: 1
+    Name: FishingCast
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+  - SynchronizeType: 1
+    LayerIndex: 1
+  - SynchronizeType: 1
+    LayerIndex: 2
 --- !u!1 &2643130202510283254
 GameObject:
   m_ObjectHideFlags: 0

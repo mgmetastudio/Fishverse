@@ -62,7 +62,8 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     [ContextMenu("Load Game")]
     public void LoadScene()
     {
-        PhotonNetwork.LoadLevel("MiniGame_" + PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString());
+        //"MiniGame_" + 
+        PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
         panelLoading.SetActive(true);
     }
 }

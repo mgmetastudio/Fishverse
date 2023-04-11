@@ -70,13 +70,11 @@ public class MiniGame_Fishes : MonoBehaviourPun
             fish_child[3].SetActive(false);
             fish_child[4].SetActive(false);
         }
-
         else if (random < 0.65f)
         {
             max_fish_count = 4;
             fish_child[4].SetActive(false);
         }
-
         else
         {
             max_fish_count = 5;

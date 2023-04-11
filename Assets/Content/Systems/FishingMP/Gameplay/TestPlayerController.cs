@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Mirror;
+// using Mirror;
 
-public class TestPlayerController : NetworkBehaviour
+public class TestPlayerController : MonoBehaviour
 {
 
     private Transform _camera;
@@ -24,20 +24,20 @@ public class TestPlayerController : NetworkBehaviour
 
     private void Start()
     {
-        _camera = GetComponentInChildren<Camera>().transform;
-        _anim = GetComponent<Animator>();
+        // _camera = GetComponentInChildren<Camera>().transform;
+        // _anim = GetComponent<Animator>();
 
-        if (!isLocalPlayer)
-        {
-            Destroy(_camera.gameObject);
-            Destroy(_cController);
-            Destroy(this);
-        }
+        // if (!isLocalPlayer)
+        // {
+        //     Destroy(_camera.gameObject);
+        //     Destroy(_cController);
+        //     Destroy(this);
+        // }
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
 
-        _cController = GetComponent<CharacterController>();
+        // _cController = GetComponent<CharacterController>();
     }
 
     private void UpdateMouse()
@@ -70,8 +70,8 @@ public class TestPlayerController : NetworkBehaviour
 
     private void Update()
     {
-        if (isLocalPlayer)
-        {
+        // if (isLocalPlayer)
+        // {
             // bool isWalkingForward = false;
             // bool isWalkingBackward = false;
             // bool isWalkingLeft = false;
@@ -125,7 +125,7 @@ public class TestPlayerController : NetworkBehaviour
             //     isWalkingRight = false;
             //     this.GetComponent<Animator>().Play(IdleAnimationName);
             // }
-        }
+        // }
     }
 
     private void FixedUpdate()

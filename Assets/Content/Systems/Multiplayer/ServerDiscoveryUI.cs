@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Mirror.Discovery;
+// using Mirror.Discovery;
 using UnityEngine;
 
 public class ServerDiscoveryUI : MonoBehaviour
 {
-    [SerializeField] NetworkDiscoveryHUD discovery;
+    // [SerializeField] NetworkDiscoveryHUD discovery;
 
     [SerializeField] ServerItemUI serverItem;
     [SerializeField] Transform context;
@@ -36,11 +36,11 @@ public class ServerDiscoveryUI : MonoBehaviour
             context.DestroyAllChild();
 
             // discovery.FindServers();
-            foreach (ServerResponse info in discovery.discoveredServers.Values)
-            {
-                var server = Instantiate(serverItem, context);
-                server.Setup(new ServerInfo { ip = info.EndPoint.Address.ToString() });
-            }
+            // foreach (ServerResponse info in discovery.discoveredServers.Values)
+            // {
+            //     var server = Instantiate(serverItem, context);
+            //     server.Setup(new ServerInfo { ip = info.EndPoint.Address.ToString() });
+            // }
 
             await UniTask.WaitForSeconds(.5f);
         }
@@ -48,6 +48,6 @@ public class ServerDiscoveryUI : MonoBehaviour
 
     public void Connect(int index)
     {
-        discovery.Connect(discovery.discoveredServers.Values.ToList()[index]);
+        // discovery.Connect(discovery.discoveredServers.Values.ToList()[index]);
     }
 }

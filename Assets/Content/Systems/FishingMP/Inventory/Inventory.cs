@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Mirror;
+// using Mirror;
 using Cysharp.Threading.Tasks;
+using Photon.Pun;
 
-public class Inventory : NetworkBehaviour
+public class Inventory : MonoBehaviourPun
 {
     [Header("Inventory")]
     public GameObject InventoryCanvas;
@@ -26,29 +27,29 @@ public class Inventory : NetworkBehaviour
     public GameObject LineEnd;
     public GameObject LineEndPrefab;
     GameObject SpawnedLineEndPrefab;
-    [SyncVar]
+    // [SyncVar]
     public bool FloatHasChanged = false;
     [Header("Camera")]
     public Camera Camera;
     [Header("Equipment")]
     //Floats
-    [SyncVar]
+    // [SyncVar]
     public int CurrentSelectedFloat = 0;
-    [SyncVar]
+    // [SyncVar]
     public int LastSelectedFloat = 0;
     public Float[] Floats;
     public Transform FloatContent;
     public GameObject FloatSelectionMenu;
     public Image CurrentSelectedFloatImage;
     //Fishing Rod
-    [SyncVar]
+    // [SyncVar]
     public int CurrentSelectedFishingRod = 0;
     public FishingRod[] FishingRods;
     public Transform FishingRodContent;
     public GameObject FishingRodSelectionMenu;
     public Image CurrentSelectedFishingRodImage;
     //Bait
-    [SyncVar]
+    // [SyncVar]
     public int CurrentSelectedBait = 0;
     public Bait[] Baits;
     public Transform BaitContent;
@@ -75,7 +76,7 @@ public class Inventory : NetworkBehaviour
 
         SetUpFloat();
 
-        if (!isLocalPlayer)
+        if (!photonView.IsMine)
             return;
 
         CheckForItems();
@@ -91,7 +92,7 @@ public class Inventory : NetworkBehaviour
         CmdSetPlayerName(PlayerN);
     }
 
-    [Command]
+    // [Command]
     public void CmdSetPlayerName(string PlayerN)
     {
         PlayerN = PlayerName;
@@ -100,7 +101,7 @@ public class Inventory : NetworkBehaviour
         RpcSetPlayerName(PlayerN);
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcSetPlayerName(string PlayerN)
     {
         PlayerN = PlayerName;
@@ -142,7 +143,7 @@ public class Inventory : NetworkBehaviour
         CmdSetFloat(ID);
     }
 
-    [Command]
+    // [Command]
     public void CmdSetFloat(int ID)
     {
         CurrentSelectedFloat = ID;
@@ -152,7 +153,7 @@ public class Inventory : NetworkBehaviour
         RpcSetFloat(ID);
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcSetFloat(int ID)
     {
         CurrentSelectedFloat = ID;
@@ -168,7 +169,7 @@ public class Inventory : NetworkBehaviour
         SetUpFloat();
     }
 
-    [Command]
+    // [Command]
     public void CmdSetFishingRod(int ID)
     {
         CurrentSelectedFishingRod = ID;
@@ -186,7 +187,7 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcSetFishingRod(int ID)
     {
         CurrentSelectedFishingRod = ID;
@@ -209,7 +210,7 @@ public class Inventory : NetworkBehaviour
         CmdSetBait(ID);
     }
 
-    [Command]
+    // [Command]
     public void CmdSetBait(int ID)
     {
         CurrentSelectedBait = ID;
@@ -219,7 +220,7 @@ public class Inventory : NetworkBehaviour
         RpcSetBait(ID);
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcSetBait(int ID)
     {
         CurrentSelectedBait = ID;
@@ -313,7 +314,7 @@ public class Inventory : NetworkBehaviour
             }
         }
 
-        if (!isLocalPlayer)
+        if (!photonView.IsMine)
             return;
 
         if (Input.GetKeyDown(KeyCode.I))
@@ -382,7 +383,7 @@ public class Inventory : NetworkBehaviour
             Fishes[_lastUniqueId].gameObject.SetActive(false);
     }
 
-    [Command]
+    // [Command]
     public void CmdHoldCaughtFish(int uniqueId)
     {
         HoldCaughtFish(uniqueId);
@@ -390,7 +391,7 @@ public class Inventory : NetworkBehaviour
         RpcHoldCaughtFish(uniqueId);
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcHoldCaughtFish(int uniqueId)
     {
         HoldCaughtFish(uniqueId);
@@ -398,7 +399,7 @@ public class Inventory : NetworkBehaviour
 
     public void CheckForItems()
     {
-        if (!isLocalPlayer)
+        if (!photonView.IsMine)
             return;
 
         if (Content.childCount < 1)
@@ -423,7 +424,7 @@ public class Float
     public Inventory InventorySystem;
     public GameObject FloatPrefab;
     public GameObject LineEndPrefab;
-    [SyncVar]
+    // [SyncVar]
     public int ID;
     public string Name;
     public Sprite Image;
@@ -440,7 +441,7 @@ public class FishingRod
     public Inventory InventorySystem;
     public GameObject FishingRodPrefab;
     public GameObject FishingRodGameObject;
-    [SyncVar]
+    // [SyncVar]
     public int ID;
     public string Name;
     public Sprite Image;
@@ -456,7 +457,7 @@ public class Bait
 {
     public Inventory InventorySystem;
     public GameObject BaitPrefab;
-    [SyncVar]
+    // [SyncVar]
     public int ID;
     public string Name;
     public Sprite Image;

@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
-using Mirror;
+// using Mirror;
 using UnityEngine.Events;
 using Cysharp.Threading.Tasks;
+using Photon.Pun;
 
-public class PlayerFishing : NetworkBehaviour
+public class PlayerFishing : MonoBehaviourPun
 {
 
     [SerializeField] private GameObject _fishingFloatBasePrefab;
-    [SyncVar, HideInInspector] public FishingFloat _fishingFloat;
+    // [SyncVar]
+    [HideInInspector] public FishingFloat _fishingFloat;
 
     [Space]
     [SerializeField] private LayerMask _obstacleMask;
@@ -41,7 +43,7 @@ public class PlayerFishing : NetworkBehaviour
 
     void Start()
     {
-        if (isLocalPlayer)
+        if (photonView.IsMine)
         {
             _floatDemo = Instantiate(_floatDemoPrefab);
             _localCamera = Camera.main.transform;//GetComponentInChildren<Camera>().transform;
@@ -54,7 +56,7 @@ public class PlayerFishing : NetworkBehaviour
 
     private async void Update()
     {
-        if (isLocalPlayer)
+        if (photonView.IsMine)
         {
             if (_fishingFloat == null)
             {
@@ -87,6 +89,7 @@ public class PlayerFishing : NetworkBehaviour
 
                         await UniTask.WaitForSeconds(onCastWait);
 
+                        //TODO: this
                         CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
                         foreach (GameObject AllFish in _inv.Fishes)
                         {
@@ -144,7 +147,9 @@ public class PlayerFishing : NetworkBehaviour
     }
 
     public void DrawFishingRod(bool draw)
-    {        
+    {
+        print("FISHING ROD");
+
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
 
@@ -159,7 +164,7 @@ public class PlayerFishing : NetworkBehaviour
 
     }
 
-    [Command(requiresAuthority = true)]
+    // [Command(requiresAuthority = true)]
     private void CmdSpawnFloat(Vector3 position, int uniqueId)
     {
         if (_fishingFloat == null)
@@ -175,7 +180,8 @@ public class PlayerFishing : NetworkBehaviour
             temp.transform.position = position;
             temp.floatUniqueId = uniqueId;
             temp._owner = this;
-            NetworkServer.Spawn(fishingFloatObj, connectionToClient);
+            //TODO: SPAWN
+            // NetworkServer.Spawn(fishingFloatObj, connectionToClient);
             _fishingFloat = temp;
             SpawnFloatSimulation();
         }
@@ -183,17 +189,18 @@ public class PlayerFishing : NetworkBehaviour
 
 
 
-    [Command]
+    // [Command]
     private void CmdDestroyFloat()
     {
         if (_fishingFloat != null)
         {
-            _fishingFloat.Destroy(connectionToClient);
+            // _fishingFloat.Destroy(connectionToClient);
+            //TODO: DESTROY
             DestroyFloatSimulation();
         }
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcDisableHoldingFish()
     {
         foreach (GameObject AllFish in _inv.Fishes)
@@ -205,7 +212,7 @@ public class PlayerFishing : NetworkBehaviour
 
     public void SpawnFloatSimulation()
     {
-        if (!isLocalPlayer)
+        if (!photonView.IsMine)
             return;
 
         SpawnedFloatSimulation = Instantiate(FloatSimulation);
@@ -213,7 +220,7 @@ public class PlayerFishing : NetworkBehaviour
 
     public void DestroyFloatSimulation()
     {
-        if (!isLocalPlayer)
+        if (!photonView.IsMine)
             return;
 
         Destroy(SpawnedFloatSimulation);

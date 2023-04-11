@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
-using Mirror;
+// using Mirror;
+using Photon.Pun;
 
-public class FishingFloat : NetworkBehaviour
+public class FishingFloat : MonoBehaviourPun
 {
 
-    [SyncVar] public int floatUniqueId;
+    // [SyncVar] 
+    public int floatUniqueId;
 
     public FluidInteractorBase _interactor;
 
@@ -14,7 +16,8 @@ public class FishingFloat : NetworkBehaviour
     public Rigidbody _rb;
     public Collider _collider;
 
-    [SyncVar] public PlayerFishing _owner;
+    // [SyncVar] 
+    public PlayerFishing _owner;
 
     public FishEntity fish;
 
@@ -32,15 +35,15 @@ public class FishingFloat : NetworkBehaviour
         }
     }
 
-    public void Destroy(NetworkConnection sender)
-    {
-        if (sender != null && sender.identity != null && sender.identity.GetComponent<PlayerFishing>() == _owner)
-        {
-            NetworkServer.Destroy(gameObject);
-        }
-    }
+    // public void Destroy(NetworkConnection sender)
+    // {
+    //     if (sender != null && sender.identity != null && sender.identity.GetComponent<PlayerFishing>() == _owner)
+    //     {
+    //         NetworkServer.Destroy(gameObject);
+    //     }
+    // }
 
-    [Command(requiresAuthority = true)]
+    // [Command(requiresAuthority = true)]
     public void Pull()
     {
         if (fish != null)
@@ -54,7 +57,7 @@ public class FishingFloat : NetworkBehaviour
         }
     }
 
-    [TargetRpc]
+    // [TargetRpc]
     public void TargetPull()
     {
         _rb.AddForce((_owner._rodEndPoint.position - transform.position) * .2f);
@@ -62,12 +65,12 @@ public class FishingFloat : NetworkBehaviour
 
     private void Start()
     {
-        if (!hasAuthority)
-        {
-            _interactor.enabled = false;
-            _rb.isKinematic = true;
-            _rb.useGravity = false;
-        }
+        // if (!hasAuthority)
+        // {
+        //     _interactor.enabled = false;
+        //     _rb.isKinematic = true;
+        //     _rb.useGravity = false;
+        // }
 
         for (int i = 0; i < _floatScriptables.Length; i++)
         {
@@ -82,19 +85,19 @@ public class FishingFloat : NetworkBehaviour
         _ = Instantiate(_scriptable.modelPrefab, transform); // Model
     }
 
-    public override void OnStartAuthority()
-    {
-        base.OnStartAuthority();
-        _interactor.enabled = true;
-        _rb.isKinematic = false;
-        _rb.useGravity = true;
-    }
+    // public override void OnStartAuthority()
+    // {
+    //     base.OnStartAuthority();
+    //     _interactor.enabled = true;
+    //     _rb.isKinematic = false;
+    //     _rb.useGravity = true;
+    // }
 
-    public override void OnStopAuthority()
-    {
-        base.OnStopAuthority();
-        _interactor.enabled = false;
-        _rb.isKinematic = true;
-        _rb.useGravity = false;
-    }
+    // public override void OnStopAuthority()
+    // {
+    //     base.OnStopAuthority();
+    //     _interactor.enabled = false;
+    //     _rb.isKinematic = true;
+    //     _rb.useGravity = false;
+    // }
 }

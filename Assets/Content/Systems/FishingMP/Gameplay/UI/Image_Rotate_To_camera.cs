@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Mirror;
+using Photon.Pun;
+// using Mirror;
 using UnityEngine;
 
 public class Image_Rotate_To_camera : MonoBehaviour
@@ -9,7 +10,7 @@ public class Image_Rotate_To_camera : MonoBehaviour
 
     public void Start()
     {
-        if (GetComponentInParent<NetworkIdentity>().isLocalPlayer)
+        if (GetComponentInParent<PhotonView>().IsMine)
         {
             gameObject.SetInactive();
             return;

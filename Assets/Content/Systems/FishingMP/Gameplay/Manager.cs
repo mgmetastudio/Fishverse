@@ -10,14 +10,14 @@ public class Manager : MonoBehaviour
     [Header("Fish Spawner Settings")]
     public FishSpawnerTest FishSpawner;
     [Header("Network Manager Settings")]
-    public Mirror.NetworkManagerHUD NetworkManagerUI;
+    // public Mirror.NetworkManagerHUD NetworkManagerUI;
     public Toggle NetworkManagerToggle;
     [Header("Terrain Settings")]
     public Terrain SceneTerrain;
     public Toggle TerrainGrassToggle;
     [Header("Network")]
     public GameObject CreateServerMenu;
-    public Mirror.NetworkManager NetworkManager;
+    // public Mirror.NetworkManager NetworkManager;
     public InputField NetworkAddressInputField;
     [Header("Change Name")]
     public string PlayerName;
@@ -45,7 +45,7 @@ public class Manager : MonoBehaviour
 
     public void HostServer()
     {
-        NetworkManager.StartHost();
+        // NetworkManager.StartHost();
         Destroy(CreateServerMenu);
 
 #if UNITY_EDITOR
@@ -55,8 +55,8 @@ public class Manager : MonoBehaviour
 
     public void EnterServer()
     {
-        NetworkManager.networkAddress = NetworkAddressInputField.text;
-        NetworkManager.StartClient();
+        // NetworkManager.networkAddress = NetworkAddressInputField.text;
+        // NetworkManager.StartClient();
         Destroy(CreateServerMenu);
     }
 
@@ -91,19 +91,19 @@ public class Manager : MonoBehaviour
         if(NetworkManagerToggle.isOn == false)
         {
             //Hiding the mirror Network Manager GUI.
-            if (NetworkManagerUI != null)
-            {
-                NetworkManagerUI.showGUI = false;
-            }
+            // if (NetworkManagerUI != null)
+            // {
+            //     NetworkManagerUI.showGUI = false;
+            // }
         }
 
         if (NetworkManagerToggle.isOn == true)
         {
             //Activate the mirror Network Manager GUI.
-            if (NetworkManagerUI != null)
-            {
-                NetworkManagerUI.showGUI = true;
-            }
+            // if (NetworkManagerUI != null)
+            // {
+            //     NetworkManagerUI.showGUI = true;
+            // }
         }
     }
 

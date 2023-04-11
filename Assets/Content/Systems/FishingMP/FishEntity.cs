@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
-using Mirror;
+// using Mirror;
 using System.Collections;
+using Photon.Pun;
 
-public class FishEntity : NetworkBehaviour
+public class FishEntity : MonoBehaviourPun
 {
 
-    [SyncVar] public int fishUniqueId;
+    // [SyncVar] 
+    public int fishUniqueId;
 
     private static FishScriptable[] _fishScriptables;
     private FishScriptable _scriptable;
@@ -41,7 +43,7 @@ public class FishEntity : NetworkBehaviour
 
         FishModel = Instantiate(_scriptable.modelPrefab, transform);
 
-        if (isServer)
+        if (true)//isServer
         {
             controller = gameObject.AddComponent<FishAIController>();
             controller.Setup(_scriptable);
@@ -52,7 +54,7 @@ public class FishEntity : NetworkBehaviour
 
     public void SetBounds(Vector3 bounds)
     {
-        if (isServer)
+        if (true)//isServer
         {
             controller.SetBounds(bounds);
         }
@@ -64,7 +66,7 @@ public class FishEntity : NetworkBehaviour
 #pragma warning restore IDE0051
         if (oldValue != null)
         {
-            oldValue.GetComponent<NetworkTransform>().clientAuthority = false;
+            // oldValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
             oldValue.transform.SetParent(null);
             oldValue._collider.enabled = true;
             oldValue._interactor.enabled = false;
@@ -73,7 +75,7 @@ public class FishEntity : NetworkBehaviour
         }
         if (newValue != null)
         {
-            newValue.GetComponent<NetworkTransform>().clientAuthority = false;
+            // newValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
             newValue.transform.SetParent(transform);
             newValue._collider.enabled = false;
             newValue._interactor.enabled = false;
@@ -83,12 +85,13 @@ public class FishEntity : NetworkBehaviour
     }
 
     public Rigidbody rb;
-    [SyncVar(hook = "HookedChanged")] private FishingFloat _hookedTo;
+    // [SyncVar(hook = "HookedChanged")]
+     private FishingFloat _hookedTo;
     private void Bite(FishingFloat _targetFloat)
     {
         if (_hookedTo == null)
         {
-            _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
+            // _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
             _targetFloat._collider.enabled = false;
             _targetFloat._interactor.enabled = false;
             _targetFloat._rb.isKinematic = true;
@@ -128,7 +131,7 @@ public class FishEntity : NetworkBehaviour
 
     private void Update()
     {
-        if (isServer)
+        if (true)//isServer
         {
             if (_hookedTo == null && rb != null)
             {
@@ -168,13 +171,13 @@ public class FishEntity : NetworkBehaviour
                     RpcHoldCaughtFish(ai._scriptable.uniqueId);
                     Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.PlayerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
                     _hookedTo._owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
-                    NetworkServer.Destroy(gameObject);
+                    // NetworkServer.Destroy(gameObject);
                 }
             }
         }
     }
 
-    [ClientRpc]
+    // [ClientRpc]
     public void RpcHoldCaughtFish(int uniqueId)
     {
         var inv = _hookedTo._owner.GetComponent<Inventory>();
@@ -201,7 +204,7 @@ public class FishEntity : NetworkBehaviour
 
     private void OnGUI()
     {
-        if (isServer)
+        if (true)//isServer
         {
             if (_hookedTo != null)
             {

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
-using Mirror;
+using Photon.Pun;
+// using Mirror;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PhysicalCC : NetworkBehaviour
+public class PhysicalCC : MonoBehaviourPun
 {
     public CharacterController cc { get; private set; }
     private IEnumerator dampingCor;

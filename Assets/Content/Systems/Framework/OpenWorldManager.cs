@@ -8,10 +8,10 @@ using UnityEngine.UI;
 public class OpenWorldManager : MonoBehaviour
 {
     [Header("Network Manager Settings")]
-    public Mirror.NetworkManagerHUD NetworkManagerUI;
-    public Mirror.Discovery.NetworkDiscoveryHUD NetworkDiscoveryUI;
+    // public Mirror.NetworkManagerHUD NetworkManagerUI;
+    // public Mirror.Discovery.NetworkDiscoveryHUD NetworkDiscoveryUI;
     [Header("Network")]
-    public Mirror.NetworkManager NetworkManager;
+    // public Mirror.NetworkManager NetworkManager;
     [Header("Change Name")]
     public string PlayerName;
 
@@ -21,15 +21,15 @@ public class OpenWorldManager : MonoBehaviour
     {
         PlayerName = Fishverse_Core.instance.account_username;
 
-        NetworkManagerUI.showGUI = false;
-        NetworkDiscoveryUI.showGUI = false;
+        // NetworkManagerUI.showGUI = false;
+        // NetworkDiscoveryUI.showGUI = false;
 
         FindServer();
     }
 
     public async void FindServer()
     {
-        NetworkDiscoveryUI.FindServers();
+        // NetworkDiscoveryUI.FindServers();
         await UniTask.WaitForSeconds(.5f);
         if (!EnterServer())
             HostServer();
@@ -39,11 +39,12 @@ public class OpenWorldManager : MonoBehaviour
 
     public void HostServer()
     {
-        NetworkDiscoveryUI.StartHost();
+        // NetworkDiscoveryUI.StartHost();
     }
 
     public bool EnterServer()
     {
-        return NetworkDiscoveryUI.ConnectRandom();
+        return false;
+        // return NetworkDiscoveryUI.ConnectRandom();
     }
 }

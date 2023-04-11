@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mirror;
+// using Mirror;
 using Trisibo;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,7 +14,7 @@ public class WorldInfo
 }
 public class SwitchWorldManager : MonoBehaviour
 {
-    [SerializeField] NetworkRoomManager manager;
+    // [SerializeField] NetworkRoomManager manager;
     [SerializeField] LobbyManager lobby;
 
     [SerializeField] List<WorldInfo> worlds;

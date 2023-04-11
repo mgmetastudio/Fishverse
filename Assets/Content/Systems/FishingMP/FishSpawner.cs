@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Mirror;
+// using Mirror;
 using Cysharp.Threading.Tasks;
 
 public class FishSpawner : MonoBehaviour
@@ -26,7 +26,7 @@ public class FishSpawner : MonoBehaviour
         fishEntityObj.transform.position = position;
         FishEntity fishEntity = fishEntityObj.GetComponent<FishEntity>();
         fishEntity.fishUniqueId = fishUniqueId;
-        NetworkServer.Spawn(fishEntityObj);
+        // NetworkServer.Spawn(fishEntityObj);
 
         return fishEntity;
     }

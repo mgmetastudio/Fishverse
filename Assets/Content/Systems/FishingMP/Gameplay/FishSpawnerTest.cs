@@ -33,7 +33,7 @@ public class FishSpawnerTest : MonoBehaviour
 
     void Spawn()
     {
-        if (Mirror.NetworkServer.active)
+        if (true)//Mirror.NetworkServer.active
         {
             spawner.Spawn(transform.position + _position, _fishUniqueId, bounds);
         }

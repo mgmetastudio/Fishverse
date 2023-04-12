@@ -5655,10 +5655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd3d1f77fc1c534fa92fb7ab13497bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.2
   _fishingFloatBasePrefab: {fileID: 9203172982053067441, guid: 23f49ccd71d12564ca0ef8ab356d4361, type: 3}
-  _fishingFloat: {fileID: 0}
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 1
@@ -5723,8 +5720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61692441041bfa24e9032b069eb32807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   InventoryCanvas: {fileID: 420363861}
   Content: {fileID: 1283239487}
   InventoryFishPrefab: {fileID: 5404063806479605973, guid: 58ca99e3e5c35fe4189dfa954ef0e223, type: 3}
@@ -5739,10 +5734,7 @@ MonoBehaviour:
   LineStart: {fileID: 655814568}
   LineEnd: {fileID: 0}
   LineEndPrefab: {fileID: 7503126641723582434, guid: 1ff32947a66c49c4cbea00ac4e16ab6a, type: 3}
-  FloatHasChanged: 0
   Camera: {fileID: 0}
-  CurrentSelectedFloat: 0
-  LastSelectedFloat: 0
   Floats:
   - InventorySystem: {fileID: 4905120567770436955}
     FloatPrefab: {fileID: 417328383077362676, guid: a8cfcd1b2432c4e41b0534a51ce0c148, type: 3}
@@ -5759,7 +5751,6 @@ MonoBehaviour:
   FloatContent: {fileID: 4797597381712249627}
   FloatSelectionMenu: {fileID: 4556431241463996923}
   CurrentSelectedFloatImage: {fileID: 2063370353}
-  CurrentSelectedFishingRod: 0
   FishingRods:
   - InventorySystem: {fileID: 4905120567770436955}
     FishingRodPrefab: {fileID: 417328383077362676, guid: 94a24d64168c3b14f99d9971fbd92f2c, type: 3}
@@ -5776,7 +5767,6 @@ MonoBehaviour:
   FishingRodContent: {fileID: 2554485907340817969}
   FishingRodSelectionMenu: {fileID: 2098259344713153059}
   CurrentSelectedFishingRodImage: {fileID: 329146248}
-  CurrentSelectedBait: 0
   Baits:
   - InventorySystem: {fileID: 4905120567770436955}
     BaitPrefab: {fileID: 417328383077362676, guid: ac0b42dd7530964469627a2a6bd7fed3, type: 3}

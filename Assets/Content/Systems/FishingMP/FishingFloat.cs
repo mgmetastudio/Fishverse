@@ -1,12 +1,22 @@
 ﻿using UnityEngine;
 // using Mirror;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class FishingFloat : MonoBehaviourPun
+public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
 
     // [SyncVar] 
-    public int floatUniqueId;
+    private int floatUniqueId;
+    public int FloatUniqueId
+    {
+        get => floatUniqueId;
+        set
+        {
+            if (photonView.IsMine)
+                photonView.RPC("SetFloatUniqueId", RpcTarget.All, value);
+        }
+    }
 
     public FluidInteractorBase _interactor;
 
@@ -17,11 +27,27 @@ public class FishingFloat : MonoBehaviourPun
     public Collider _collider;
 
     // [SyncVar] 
-    public PlayerFishing _owner;
+    private PlayerFishing owner;
+    public PlayerFishing Owner
+    {
+        get => owner;
+        set
+        {
+            if (photonView.IsMine)
+                photonView.RPC("SetOwner", RpcTarget.All, value);
+        }
+    }
 
     public FishEntity fish;
 
     public Transform Hook;
+
+    [PunRPC]
+    void SetFloatUniqueId(int value) => floatUniqueId = value;
+
+    [PunRPC]
+    void SetOwner(PlayerFishing value) => owner = value;
+
 
     private void Awake()
     {
@@ -44,37 +70,39 @@ public class FishingFloat : MonoBehaviourPun
     // }
 
     // [Command(requiresAuthority = true)]
+    [PunRPC]
     public void Pull()
     {
         if (fish != null)
         {
-            fish.controller.target = _owner._rodEndPoint;
+            fish.controller.target = Owner._rodEndPoint;
             fish.controller.pullForce = 1f;
         }
         else
         {
-            TargetPull();
+            photonView.RPC("TargetPull", RpcTarget.All);
+            // TargetPull();
         }
     }
 
-    // [TargetRpc]
+    [PunRPC]
     public void TargetPull()
     {
-        _rb.AddForce((_owner._rodEndPoint.position - transform.position) * .2f);
+        _rb.AddForce((Owner._rodEndPoint.position - transform.position) * .2f);
     }
 
     private void Start()
     {
-        // if (!hasAuthority)
-        // {
-        //     _interactor.enabled = false;
-        //     _rb.isKinematic = true;
-        //     _rb.useGravity = false;
-        // }
+        if (!photonView.IsMine)//hasAuthority
+        {
+            _interactor.enabled = false;
+            _rb.isKinematic = true;
+            _rb.useGravity = false;
+        }
 
         for (int i = 0; i < _floatScriptables.Length; i++)
         {
-            if (_floatScriptables[i].uniqueId == floatUniqueId)
+            if (_floatScriptables[i].uniqueId == FloatUniqueId)
             {
                 _scriptable = _floatScriptables[i];
                 break;
@@ -85,12 +113,33 @@ public class FishingFloat : MonoBehaviourPun
         _ = Instantiate(_scriptable.modelPrefab, transform); // Model
     }
 
+    public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
+    {
+        _interactor.enabled = true;
+        _rb.isKinematic = false;
+        _rb.useGravity = true;
+    }
+
+    public void OnOwnershipTransfered(PhotonView targetView, Player previousOwner)
+    {
+        _interactor.enabled = false;
+        _rb.isKinematic = true;
+        _rb.useGravity = false;
+    }
+
+    public void OnOwnershipTransferFailed(PhotonView targetView, Player senderOfFailedRequest)
+    {
+        _interactor.enabled = false;
+        _rb.isKinematic = true;
+        _rb.useGravity = false;
+    }
+
     // public override void OnStartAuthority()
     // {
     //     base.OnStartAuthority();
     //     _interactor.enabled = true;
     //     _rb.isKinematic = false;
-    //     _rb.useGravity = true;
+    //     _rb.useGravity = true;   
     // }
 
     // public override void OnStopAuthority()

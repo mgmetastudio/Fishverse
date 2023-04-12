@@ -28,29 +28,29 @@ public class Inventory : MonoBehaviourPun
     public GameObject LineEndPrefab;
     GameObject SpawnedLineEndPrefab;
     // [SyncVar]
-    public bool FloatHasChanged = false;
+    private bool floatHasChanged = false;
     [Header("Camera")]
     public Camera Camera;
     [Header("Equipment")]
-    //Floats
+
     // [SyncVar]
-    public int CurrentSelectedFloat = 0;
+    private int currentSelectedFloat = 0;
     // [SyncVar]
-    public int LastSelectedFloat = 0;
+    private int lastSelectedFloat = 0;
     public Float[] Floats;
     public Transform FloatContent;
     public GameObject FloatSelectionMenu;
     public Image CurrentSelectedFloatImage;
     //Fishing Rod
     // [SyncVar]
-    public int CurrentSelectedFishingRod = 0;
+    private int currentSelectedFishingRod = 0;
     public FishingRod[] FishingRods;
     public Transform FishingRodContent;
     public GameObject FishingRodSelectionMenu;
     public Image CurrentSelectedFishingRodImage;
     //Bait
     // [SyncVar]
-    public int CurrentSelectedBait = 0;
+    private int currentSelectedBait = 0;
     public Bait[] Baits;
     public Transform BaitContent;
     public GameObject BaitSelectionMenu;
@@ -64,6 +64,23 @@ public class Inventory : MonoBehaviourPun
     [SerializeField] float fishHoldTime = 2f;
 
     int _lastUniqueId = -1;
+
+    public bool FloatHasChanged { get => floatHasChanged; set { if (photonView.IsMine) photonView.RPC("SetFloatHasChanged", RpcTarget.All, value); } }
+    public int CurrentSelectedFloat { get => currentSelectedFloat; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedFloat", RpcTarget.All, value); } }
+    public int LastSelectedFloat { get => lastSelectedFloat; set { if (photonView.IsMine) photonView.RPC("SetLastSelectedFloat", RpcTarget.All, value); } }
+    public int CurrentSelectedFishingRod { get => currentSelectedFishingRod; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedFishingRod", RpcTarget.All, value); } }
+    public int CurrentSelectedBait { get => currentSelectedBait; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedBait", RpcTarget.All, value); } }
+
+    [PunRPC]
+    void SetFloatHasChanged(bool value) => floatHasChanged = value;
+    [PunRPC]
+    void SetCurrentSelectedFloat(int value) => currentSelectedFloat = value;
+    [PunRPC]
+    void SetLastSelectedFloat(int value) => lastSelectedFloat = value;
+    [PunRPC]
+    void SetCurrentSelectedFishingRod(int value) => currentSelectedFishingRod = value;
+    [PunRPC]
+    void SetCurrentSelectedBait(int value) => currentSelectedFishingRod = value;
 
     private void Start()
     {
@@ -300,7 +317,7 @@ public class Inventory : MonoBehaviourPun
         if (LineEnd)
         {
 
-            if (this.GetComponent<PlayerFishing>()._fishingFloat == null)
+            if (this.GetComponent<PlayerFishing>().FishingFloat == null)
             {
                 _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
                 _rodLineRenderer.SetPosition(1, LineEnd.transform.position);

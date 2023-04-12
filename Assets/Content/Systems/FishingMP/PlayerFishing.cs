@@ -9,7 +9,16 @@ public class PlayerFishing : MonoBehaviourPun
 
     [SerializeField] private GameObject _fishingFloatBasePrefab;
     // [SyncVar]
-    [HideInInspector] public FishingFloat _fishingFloat;
+    [HideInInspector] private FishingFloat fishingFloat;
+    public FishingFloat FishingFloat
+    {
+        get => fishingFloat;
+        set
+        {
+            if (photonView.IsMine)
+                photonView.RPC("SetFishingFloat", RpcTarget.All, value);
+        }
+    }
 
     [Space]
     [SerializeField] private LayerMask _obstacleMask;
@@ -41,12 +50,16 @@ public class PlayerFishing : MonoBehaviourPun
 
     Transform _localCamera;
 
+    [PunRPC]
+    void SetFishingFloat(FishingFloat value) => fishingFloat = value;
+
+
     void Start()
     {
         if (photonView.IsMine)
         {
             _floatDemo = Instantiate(_floatDemoPrefab);
-            _localCamera = Camera.main.transform;//GetComponentInChildren<Camera>().transform;
+            _localCamera = Camera.main.transform;
         }
 
         _inv = GetComponent<Inventory>();
@@ -58,7 +71,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (_fishingFloat == null)
+            if (FishingFloat == null)
             {
                 if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
                 {
@@ -90,7 +103,8 @@ public class PlayerFishing : MonoBehaviourPun
                         await UniTask.WaitForSeconds(onCastWait);
 
                         //TODO: this
-                        CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
+                        photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
+                        // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
                         foreach (GameObject AllFish in _inv.Fishes)
                         {
                             AllFish.SetActive(false);
@@ -111,7 +125,8 @@ public class PlayerFishing : MonoBehaviourPun
 
                 if (Input.GetButton("CrankUp"))
                 {
-                    _fishingFloat.Pull();
+                    // FishingFloat.Pull();
+                    photonView.RPC("FishingFloat.Pull", RpcTarget.All);
                     _anim.SetFloat("Fishing_Up_Speed", 1);
                     _anim.Play(crankUpAnimationName);
                 }
@@ -123,18 +138,20 @@ public class PlayerFishing : MonoBehaviourPun
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    CmdDestroyFloat();
+                    // CmdDestroyFloat();
+                    photonView.RPC("CmdDestroyFloat", RpcTarget.All);
                 }
 
-                if (Vector3.Distance(_rodEndPoint.position, _fishingFloat.transform.position) > _maxLineDistance)
+                if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance)
                 {
                     onLineBroke?.Invoke();
-                    CmdDestroyFloat();
+                    photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+                    // CmdDestroyFloat();
                 }
             }
         }
 
-        if (_fishingFloat == null)
+        if (FishingFloat == null)
         {
             _rodLineRenderer.SetPosition(0, Vector3.zero);
             _rodLineRenderer.SetPosition(1, Vector3.zero);
@@ -142,7 +159,7 @@ public class PlayerFishing : MonoBehaviourPun
         else
         {
             _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
-            _rodLineRenderer.SetPosition(1, _fishingFloat.transform.position);
+            _rodLineRenderer.SetPosition(1, FishingFloat.transform.position);
         }
     }
 
@@ -165,42 +182,46 @@ public class PlayerFishing : MonoBehaviourPun
     }
 
     // [Command(requiresAuthority = true)]
+    [PunRPC]
     private void CmdSpawnFloat(Vector3 position, int uniqueId)
     {
-        if (_fishingFloat == null)
+        if (FishingFloat == null)
         {
             foreach (GameObject AllFish in _inv.Fishes)
             {
                 AllFish.SetActive(false);
             }
             _inv.FishHolder.SetActive(false);
-            RpcDisableHoldingFish();
-            GameObject fishingFloatObj = Instantiate(_fishingFloatBasePrefab);
+            // RpcDisableHoldingFish();
+            photonView.RPC("RpcDisableHoldingFish", RpcTarget.All);
+            GameObject fishingFloatObj = PhotonNetwork.Instantiate(_fishingFloatBasePrefab.name, Vector3.zero, Quaternion.identity);
+            // GameObject fishingFloatObj = Instantiate(_fishingFloatBasePrefab);
             FishingFloat temp = fishingFloatObj.GetComponent<FishingFloat>();
             temp.transform.position = position;
-            temp.floatUniqueId = uniqueId;
-            temp._owner = this;
+            temp.FloatUniqueId = uniqueId;
+            temp.Owner = this;
             //TODO: SPAWN
             // NetworkServer.Spawn(fishingFloatObj, connectionToClient);
-            _fishingFloat = temp;
+            FishingFloat = temp;
             SpawnFloatSimulation();
         }
     }
 
 
 
-    // [Command]
+    [PunRPC]
     private void CmdDestroyFloat()
     {
-        if (_fishingFloat != null)
+        if (FishingFloat != null)
         {
             // _fishingFloat.Destroy(connectionToClient);
+            PhotonNetwork.Destroy(FishingFloat.gameObject);
             //TODO: DESTROY
             DestroyFloatSimulation();
         }
     }
 
-    // [ClientRpc]
+    [PunRPC]
     public void RpcDisableHoldingFish()
     {
         foreach (GameObject AllFish in _inv.Fishes)

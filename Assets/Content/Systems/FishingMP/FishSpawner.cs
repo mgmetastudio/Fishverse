@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 // using Mirror;
 using Cysharp.Threading.Tasks;
+using Photon.Pun;
 
 public class FishSpawner : MonoBehaviour
 {
@@ -22,11 +23,13 @@ public class FishSpawner : MonoBehaviour
 
     public FishEntity Spawn(Vector3 position, int fishUniqueId)
     { // (Server)
-        GameObject fishEntityObj = Instantiate(_fishEntityBasePrefab);
+        // GameObject fishEntityObj = Instantiate(_fishEntityBasePrefab);
+        GameObject fishEntityObj = PhotonNetwork.Instantiate(_fishEntityBasePrefab.name, Vector3.zero, Quaternion.identity);
         fishEntityObj.transform.position = position;
         FishEntity fishEntity = fishEntityObj.GetComponent<FishEntity>();
-        fishEntity.fishUniqueId = fishUniqueId;
+        fishEntity.FishUniqueId = fishUniqueId;
         // NetworkServer.Spawn(fishEntityObj);
+
 
         return fishEntity;
     }
@@ -35,7 +38,7 @@ public class FishSpawner : MonoBehaviour
     {
         var fish = Spawn(position, fishUniqueId);
 
-		await UniTask.NextFrame();
+        await UniTask.NextFrame();
 
         fish.SetBounds(bounds);
     }

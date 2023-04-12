@@ -7,7 +7,17 @@ public class FishEntity : MonoBehaviourPun
 {
 
     // [SyncVar] 
-    public int fishUniqueId;
+    private int fishUniqueId;
+    public int FishUniqueId
+    {
+        get => fishUniqueId;
+        set
+        {
+            if (photonView.IsMine)
+                photonView.RPC("SetFishUniqueId", RpcTarget.All, value);
+        }
+    }
+
 
     private static FishScriptable[] _fishScriptables;
     private FishScriptable _scriptable;
@@ -17,6 +27,31 @@ public class FishEntity : MonoBehaviourPun
 
     [Space]
     [SerializeField] float minDist = 2f;
+
+    public Rigidbody rb;
+    // [SyncVar(hook = "HookedChanged")]
+    private FishingFloat _hookedTo;
+    public FishingFloat HookedTo
+    {
+        get => _hookedTo;
+        set
+        {
+            if (photonView.IsMine)
+                photonView.RPC("SetHookedTo", RpcTarget.All, value);
+        }
+    }
+
+
+    [PunRPC]
+    void SetFishUniqueId(int value) => fishUniqueId = value;
+    [PunRPC]
+    void SetHookedTo(FishingFloat value)
+    {
+        HookedChanged(_hookedTo, value);
+        _hookedTo = value;
+
+    }
+
 
     private void Awake()
     {
@@ -30,7 +65,7 @@ public class FishEntity : MonoBehaviourPun
     {
         for (int i = 0; i < _fishScriptables.Length; i++)
         {
-            if (_fishScriptables[i].uniqueId == fishUniqueId)
+            if (_fishScriptables[i].uniqueId == FishUniqueId)
             {
                 _scriptable = _fishScriptables[i];
                 break;
@@ -43,7 +78,7 @@ public class FishEntity : MonoBehaviourPun
 
         FishModel = Instantiate(_scriptable.modelPrefab, transform);
 
-        if (true)//isServer
+        if (PhotonNetwork.IsMasterClient)//isServer
         {
             controller = gameObject.AddComponent<FishAIController>();
             controller.Setup(_scriptable);
@@ -54,7 +89,7 @@ public class FishEntity : MonoBehaviourPun
 
     public void SetBounds(Vector3 bounds)
     {
-        if (true)//isServer
+        if (PhotonNetwork.IsMasterClient)//isServer
         {
             controller.SetBounds(bounds);
         }
@@ -66,7 +101,9 @@ public class FishEntity : MonoBehaviourPun
 #pragma warning restore IDE0051
         if (oldValue != null)
         {
-            // oldValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
+            oldValue.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+            // newValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
+
             oldValue.transform.SetParent(null);
             oldValue._collider.enabled = true;
             oldValue._interactor.enabled = false;
@@ -76,6 +113,7 @@ public class FishEntity : MonoBehaviourPun
         if (newValue != null)
         {
             // newValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
+            newValue.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
             newValue.transform.SetParent(transform);
             newValue._collider.enabled = false;
             newValue._interactor.enabled = false;
@@ -84,14 +122,12 @@ public class FishEntity : MonoBehaviourPun
         }
     }
 
-    public Rigidbody rb;
-    // [SyncVar(hook = "HookedChanged")]
-     private FishingFloat _hookedTo;
     private void Bite(FishingFloat _targetFloat)
     {
-        if (_hookedTo == null)
+        if (HookedTo == null)
         {
             // _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
+            _targetFloat.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
             _targetFloat._collider.enabled = false;
             _targetFloat._interactor.enabled = false;
             _targetFloat._rb.isKinematic = true;
@@ -99,15 +135,15 @@ public class FishEntity : MonoBehaviourPun
             _targetFloat.transform.SetParent(transform);
             Vector3 NewFloatPosition = new Vector3(transform.position.x, transform.position.y + 0.0f, transform.position.z);
             _targetFloat.transform.position = NewFloatPosition;
-            _hookedTo = _targetFloat;
-            _hookedTo.fish = this;
+            HookedTo = _targetFloat;
+            HookedTo.fish = this;
             rb = gameObject.AddComponent<Rigidbody>();
             rb.isKinematic = true;
             rb.useGravity = false;
             controller.stamina = 1f;
             controller.doNotUpdateTarget = true;
             controller.fearfulness = 1f;
-            _hookedTo._owner.GetComponent<PlayerFishing>().SpawnedFloatSimulation.GetComponent<FloatSimulation>().SimulateBite();
+            HookedTo.Owner.GetComponent<PlayerFishing>().SpawnedFloatSimulation.GetComponent<FloatSimulation>().SimulateBite();
         }
     }
 
@@ -116,7 +152,7 @@ public class FishEntity : MonoBehaviourPun
         while (true)
         {
             yield return new WaitForSeconds(1f);
-            if (_hookedTo == null && controller != null)
+            if (HookedTo == null && controller != null)
             {
                 if (controller.target != null && Random.Range(.0f, 1f) > .4f)
                 {
@@ -131,9 +167,9 @@ public class FishEntity : MonoBehaviourPun
 
     private void Update()
     {
-        if (true)//isServer
+        if (PhotonNetwork.IsMasterClient)//isServer
         {
-            if (_hookedTo == null && rb != null)
+            if (HookedTo == null && rb != null)
             {
                 Destroy(rb);
                 rb = null;
@@ -141,25 +177,25 @@ public class FishEntity : MonoBehaviourPun
                 controller.fearfulness = .0f;
             }
 
-            if (_hookedTo != null)
+            if (HookedTo != null)
             {
-                Vector3 NewFishModelPosition = new Vector3(_hookedTo.Hook.transform.position.x, _hookedTo.Hook.transform.position.y - 0.15f, _hookedTo.Hook.transform.position.z);
+                Vector3 NewFishModelPosition = new Vector3(HookedTo.Hook.transform.position.x, HookedTo.Hook.transform.position.y - 0.15f, HookedTo.Hook.transform.position.z);
                 FishModel.transform.position = NewFishModelPosition;
                 if (controller.stamina < 0.7f)
                 {
-                    FishModel.transform.LookAt(_hookedTo._owner._rodEndPoint.position);
+                    FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
                     /*Quaternion NewFishModelRotation = new Quaternion(FishModel.transform.rotation.x, 180, 180, 0);
                     FishModel.transform.rotation = Quaternion.Lerp(FishModel.transform.rotation, NewFishModelRotation, 5f);*/
                 }
                 if (controller.stamina > 0.7f)
                 {
-                    FishModel.transform.LookAt(_hookedTo._owner._rodEndPoint.position);
+                    FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
                     // FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
                 }
-                if (Vector3.Distance(transform.position.WithY(0), _hookedTo._owner._rodEndPoint.position.WithY(0)) < minDist)
+                if (Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist)
                 {
-                    var anim = _hookedTo._owner.GetComponent<PlayerAnimator>();
-                    Inventory inv = _hookedTo._owner.GetComponent<Inventory>();
+                    var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
+                    Inventory inv = HookedTo.Owner.GetComponent<Inventory>();
 
                     FishAIController ai = this.GetComponent<FishAIController>();
 
@@ -168,9 +204,10 @@ public class FishEntity : MonoBehaviourPun
                     anim.FishCatch();
                     inv.HoldCaughtFish(ai._scriptable.uniqueId);
                     inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, ai._scriptable.FishLength, "Weight: " + ai._scriptable.FishWeight, ai._scriptable.FishRetailValue, ai._scriptable.FishSprite);
-                    RpcHoldCaughtFish(ai._scriptable.uniqueId);
+                    photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
+                    // RpcHoldCaughtFish(ai._scriptable.uniqueId);
                     Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.PlayerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
-                    _hookedTo._owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
+                    HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
                     // NetworkServer.Destroy(gameObject);
                 }
             }
@@ -178,12 +215,13 @@ public class FishEntity : MonoBehaviourPun
     }
 
     // [ClientRpc]
+    [PunRPC]
     public void RpcHoldCaughtFish(int uniqueId)
     {
-        var inv = _hookedTo._owner.GetComponent<Inventory>();
+        var inv = HookedTo.Owner.GetComponent<Inventory>();
 
         inv.HoldCaughtFish(uniqueId);
-        _hookedTo._owner.GetComponent<Animator>().Play(inv.FishHolderAnimationName);
+        HookedTo.Owner.GetComponent<Animator>().Play(inv.FishHolderAnimationName);
 
         GameObject SpawnedInventoryFish;
 
@@ -204,9 +242,9 @@ public class FishEntity : MonoBehaviourPun
 
     private void OnGUI()
     {
-        if (true)//isServer
+        if (PhotonNetwork.IsMasterClient)//isServer
         {
-            if (_hookedTo != null)
+            if (HookedTo != null)
             {
                 GUI.Label(new Rect(1820, 0, 100, 100), "Server Fish Stamina: " + controller.stamina + "\n hooked!");
             }

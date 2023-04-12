@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Photon.Pun;
 using UnityEngine;
 
 public class FishSpawnerTest : MonoBehaviour
@@ -33,7 +34,8 @@ public class FishSpawnerTest : MonoBehaviour
 
     void Spawn()
     {
-        if (true)//Mirror.NetworkServer.active
+        // if (true)//Mirror.NetworkServer.active
+        if (PhotonNetwork.IsMasterClient)
         {
             spawner.Spawn(transform.position + _position, _fishUniqueId, bounds);
         }

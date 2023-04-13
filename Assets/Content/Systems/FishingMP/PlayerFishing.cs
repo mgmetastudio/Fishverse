@@ -16,7 +16,10 @@ public class PlayerFishing : MonoBehaviourPun
         set
         {
             if (photonView.IsMine)
-                photonView.RPC("SetFishingFloat", RpcTarget.All, value);
+            {
+                int id = value.photonView.ViewID;
+                photonView.RPC("SetFishingFloat", RpcTarget.All, id);
+            }
         }
     }
 
@@ -51,7 +54,13 @@ public class PlayerFishing : MonoBehaviourPun
     Transform _localCamera;
 
     [PunRPC]
-    void SetFishingFloat(FishingFloat value) => fishingFloat = value;
+    void SetFishingFloat(int value)
+    {
+        FishingFloat newFishingFloat = PhotonView.Find(value).GetComponent<FishingFloat>();
+        fishingFloat = newFishingFloat;
+    }
+    // [PunRPC]
+    // void SetFishingFloat(FishingFloat value) => fishingFloat = value;
 
 
     void Start()
@@ -126,7 +135,7 @@ public class PlayerFishing : MonoBehaviourPun
                 if (Input.GetButton("CrankUp"))
                 {
                     // FishingFloat.Pull();
-                    photonView.RPC("FishingFloat.Pull", RpcTarget.All);
+                    FishingFloat.photonView.RPC("Pull", RpcTarget.All);
                     _anim.SetFloat("Fishing_Up_Speed", 1);
                     _anim.Play(crankUpAnimationName);
                 }

@@ -34,7 +34,10 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         set
         {
             if (photonView.IsMine)
-                photonView.RPC("SetOwner", RpcTarget.All, value);
+            {
+                int id = value.photonView.ViewID;
+                photonView.RPC("SetOwner", RpcTarget.All, id);
+            }
         }
     }
 
@@ -44,9 +47,15 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     [PunRPC]
     void SetFloatUniqueId(int value) => floatUniqueId = value;
-
     [PunRPC]
-    void SetOwner(PlayerFishing value) => owner = value;
+    void SetOwner(int value)
+    {
+        PlayerFishing newPlayerFishing = PhotonView.Find(value).GetComponent<PlayerFishing>();
+        owner = newPlayerFishing;
+    }
+
+    // [PunRPC]
+    // void SetOwner(PlayerFishing value) => owner = value;
 
 
     private void Awake()
@@ -70,6 +79,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     // }
 
     // [Command(requiresAuthority = true)]
+    
     [PunRPC]
     public void Pull()
     {

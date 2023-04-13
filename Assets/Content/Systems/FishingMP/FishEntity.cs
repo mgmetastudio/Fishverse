@@ -37,21 +37,34 @@ public class FishEntity : MonoBehaviourPun
         set
         {
             if (photonView.IsMine)
-                photonView.RPC("SetHookedTo", RpcTarget.All, value);
+            {
+                int id = value.photonView.ViewID;
+                photonView.RPC("SetHookedTo", RpcTarget.All, id);
+            }
         }
     }
-
 
     [PunRPC]
     void SetFishUniqueId(int value) => fishUniqueId = value;
     [PunRPC]
-    void SetHookedTo(FishingFloat value)
+    void SetHookedTo(int value)
     {
-        HookedChanged(_hookedTo, value);
-        _hookedTo = value;
+        FishingFloat _hookedToNew = PhotonView.Find(value).GetComponent<FishingFloat>();
+
+        HookedChanged(_hookedTo, _hookedToNew);
+        _hookedTo = _hookedToNew;
 
     }
 
+    // [PunRPC]
+    // void SetHookedTo(FishingFloat value)
+    // {
+    //     FishingFloat _hookedToNew = PhotonView.Find(x);
+
+    //     HookedChanged(_hookedTo, value);
+    //     _hookedTo = value;
+
+    // }
 
     private void Awake()
     {

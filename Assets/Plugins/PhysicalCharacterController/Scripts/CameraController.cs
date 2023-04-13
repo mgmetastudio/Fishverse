@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -10,14 +11,22 @@ public class CameraController : MonoBehaviour
     [SerializeField] List<SkinnedMeshRenderer> firstPersonRend;
     [SerializeField] List<SkinnedMeshRenderer> thirdPersonRend;
 
+    [Space]
+    [SerializeField] PhotonView photonView;
+
     void Start()
     {
-        SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
-
+        if (photonView.IsMine)
+        {
+            SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+            firstPerson.Priority = 10;
+        }
 
     }
     void Update()
     {
+        if (!photonView.IsMine) return;
+
         // MouseVerticalValue = Input.GetAxis("Mouse Y");
 
         // Quaternion finalRotation = Quaternion.Euler(
@@ -60,7 +69,7 @@ public class CameraController : MonoBehaviour
         }
 
     }
-    
+
     void SetShadowMode(List<SkinnedMeshRenderer> rend, UnityEngine.Rendering.ShadowCastingMode mode)
     {
         foreach (var item in rend)

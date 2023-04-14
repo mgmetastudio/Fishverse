@@ -26,7 +26,7 @@ public class FishEntity : MonoBehaviourPun
     public GameObject FishModel;
 
     [Space]
-    [SerializeField] float minDist = 2f;
+    [SerializeField] float minDist = 1f;
 
     public Rigidbody rb;
     // [SyncVar(hook = "HookedChanged")]
@@ -221,7 +221,10 @@ public class FishEntity : MonoBehaviourPun
                     // RpcHoldCaughtFish(ai._scriptable.uniqueId);
                     Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.PlayerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
                     HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
+
+
                     // NetworkServer.Destroy(gameObject);
+                    PhotonNetwork.Destroy(gameObject);
                 }
             }
         }
@@ -231,6 +234,7 @@ public class FishEntity : MonoBehaviourPun
     [PunRPC]
     public void RpcHoldCaughtFish(int uniqueId)
     {
+        print("FISH");
         var inv = HookedTo.Owner.GetComponent<Inventory>();
 
         inv.HoldCaughtFish(uniqueId);

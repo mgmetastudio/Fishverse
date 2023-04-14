@@ -124,7 +124,9 @@ public class PlayerFishing : MonoBehaviourPun
 
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    DrawFishingRod(!fishingRod.activeSelf);
+                    photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+
+                    // DrawFishingRod(!fishingRod.activeSelf);
 
                 }
             }
@@ -172,10 +174,9 @@ public class PlayerFishing : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void DrawFishingRod(bool draw)
     {
-        print("FISHING ROD");
-
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
 

@@ -3,6 +3,7 @@
 using UnityEngine.Events;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerFishing : MonoBehaviourPun
 {
@@ -44,6 +45,9 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] GameObject fishingRod;
     [SerializeField] GameObject fishingRope;
 
+    [Space]
+    [SerializeField] Button holsterBtn;
+
     // public UnityEvent onCast;
 
     public static UnityEvent onLineBroke;
@@ -52,6 +56,11 @@ public class PlayerFishing : MonoBehaviourPun
     Animator _anim;
 
     Transform _localCamera;
+
+    CastRodUI rodUI;
+    bool onRodDown;
+    bool onRodUp;
+    bool onRod;
 
     [PunRPC]
     void SetFishingFloat(int value)
@@ -69,11 +78,29 @@ public class PlayerFishing : MonoBehaviourPun
         {
             _floatDemo = Instantiate(_floatDemoPrefab);
             _localCamera = Camera.main.transform;
+            rodUI = FindObjectOfType<CastRodUI>();
+
+            holsterBtn.onClick.AddListener(() => photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf));
         }
 
         _inv = GetComponent<Inventory>();
         _anim = GetComponent<Animator>();
 
+        rodUI.btn.onDown.AddListener(OnRodDown);
+        rodUI.btn.onUp.AddListener(OnRodUp);
+
+    }
+
+    void OnRodDown()
+    {
+        onRodDown = true;
+        onRod = true;
+    }
+
+    void OnRodUp()
+    {
+        onRodUp = true;
+        onRod = false;
     }
 
     private async void Update()
@@ -99,7 +126,7 @@ public class PlayerFishing : MonoBehaviourPun
                     _floatDemo.SetActive(false);
                 }
 
-                if (fishingRod.activeSelf && Input.GetMouseButtonDown(0))
+                if (fishingRod.activeSelf && (Input.GetMouseButtonDown(0) || onRodDown))
                 {
                     if (_floatDemo.activeSelf)
                     {
@@ -127,14 +154,13 @@ public class PlayerFishing : MonoBehaviourPun
                     photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
 
                     // DrawFishingRod(!fishingRod.activeSelf);
-
                 }
             }
             else
             {
                 _floatDemo.SetActive(false);
 
-                if (Input.GetButton("CrankUp"))
+                if (Input.GetButton("CrankUp") || onRod)
                 {
                     // FishingFloat.Pull();
                     FishingFloat.photonView.RPC("Pull", RpcTarget.All);
@@ -142,7 +168,7 @@ public class PlayerFishing : MonoBehaviourPun
                     _anim.Play(crankUpAnimationName);
                 }
 
-                if (Input.GetKeyUp(KeyCode.Mouse0))
+                if (Input.GetKeyUp(KeyCode.Mouse0) || onRodUp)
                 {
                     _anim.SetFloat("Fishing_Up_Speed", 0);
                 }
@@ -172,6 +198,9 @@ public class PlayerFishing : MonoBehaviourPun
             _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
             _rodLineRenderer.SetPosition(1, FishingFloat.transform.position);
         }
+
+        onRodDown = false;
+        onRodUp = false;
     }
 
     [PunRPC]

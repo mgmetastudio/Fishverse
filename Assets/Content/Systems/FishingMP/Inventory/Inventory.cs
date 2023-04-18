@@ -106,19 +106,23 @@ public class Inventory : MonoBehaviourPun
         PlayerN = PlayerName;
         PlayerNameText.text = PlayerN;
 
-        CmdSetPlayerName(PlayerN);
+        photonView.RPC("CmdSetPlayerName", RpcTarget.All, PlayerN);
+        // CmdSetPlayerName(PlayerN);
     }
 
     // [Command]
+    [PunRPC]
     public void CmdSetPlayerName(string PlayerN)
     {
         PlayerN = PlayerName;
         PlayerNameText.text = PlayerN;
 
-        RpcSetPlayerName(PlayerN);
+        photonView.RPC("RpcSetPlayerName", RpcTarget.All, PlayerN);
+        // RpcSetPlayerName(PlayerN);
     }
 
     // [ClientRpc]
+    [PunRPC]
     public void RpcSetPlayerName(string PlayerN)
     {
         PlayerN = PlayerName;
@@ -157,20 +161,24 @@ public class Inventory : MonoBehaviourPun
     {
         CurrentSelectedFloat = ID;
 
-        CmdSetFloat(ID);
+        photonView.RPC("CmdSetFloat", RpcTarget.All, ID);
+        // CmdSetFloat(ID);
     }
 
     // [Command]
+    [PunRPC]
     public void CmdSetFloat(int ID)
     {
         CurrentSelectedFloat = ID;
 
         SetUpFloat();
 
-        RpcSetFloat(ID);
+        photonView.RPC("RpcSetFloat", RpcTarget.All, ID);
+        // RpcSetFloat(ID);
     }
 
     // [ClientRpc]
+    [PunRPC]
     public void RpcSetFloat(int ID)
     {
         CurrentSelectedFloat = ID;
@@ -181,12 +189,14 @@ public class Inventory : MonoBehaviourPun
     public void SetFishingRod(int ID)
     {
         CurrentSelectedFishingRod = ID;
-        CmdSetFishingRod(ID);
+        photonView.RPC("CmdSetFishingRod", RpcTarget.All, ID);
+        // CmdSetFishingRod(ID);
 
         SetUpFloat();
     }
 
     // [Command]
+    [PunRPC]
     public void CmdSetFishingRod(int ID)
     {
         CurrentSelectedFishingRod = ID;
@@ -199,12 +209,14 @@ public class Inventory : MonoBehaviourPun
             {
                 FishingRods[i].FishingRodGameObject.SetActive(true);
 
-                RpcSetFishingRod(ID);
+                photonView.RPC("RpcSetFishingRod", RpcTarget.All, ID);
+                // RpcSetFishingRod(ID);
             }
         }
     }
 
     // [ClientRpc]
+    [PunRPC]
     public void RpcSetFishingRod(int ID)
     {
         CurrentSelectedFishingRod = ID;
@@ -224,20 +236,24 @@ public class Inventory : MonoBehaviourPun
     {
         CurrentSelectedBait = ID;
 
-        CmdSetBait(ID);
+        photonView.RPC("CmdSetBait", RpcTarget.All, ID);
+        // CmdSetBait(ID);
     }
 
     // [Command]
+    [PunRPC]
     public void CmdSetBait(int ID)
     {
         CurrentSelectedBait = ID;
 
         SetUpFloat();
 
-        RpcSetBait(ID);
+        photonView.RPC("RpcSetBait", RpcTarget.All, ID);
+        // RpcSetBait(ID);
     }
 
     // [ClientRpc]
+    [PunRPC]
     public void RpcSetBait(int ID)
     {
         CurrentSelectedBait = ID;
@@ -374,7 +390,9 @@ public class Inventory : MonoBehaviourPun
         invFish.FishRetailValue.text = FishRetailValue;
         invFish.FishImage.sprite = FishSprite;
 
-        CmdHoldCaughtFish(uniqueId);
+        photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, uniqueId);
+        // CmdHoldCaughtFish(uniqueId);
+
 
         SpawnedInventoryFish = null;
 
@@ -401,14 +419,18 @@ public class Inventory : MonoBehaviourPun
     }
 
     // [Command]
+    [PunRPC]
     public void CmdHoldCaughtFish(int uniqueId)
     {
         HoldCaughtFish(uniqueId);
 
-        RpcHoldCaughtFish(uniqueId);
+        photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, uniqueId);
+        // RpcHoldCaughtFish(uniqueId);
+
     }
 
     // [ClientRpc]
+    [PunRPC]
     public void RpcHoldCaughtFish(int uniqueId)
     {
         HoldCaughtFish(uniqueId);

@@ -22,6 +22,11 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
 
         #region METHODS
 
+        protected override void Start()
+        {
+            base.Start();
+        }
+
         protected override void AnimateEye()
         {
             // Removes programatically crouch / un crouch animation as this will be handled by Cinemachine cameras

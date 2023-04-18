@@ -25,6 +25,7 @@ namespace EasyCharacterMovement.Examples.InputExamples.CharacterControllerExampl
             Vector2 movementInput = new Vector2
             {
                 x = Input.GetAxisRaw("Horizontal"),
+                // x = 0,
                 y = Input.GetAxisRaw("Vertical")
             };
 

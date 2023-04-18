@@ -119,6 +119,9 @@ public class FishAIController : MonoBehaviour
             (CalculateAvoidanceVector() * _scriptable.avoidanceVectorWeight) +
             (CalculateTargetVector() * 2f) +
             (CalculateFearVector() * 6f);
+
+        // if (target)
+        //     movementVector = movementVector.WithY(.1f);
         if (!inWater)
         {
             movementVector = Vector3.down;

@@ -42,6 +42,11 @@ namespace EasyCharacterMovement
         [Tooltip("The speed multiplier while Character is walking sideways.")]
         [SerializeField]
         private float _strafeSpeedMultiplier;
+
+        // [SerializeField] \
+        public bool customInput;
+        public Vector2 MovementInput;
+        public Vector2 LookInput;
         
         #endregion
 
@@ -224,6 +229,9 @@ namespace EasyCharacterMovement
                 y = Input.GetAxisRaw("Vertical"),
             };
 
+            if(customInput)
+                movementInput = MovementInput;
+
             // Add input movement relative to us
 
             Vector3 movementDirection = Vector3.zero;
@@ -277,7 +285,7 @@ namespace EasyCharacterMovement
                 characterLook.UnlockCursor();
             }
 
-            if (!characterLook.IsCursorLocked())
+            if (!customInput && !characterLook.IsCursorLocked())
             {
                 // Disable mouse look when cursor is unlocked
 
@@ -291,6 +299,9 @@ namespace EasyCharacterMovement
                 x = Input.GetAxisRaw("Mouse X"),
                 y = Input.GetAxisRaw("Mouse Y"),
             };
+            
+            if(customInput)
+                mouseLookInput = LookInput;
 
             if (mouseLookInput.x != 0.0f)
                 AddYawInput(mouseLookInput.x * characterLook.mouseHorizontalSensitivity);

@@ -51,6 +51,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void SetOwner(int value)
     {
         PlayerFishing newPlayerFishing = PhotonView.Find(value).GetComponent<PlayerFishing>();
+        print("SETING OWNER: " + newPlayerFishing);
         owner = newPlayerFishing;
     }
 

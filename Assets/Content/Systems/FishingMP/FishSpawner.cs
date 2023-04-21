@@ -6,7 +6,9 @@ using Photon.Pun;
 public class FishSpawner : MonoBehaviour
 {
 
-    [SerializeField] private GameObject _fishEntityBasePrefab;
+    [SerializeField] GameObject _fishEntityBasePrefab;
+    [SerializeField] GameObject FishCaughtMessage;
+
 
     public static FishSpawner instance;
     // public FishSpawner()
@@ -24,10 +26,10 @@ public class FishSpawner : MonoBehaviour
     public FishEntity Spawn(Vector3 position, int fishUniqueId)
     { // (Server)
         // GameObject fishEntityObj = Instantiate(_fishEntityBasePrefab);
-        GameObject fishEntityObj = PhotonNetwork.Instantiate(_fishEntityBasePrefab.name, Vector3.zero, Quaternion.identity);
-        fishEntityObj.transform.position = position;
-        FishEntity fishEntity = fishEntityObj.GetComponent<FishEntity>();
-        fishEntity.FishUniqueId = fishUniqueId;
+        GameObject fishEntityObj = PhotonNetwork.Instantiate(_fishEntityBasePrefab.name, position, Quaternion.identity);
+        FishEntity fishEntity = fishEntityObj.AddComponent<FishEntity>();
+        fishEntity.FishCaughtMessage = FishCaughtMessage;
+        // fishEntity.FishUniqueId = fishUniqueId;
         // NetworkServer.Spawn(fishEntityObj);
 
 

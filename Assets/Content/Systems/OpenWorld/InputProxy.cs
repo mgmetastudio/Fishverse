@@ -13,7 +13,7 @@ public class InputProxy : MonoBehaviour
 
     void Start()
     {
-#if UNITY_ANDROID || UNITY_IOS || UNITY_EDITOR
+#if UNITY_ANDROID || UNITY_IOS// || UNITY_EDITOR
         character.customInput = true;
 #endif
     }

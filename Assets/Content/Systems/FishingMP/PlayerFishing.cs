@@ -38,7 +38,7 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] public string crankUpAnimationName = "Fishing_Up";
     [SerializeField] public string CastAnimationName = "Fishing_In";
     [SerializeField] public GameObject FloatSimulation;
-    public GameObject SpawnedFloatSimulation;
+    public FloatSimulation SpawnedFloatSimulation;
 
     [SerializeField] float onCastWait;
 
@@ -81,14 +81,13 @@ public class PlayerFishing : MonoBehaviourPun
             rodUI = FindObjectOfType<CastRodUI>();
 
             holsterBtn.onClick.AddListener(() => photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf));
+
+            rodUI.btn.onDown.AddListener(OnRodDown);
+            rodUI.btn.onUp.AddListener(OnRodUp);
         }
 
         _inv = GetComponent<Inventory>();
         _anim = GetComponent<Animator>();
-
-        rodUI.btn.onDown.AddListener(OnRodDown);
-        rodUI.btn.onUp.AddListener(OnRodUp);
-
     }
 
     void OnRodDown()
@@ -233,15 +232,16 @@ public class PlayerFishing : MonoBehaviourPun
             _inv.FishHolder.SetActive(false);
             // RpcDisableHoldingFish();
             photonView.RPC("RpcDisableHoldingFish", RpcTarget.All);
-            GameObject fishingFloatObj = PhotonNetwork.Instantiate(_fishingFloatBasePrefab.name, Vector3.zero, Quaternion.identity);
+            GameObject fishingFloatObj = PhotonNetwork.Instantiate(_fishingFloatBasePrefab.name, position, Quaternion.identity);
             // GameObject fishingFloatObj = Instantiate(_fishingFloatBasePrefab);
             FishingFloat temp = fishingFloatObj.GetComponent<FishingFloat>();
-            temp.transform.position = position;
-            temp.FloatUniqueId = uniqueId;
+            // temp.photonView.RequestOwnership();
             temp.Owner = this;
+            temp.FloatUniqueId = uniqueId;
             //TODO: SPAWN
             // NetworkServer.Spawn(fishingFloatObj, connectionToClient);
             FishingFloat = temp;
+            // SpawnedFloatSimulation = FishingFloat.gameObject
             SpawnFloatSimulation();
         }
     }
@@ -275,7 +275,9 @@ public class PlayerFishing : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        SpawnedFloatSimulation = Instantiate(FloatSimulation);
+        SpawnedFloatSimulation = Instantiate(FloatSimulation).GetComponent<FloatSimulation>();
+        // SpawnedFloatSimulation = PhotonNetwork.Instantiate(FloatSimulation.name, Vector3.zero, Quaternion.identity);
+
     }
 
     public void DestroyFloatSimulation()

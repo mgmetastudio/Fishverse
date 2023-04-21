@@ -84,17 +84,21 @@ public class Inventory : MonoBehaviourPun
 
     private void Start()
     {
+        if (!photonView.IsMine)
+        {
+            InventoryCanvas.SetInactive();
+
+            PlayerName = Fishverse_Core.instance.account_username;
+            SetPlayerName(PlayerName);
+
+            return;
+        }
+
         Manager = GameObject.FindGameObjectWithTag("Manager");
-        // PlayerName = Manager.GetComponent<OpenWorldManager>().PlayerName;
-        PlayerName = Fishverse_Core.instance.account_username;
+
         Camera = Camera.main;
 
-        SetPlayerName(PlayerName);
-
         SetUpFloat();
-
-        if (!photonView.IsMine)
-            return;
 
         CheckForItems();
 
@@ -453,6 +457,8 @@ public class Inventory : MonoBehaviourPun
 
     public void ToggleCameraClippingPlanes(float Value)
     {
+        if (!photonView.IsMine) return;
+
         Camera.nearClipPlane = Value;
     }
 }

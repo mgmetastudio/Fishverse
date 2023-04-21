@@ -1,7 +1,9 @@
 using UnityEngine;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using UnityEngine.UI;
-using TMPro; 
+using TMPro;
+using UnityEngine.Events;
+
 public class Compass : MonoBehaviour
 {
     [SerializeField] private RawImage compass;
@@ -11,20 +13,27 @@ public class Compass : MonoBehaviour
     [SerializeField] private GameObject compassElementIcon;
 
     private List<CompassElement> compassElements = new List<CompassElement>();
-    public static Compass Instance { get; private set; }
+    public static Compass Instance
+    {
+        get; private set;
+    }
+
+    public static UnityEvent onCompasInit = new UnityEvent();
     private void Awake()
     {
         Instance = this;
+
+        onCompasInit.Invoke();
     }
 
     private void Update()
     {
         compass.uvRect = new Rect(player.localEulerAngles.y / 360, 0, 1, 1);
-        compassText.text = player.localEulerAngles.y.ToString("F0"); 
+        compassText.text = player.localEulerAngles.y.ToString("F0");
 
-        foreach(CompassElement el in compassElements)
+        foreach (CompassElement el in compassElements)
         {
-            el.image.rectTransform.anchoredPosition = GetElementPositionInCompass(el); 
+            el.image.rectTransform.anchoredPosition = GetElementPositionInCompass(el);
         }
     }
 
@@ -33,7 +42,7 @@ public class Compass : MonoBehaviour
     {
         GameObject newElement = Instantiate(compassElementIcon, compass.transform);
         element.image = newElement.transform.GetChild(0).GetComponent<Image>();
-        element.image.sprite = element.icon; 
+        element.image.sprite = element.icon;
         compassElements.Add(element);
     }
 
@@ -41,7 +50,7 @@ public class Compass : MonoBehaviour
     public void RemoveCompassElement(CompassElement element)
     {
         compassElements.Remove(element);
-        Destroy(element.image); 
+        Destroy(element.image);
     }
 
     // Calculates the position of the image depending on where the compass element and the players are.
@@ -49,8 +58,8 @@ public class Compass : MonoBehaviour
     {
         Vector2 playerPosition = new Vector2(player.position.x, player.position.z);
         Vector2 playerForward = new Vector2(player.forward.x, player.forward.z);
-        float angle = Vector2.SignedAngle(element.GetVector2Pos() - playerPosition, playerForward); 
+        float angle = Vector2.SignedAngle(element.GetVector2Pos() - playerPosition, playerForward);
 
-        return new Vector2(angle * compass.rectTransform.rect.width / 360,0); 
+        return new Vector2(angle * compass.rectTransform.rect.width / 360, 0);
     }
 }

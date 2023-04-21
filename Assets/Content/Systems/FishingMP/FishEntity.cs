@@ -26,7 +26,7 @@ public class FishEntity : MonoBehaviourPun
     public GameObject FishModel;
 
     [Space]
-    [SerializeField] float minDist = 1f;
+    [SerializeField] float minDist = 2f;
 
     public Rigidbody rb;
     // [SyncVar(hook = "HookedChanged")]
@@ -114,7 +114,8 @@ public class FishEntity : MonoBehaviourPun
 #pragma warning restore IDE0051
         if (oldValue != null)
         {
-            oldValue.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+            // oldValue.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+            oldValue.GetComponent<PhotonView>().RequestOwnership();
             // newValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
 
             oldValue.transform.SetParent(null);
@@ -126,7 +127,10 @@ public class FishEntity : MonoBehaviourPun
         if (newValue != null)
         {
             // newValue.GetComponent<MonoBehaviourPun>().clientAuthority = false;
-            newValue.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+            // newValue.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+
+            newValue.GetComponent<PhotonView>().RequestOwnership();
+
             newValue.transform.SetParent(transform);
             newValue._collider.enabled = false;
             newValue._interactor.enabled = false;
@@ -140,7 +144,9 @@ public class FishEntity : MonoBehaviourPun
         if (HookedTo == null)
         {
             // _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
-            _targetFloat.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+            // _targetFloat.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+            _targetFloat.GetComponent<PhotonView>().RequestOwnership();
+
             _targetFloat._collider.enabled = false;
             _targetFloat._interactor.enabled = false;
             _targetFloat._rb.isKinematic = true;
@@ -156,13 +162,21 @@ public class FishEntity : MonoBehaviourPun
             controller.stamina = 1f;
             controller.doNotUpdateTarget = true;
             controller.fearfulness = 1f;
-            HookedTo.Owner.GetComponent<PlayerFishing>().SpawnedFloatSimulation.GetComponent<FloatSimulation>().SimulateBite();
+
+            if (HookedTo.Owner.SpawnedFloatSimulation)
+                HookedTo.Owner.SpawnedFloatSimulation.SimulateBite();
+            // var owner = HookedTo.Owner.SpawnedFloatSimulation.;
+            // var player = owner.GetComponent<PlayerFishing>();
+            // var floatSim = player.SpawnedFloatSimulation;
+            // // var floatSimComp = floatSim.GetComponent<FloatSimulation>();
+            // Debug.Log($"floatSimComp {floatSim.gameObject.name}", _targetFloat);
+            // floatSim.SimulateBite();
         }
     }
 
     private IEnumerator BiteLoop()
     {
-        while (true)
+        while (PhotonNetwork.IsMasterClient)
         {
             yield return new WaitForSeconds(1f);
             if (HookedTo == null && controller != null)
@@ -220,10 +234,12 @@ public class FishEntity : MonoBehaviourPun
                     photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
                     // RpcHoldCaughtFish(ai._scriptable.uniqueId);
                     Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.PlayerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
-                    HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
+                    HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+                    // HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
 
 
                     // NetworkServer.Destroy(gameObject);
+                    // Debug.Break();
                     PhotonNetwork.Destroy(gameObject);
                 }
             }

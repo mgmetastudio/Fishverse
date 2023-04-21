@@ -14,13 +14,20 @@ public class CompassElement : MonoBehaviour
 
     public Vector2 GetVector2Pos() { return new Vector2(transform.position.x, transform.position.z); }
 
-    private async void Start()
+    private void Start()
     {
-        await UniTask.WaitForSeconds(.5f);
-        if (addOnStart) Add();
+        if (addOnStart)
+        {
+            Compass.onCompasInit.AddListener(Add);
+        }
     }
 
     public void Add() => Compass.Instance.AddCompassElement(this);
 
     public void Remove() => Compass.Instance.RemoveCompassElement(this);
+
+    void OnDestroy()
+    {
+        Compass.onCompasInit.RemoveListener(Add);
+    }
 }

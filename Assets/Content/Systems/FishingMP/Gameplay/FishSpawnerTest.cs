@@ -15,6 +15,15 @@ public class FishSpawnerTest : MonoBehaviour
 
     async void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        var fishes = GetComponentsInChildren<FishEntity>();
+        foreach (var item in fishes)
+        {
+            item.SetBounds(bounds);
+        }
+
+        if(fishes.Length > 0) return;
 
         for (int i = 0; i < startSpawnCount; i++)
         {
@@ -26,19 +35,17 @@ public class FishSpawnerTest : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Spawn();
-        }
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     Spawn();
+        // }
     }
 
     void Spawn()
     {
         // if (true)//Mirror.NetworkServer.active
-        if (PhotonNetwork.IsMasterClient)
-        {
+        
             spawner.Spawn(transform.position + _position, _fishUniqueId, bounds);
-        }
     }
 
 #if UNITY_EDITOR

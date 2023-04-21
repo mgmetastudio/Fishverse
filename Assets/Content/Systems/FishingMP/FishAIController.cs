@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 
 public class FishAIController : MonoBehaviour
@@ -103,6 +104,8 @@ public class FishAIController : MonoBehaviour
     private Vector3 _currentVelocity;
     private void Update()
     {
+        if(!PhotonNetwork.IsMasterClient) return;
+
         if (pullForce > .0f)
         {
             pullForce -= Time.deltaTime * 1.6f;
@@ -139,7 +142,7 @@ public class FishAIController : MonoBehaviour
 
     private IEnumerator CustomUpdateLoop()
     { // (Server)
-        while (true)
+        while (PhotonNetwork.IsMasterClient)
         {
             yield return new WaitForSeconds(.4f);
 

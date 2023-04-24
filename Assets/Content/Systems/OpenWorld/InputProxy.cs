@@ -13,9 +13,8 @@ public class InputProxy : MonoBehaviour
 
     void Start()
     {
-#if UNITY_ANDROID || UNITY_IOS// || UNITY_EDITOR
-        character.customInput = true;
-#endif
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            character.customInput = true;
     }
 
     void Update()

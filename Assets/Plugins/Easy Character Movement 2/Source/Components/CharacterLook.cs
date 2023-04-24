@@ -206,6 +206,8 @@ namespace EasyCharacterMovement
 
         protected virtual void UpdateCursorLockState()
         {
+            return;
+
             if (!lockCursor)
                 return;
 

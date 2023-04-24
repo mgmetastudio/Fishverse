@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -48,7 +49,9 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
         GetComponent<UserListManager>().RefreshUserList();
         
         if (PhotonNetwork.CurrentRoom.Players.Count == PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
             LoadScene();
+        }
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

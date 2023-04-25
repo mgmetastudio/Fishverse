@@ -9,12 +9,34 @@ public class InputProxy : MonoBehaviour
     [SerializeField] Joystick lookJoystick;
 
     [Space]
+    [SerializeField] Cinemachine.CinemachineVirtualCamera fpCam;
+    [SerializeField] Cinemachine.CinemachineFreeLook tpCam;
+
+    [Space]
     [SerializeField] CMFirstPersonCharacter character;
+
+    [Space]
+    [SerializeField] bool mobileInput;
 
     void Start()
     {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+#if UNITY_EDITOR
+#else
+        mobileInput = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
+#endif
+
+        if (mobileInput)
+        {
             character.customInput = true;
+
+            var pov = fpCam.GetPOV();
+            pov.m_HorizontalAxis.m_InputAxisName = "";
+            pov.m_VerticalAxis.m_InputAxisName = "";
+            tpCam.m_XAxis.m_InputAxisName = "";
+            tpCam.m_YAxis.m_InputAxisName = "";
+            // .m_HorizontalAxis.m_InputAxisName = "";
+            // tpCam.GetRig(0).GetCinemachineComponent<Cinemachine.CinemachinePOV>().m_VerticalAxis.m_InputAxisName = "";
+        }
     }
 
     void Update()

@@ -21,6 +21,21 @@ public static class CinemachineExtensions
         return camComposer.m_TrackedObjectOffset;
     }
 
+    public static CinemachineTransposer GetTransposer(this CinemachineVirtualCamera cam)
+    {
+        return cam.GetCinemachineComponent<CinemachineTransposer>();
+    }
+
+    public static CinemachineComposer GetComposer(this CinemachineVirtualCamera cam)
+    {
+        return cam.GetCinemachineComponent<CinemachineComposer>();
+    }
+
+    public static CinemachinePOV GetPOV(this CinemachineVirtualCamera cam)
+    {
+        return cam.GetCinemachineComponent<CinemachinePOV>();
+    }
+
     public static void SetTarget(this CinemachineVirtualCameraBase cam, Transform followTarget, Transform lookTarget = null)
     {
         cam.Follow = followTarget;

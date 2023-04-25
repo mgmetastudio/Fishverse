@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cinemachine;
 
 namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
 {
@@ -18,6 +19,11 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
         public GameObject cmWalkingCamera;
         public GameObject cmCrouchedCamera;
 
+        [SerializeField] CinemachineVirtualCamera fpCam;
+        [SerializeField] CinemachineFreeLook tpCam;
+
+        CinemachinePOV fpPOV;
+
         #endregion
 
         #region METHODS
@@ -25,6 +31,7 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
         protected override void Start()
         {
             base.Start();
+            fpPOV = fpCam.GetCinemachineComponent<CinemachinePOV>();
         }
 
         protected override void AnimateEye()
@@ -54,6 +61,17 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
 
             cmCrouchedCamera.SetActive(false);
             cmWalkingCamera.SetActive(true);
+        }
+
+        protected override void HandleCameraInput()
+        {
+            base.HandleCameraInput();
+
+            if (customInput)
+            {
+                fpPOV.m_VerticalAxis.m_InputAxisValue = LookInput.y * .5f;
+                tpCam.m_YAxis.m_InputAxisValue =  LookInput.y * .5f;
+            }
         }
 
         #endregion

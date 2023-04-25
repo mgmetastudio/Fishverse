@@ -27,9 +27,9 @@ public class FishSpawner : MonoBehaviour
     { // (Server)
         // GameObject fishEntityObj = Instantiate(_fishEntityBasePrefab);
         GameObject fishEntityObj = PhotonNetwork.Instantiate(_fishEntityBasePrefab.name, position, Quaternion.identity);
-        FishEntity fishEntity = fishEntityObj.AddComponent<FishEntity>();
-        fishEntity.FishCaughtMessage = FishCaughtMessage;
-        // fishEntity.FishUniqueId = fishUniqueId;
+        FishEntity fishEntity = fishEntityObj.GetComponent<FishEntity>();
+        // fishEntity.FishCaughtMessage = FishCaughtMessage;
+        fishEntity.FishUniqueId = fishUniqueId;
         // NetworkServer.Spawn(fishEntityObj);
 
 

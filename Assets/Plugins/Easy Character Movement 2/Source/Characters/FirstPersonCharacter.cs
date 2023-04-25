@@ -47,7 +47,7 @@ namespace EasyCharacterMovement
         public bool customInput;
         public Vector2 MovementInput;
         public Vector2 LookInput;
-        
+
         #endregion
 
         #region FIELDS
@@ -136,7 +136,7 @@ namespace EasyCharacterMovement
         {
             return characterLook;
         }
-        
+
         /// <summary>
         /// The Eye right vector.
         /// </summary>
@@ -163,7 +163,7 @@ namespace EasyCharacterMovement
         {
             return eyePivot.forward;
         }
-        
+
         /// <summary>
         /// Look up / down. Adds Pitch rotation to eyePivot.
         /// </summary>
@@ -229,7 +229,7 @@ namespace EasyCharacterMovement
                 y = Input.GetAxisRaw("Vertical"),
             };
 
-            if(customInput)
+            if (customInput)
                 movementInput = MovementInput;
 
             // Add input movement relative to us
@@ -299,8 +299,8 @@ namespace EasyCharacterMovement
                 x = Input.GetAxisRaw("Mouse X"),
                 y = Input.GetAxisRaw("Mouse Y"),
             };
-            
-            if(customInput)
+
+            if (customInput)
                 mouseLookInput = LookInput;
 
             if (mouseLookInput.x != 0.0f)

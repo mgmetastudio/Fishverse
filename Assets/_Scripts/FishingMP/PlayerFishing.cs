@@ -80,7 +80,7 @@ public class PlayerFishing : MonoBehaviourPun
             _localCamera = Camera.main.transform;
             rodUI = FindObjectOfType<CastRodUI>();
 
-            holsterBtn.onClick.AddListener(() => photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf));
+            holsterBtn.onClick.AddListener(Holster);
 
             rodUI.btn.onDown.AddListener(OnRodDown);
             rodUI.btn.onUp.AddListener(OnRodUp);
@@ -100,6 +100,17 @@ public class PlayerFishing : MonoBehaviourPun
     {
         onRodUp = true;
         onRod = false;
+    }
+
+    void Holster()
+    {
+        if (photonView.IsMine)
+        {
+            if (FishingFloat == null)
+                photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+            else
+                photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+        }
     }
 
     private async void Update()
@@ -125,7 +136,7 @@ public class PlayerFishing : MonoBehaviourPun
                     _floatDemo.SetActive(false);
                 }
 
-                if (fishingRod.activeSelf && (Input.GetMouseButtonDown(0) || onRodDown))
+                if (fishingRod.activeSelf && CastInput())
                 {
                     if (_floatDemo.activeSelf)
                     {
@@ -159,7 +170,7 @@ public class PlayerFishing : MonoBehaviourPun
             {
                 _floatDemo.SetActive(false);
 
-                if (Input.GetButton("CrankUp") || onRod)
+                if (CrankUpInput())
                 {
                     // FishingFloat.Pull();
                     FishingFloat.photonView.RPC("Pull", RpcTarget.All);
@@ -167,7 +178,7 @@ public class PlayerFishing : MonoBehaviourPun
                     _anim.Play(crankUpAnimationName);
                 }
 
-                if (Input.GetKeyUp(KeyCode.Mouse0) || onRodUp)
+                if (CrankDownInput())
                 {
                     _anim.SetFloat("Fishing_Up_Speed", 0);
                 }
@@ -200,6 +211,27 @@ public class PlayerFishing : MonoBehaviourPun
 
         onRodDown = false;
         onRodUp = false;
+    }
+
+    bool CastInput()
+    {
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            return onRodDown;
+        return Input.GetMouseButtonDown(0);
+    }
+
+    bool CrankUpInput()
+    {
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            return onRod;
+        return Input.GetButton("CrankUp");
+    }
+
+    bool CrankDownInput()
+    {
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            return onRodUp;
+        return Input.GetKeyUp(KeyCode.Mouse0);
     }
 
     [PunRPC]

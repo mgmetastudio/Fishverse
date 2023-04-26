@@ -23,6 +23,10 @@ public class Compass : MonoBehaviour
     {
         Instance = this;
 
+        var elements = FindObjectsOfType<CompassElement>();
+        foreach (var item in elements)
+            item.Add();
+
         onCompasInit.Invoke();
     }
 

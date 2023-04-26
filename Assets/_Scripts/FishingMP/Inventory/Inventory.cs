@@ -16,7 +16,7 @@ public class Inventory : MonoBehaviourPun
     [Header("Messages")]
     public GameObject NoItemsInInventoryMessage;
     [Header("Player GameObjects")]
-    public GameObject[] Fishes;
+    public List<GameObject> Fishes;
     public GameObject FishHolder;
     [Header("Animation")]
     public string FishHolderAnimationName = "Fish_Caught";
@@ -59,6 +59,8 @@ public class Inventory : MonoBehaviourPun
     public GameObject Manager;
     public string PlayerName;
     public Text PlayerNameText;
+
+    public int money;
 
     [Space]
     [SerializeField] float fishHoldTime = 2f;
@@ -356,7 +358,7 @@ public class Inventory : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.I))
         {
-            this.GetComponent<TestPlayerController>().canRotateCamera = false;
+            // this.GetComponent<TestPlayerController>().canRotateCamera = false;
             InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeOut");
             InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
             Cursor.visible = true;
@@ -364,7 +366,7 @@ public class Inventory : MonoBehaviourPun
         }
         if (Input.GetKeyUp(KeyCode.I))
         {
-            this.GetComponent<TestPlayerController>().canRotateCamera = true;
+            // this.GetComponent<TestPlayerController>().canRotateCamera = true;
             InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
             InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
             Cursor.visible = false;

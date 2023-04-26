@@ -16,6 +16,7 @@ public class CompassElement : MonoBehaviour
 
     private void Start()
     {
+        return;
         if (addOnStart)
         {
             Compass.onCompasInit.AddListener(Add);
@@ -28,6 +29,7 @@ public class CompassElement : MonoBehaviour
 
     void OnDestroy()
     {
+        return;
         Compass.onCompasInit.RemoveListener(Add);
     }
 }

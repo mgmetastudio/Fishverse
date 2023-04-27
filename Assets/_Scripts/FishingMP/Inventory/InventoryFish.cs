@@ -12,6 +12,8 @@ public class InventoryFish : MonoBehaviour
     public Text FishRetailValue;
     public Image FishImage;
 
+    public int value;
+
     private void Update()
     {
         //Force size to 0.9434147

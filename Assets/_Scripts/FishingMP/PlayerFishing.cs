@@ -317,6 +317,6 @@ public class PlayerFishing : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        Destroy(SpawnedFloatSimulation);
+        Destroy(SpawnedFloatSimulation.gameObject);
     }
 }

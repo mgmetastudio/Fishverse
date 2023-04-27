@@ -15,10 +15,13 @@ public class OpenWorldShop : MonoBehaviour
     void OnPlayerEnter(GameObject playerObj)
     {
         var inv = playerObj.GetComponent<Inventory>();
-        foreach (var item in inv.Fishes)
+
+        int amount = 0;
+        foreach (var item in inv.fishInv)
         {
-            inv.money += System.Int32.Parse(item.GetComponent<FishAIController>()._scriptable.FishRetailValue);
+            string resultString = System.Text.RegularExpressions.Regex.Match(item.FishRetailValue.text, @"\d+").Value;
+            amount += System.Int32.Parse(resultString);
         }
-        inv.Fishes = new List<GameObject>();
+        inv.SellAllFish(amount);
     }
 }

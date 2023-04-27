@@ -226,7 +226,7 @@ public class FishEntity : MonoBehaviourPun
 
                     FishAIController ai = this.GetComponent<FishAIController>();
 
-                    Debug.Log("Fish with ID " + this.GetComponent<FishAIController>()._scriptable.uniqueId + " caught!");
+                    Debug.Log("Fish with ID " + ai._scriptable.uniqueId + " caught!");
 
                     anim.FishCatch();
                     inv.HoldCaughtFish(ai._scriptable.uniqueId);
@@ -259,7 +259,7 @@ public class FishEntity : MonoBehaviourPun
         GameObject SpawnedInventoryFish;
 
         SpawnedInventoryFish = Instantiate(inv.InventoryFishPrefab);
-        SpawnedInventoryFish.transform.SetParent(inv.Content);
+        // SpawnedInventoryFish.transform.SetParent(inv.Content);
 
         var fish = SpawnedInventoryFish.GetComponent<InventoryFish>();
         fish.FishName.text = _scriptable.FishName;

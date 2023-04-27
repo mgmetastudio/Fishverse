@@ -5,7 +5,6 @@ using UnityEngine.UI;
 // using Mirror;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
-
 public class Inventory : MonoBehaviourPun
 {
     [Header("Inventory")]
@@ -60,7 +59,26 @@ public class Inventory : MonoBehaviourPun
     public string PlayerName;
     public Text PlayerNameText;
 
-    public int money;
+    public bool inInventory;
+
+    public TMPro.TMP_Text moneyText;
+
+    public GameObject soldUI;
+    public TMPro.TMP_Text soldText;
+
+    public List<InventoryFish> fishInv;
+
+    int _money;
+    public int Money
+    {
+        get => _money;
+        set
+        {
+            _money = value;
+            moneyText.SetText(_money + "$");
+        }
+    }
+
 
     [Space]
     [SerializeField] float fishHoldTime = 2f;
@@ -72,6 +90,7 @@ public class Inventory : MonoBehaviourPun
     public int LastSelectedFloat { get => lastSelectedFloat; set { if (photonView.IsMine) photonView.RPC("SetLastSelectedFloat", RpcTarget.All, value); } }
     public int CurrentSelectedFishingRod { get => currentSelectedFishingRod; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedFishingRod", RpcTarget.All, value); } }
     public int CurrentSelectedBait { get => currentSelectedBait; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedBait", RpcTarget.All, value); } }
+
 
     [PunRPC]
     void SetFloatHasChanged(bool value) => floatHasChanged = value;
@@ -357,21 +376,53 @@ public class Inventory : MonoBehaviourPun
             return;
 
         if (Input.GetKeyDown(KeyCode.I))
-        {
-            // this.GetComponent<TestPlayerController>().canRotateCamera = false;
-            InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeOut");
-            InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        if (Input.GetKeyUp(KeyCode.I))
-        {
-            // this.GetComponent<TestPlayerController>().canRotateCamera = true;
-            InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
-            InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+            ToggleInventory();
+    }
+
+    public void ToggleInventory()
+    {
+        if (inInventory) HideInventory();
+        else ShowInventory();
+    }
+
+    public async void SellAllFish(int amount)
+    {
+        if(amount == 0) return;
+
+        Money += amount;
+
+        ClearInventory();
+        soldText.SetText(amount + "$");
+
+        soldUI.SetActive();
+        await UniTask.WaitForSeconds(2f);
+        soldUI.SetInactive();
+    }
+
+    void ShowInventory()
+    {
+        inInventory = true;
+        // this.GetComponent<TestPlayerController>().canRotateCamera = false;
+        InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeOut");
+        InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    void HideInventory()
+    {
+        inInventory = false;
+        // this.GetComponent<TestPlayerController>().canRotateCamera = true;
+        InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
+        InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void ClearInventory()
+    {
+        fishInv.Clear();
+        Content.DestroyAllChild();
     }
 
     public void AddFishItem(int uniqueId, string FishName, string FishLength, string FishWeight, string FishRetailValue, Sprite FishSprite)
@@ -395,6 +446,9 @@ public class Inventory : MonoBehaviourPun
         invFish.FishWeight.text = "Weight: " + FishWeight;
         invFish.FishRetailValue.text = FishRetailValue;
         invFish.FishImage.sprite = FishSprite;
+
+        fishInv.Add(invFish);
+
 
         photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, uniqueId);
         // CmdHoldCaughtFish(uniqueId);

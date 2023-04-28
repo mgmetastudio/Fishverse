@@ -37,11 +37,14 @@ public class InputProxy : MonoBehaviour
             // .m_HorizontalAxis.m_InputAxisName = "";
             // tpCam.GetRig(0).GetCinemachineComponent<Cinemachine.CinemachinePOV>().m_VerticalAxis.m_InputAxisName = "";
         }
+        else
+            enabled = false;
     }
 
+    Vector2 lookMulti = new Vector2(2f, 1f);
     void Update()
     {
         character.MovementInput = moveJoystick.Direction;
-        character.LookInput = lookJoystick.Direction;
+        character.LookInput = lookJoystick.Direction * lookMulti;
     }
 }

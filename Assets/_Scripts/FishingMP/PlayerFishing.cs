@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class PlayerFishing : MonoBehaviourPun
 {
@@ -47,6 +48,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     [Space]
     [SerializeField] Button holsterBtn;
+    [SerializeField] Slider forceSlider;
 
     // public UnityEvent onCast;
 
@@ -61,6 +63,8 @@ public class PlayerFishing : MonoBehaviourPun
     bool onRodDown;
     bool onRodUp;
     bool onRod;
+
+    InputProxy _inputProxy;
 
     [PunRPC]
     void SetFishingFloat(int value)
@@ -84,6 +88,10 @@ public class PlayerFishing : MonoBehaviourPun
 
             rodUI.btn.onDown.AddListener(OnRodDown);
             rodUI.btn.onUp.AddListener(OnRodUp);
+
+            forceSlider.SetInactive();
+
+            _inputProxy = GetComponent<InputProxy>();
         }
 
         _inv = GetComponent<Inventory>();
@@ -113,89 +121,14 @@ public class PlayerFishing : MonoBehaviourPun
         }
     }
 
-    private async void Update()
+    private void Update()
     {
         if (photonView.IsMine)
         {
             if (FishingFloat == null)
-            {
-                if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
-                {
-                    if (!Physics.Raycast(_localCamera.position, _localCamera.forward, Vector3.Distance(_localCamera.position, hitInfo.point) + .01f, _obstacleMask))
-                    {
-                        _floatDemo.SetActive(true);
-                        _floatDemo.transform.position = hitInfo.point;
-                    }
-                    else
-                    {
-                        _floatDemo.SetActive(false);
-                    }
-                }
-                else
-                {
-                    _floatDemo.SetActive(false);
-                }
-
-                if (fishingRod.activeSelf && CastInput())
-                {
-                    if (_floatDemo.activeSelf)
-                    {
-                        // onCast.Invoke();
-                        _inv.HideFish();
-
-                        _anim.SetTrigger("FishingCast");
-
-
-                        await UniTask.WaitForSeconds(onCastWait);
-
-                        //TODO: this
-                        photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
-                        // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
-                        foreach (GameObject AllFish in _inv.Fishes)
-                        {
-                            AllFish.SetActive(false);
-                        }
-                        _inv.FishHolder.SetActive(false);
-                    }
-                }
-
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
-
-                    // DrawFishingRod(!fishingRod.activeSelf);
-                }
-            }
+                NoFishingFloatLogic();
             else
-            {
-                _floatDemo.SetActive(false);
-
-                if (CrankUpInput())
-                {
-                    // FishingFloat.Pull();
-                    FishingFloat.photonView.RPC("Pull", RpcTarget.All);
-                    _anim.SetFloat("Fishing_Up_Speed", 1);
-                    _anim.Play(crankUpAnimationName);
-                }
-
-                if (CrankDownInput())
-                {
-                    _anim.SetFloat("Fishing_Up_Speed", 0);
-                }
-
-                if (Input.GetMouseButtonDown(1))
-                {
-                    // CmdDestroyFloat();
-                    photonView.RPC("CmdDestroyFloat", RpcTarget.All);
-                }
-
-                if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance)
-                {
-                    onLineBroke?.Invoke();
-                    photonView.RPC("CmdDestroyFloat", RpcTarget.All);
-                    // CmdDestroyFloat();
-                }
-            }
+                FishingFloatLogic();
         }
 
         if (FishingFloat == null)
@@ -213,24 +146,111 @@ public class PlayerFishing : MonoBehaviourPun
         onRodUp = false;
     }
 
+    void FishingFloatLogic()
+    {
+        forceSlider.SetActive(FishingFloat.fish);
+        if (forceSlider.gameObject.activeSelf)
+            forceSlider.value = FishingFloat.fish.controller.pullForce;
+
+        _floatDemo.SetActive(false);
+
+        if (CrankUpInput())
+        {
+            // FishingFloat.Pull();
+            FishingFloat.photonView.RPC("Pull", RpcTarget.All);
+            _anim.SetFloat("Fishing_Up_Speed", 1);
+            _anim.Play(crankUpAnimationName);
+        }
+
+        if (CrankDownInput())
+        {
+            _anim.SetFloat("Fishing_Up_Speed", 0);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            // CmdDestroyFloat();
+            photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+        }
+
+        if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance)
+        {
+            onLineBroke?.Invoke();
+            photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+            // CmdDestroyFloat();
+        }
+    }
+
+    void NoFishingFloatLogic()
+    {
+        if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
+        {
+            if (!Physics.Raycast(_localCamera.position, _localCamera.forward, Vector3.Distance(_localCamera.position, hitInfo.point) + .01f, _obstacleMask))
+            {
+                _floatDemo.SetActive(true);
+                _floatDemo.transform.position = hitInfo.point;
+            }
+            else
+            {
+                _floatDemo.SetActive(false);
+            }
+        }
+        else
+        {
+            _floatDemo.SetActive(false);
+        }
+
+        if (fishingRod.activeSelf && CastInput())
+        {
+            Cast();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+
+            // DrawFishingRod(!fishingRod.activeSelf);
+        }
+    }
+
+    async Task Cast()
+    {
+        if (_floatDemo.activeSelf)
+        {
+            // onCast.Invoke();
+            _inv.HideFish();
+
+            _anim.SetTrigger("FishingCast");
+
+
+            await UniTask.WaitForSeconds(onCastWait);
+
+            //TODO: this
+            photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
+            // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
+            foreach (GameObject AllFish in _inv.Fishes)
+            {
+                AllFish.SetActive(false);
+            }
+            _inv.FishHolder.SetActive(false);
+        }
+    }
+
     bool CastInput()
     {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-            return onRodDown;
+        if (_inputProxy.mobileInput) return onRodDown;
         return Input.GetMouseButtonDown(0);
     }
 
     bool CrankUpInput()
     {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-            return onRod;
+        if (_inputProxy.mobileInput) return onRod;
         return Input.GetButton("CrankUp");
     }
 
     bool CrankDownInput()
     {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-            return onRodUp;
+        if (_inputProxy.mobileInput) return onRodUp;
         return Input.GetKeyUp(KeyCode.Mouse0);
     }
 
@@ -286,6 +306,7 @@ public class PlayerFishing : MonoBehaviourPun
         if (FishingFloat != null)
         {
             // _fishingFloat.Destroy(connectionToClient);
+            forceSlider.SetActive(false);
             PhotonNetwork.Destroy(FishingFloat.gameObject);
             //TODO: DESTROY
             DestroyFloatSimulation();

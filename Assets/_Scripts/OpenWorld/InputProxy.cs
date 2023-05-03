@@ -16,7 +16,10 @@ public class InputProxy : MonoBehaviour
     [SerializeField] CMFirstPersonCharacter character;
 
     [Space]
-    [SerializeField] bool mobileInput;
+    public bool mobileInput;
+
+    [Space]
+    [SerializeField] List<GameObject> mobileUI;
 
     void Start()
     {
@@ -36,9 +39,13 @@ public class InputProxy : MonoBehaviour
             tpCam.m_YAxis.m_InputAxisName = "";
             // .m_HorizontalAxis.m_InputAxisName = "";
             // tpCam.GetRig(0).GetCinemachineComponent<Cinemachine.CinemachinePOV>().m_VerticalAxis.m_InputAxisName = "";
+
         }
         else
+        {
+            foreach (var item in mobileUI) item.SetInactive();
             enabled = false;
+        }
     }
 
     Vector2 lookMulti = new Vector2(2f, 1f);

@@ -38,7 +38,7 @@ public class FishEntity : MonoBehaviourPun
         {
             if (photonView.IsMine)
             {
-                int id = value.photonView.ViewID;
+                int id = value ? value.photonView.ViewID : -1;
                 photonView.RPC("SetHookedTo", RpcTarget.All, id);
             }
         }
@@ -49,7 +49,7 @@ public class FishEntity : MonoBehaviourPun
     [PunRPC]
     void SetHookedTo(int value)
     {
-        FishingFloat _hookedToNew = PhotonView.Find(value).GetComponent<FishingFloat>();
+        FishingFloat _hookedToNew = value == -1 ? null : PhotonView.Find(value).GetComponent<FishingFloat>();
 
         HookedChanged(_hookedTo, _hookedToNew);
         _hookedTo = _hookedToNew;
@@ -141,6 +141,8 @@ public class FishEntity : MonoBehaviourPun
 
     private void Bite(FishingFloat _targetFloat)
     {
+        if (_targetFloat.fish) return;
+
         if (HookedTo == null)
         {
             // _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
@@ -162,6 +164,7 @@ public class FishEntity : MonoBehaviourPun
             controller.stamina = 1f;
             controller.doNotUpdateTarget = true;
             controller.fearfulness = 1f;
+            controller.currentOffHookTime = 0f;
 
             if (HookedTo.Owner.SpawnedFloatSimulation)
                 HookedTo.Owner.SpawnedFloatSimulation.SimulateBite();
@@ -206,6 +209,9 @@ public class FishEntity : MonoBehaviourPun
 
             if (HookedTo != null)
             {
+
+
+
                 Vector3 NewFishModelPosition = new Vector3(HookedTo.Hook.transform.position.x, HookedTo.Hook.transform.position.y - 0.15f, HookedTo.Hook.transform.position.z);
                 FishModel.transform.position = NewFishModelPosition;
                 if (controller.stamina < 0.7f)
@@ -216,8 +222,19 @@ public class FishEntity : MonoBehaviourPun
                 }
                 if (controller.stamina > 0.7f)
                 {
-                    FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
-                    // FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    if (controller.currentOffHookTime >= controller.getOffHookTime)
+                    {
+                        HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+
+                        controller.doNotUpdateTarget = false;
+                        controller.fearfulness = .0f;
+                        transform.parent = null;
+                        HookedTo = null;
+                        return;
+                    }
+
+                    // FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
+                    FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
                 }
                 if (Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist)
                 {

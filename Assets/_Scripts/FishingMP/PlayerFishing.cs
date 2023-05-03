@@ -150,7 +150,9 @@ public class PlayerFishing : MonoBehaviourPun
     {
         forceSlider.SetActive(FishingFloat.fish);
         if (forceSlider.gameObject.activeSelf)
+        {
             forceSlider.value = FishingFloat.fish.controller.pullForce;
+        }
 
         _floatDemo.SetActive(false);
 
@@ -338,6 +340,7 @@ public class PlayerFishing : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        Destroy(SpawnedFloatSimulation.gameObject);
+        if (SpawnedFloatSimulation.gameObject)
+            Destroy(SpawnedFloatSimulation.gameObject);
     }
 }

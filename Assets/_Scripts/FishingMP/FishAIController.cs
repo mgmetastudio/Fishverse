@@ -14,6 +14,9 @@ public class FishAIController : MonoBehaviour
     public bool doNotUpdateTarget;
     public float stamina = 1f;
 
+    public float getOffHookTime = 10f;
+    public float currentOffHookTime;
+
     private Vector3 CalculateBoundsVector()
     {
         return _bounds.Contains(transform.position) ? Vector3.zero : (_bounds.center - transform.position).normalized;
@@ -104,7 +107,7 @@ public class FishAIController : MonoBehaviour
     private Vector3 _currentVelocity;
     private void Update()
     {
-        if(!PhotonNetwork.IsMasterClient) return;
+        if (!PhotonNetwork.IsMasterClient) return;
 
         if (pullForce > .0f)
         {
@@ -115,13 +118,23 @@ public class FishAIController : MonoBehaviour
         {
             stamina += Time.deltaTime * .08f;
         }
+
+        if (stamina > .9f)
+        {
+            currentOffHookTime += Time.deltaTime;
+        }
+        else
+        {
+            if (currentOffHookTime > 0f) currentOffHookTime -= Time.deltaTime;
+        }
+
         pullForce = Mathf.Clamp(pullForce, .0f, 1f);
         stamina = Mathf.Clamp(stamina, .0f, 1f);
         fearfulness = Mathf.Clamp(fearfulness, .0f, 1f);
         Vector3 movementVector = (CalculateBoundsVector() * _scriptable.boundsVectorWeight) +
-            (CalculateAvoidanceVector() * _scriptable.avoidanceVectorWeight) +
-            (CalculateTargetVector() * 2f) +
-            (CalculateFearVector() * 6f);
+            (CalculateAvoidanceVector() * _scriptable.avoidanceVectorWeight);
+        //  + (CalculateFearVector() * 1f);
+        // + (CalculateTargetVector() * 2f);
 
         // if (target)
         //     movementVector = movementVector.WithY(.1f);

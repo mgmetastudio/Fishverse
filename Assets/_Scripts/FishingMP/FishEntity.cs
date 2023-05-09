@@ -250,7 +250,7 @@ public class FishEntity : MonoBehaviourPun
                     inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, ai._scriptable.FishLength, "Weight: " + ai._scriptable.FishWeight, ai._scriptable.FishRetailValue, ai._scriptable.FishSprite);
                     photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
                     // RpcHoldCaughtFish(ai._scriptable.uniqueId);
-                    Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.PlayerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
+                    Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
                     HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
                     // HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
 

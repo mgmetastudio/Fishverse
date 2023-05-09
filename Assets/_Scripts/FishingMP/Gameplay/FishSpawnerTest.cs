@@ -1,6 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 public class FishSpawnerTest : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class FishSpawnerTest : MonoBehaviour
 
     [SerializeField] private Vector3 _position;
     [SerializeField] Vector3 bounds = Vector3.one;
-    [SerializeField] public int _fishUniqueId;
+    [SerializeField] public List<int> fishUniqueIds = new List<int>(0);
 
     [Space]
     [SerializeField] int startSpawnCount = 10;
@@ -45,7 +47,7 @@ public class FishSpawnerTest : MonoBehaviour
     {
         // if (true)//Mirror.NetworkServer.active
         
-            spawner.Spawn(transform.position + _position, _fishUniqueId, bounds);
+            spawner.Spawn(transform.position + _position, fishUniqueIds.GetRandom(), bounds);
     }
 
 #if UNITY_EDITOR

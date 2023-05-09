@@ -76,14 +76,14 @@ public class Manager : MonoBehaviour
         }
     }
 
-    public void SelectShiner()
+    public void SelectShinerA()
     {
-        FishSpawner._fishUniqueId = 0;
+        // FishSpawner._fishUniqueId = 0;
     }
 
-    public void SelectTrout()
+    public void SelectTroutB()
     {
-        FishSpawner._fishUniqueId = 1;
+        // FishSpawner._fishUniqueId = 1;
     }
 
     public void ToggleNetworkManager()

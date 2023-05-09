@@ -56,7 +56,7 @@ public class Inventory : MonoBehaviourPun
     public Image CurrentSelectedBaitImage;
     [Header("Player Name")]
     public GameObject Manager;
-    public string PlayerName;
+    public string playerName;
     public Text PlayerNameText;
 
     public bool inInventory;
@@ -91,7 +91,6 @@ public class Inventory : MonoBehaviourPun
     public int CurrentSelectedFishingRod { get => currentSelectedFishingRod; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedFishingRod", RpcTarget.All, value); } }
     public int CurrentSelectedBait { get => currentSelectedBait; set { if (photonView.IsMine) photonView.RPC("SetCurrentSelectedBait", RpcTarget.All, value); } }
 
-
     [PunRPC]
     void SetFloatHasChanged(bool value) => floatHasChanged = value;
     [PunRPC]
@@ -108,12 +107,11 @@ public class Inventory : MonoBehaviourPun
         if (!photonView.IsMine)
         {
             InventoryCanvas.SetInactive();
-
-            PlayerName = Fishverse_Core.instance.account_username;
-            SetPlayerName(PlayerName);
-
             return;
         }
+        
+        playerName = Fishverse_Core.instance.account_username;
+        SetPlayerName(playerName);
 
         Manager = GameObject.FindGameObjectWithTag("Manager");
 
@@ -128,7 +126,7 @@ public class Inventory : MonoBehaviourPun
 
     public void SetPlayerName(string PlayerN)
     {
-        PlayerN = PlayerName;
+        PlayerN = playerName;
         PlayerNameText.text = PlayerN;
 
         photonView.RPC("CmdSetPlayerName", RpcTarget.All, PlayerN);
@@ -139,7 +137,7 @@ public class Inventory : MonoBehaviourPun
     [PunRPC]
     public void CmdSetPlayerName(string PlayerN)
     {
-        PlayerN = PlayerName;
+        PlayerN = playerName;
         PlayerNameText.text = PlayerN;
 
         photonView.RPC("RpcSetPlayerName", RpcTarget.All, PlayerN);
@@ -150,7 +148,7 @@ public class Inventory : MonoBehaviourPun
     [PunRPC]
     public void RpcSetPlayerName(string PlayerN)
     {
-        PlayerN = PlayerName;
+        PlayerN = playerName;
         PlayerNameText.text = PlayerN;
     }
 
@@ -387,7 +385,7 @@ public class Inventory : MonoBehaviourPun
 
     public async void SellAllFish(int amount)
     {
-        if(amount == 0) return;
+        if (amount == 0) return;
 
         Money += amount;
 

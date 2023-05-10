@@ -14,14 +14,19 @@ public class OpenWorldShop : MonoBehaviour
 
     void OnPlayerEnter(GameObject playerObj)
     {
-        var inv = playerObj.GetComponent<Inventory>();
+        var inv = playerObj.GetComponent<Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory>();
+        var shopInv = playerObj.GetComponentInChildren<Opsive.UltimateInventorySystem.UI.Menus.ShopMenuOpener>();
+        // print("INV: " + inv);
+        // print("Shop: " + shop);
+        
+        shopInv.Open(inv);
 
-        int amount = 0;
-        foreach (var item in inv.fishInv)
-        {
-            string resultString = System.Text.RegularExpressions.Regex.Match(item.FishRetailValue.text, @"\d+").Value;
-            amount += System.Int32.Parse(resultString);
-        }
-        inv.SellAllFish(amount);
+        // int amount = 0;
+        // foreach (var item in inv.fishInv)
+        // {
+        //     string resultString = System.Text.RegularExpressions.Regex.Match(item.FishRetailValue.text, @"\d+").Value;
+        //     amount += System.Int32.Parse(resultString);
+        // }
+        // inv.SellAllFish(amount);
     }
 }

@@ -7,6 +7,8 @@ using Cysharp.Threading.Tasks;
 using Photon.Pun;
 public class Inventory : MonoBehaviourPun
 {
+    public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
+
     [Header("Inventory")]
     public GameObject InventoryCanvas;
     public Transform Content;
@@ -379,8 +381,9 @@ public class Inventory : MonoBehaviourPun
 
     public void ToggleInventory()
     {
-        if (inInventory) HideInventory();
-        else ShowInventory();
+        inventoryUI.TogglePanel(inventoryUI.MainMenu);
+        // if (inInventory) HideInventory();
+        // else ShowInventory();
     }
 
     public async void SellAllFish(int amount)

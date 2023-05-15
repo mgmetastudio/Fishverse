@@ -26,8 +26,8 @@ public class FishScriptable : ScriptableObject {
 
     [Header("Fish Statistics")]
     public string FishName;
-    public string FishLength;
-    public string FishWeight;
-    public string FishRetailValue;
+    public Vector2 FishLength;
+    public Vector2 FishWeight;
+    public int FishRetailValue;
     public Sprite FishSprite;
 }

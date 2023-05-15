@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 // using Mirror;
 using System.Collections;
 using Photon.Pun;
@@ -247,7 +247,16 @@ public class FishEntity : MonoBehaviourPun
 
                     anim.FishCatch();
                     inv.HoldCaughtFish(ai._scriptable.uniqueId);
-                    inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, ai._scriptable.FishLength, "Weight: " + ai._scriptable.FishWeight, ai._scriptable.FishRetailValue, ai._scriptable.FishSprite);
+
+                    var fishInfo = ai._scriptable;
+
+                    float fishSizeMulti = 1f.GetRandom();
+
+                    float fishLength = fishInfo.FishLength.Lerp(fishSizeMulti);
+                    float fishWeight = fishInfo.FishWeight.Lerp(fishSizeMulti);
+                    int fishvalue = (int)(fishInfo.FishRetailValue * (1 + fishSizeMulti));
+
+                    inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, fishLength, fishWeight, fishvalue, ai._scriptable.FishSprite);
                     photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
                     // RpcHoldCaughtFish(ai._scriptable.uniqueId);
                     Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
@@ -280,9 +289,9 @@ public class FishEntity : MonoBehaviourPun
 
         var fish = SpawnedInventoryFish.GetComponent<InventoryFish>();
         fish.FishName.text = _scriptable.FishName;
-        fish.FishLength.text = _scriptable.FishLength;
-        fish.FishWeight.text = "Weight: " + _scriptable.FishWeight;
-        fish.FishRetailValue.text = _scriptable.FishRetailValue;
+        fish.FishLength.text = "";
+        fish.FishWeight.text = "";
+        fish.FishRetailValue.text = "";
         fish.FishImage.sprite = _scriptable.FishSprite;
 
         SpawnedInventoryFish = null;

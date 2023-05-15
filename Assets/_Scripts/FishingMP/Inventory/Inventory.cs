@@ -5,8 +5,14 @@ using UnityEngine.UI;
 // using Mirror;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
+using Opsive.UltimateInventorySystem.Core.DataStructures;
+using Opsive.UltimateInventorySystem.Core;
+using System.Linq;
+using Opsive.UltimateInventorySystem.Core.AttributeSystem;
+
 public class Inventory : MonoBehaviourPun
 {
+    public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
     public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
 
     [Header("Inventory")]
@@ -111,7 +117,7 @@ public class Inventory : MonoBehaviourPun
             InventoryCanvas.SetInactive();
             return;
         }
-        
+
         playerName = Fishverse_Core.instance.account_username;
         SetPlayerName(playerName);
 
@@ -426,10 +432,25 @@ public class Inventory : MonoBehaviourPun
         Content.DestroyAllChild();
     }
 
-    public void AddFishItem(int uniqueId, string FishName, string FishLength, string FishWeight, string FishRetailValue, Sprite FishSprite)
+    public void AddFishItem(int uniqueId, string FishName, float FishLength, float FishWeight, int FishRetailValue, Sprite FishSprite)
     {
         /*if (!isLocalPlayer)
             return;*/
+        InventorySystemManager inventoryManager = InventorySystemManager.Instance;
+        ItemDefinition itemDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.name == FishName);
+
+// itemDefinition.OverrideDefaultItemAttributeValues(new Opsive.Shared.Utility.ListSlice<AttributeBase>())
+//         var items = itemDefinition.GetAttributeList();//.GetAttributeAt(1, false);
+//         foreach (var item in items)
+//         {
+//             print("AAAAAAAAAA: " + item.Name);
+//         }
+        // print("AAAAAAAAAA: " + item);
+        itemDefinition.GetAttribute<Attribute<float>>("Length").SetOverrideValue(FishLength);
+        itemDefinition.GetAttribute<Attribute<float>>("Weight").SetOverrideValue(FishWeight);
+        itemDefinition.GetAttribute<Attribute<int>>("Value").SetOverrideValue(FishRetailValue);
+
+        playerInventory.AddItem(itemDefinition, 1);
 
         GameObject SpawnedInventoryFish;
 
@@ -443,9 +464,9 @@ public class Inventory : MonoBehaviourPun
 
         SpawnedInventoryFish.transform.SetParent(Content);
         invFish.FishName.text = FishName;
-        invFish.FishLength.text = FishLength;
-        invFish.FishWeight.text = "Weight: " + FishWeight;
-        invFish.FishRetailValue.text = FishRetailValue;
+        invFish.FishLength.text = $"Length: {FishLength}cm";
+        invFish.FishWeight.text = $"Weight: {FishWeight} kg";
+        invFish.FishRetailValue.text = $"Value: {FishRetailValue}$";
         invFish.FishImage.sprite = FishSprite;
 
         fishInv.Add(invFish);

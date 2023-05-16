@@ -9,11 +9,13 @@ using Opsive.UltimateInventorySystem.Core.DataStructures;
 using Opsive.UltimateInventorySystem.Core;
 using System.Linq;
 using Opsive.UltimateInventorySystem.Core.AttributeSystem;
+using Opsive.UltimateInventorySystem.Exchange;
 
 public class Inventory : MonoBehaviourPun
 {
     public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
     public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
+    public Currency currency;
 
     [Header("Inventory")]
     public GameObject InventoryCanvas;
@@ -439,16 +441,18 @@ public class Inventory : MonoBehaviourPun
         InventorySystemManager inventoryManager = InventorySystemManager.Instance;
         ItemDefinition itemDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.name == FishName);
 
-// itemDefinition.OverrideDefaultItemAttributeValues(new Opsive.Shared.Utility.ListSlice<AttributeBase>())
-//         var items = itemDefinition.GetAttributeList();//.GetAttributeAt(1, false);
-//         foreach (var item in items)
-//         {
-//             print("AAAAAAAAAA: " + item.Name);
-//         }
+        // itemDefinition.OverrideDefaultItemAttributeValues(new Opsive.Shared.Utility.ListSlice<AttributeBase>())
+        //         var items = itemDefinition.GetAttributeList();//.GetAttributeAt(1, false);
+        //         foreach (var item in items)
+        //         {
+        //             print("AAAAAAAAAA: " + item.Name);
+        //         }
         // print("AAAAAAAAAA: " + item);
         itemDefinition.GetAttribute<Attribute<float>>("Length").SetOverrideValue(FishLength);
         itemDefinition.GetAttribute<Attribute<float>>("Weight").SetOverrideValue(FishWeight);
-        itemDefinition.GetAttribute<Attribute<int>>("Value").SetOverrideValue(FishRetailValue);
+
+        var curr = new CurrencyAmounts(new CurrencyAmount[1] { new CurrencyAmount(currency, FishRetailValue) });
+        itemDefinition.GetAttribute<Attribute<CurrencyAmounts>>("PriceValue").SetOverrideValue(curr);
 
         playerInventory.AddItem(itemDefinition, 1);
 

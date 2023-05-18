@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EquipmentItem : MonoBehaviour
 {
-    public Inventory InventorySystem;
+    public PlayerFishingInventory InventorySystem;
     [Header("Equipment Item")]
     public Text EquipmentName;
     public Sprite EquipmentImage;

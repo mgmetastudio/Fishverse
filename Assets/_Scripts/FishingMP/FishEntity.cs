@@ -239,7 +239,7 @@ public class FishEntity : MonoBehaviourPun
                 if (Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist)
                 {
                     var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
-                    Inventory inv = HookedTo.Owner.GetComponent<Inventory>();
+                    PlayerFishingInventory inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();
 
                     FishAIController ai = this.GetComponent<FishAIController>();
 
@@ -277,7 +277,7 @@ public class FishEntity : MonoBehaviourPun
     public void RpcHoldCaughtFish(int uniqueId)
     {
         print("FISH");
-        var inv = HookedTo.Owner.GetComponent<Inventory>();
+        var inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();
 
         inv.HoldCaughtFish(uniqueId);
         HookedTo.Owner.GetComponent<Animator>().Play(inv.FishHolderAnimationName);

@@ -54,7 +54,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     public static UnityEvent onLineBroke;
 
-    Inventory _inv;
+    PlayerFishingInventory _inv;
     Animator _anim;
 
     Transform _localCamera;
@@ -94,7 +94,7 @@ public class PlayerFishing : MonoBehaviourPun
             _inputProxy = GetComponent<InputProxy>();
         }
 
-        _inv = GetComponent<Inventory>();
+        _inv = GetComponent<PlayerFishingInventory>();
         _anim = GetComponent<Animator>();
     }
 
@@ -262,7 +262,7 @@ public class PlayerFishing : MonoBehaviourPun
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
 
-        var inv = GetComponent<Inventory>();
+        var inv = GetComponent<PlayerFishingInventory>();
 
         if (draw)
             inv.SetFloat(0);

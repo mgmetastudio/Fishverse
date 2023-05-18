@@ -6,6 +6,7 @@ public class StartThankyouMessage
 {
     static StartThankyouMessage()
     {
+        return;
         if (System.IO.File.Exists(Application.dataPath + "/JU Foot Placement/Editor/Resources/DontShowThankYouMessage.jutps") == false)
         {
             ThankYouWindow.ShowWindow();

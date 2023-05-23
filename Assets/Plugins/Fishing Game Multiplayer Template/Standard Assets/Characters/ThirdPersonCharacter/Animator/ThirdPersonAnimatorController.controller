@@ -46,6 +46,49 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-7513215137096471927
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ea9c7e93cc327418bd05b9d7e897af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllers: []
+  controllerOkIfFound: 0
+  entries:
+  - preparedConditionsIndex: 1
+    color: {r: 0.11, g: 0.45, b: 0.38, a: 1}
+    conditions:
+    - type: 38
+      value: 0
+      parameterHash: 0
+    conditionsExtra: []
+    actions:
+    - type: 0
+      mode: 0
+      eventId: 1105789130
+      functionName: Air
+      parameterHash: 0
+      value: 0
+  - preparedConditionsIndex: 3
+    color: {r: 0.11, g: 0.45, b: 0.38, a: 1}
+    conditions:
+    - type: 40
+      value: 0
+      parameterHash: 0
+    conditionsExtra: []
+    actions:
+    - type: 0
+      mode: 0
+      eventId: 1180159062
+      functionName: Land
+      parameterHash: 0
+      value: 0
 --- !u!1102 &-7367821600026216879
 AnimatorState:
   serializedVersion: 6
@@ -332,7 +375,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 2023696732404105821}
   - {fileID: 2400223181870032690}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -7513215137096471927}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1571,6 +1615,61 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &3215609099164100631
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ea9c7e93cc327418bd05b9d7e897af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllers: []
+  controllerOkIfFound: 0
+  entries:
+  - preparedConditionsIndex: 0
+    color: {r: 0.11, g: 0.45, b: 0.38, a: 1}
+    conditions: []
+    conditionsExtra:
+    - type: 20
+      value: 0
+      parameterHash: 0
+    - type: 21
+      value: 1
+      parameterHash: -456179030
+    - type: 21
+      value: 1
+      parameterHash: -1815580100
+    actions:
+    - type: 0
+      mode: 0
+      eventId: -1220933136
+      functionName: Sprint
+      parameterHash: 0
+      value: 0
+  - preparedConditionsIndex: 0
+    color: {r: 0.11, g: 0.45, b: 0.38, a: 1}
+    conditions: []
+    conditionsExtra:
+    - type: 20
+      value: 0
+      parameterHash: 0
+    - type: 23
+      value: 1
+      parameterHash: -456179030
+    - type: 23
+      value: 1
+      parameterHash: -1815580100
+    actions:
+    - type: 0
+      mode: 0
+      eventId: -46878262
+      functionName: SprintStop
+      parameterHash: 0
+      value: 0
 --- !u!1109 &4523725710368119693
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -1598,7 +1697,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 2422063644455471258}
   - {fileID: 1229319015773218034}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 3215609099164100631}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

@@ -10,20 +10,22 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] float coughtWait = 1f;
 
     Animator _anim;
-    CharacterMovement _character;
+    CharacterMovement _movement;
+    Character _character;
 
     readonly string speedX = "SpeedX";
     readonly string speedY = "SpeedY";
 
     void Start()
     {
-        _character = GetComponent<CharacterMovement>();
+        _movement = GetComponent<CharacterMovement>();
+        _character = GetComponent<Character>();
         _anim = GetComponent<Animator>();
     }
 
     void Update()
     {
-        var state = _character.GetState();
+        var state = _movement.GetState();
         Vector3 dir = state.velocity.WithY(0);
         dir = transform.InverseTransformDirection(dir);
 
@@ -31,6 +33,8 @@ public class PlayerAnimator : MonoBehaviour
         _anim.SetFloat(speedY, Mathf.Lerp(_anim.GetFloat(speedY), dir.z, animSmooth * Time.deltaTime));
 
         _anim.SetBool("OnGround", state.hitGround);
+
+        _anim.SetBool("Swim", _character.IsSwimming());
     }
 
     public void FishingCast()

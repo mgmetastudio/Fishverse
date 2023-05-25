@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 public class PlayerFishing : MonoBehaviourPun
 {
+    [SerializeField] bool canFish;
 
     [SerializeField] private GameObject _fishingFloatBasePrefab;
     // [SyncVar]
@@ -112,6 +113,8 @@ public class PlayerFishing : MonoBehaviourPun
 
     void Holster()
     {
+        if (!canFish) return;
+
         if (photonView.IsMine)
         {
             if (FishingFloat == null)
@@ -123,6 +126,8 @@ public class PlayerFishing : MonoBehaviourPun
 
     private void Update()
     {
+        if (!canFish) return;
+
         if (photonView.IsMine)
         {
             if (FishingFloat == null)
@@ -271,6 +276,18 @@ public class PlayerFishing : MonoBehaviourPun
 
         _anim.SetLayerWeight(2, draw.Int());
 
+    }
+
+    public void OnSwimStart()
+    {
+        photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+        _floatDemo.SetActive(false);
+        canFish = false;
+    }
+
+    public void OnSwimEnd()
+    {
+        canFish = true;
     }
 
     // [Command(requiresAuthority = true)]

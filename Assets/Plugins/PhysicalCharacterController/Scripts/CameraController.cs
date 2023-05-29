@@ -22,10 +22,10 @@ public class CameraController : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
-            firstPerson.Priority = 10;
+            // SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+            thirdPerson.Priority = 10;
 
-            cameraBtn.onClick.AddListener(ToggleView);
+            // cameraBtn.onClick.AddListener(ToggleView);
         }
 
     }
@@ -33,34 +33,10 @@ public class CameraController : MonoBehaviour
     {
         if (!photonView.IsMine) return;
 
-        // MouseVerticalValue = Input.GetAxis("Mouse Y");
-
-        // Quaternion finalRotation = Quaternion.Euler(
-        //     -MouseVerticalValue * sensitivity,
-        // 0, 0);
-
-        // cameraTransform.localRotation = finalRotation;
-
-        // body.rotation = Quaternion.Euler(
-        // 0,
-        // body.localRotation.eulerAngles.y + Input.GetAxis("Mouse X") * sensitivity,
-        // 0);
-
-        // if (Input.GetMouseButtonDown(0))
+        // if (Input.GetKeyDown(KeyCode.F))
         // {
-        //     Cursor.lockState = CursorLockMode.Locked;
-        //     Cursor.visible = false;
+        //     ToggleView();
         // }
-        // if (Input.GetKeyDown(KeyCode.Escape))
-        // {
-        //     Cursor.lockState = CursorLockMode.None;
-        //     Cursor.visible = true;
-        // }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            ToggleView();
-        }
 
     }
 

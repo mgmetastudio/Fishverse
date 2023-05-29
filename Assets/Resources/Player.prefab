@@ -22929,6 +22929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61692441041bfa24e9032b069eb32807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryMenuUI: {fileID: 0}
   playerInventory: {fileID: 7723313592634290490}
   inventoryUI: {fileID: 1441121986092873233}
   currency: {fileID: 11400000, guid: 0fde97b2e1b00a742ba0b40d12ef2186, type: 2}
@@ -23026,6 +23027,21 @@ MonoBehaviour:
   soldUI: {fileID: 1219980887380153123}
   soldText: {fileID: 4601333130820128810}
   fishInv: []
+  onInventory:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4449791172451686112}
+        m_TargetAssemblyTypeName: PlayerFishing, Assembly-CSharp
+        m_MethodName: ToggleCantFish
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   fishHoldTime: 5.5
 --- !u!54 &2876122507445932263
 Rigidbody:

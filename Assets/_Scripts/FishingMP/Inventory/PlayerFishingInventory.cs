@@ -10,9 +10,11 @@ using Opsive.UltimateInventorySystem.Core;
 using System.Linq;
 using Opsive.UltimateInventorySystem.Core.AttributeSystem;
 using Opsive.UltimateInventorySystem.Exchange;
+using UnityEngine.Events;
 
 public class PlayerFishingInventory : MonoBehaviourPun
 {
+    public GameObject inventoryMenuUI;
     public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
     public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
     public Currency currency;
@@ -77,6 +79,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public TMPro.TMP_Text soldText;
 
     public List<InventoryFish> fishInv;
+
+    public UnityEvent<bool> onInventory;
 
     int _money;
     public int Money
@@ -390,6 +394,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public void ToggleInventory()
     {
         inventoryUI.TogglePanel(inventoryUI.MainMenu);
+        onInventory.Invoke(inventoryUI.MainMenu.gameObject.activeSelf);
         // if (inInventory) HideInventory();
         // else ShowInventory();
     }

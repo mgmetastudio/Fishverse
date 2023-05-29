@@ -290,6 +290,11 @@ public class PlayerFishing : MonoBehaviourPun
         canFish = true;
     }
 
+    public void ToggleCantFish(bool value)
+    {
+        canFish = !value;
+    }
+
     // [Command(requiresAuthority = true)]
     [PunRPC]
     private void CmdSpawnFloat(Vector3 position, int uniqueId)

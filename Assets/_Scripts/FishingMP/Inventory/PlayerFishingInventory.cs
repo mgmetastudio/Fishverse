@@ -446,15 +446,10 @@ public class PlayerFishingInventory : MonoBehaviourPun
         InventorySystemManager inventoryManager = InventorySystemManager.Instance;
         ItemDefinition itemDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.name == FishName);
 
-        // itemDefinition.OverrideDefaultItemAttributeValues(new Opsive.Shared.Utility.ListSlice<AttributeBase>())
-        //         var items = itemDefinition.GetAttributeList();//.GetAttributeAt(1, false);
-        //         foreach (var item in items)
-        //         {
-        //             print("AAAAAAAAAA: " + item.Name);
-        //         }
-        // print("AAAAAAAAAA: " + item);
         itemDefinition.GetAttribute<Attribute<float>>("Length").SetOverrideValue(FishLength);
         itemDefinition.GetAttribute<Attribute<float>>("Weight").SetOverrideValue(FishWeight);
+        int waterTypeID = itemDefinition.GetAttribute<Attribute<int>>("WaterType").GetValue();
+        itemDefinition.GetAttribute<Attribute<int>>("Rarity").SetOverrideValue(waterTypeID.GetRandom());
 
         var curr = new CurrencyAmounts(new CurrencyAmount[1] { new CurrencyAmount(currency, FishRetailValue) });
         itemDefinition.GetAttribute<Attribute<CurrencyAmounts>>("PriceValue").SetOverrideValue(curr);

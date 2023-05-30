@@ -35,11 +35,13 @@ MonoBehaviour:
     m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Core.ItemDefinition,
       Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
     m_ValueHashes: 
-    m_LongValueHashes: 4c1e4f8e62aa191ac2330064f10375df07c1b5891de38a2e
-    m_ValuePositions: 000000000400000008000000
-    m_Values: 010000000100000000000000
+    m_LongValueHashes: 4c1e4f8e62aa191ac2330064f10375df07c1b5891de38a2e94c2b5891de38a2ee1ccb5891de38a2e
+    m_ValuePositions: 0000000004000000080000000c00000010000000
+    m_Values: 0300000003000000000000000100000002000000
     m_UnityObjects:
     - {fileID: 11400000, guid: 9cc152478caf5274ea99a124c35c848e, type: 2}
+    - {fileID: 11400000, guid: 2df63f766bcfcd0428056c34673bd0c4, type: 2}
+    - {fileID: 11400000, guid: da2f83d628c4d8c498166880739f373c, type: 2}
     m_Version: 3.2
   m_IsAbstract: 0
   m_Color: {r: 0.9811321, g: 0.62533027, b: 0.3184051, a: 1}
@@ -47,7 +49,23 @@ MonoBehaviour:
   m_ItemCategoryAttributeCollection:
     m_AttributeCollectionData: []
   m_RequiredItemDefinitionAttributes:
-    m_AttributeCollectionData: []
+    m_AttributeCollectionData:
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.Int32,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+      m_ValueHashes: 
+      m_LongValueHashes: 0d00eb254f8d1b295b713f72e636d894086efd392442dff734ebab2aec72d130f446621b49ba2a58a8823c4a519fa651424b280f5394b559861dc27bf4117a0e
+      m_ValuePositions: 00000000090000000a0000000a0000000e0000000e0000001200000016000000
+      m_Values: 5761746572547970650101000000e0f7ebfe0000000000000000
+      m_UnityObjects: []
+      m_Version: 3.2
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
+        Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 
+      m_LongValueHashes: 0d00eb254f8d1b295b713f72e636d894086efd392442dff734ebab2aec72d130f446621b49ba2a58a8823c4a519fa65100874d327c4198d94459e79e1dbf5c8e
+      m_ValuePositions: 000000000a0000000b0000000b0000000f0000000f0000001300000013000000
+      m_Values: 507269636556616c75650101000000694d30ad
+      m_UnityObjects: []
+      m_Version: 3.2
   m_RequiredItemAttributes:
     m_AttributeCollectionData: []
   m_IsMutable: 1

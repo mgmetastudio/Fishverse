@@ -14,7 +14,6 @@ using UnityEngine.Events;
 
 public class PlayerFishingInventory : MonoBehaviourPun
 {
-    public GameObject inventoryMenuUI;
     public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
     public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
     public Currency currency;

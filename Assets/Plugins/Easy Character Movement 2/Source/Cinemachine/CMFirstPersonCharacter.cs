@@ -24,6 +24,9 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
 
         CinemachinePOV fpPOV;
 
+        bool _cameraLockInput;
+        float _speedY;
+
         #endregion
 
         #region METHODS
@@ -32,6 +35,7 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
         {
             base.Start();
             fpPOV = fpCam.GetCinemachineComponent<CinemachinePOV>();
+            _speedY = tpCam.m_YAxis.m_MaxSpeed;
         }
 
         protected override void AnimateEye()
@@ -63,14 +67,25 @@ namespace EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample
             cmWalkingCamera.SetActive(true);
         }
 
+        public void ToggleCameraInput(bool value)
+        {
+            _cameraLockInput = value;
+            tpCam.m_YAxis.m_MaxSpeed = value ? 0f : _speedY;
+        }
+
         protected override void HandleCameraInput()
         {
+            if (_cameraLockInput)
+            {
+                return;
+            }
+
             base.HandleCameraInput();
 
             if (customInput)
             {
                 fpPOV.m_VerticalAxis.m_InputAxisValue = LookInput.y * .5f;
-                tpCam.m_YAxis.m_InputAxisValue =  LookInput.y * .5f;
+                tpCam.m_YAxis.m_InputAxisValue = LookInput.y * .5f;
             }
         }
 

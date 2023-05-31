@@ -11,12 +11,16 @@ using System.Linq;
 using Opsive.UltimateInventorySystem.Core.AttributeSystem;
 using Opsive.UltimateInventorySystem.Exchange;
 using UnityEngine.Events;
+using XpModule;
 
 public class PlayerFishingInventory : MonoBehaviourPun
 {
     public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
     public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
     public Currency currency;
+
+    [Space]
+    public  XpTracker xpLevel;
 
     [Header("Inventory")]
     public GameObject InventoryCanvas;
@@ -448,12 +452,15 @@ public class PlayerFishingInventory : MonoBehaviourPun
         itemDefinition.GetAttribute<Attribute<float>>("Length").SetOverrideValue(FishLength);
         itemDefinition.GetAttribute<Attribute<float>>("Weight").SetOverrideValue(FishWeight);
         int waterTypeID = itemDefinition.GetAttribute<Attribute<int>>("WaterType").GetValue();
-        itemDefinition.GetAttribute<Attribute<int>>("Rarity").SetOverrideValue(waterTypeID.GetRandom());
+        int rarity = waterTypeID.GetRandom();
+        itemDefinition.GetAttribute<Attribute<int>>("Rarity").SetOverrideValue(rarity);
 
         var curr = new CurrencyAmounts(new CurrencyAmount[1] { new CurrencyAmount(currency, FishRetailValue) });
         itemDefinition.GetAttribute<Attribute<CurrencyAmounts>>("PriceValue").SetOverrideValue(curr);
 
         playerInventory.AddItem(itemDefinition, 1);
+
+        xpLevel.Grant("Fishing", rarity + 1);
 
         GameObject SpawnedInventoryFish;
 

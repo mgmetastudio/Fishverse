@@ -460,6 +460,9 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         playerInventory.AddItem(itemDefinition, 1);
 
+        ItemDefinition baitDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.Category.name == "Bait");
+        // playerInventory.RemoveItem(baitDefinition)
+
         xpLevel.Grant("Fishing", rarity + 1);
 
         GameObject SpawnedInventoryFish;

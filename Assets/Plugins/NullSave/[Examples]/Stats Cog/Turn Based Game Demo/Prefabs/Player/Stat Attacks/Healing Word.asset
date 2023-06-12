@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90a3f23c503f6a8498d9f41913f12f8b, type: 3}
+  m_Name: Healing Word
+  m_EditorClassIdentifier: 
+  category: Spells (Bonus)
+  displayName: Healing Word Lv1 (1d4 + WIS Modifier)
+  unlocked:
+    valueSource: 0
+    value: 1
+    valueFromStat: 1 = 0
+  learned:
+    valueSource: 0
+    value: 1
+    valueFromStat: 1 = 0
+  readied:
+    valueSource: 0
+    value: 1
+    valueFromStat: 1 = 0
+  requireFormulas:
+  - Actions < Actions:max
+  - BonusActions > 0
+  - SpellLvl1Slots > 0
+  requireAniMods: []
+  requireItems: []
+  requireEquipped: []
+  targetsArea: 0
+  minTargets: 1
+  maxTargets: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 2147483648
+  minRange: 0
+  maxRange: 12
+  hasRadius: 0
+  radius: 0
+  canTargetSelf: 1
+  spawnObject: {fileID: 0}
+  mustReload: 1
+  startLoaded: 1
+  reloadTime: 3
+  damageType: {fileID: 11400000, guid: 7768e0077f980764b8b732df500bf287, type: 2}
+  autoHit: 1
+  usesHitRoll: 0
+  hitRoll: 
+  rollCanCrit: 0
+  minCritValue: 
+  hitCondition: 
+  hitDamageAmount: -(1 + rnd_i(4) + MOD_WIS)
+  critDamageAmount: 
+  missDamageAmount: 0
+  hitEffects: []
+  applyEffects: []
+  applyModifiers:
+  - icon: {fileID: 0}
+    displayText: 
+    textColor: {r: 0, g: 0, b: 0, a: 0}
+    hideInList: 0
+    affectedStat: BonusActions
+    effectType: 0
+    valueTarget: 0
+    valueType: 2
+    value: 1
+  - icon: {fileID: 0}
+    displayText: 
+    textColor: {r: 0, g: 0, b: 0, a: 0}
+    hideInList: 0
+    affectedStat: SpellLvl1Slots
+    effectType: 0
+    valueTarget: 0
+    valueType: 2
+    value: 1
+  applyAniMods: []

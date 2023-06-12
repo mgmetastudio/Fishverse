@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50626e6870efb5489e5b6d9ae6bff11, type: 3}
+  m_Name: Fire Arrow
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 4e875414fbc58b54088c87511f732728, type: 3}
+  displayName: Fire Arrow
+  description: Flaming ranged poking device. (Requires external launcher, aka a Bow)
+  subtext: 
+  category: {fileID: 11400000, guid: 1d67b7c2704132b49a93c57a1e6690ce, type: 2}
+  uiTags:
+  - {fileID: 11400000, guid: 2aa667f8be8810042baff93a06d91e1b, type: 2}
+  displayRecipe: {fileID: 0}
+  allowCustomName: 0
+  modifyName: 0
+  nameModifier: 
+  modifierOrder: 0
+  customTags: []
+  itemType: 4
+  usesAmmo: 0
+  ammoType: Arrow
+  ammoPerUse: 1
+  displayInInventory: 1
+  useSlotId: 0
+  slotId: 0
+  freeSlotWhenEquipped: 0
+  canSell: 1
+  projectile: {fileID: 9112239998206104491, guid: 3990b053ee6b0b74b98b71c5f8d49151,
+    type: 3}
+  allowHotbar: 1
+  previewObject: {fileID: 2610822269705339404, guid: dda073a1ac1b7bf41bfebb352d100ccf,
+    type: 3}
+  previewScale: 1.5
+  condition: 1
+  rarity: 0
+  weight: 0.1
+  value: 0.25
+  canStack: 1
+  countPerStack: 64
+  hasMaxStacks: 0
+  maxStacks: 4
+  storedItems: []
+  mustEmptyToHold: 1
+  hasMaxStoreSlots: 1
+  maxStoreSlots: 16
+  hasMaxStoreWeight: 0
+  maxStoreWeight: 100
+  storedIn: {fileID: 0}
+  equipObject: {fileID: 0}
+  customizationPoint: {fileID: 0}
+  customizationId: 
+  autoEquip: 0
+  equipLocation: 0
+  equipPoints: []
+  canEquip: 0
+  canDrop: 1
+  canStore: 1
+  equipSource: 0
+  equipExpression: 1 > 0
+  dropObject: {fileID: 2636194835399799801, guid: 68c3fad81dd609e4397fbc1953a51a68,
+    type: 3}
+  equipAnimatorMods: []
+  unequipAnimatorMods: []
+  autoUse: 0
+  canRepair: 0
+  repairSource: 0
+  repairExpression: 1 > 0
+  repairIncrement: 0.05
+  incrementCost: 10
+  incrementComponents: []
+  canBreakdown: 0
+  breakdownSource: 0
+  breakdownExpression: 1 > 0
+  breakdownCategory: 
+  breakdownResult: []
+  attachRequirement: 0
+  attachCatsFilter: []
+  attachItemsFilter: []
+  attachSlots: []
+  attachObject: {fileID: 0}
+  attachPoints: []
+  statEffects: []
+  unlockCategories: []
+  unlockCraftingCategories: []
+  unlockRecipes: []
+  onAttachmentAdded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: NullSave.TOCK.Inventory.ItemChanged, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAttachmentRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: NullSave.TOCK.Inventory.ItemChanged, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStoredItemAdded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStoredItemRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  z_display_flags: 4095

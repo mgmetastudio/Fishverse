@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136960c8d49856b4180c8b4496e2058e, type: 3}
+  m_Name: Casual
+  m_EditorClassIdentifier: 
+  displayName: Casual
+  description: 
+  spawnTag: InventoryUI
+  enableTriggers: 1
+  enableRaycast: 0
+  raycastOffset: {x: 0, y: 0, z: 0}
+  maxDistance: 5
+  enableUIClick: 1
+  promptUI: {fileID: 5997502635950341451, guid: 18d29d3704d859846a58fd6bf9ff2d6b,
+    type: 3}
+  itemText: 'Loot '
+  merchantText: 'Shop '
+  containerText: 'Open '
+  craftingText: 'Craft '
+  generalUI: {fileID: 5680372532254200034, guid: 5836f1aea4cf2364a801b87dbe140884,
+    type: 3}
+  inventoryMenu: {fileID: 4615171494601694715, guid: 32b3a7cf6c1f7514aa738fc129b89ced,
+    type: 3}
+  itemManagerMenu: {fileID: 66137633730410074, guid: 305327df193c0864dbf0e7a6b8dd97d0,
+    type: 3}
+  itemContainerMenu: {fileID: 40799055392451250, guid: 42d097599492c8f4da8574da8bf79e08,
+    type: 3}
+  craftingMenu: {fileID: 6978233947554966854, guid: bfb2dea21610a7c4d8191aab3469b99a,
+    type: 3}
+  craftDetailMenu: {fileID: 271995225535786792, guid: 07cc149baa2781e40836d30bf0398d17,
+    type: 3}
+  merchantMenu: {fileID: 4903137254676345009, guid: 8b18dd072cffb374aa6ba163049d3c66,
+    type: 3}
+  tradeMenu: {fileID: 8956110865094764207, guid: 70d72d1d0c4310d4f8d1489f1fb056d7,
+    type: 3}
+  containerMenu: {fileID: 5720577051472459789, guid: 908f412b0f52ea4479a230763d910af2,
+    type: 3}
+  attachments: {fileID: 1843223427749472865, guid: f546a73cf5aa18143aff55dac775dc1d,
+    type: 3}
+  renamePrompt: {fileID: 0}
+  countSelection: {fileID: 3887727044733835126, guid: 89907f98b216cc244ab299e302bedd04,
+    type: 3}
+  minCount: 5
+  sellPrompt: How many would you like to sell?
+  buyPrompt: How many would you like to buy?
+  dropPrompt: How many would you like to drop?
+  consumePrompt: How many would you like to use?
+  breakdownPrompt: How many would you like to breakdown?
+  craftPrompt: How many would you like to craft?
+  genericPrompt: Select Count
+  rarityLevels:
+  - name: Scrap
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - name: Flimsy
+    color: {r: 0.6941177, g: 0.6941177, b: 0.6941177, a: 1}
+  - name: Common
+    color: {r: 0.2117647, g: 0.9568628, b: 0.6666667, a: 1}
+  - name: Uncommon
+    color: {r: 0.3607843, g: 0.5960785, b: 0.8431373, a: 1}
+  - name: Unique
+    color: {r: 0.3019608, g: 0.454902, b: 0.3333333, a: 1}
+  - name: Rare
+    color: {r: 0.7215686, g: 0.9333334, b: 0.01568628, a: 1}
+  - name: Renowned
+    color: {r: 1, g: 0.8470589, b: 0.003921569, a: 1}
+  - name: Extraordinary
+    color: {r: 0.8078432, g: 0.4117647, b: 0.1921569, a: 1}
+  - name: Legendary
+    color: {r: 0.8156863, g: 0.172549, b: 0.8901961, a: 1}
+  - name: Epic
+    color: {r: 0.5254902, g: 0.3176471, b: 0.6784314, a: 1}
+  - name: Mythic
+    color: {r: 0.9921569, g: 0.2941177, b: 0.2941177, a: 1}

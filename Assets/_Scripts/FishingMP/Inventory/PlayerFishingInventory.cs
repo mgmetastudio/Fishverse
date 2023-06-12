@@ -5,22 +5,26 @@ using UnityEngine.UI;
 // using Mirror;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
-using Opsive.UltimateInventorySystem.Core.DataStructures;
-using Opsive.UltimateInventorySystem.Core;
 using System.Linq;
-using Opsive.UltimateInventorySystem.Core.AttributeSystem;
-using Opsive.UltimateInventorySystem.Exchange;
 using UnityEngine.Events;
 using XpModule;
+using NullSave.TOCK.Inventory;
+using NullSave.TOCK.Stats;
 
 public class PlayerFishingInventory : MonoBehaviourPun
 {
-    public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
-    public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
-    public Currency currency;
+    // public Opsive.UltimateInventorySystem.Core.InventoryCollections.Inventory playerInventory;
+    // public Opsive.UltimateInventorySystem.UI.Panels.DisplayPanelManager inventoryUI;
+    // public Currency currency;
 
     [Space]
-    public  XpTracker xpLevel;
+    [SerializeField] InventoryCog inventoryCog;
+    [SerializeField] StatsCog statsCog;
+
+    [Space]
+    [SerializeField] InventoryItem fishBaseItem;
+    [SerializeField] Category fishCategory;
+    // public  XpTracker xpLevel;
 
     [Header("Inventory")]
     public GameObject InventoryCanvas;
@@ -85,6 +89,9 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public UnityEvent<bool> onInventory;
 
+    [SerializeField] InventoryItem currentBait;
+    [SerializeField] InventoryItem currentRod;
+
     int _money;
     public int Money
     {
@@ -134,11 +141,33 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         Camera = Camera.main;
 
-        SetUpFloat();
+        // SetUpFloat();
 
         CheckForItems();
 
         SpawnEquipment();
+    }
+
+    public void OnItemEquip(InventoryItem equipedItem)
+    {
+        if (equipedItem.displayName == "Fishing Rod")
+        {
+            currentRod = equipedItem;
+            SetUpFloat();
+        }
+        if (equipedItem.subtext == "Fishing Bait")
+            currentBait = equipedItem;
+    }
+
+    public void OnItemUnequip(InventoryItem unequipedItem)
+    {
+        if (unequipedItem.displayName == "Fishing Rod")
+        {
+            currentRod = null;
+
+        }
+        if (unequipedItem.subtext == "Fishing Bait")
+            currentBait = null;
     }
 
     public void SetPlayerName(string PlayerN)
@@ -390,16 +419,6 @@ public class PlayerFishingInventory : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        if (Input.GetKeyDown(KeyCode.I))
-            ToggleInventory();
-    }
-
-    public void ToggleInventory()
-    {
-        inventoryUI.TogglePanel(inventoryUI.MainMenu);
-        onInventory.Invoke(inventoryUI.MainMenu.gameObject.activeSelf);
-        // if (inInventory) HideInventory();
-        // else ShowInventory();
     }
 
     public async void SellAllFish(int amount)
@@ -416,24 +435,27 @@ public class PlayerFishingInventory : MonoBehaviourPun
         soldUI.SetInactive();
     }
 
-    void ShowInventory()
+    public void ShowInventory()
     {
         inInventory = true;
         // this.GetComponent<TestPlayerController>().canRotateCamera = false;
-        InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeOut");
-        InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
+        // InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeOut");
+        // InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        onInventory.Invoke(inInventory);
     }
 
-    void HideInventory()
+    public void HideInventory()
     {
         inInventory = false;
         // this.GetComponent<TestPlayerController>().canRotateCamera = true;
-        InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
-        InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
+        // InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
+        // InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        onInventory.Invoke(inInventory);
+
     }
 
     public void ClearInventory()
@@ -446,24 +468,40 @@ public class PlayerFishingInventory : MonoBehaviourPun
     {
         /*if (!isLocalPlayer)
             return;*/
-        InventorySystemManager inventoryManager = InventorySystemManager.Instance;
-        ItemDefinition itemDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.name == FishName);
+        // InventorySystemManager inventoryManager = InventorySystemManager.Instance;
+        // ItemDefinition itemDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.name == FishName);
 
-        itemDefinition.GetAttribute<Attribute<float>>("Length").SetOverrideValue(FishLength);
-        itemDefinition.GetAttribute<Attribute<float>>("Weight").SetOverrideValue(FishWeight);
-        int waterTypeID = itemDefinition.GetAttribute<Attribute<int>>("WaterType").GetValue();
-        int rarity = waterTypeID.GetRandom();
-        itemDefinition.GetAttribute<Attribute<int>>("Rarity").SetOverrideValue(rarity);
+        // itemDefinition.GetAttribute<Attribute<float>>("Length").SetOverrideValue(FishLength);
+        // itemDefinition.GetAttribute<Attribute<float>>("Weight").SetOverrideValue(FishWeight);
+        // int waterTypeID = itemDefinition.GetAttribute<Attribute<int>>("WaterType").GetValue();
+        // int rarity = waterTypeID.GetRandom();
+        // itemDefinition.GetAttribute<Attribute<int>>("Rarity").SetOverrideValue(rarity);
 
-        var curr = new CurrencyAmounts(new CurrencyAmount[1] { new CurrencyAmount(currency, FishRetailValue) });
-        itemDefinition.GetAttribute<Attribute<CurrencyAmounts>>("PriceValue").SetOverrideValue(curr);
+        // var curr = new CurrencyAmounts(new CurrencyAmount[1] { new CurrencyAmount(currency, FishRetailValue) });
+        // itemDefinition.GetAttribute<Attribute<CurrencyAmounts>>("PriceValue").SetOverrideValue(curr);
 
-        playerInventory.AddItem(itemDefinition, 1);
+        // playerInventory.AddItem(itemDefinition, 1);
 
-        ItemDefinition baitDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.Category.name == "Bait");
+        // ItemDefinition baitDefinition = inventoryManager.Database.ItemDefinitions.First(x => x.Category.name == "Bait");
         // playerInventory.RemoveItem(baitDefinition)
 
-        xpLevel.Grant("Fishing", rarity + 1);
+        // xpLevel.Grant("Fishing", rarity + 1);
+
+        var fishItem = Instantiate(fishBaseItem);
+        fishItem.category = fishCategory;
+
+        fishItem.icon = FishSprite;
+        fishItem.value = FishRetailValue;
+        fishItem.weight = FishWeight;
+        fishItem.displayName = FishName;
+        fishItem.SetCustomTag("Length", FishLength.ToString());
+        // fishItem.rarity = //random 0, fishrod type;
+
+        inventoryCog.AddToInventory(fishItem);
+        inventoryCog.RemoveItem(currentBait, 1);
+
+        var xpStat = statsCog.Stats.First(x => x.displayName == "XP");
+        xpStat.SetValue(xpStat.CurrentValue + FishRetailValue);
 
         GameObject SpawnedInventoryFish;
 

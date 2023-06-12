@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90a3f23c503f6a8498d9f41913f12f8b, type: 3}
+  m_Name: Punch
+  m_EditorClassIdentifier: 
+  category: Melee
+  displayName: Punch <size=8>(1d4) (Hit+4)</size>
+  unlocked:
+    valueSource: 0
+    value: 1
+    valueFromStat: 1 = 0
+  learned:
+    valueSource: 0
+    value: 1
+    valueFromStat: 1 = 0
+  readied:
+    valueSource: 0
+    value: 1
+    valueFromStat: 1 = 0
+  requireFormulas:
+  - Actions > 0
+  requireAniMods: []
+  requireItems: []
+  requireEquipped: []
+  targetsArea: 0
+  minTargets: 1
+  maxTargets: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 2147483648
+  minRange: 0
+  maxRange: 1
+  hasRadius: 0
+  radius: 0
+  canTargetSelf: 0
+  spawnObject: {fileID: 0}
+  mustReload: 0
+  startLoaded: 0
+  reloadTime: 0
+  damageType: {fileID: 11400000, guid: 909235291b6ffa4488cd25f4caca406f, type: 2}
+  autoHit: 0
+  usesHitRoll: 1
+  hitRoll: 1 + rnd_i(20)
+  rollCanCrit: 1
+  minCritValue: 20
+  hitCondition: '[roll] + 4 >=  target:AC'
+  hitDamageAmount: 1 + rnd_i(4)
+  critDamageAmount: ' (1 + rnd_i(4)) * 2'
+  missDamageAmount: 0
+  hitEffects: []
+  applyEffects: []
+  applyModifiers:
+  - icon: {fileID: 0}
+    displayText: 
+    textColor: {r: 0, g: 0, b: 0, a: 0}
+    hideInList: 1
+    affectedStat: Actions
+    effectType: 0
+    valueTarget: 0
+    valueType: 2
+    value: 1
+  applyAniMods: []

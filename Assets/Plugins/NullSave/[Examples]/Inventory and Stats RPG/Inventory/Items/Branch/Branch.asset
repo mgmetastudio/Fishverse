@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50626e6870efb5489e5b6d9ae6bff11, type: 3}
+  m_Name: Branch
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 1756a027b16b6974eb57e8111dc5b3d2, type: 3}
+  displayName: Branch
+  description: Much like other branches one might have come across in ones time on
+    Earth, this branch is composed almost entirely of wood.
+  subtext: 
+  category: {fileID: 11400000, guid: d8cc8c85ed62e9d4eb8a22685af5e7fd, type: 2}
+  uiTags:
+  - {fileID: 11400000, guid: 1b0e7606685cca54ca70feb1af213f64, type: 2}
+  displayRecipe: {fileID: 0}
+  allowCustomName: 0
+  modifyName: 0
+  nameModifier: 
+  modifierOrder: 0
+  customTags: []
+  itemType: 8
+  usesAmmo: 0
+  ammoType: 
+  ammoPerUse: 1
+  displayInInventory: 1
+  useSlotId: 0
+  slotId: 0
+  freeSlotWhenEquipped: 0
+  canSell: 1
+  projectile: {fileID: 0}
+  allowHotbar: 0
+  previewObject: {fileID: 1402579564052851275, guid: 3a1843baf1a76c44db846f4abd109969,
+    type: 3}
+  previewScale: 1
+  condition: 1
+  rarity: 0
+  weight: 0.2
+  value: 1
+  canStack: 1
+  countPerStack: 32
+  hasMaxStacks: 0
+  maxStacks: 4
+  storedItems: []
+  mustEmptyToHold: 1
+  hasMaxStoreSlots: 1
+  maxStoreSlots: 16
+  hasMaxStoreWeight: 0
+  maxStoreWeight: 100
+  storedIn: {fileID: 0}
+  equipObject: {fileID: 791469708279759571, guid: 5ac04204e7b4f4d48b68bd8500091f7f,
+    type: 3}
+  customizationPoint: {fileID: 0}
+  customizationId: 
+  autoEquip: 0
+  equipLocation: 0
+  equipPoints: []
+  canEquip: 0
+  canDrop: 1
+  canStore: 1
+  equipSource: 0
+  equipExpression: 1 > 0
+  dropObject: {fileID: 5057041638168138066, guid: 42c263536987f244eadeec1984ef3ee6,
+    type: 3}
+  equipAnimatorMods:
+  - keyName: IsHoldingWeapon
+    paramType: 0
+    boolVal: 1
+    intVal: 0
+    floatVal: 0
+    triggerVal: 0
+  unequipAnimatorMods:
+  - keyName: IsHoldingWeapon
+    paramType: 0
+    boolVal: 0
+    intVal: 0
+    floatVal: 0
+    triggerVal: 0
+  autoUse: 0
+  canRepair: 0
+  repairSource: 0
+  repairExpression: 1 > 0
+  repairIncrement: 0.05
+  incrementCost: 10
+  incrementComponents: []
+  canBreakdown: 0
+  breakdownSource: 0
+  breakdownExpression: 1 > 0
+  breakdownCategory: 
+  breakdownResult: []
+  attachRequirement: 0
+  attachCatsFilter: []
+  attachItemsFilter: []
+  attachSlots: []
+  attachObject: {fileID: 0}
+  attachPoints: []
+  statEffects: []
+  unlockCategories: []
+  unlockCraftingCategories: []
+  unlockRecipes: []
+  onAttachmentAdded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: NullSave.TOCK.Inventory.ItemChanged, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAttachmentRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: NullSave.TOCK.Inventory.ItemChanged, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStoredItemAdded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStoredItemRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  z_display_flags: 4095

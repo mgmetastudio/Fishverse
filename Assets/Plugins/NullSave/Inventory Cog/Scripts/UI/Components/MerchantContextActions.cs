@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace NullSave.TOCK.Inventory
@@ -56,6 +57,11 @@ namespace NullSave.TOCK.Inventory
             SetBuyItem(listSource.SelectedItem.Item);
         }
 
+        public void SetBuyItem(InventoryItemList listSource, ItemUI itemUI, List<Category> categories)
+        {
+            SetBuyItem(listSource.SelectedItem.Item);
+        }
+
         public void SetSellItem(InventoryItem item)
         {
             onCannotBuy?.Invoke();
@@ -70,6 +76,11 @@ namespace NullSave.TOCK.Inventory
         }
 
         public void SetSellItem(InventoryItemList listSource)
+        {
+            SetSellItem(listSource.SelectedItem.Item);
+        }
+
+        public void SetSellItem(InventoryItemList listSource, ItemUI itemUI, List<Category> categories)
         {
             SetSellItem(listSource.SelectedItem.Item);
         }

@@ -29,6 +29,11 @@ public class SliderRunTo1 : MonoBehaviour
            
 			time=0;
 		}
+		if(slider.value == 1)
+            {
+				b = false;
+
+			}
     }
 	}
 	

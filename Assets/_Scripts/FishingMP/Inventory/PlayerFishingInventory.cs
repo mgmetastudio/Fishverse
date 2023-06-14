@@ -24,6 +24,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     [Space]
     [SerializeField] InventoryItem fishBaseItem;
     [SerializeField] Category fishCategory;
+    [SerializeField] StatEffect fishWeightEffect;
     // public  XpTracker xpLevel;
 
     [Header("Inventory")]
@@ -486,6 +487,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // playerInventory.RemoveItem(baitDefinition)
 
         // xpLevel.Grant("Fishing", rarity + 1);
+        // int maxRarity = int.Parse(currentRod.GetCustomTag("WaterType"));
+        int maxRarity = currentRod.rarity + 1;
 
         var fishItem = Instantiate(fishBaseItem);
         fishItem.category = fishCategory;
@@ -494,8 +497,13 @@ public class PlayerFishingInventory : MonoBehaviourPun
         fishItem.value = FishRetailValue;
         fishItem.weight = FishWeight;
         fishItem.displayName = FishName;
-        fishItem.SetCustomTag("Length", FishLength.ToString());
-        // fishItem.rarity = //random 0, fishrod type;
+        // fishItem.SetCustomTag("Length", FishLength.ToString());
+        fishItem.rarity = Random.Range(0, maxRarity);
+
+        var fishWeight = Instantiate(fishWeightEffect);
+        fishWeight.displayName = FishWeight + "cm";
+        fishWeight.description += fishWeight.displayName;
+        fishItem.statEffects.Add(fishWeight);
 
         inventoryCog.AddToInventory(fishItem);
         inventoryCog.RemoveItem(currentBait, 1);

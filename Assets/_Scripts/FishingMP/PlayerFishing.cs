@@ -5,9 +5,11 @@ using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using NullSave.TOCK.Inventory;
 
 public class PlayerFishing : MonoBehaviourPun
 {
+    [SerializeField] Transform rodHolder;
     [SerializeField] bool canFish;
 
     [SerializeField] private GameObject _fishingFloatBasePrefab;
@@ -118,10 +120,28 @@ public class PlayerFishing : MonoBehaviourPun
         if (photonView.IsMine)
         {
             if (FishingFloat == null)
-                photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+            {
+                // if (rodHolder.childCount > 1)
+                    photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+            }
             else
                 photonView.RPC("CmdDestroyFloat", RpcTarget.All);
         }
+    }
+
+    public void OnItemEquip(InventoryItem equipedItem)
+    {
+        if (equipedItem.displayName == "Fishing Rod")
+        {
+            DrawFishingRod(true);
+            // fishingRod.SetActive();
+        }
+    }
+
+    public void OnItemUnequip(InventoryItem unequipedItem)
+    {
+        if (unequipedItem.displayName == "Fishing Rod")
+            DrawFishingRod(false);
     }
 
     private void Update()
@@ -214,7 +234,8 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+            if (rodHolder.childCount > 1)
+                photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
 
             // DrawFishingRod(!fishingRod.activeSelf);
         }
@@ -264,6 +285,8 @@ public class PlayerFishing : MonoBehaviourPun
     [PunRPC]
     public void DrawFishingRod(bool draw)
     {
+        //change to holder
+        rodHolder.SetActive(draw);
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
 

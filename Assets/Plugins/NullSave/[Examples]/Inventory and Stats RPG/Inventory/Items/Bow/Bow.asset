@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50626e6870efb5489e5b6d9ae6bff11, type: 3}
+  m_Name: Bow
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: f51b1d227c86e6a43ab01eed973b4a15, type: 3}
+  displayName: Bow
+  description: For when you need to stab something but it's really far away.
+  subtext: 
+  category: {fileID: 11400000, guid: 23e5e99b55eaa80438e88a96b74ecf64, type: 2}
+  uiTags:
+  - {fileID: 11400000, guid: 87e55bb7a87a77b43aeb01ab321a54cf, type: 2}
+  displayRecipe: {fileID: 11400000, guid: 2b652e823404c50478f4d9e456e1cf2e, type: 2}
+  allowCustomName: 1
+  modifyName: 0
+  nameModifier: 
+  modifierOrder: 0
+  customTags: []
+  itemType: 1
+  usesAmmo: 1
+  ammoType: Arrow
+  ammoPerUse: 1
+  displayInInventory: 1
+  useSlotId: 0
+  slotId: 0
+  freeSlotWhenEquipped: 0
+  canSell: 1
+  projectile: {fileID: 0}
+  allowHotbar: 1
+  previewObject: {fileID: 9055999776736296841, guid: 03e29e630155764479530cbed012574a,
+    type: 3}
+  previewScale: 1
+  condition: 1
+  rarity: 3
+  weight: 1.5
+  value: 200
+  canStack: 0
+  countPerStack: 64
+  hasMaxStacks: 0
+  maxStacks: 4
+  storedItems: []
+  mustEmptyToHold: 1
+  hasMaxStoreSlots: 1
+  maxStoreSlots: 16
+  hasMaxStoreWeight: 0
+  maxStoreWeight: 100
+  storedIn: {fileID: 0}
+  equipObject: {fileID: 3141385703615731946, guid: 7d0473db9c8bc2a4baf6192cd3e42f55,
+    type: 3}
+  customizationPoint: {fileID: 0}
+  customizationId: 
+  autoEquip: 1
+  equipLocation: 0
+  equipPoints:
+  - LeftHand
+  canEquip: 1
+  canDrop: 1
+  canStore: 1
+  equipSource: 0
+  equipExpression: 1 > 0
+  dropObject: {fileID: 5589991634932346633, guid: 73a65ad4b239a834a84217cda51d7973,
+    type: 3}
+  equipAnimatorMods:
+  - keyName: IsHoldingWeapon
+    paramType: 0
+    boolVal: 1
+    intVal: 0
+    floatVal: 0
+    triggerVal: 0
+  - keyName: AttackId
+    paramType: 2
+    boolVal: 1
+    intVal: 2
+    floatVal: 0
+    triggerVal: 0
+  unequipAnimatorMods:
+  - keyName: IsHoldingWeapon
+    paramType: 0
+    boolVal: 0
+    intVal: 0
+    floatVal: 0
+    triggerVal: 0
+  - keyName: AttackId
+    paramType: 2
+    boolVal: 0
+    intVal: 0
+    floatVal: 0
+    triggerVal: 0
+  autoUse: 0
+  canRepair: 1
+  repairSource: 0
+  repairExpression: 1 > 0
+  repairIncrement: 0.05
+  incrementCost: 10
+  incrementComponents:
+  - item: {fileID: 11400000, guid: 283c72f527ca0dc41a6f83f542f27b68, type: 2}
+    count: 2
+  canBreakdown: 1
+  breakdownSource: 0
+  breakdownExpression: 1 > 0
+  breakdownCategory: 
+  breakdownResult:
+  - item: {fileID: 11400000, guid: 283c72f527ca0dc41a6f83f542f27b68, type: 2}
+    count: 1
+  attachRequirement: 0
+  attachCatsFilter: []
+  attachItemsFilter: []
+  attachSlots: []
+  attachObject: {fileID: 0}
+  attachPoints: []
+  statEffects:
+  - {fileID: 11400000, guid: eeec8fc899984214cbe1ad6caf652434, type: 2}
+  unlockCategories: []
+  unlockCraftingCategories: []
+  unlockRecipes: []
+  onAttachmentAdded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: NullSave.TOCK.Inventory.ItemChanged, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAttachmentRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: NullSave.TOCK.Inventory.ItemChanged, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStoredItemAdded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStoredItemRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  z_display_flags: 8191

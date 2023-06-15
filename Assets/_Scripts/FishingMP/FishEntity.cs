@@ -252,8 +252,8 @@ public class FishEntity : MonoBehaviourPun
 
                     float fishSizeMulti = 1f.GetRandom();
 
-                    float fishLength = fishInfo.FishLength.Lerp(fishSizeMulti);
-                    float fishWeight = fishInfo.FishWeight.Lerp(fishSizeMulti);
+                    float fishLength = (float)System.Math.Round(fishInfo.FishLength.Lerp(fishSizeMulti), 1, System.MidpointRounding.AwayFromZero);
+                    float fishWeight = (float)System.Math.Round(fishInfo.FishWeight.Lerp(fishSizeMulti), 1, System.MidpointRounding.AwayFromZero);
                     int fishvalue = (int)(fishInfo.FishRetailValue * (1 + fishSizeMulti));
 
                     inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, fishLength, fishWeight, fishvalue, ai._scriptable.FishSprite);

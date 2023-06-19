@@ -3,9 +3,14 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Leguar.TotalJSON;
 using UnityEngine.SceneManagement;
+using Zenject;
+using LibEngine.Auth;
+using Cysharp.Threading.Tasks;
 
 public class AccountManagement_API : MonoBehaviour
 {
+    [Inject] protected IAuthManager _authManager;
+
     private AccountManagement_UI account_ui;
 
     private void Start()
@@ -135,6 +140,13 @@ public class AccountManagement_API : MonoBehaviour
 
     IEnumerator CheckVersionRequest()
     {
+        string result = "";
+        var loginProcess = _authManager.LoginAsync("john404test@gmail.com", "Bw2y7ZQMG7aJKABvFMXkd4pZLoqFCcAe", (x) => result = x, (x) => result = x);
+
+        yield return new WaitUntil(() => loginProcess.Status != UniTaskStatus.Pending);
+
+        Debug.Log("Login test result: " + result);
+
         WWWForm login_form = new WWWForm();
         login_form.AddField("apikey", Fishverse_Core.instance.api_key);
 

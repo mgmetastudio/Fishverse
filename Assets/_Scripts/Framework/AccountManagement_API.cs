@@ -18,7 +18,8 @@ public class AccountManagement_API : MonoBehaviour
 
     public void Login(string email, string password)
     {
-        StartCoroutine(LoginRequest(email, password));
+        LoginSuccess(email, password);
+        // StartCoroutine(LoginRequest(email, password));
     }
 
     public void LoadData()
@@ -50,13 +51,20 @@ public class AccountManagement_API : MonoBehaviour
         PlayerPrefs.SetInt("log_auto", 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
+
     public void SaveData(string email, string password)
     {
         PlayerPrefs.SetString("log_em", email);
         Fishverse_Core.instance.account_email = email;
         PlayerPrefs.SetString("log_ps", password);
         PlayerPrefs.SetInt("log_auto", 1);
+    }
+
+    void LoginSuccess(string email, string password)
+    {
+        SaveData(email, password);
+        PlayerPrefs.SetString("username", "player");
+        account_ui.OnLoginSuccess();
     }
 
     IEnumerator LoginRequest(string email, string password)
@@ -147,7 +155,7 @@ public class AccountManagement_API : MonoBehaviour
             if (login_request.downloadHandler.text != "")
             {
                 Fishverse_Core.instance.app_version = login_request.downloadHandler.text;
-                if(Fishverse_Core.instance.app_version != Fishverse_Core.instance.app_version_local)
+                if (Fishverse_Core.instance.app_version != Fishverse_Core.instance.app_version_local)
                 {
                     account_ui.ShowCrashPopup("Current version is outdated.\nTo use this application you must update it");
                 }

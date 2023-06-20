@@ -70,9 +70,9 @@ public class MiniGame_Manager : MonoBehaviour
     private int fishes_score_combo = 0;
 
     //Text Animations
-    // DOTweenAnimation text_score_anim;
-    // DOTweenAnimation text_fish_anim;
-    // DOTweenAnimation text_pos_anim;
+    DOTweenAnimation text_score_anim;
+    DOTweenAnimation text_fish_anim;
+    DOTweenAnimation text_pos_anim;
 
     public int playerToStart = 2;
 
@@ -83,10 +83,10 @@ public class MiniGame_Manager : MonoBehaviour
 #endif
 
         //Init Components
-        // text_score_anim = text_score.GetComponent<DOTweenAnimation>();
-        // text_fish_anim = text_fishes.GetComponent<DOTweenAnimation>();
-        // if (text_position && text_position.TryGetComponent<DOTweenAnimation>(out DOTweenAnimation anm))
-        //     text_pos_anim = anm;
+        text_score_anim = text_score.GetComponent<DOTweenAnimation>();
+        text_fish_anim = text_fishes.GetComponent<DOTweenAnimation>();
+        if (text_position && text_position.TryGetComponent<DOTweenAnimation>(out DOTweenAnimation anm))
+            text_pos_anim = anm;
 
         if (Fishverse_Core.instance)
             GetComponent<MiniGameServer_API>().GetBestScore();
@@ -223,10 +223,10 @@ public class MiniGame_Manager : MonoBehaviour
 
             //Play texts animations
 
-            // if (text_fish_anim)
-            // {
-            //     text_fish_anim.DORestart();
-            // }
+            if (text_fish_anim)
+            {
+                text_fish_anim.DORestart();
+            }
         }
     }
 
@@ -263,15 +263,15 @@ public class MiniGame_Manager : MonoBehaviour
 
         //Play texts animations
 
-        // if (text_score_anim)
-        // {
-        //     text_score_anim.DORestart();
-        // }
+        if (text_score_anim)
+        {
+            text_score_anim.DORestart();
+        }
 
-        // if (text_fish_anim && remove_fish)
-        // {
-        //     text_fish_anim.DORestart();
-        // }
+        if (text_fish_anim && remove_fish)
+        {
+            text_fish_anim.DORestart();
+        }
     }
 
     public void AddBonus(MiniGame_Bonus.BonusType bonus_type, GameObject target)

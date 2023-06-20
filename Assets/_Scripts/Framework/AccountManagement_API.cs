@@ -138,14 +138,25 @@ public class AccountManagement_API : MonoBehaviour
         }
     }
 
+    private bool IsFastAuthCompleted()
+    {
+        if (_authManager == null)
+            return false;
+
+        var isAuthorized = _authManager.IsAuthorized(out _);
+        return isAuthorized;
+    }
+
     IEnumerator CheckVersionRequest()
     {
-        string result = "";
-        var loginProcess = _authManager.LoginAsync("john404test@gmail.com", "Bw2y7ZQMG7aJKABvFMXkd4pZLoqFCcAe", (x) => result = x, (x) => result = x);
+        //string result = "";
+        //var loginProcess = _authManager.LoginAsync("john404test@gmail.com", "Bw2y7ZQMG7aJKABvFMXkd4pZLoqFCcAe", (x) => result = x, (x) => result = x);
 
-        yield return new WaitUntil(() => loginProcess.Status != UniTaskStatus.Pending);
+        //yield return new WaitUntil(() => loginProcess.Status != UniTaskStatus.Pending);
 
-        Debug.Log("Login test result: " + result);
+        yield return new WaitUntil(IsFastAuthCompleted);
+
+        //Debug.Log("Login test result: " + result);
 
         WWWForm login_form = new WWWForm();
         login_form.AddField("apikey", Fishverse_Core.instance.api_key);

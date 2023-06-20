@@ -250,13 +250,9 @@ public class FishEntity : MonoBehaviourPun
 
                     var fishInfo = ai._scriptable;
 
-                    float fishSizeMulti = 1f.GetRandom();
+                    
 
-                    float fishLength = (float)System.Math.Round(fishInfo.FishLength.Lerp(fishSizeMulti), 1, System.MidpointRounding.AwayFromZero);
-                    float fishWeight = (float)System.Math.Round(fishInfo.FishWeight.Lerp(fishSizeMulti), 1, System.MidpointRounding.AwayFromZero);
-                    int fishvalue = (int)(fishInfo.FishRetailValue * (1 + fishSizeMulti));
-
-                    inv.AddFishItem(ai._scriptable.uniqueId, ai._scriptable.FishName, fishLength, fishWeight, fishvalue, ai._scriptable.FishSprite);
+                    inv.AddFishItem(ai._scriptable);
                     photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
                     // RpcHoldCaughtFish(ai._scriptable.uniqueId);
                     Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";

@@ -187,8 +187,11 @@ public class FishEntity : MonoBehaviourPun
                 if (controller.target != null && Random.Range(.0f, 1f) > .4f)
                 {
                     if (controller.target.gameObject.TryGetComponent<FishingFloat>(out FishingFloat fishingFloat))
-                        Bite(fishingFloat);
-
+                    {
+                        if (fishingFloat.CheckCompability(controller._scriptable))
+                            Bite(fishingFloat);
+                    }
+//bruh too many ifs
                     // Bite(controller.target.gameObject.GetComponent<FishingFloat>());
                 }
             }
@@ -241,7 +244,8 @@ public class FishEntity : MonoBehaviourPun
                     var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
                     PlayerFishingInventory inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();
 
-                    FishAIController ai = this.GetComponent<FishAIController>();
+                    FishAIController ai = controller;
+                    // FishAIController ai = this.GetComponent<FishAIController>();
 
                     Debug.Log("Fish with ID " + ai._scriptable.uniqueId + " caught!");
 
@@ -250,7 +254,7 @@ public class FishEntity : MonoBehaviourPun
 
                     var fishInfo = ai._scriptable;
 
-                    
+
 
                     inv.AddFishItem(ai._scriptable);
                     photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);

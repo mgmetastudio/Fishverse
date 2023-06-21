@@ -90,8 +90,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public UnityEvent<bool> onInventory;
 
-    [SerializeField] InventoryItem currentBait;
-    [SerializeField] InventoryItem currentRod;
+    public InventoryItem currentBait;
+    public InventoryItem currentRod;
 
     int _money;
     public int Money

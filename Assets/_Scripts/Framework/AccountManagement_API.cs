@@ -44,8 +44,17 @@ public class AccountManagement_API : MonoBehaviour
                 account_ui.panel_loading.SetActive(true);
                 //AUTO LOGIN
                 Login(account_ui.input_email.text, account_ui.input_password.text);
+                return;
             }
         }
+        
+        if(_authManager.IsAuthorized(out _))
+        {
+            account_ui.panel_loading.SetActive(true);
+            //AUTO LOGIN
+            Login(account_ui.input_email.text, account_ui.input_password.text);
+        }
+
     }
 
     public void LogOut()

@@ -18,6 +18,8 @@ public class ControlSwitch : MonoBehaviour
     [SerializeField] string enterText = "Enter Boat";
     [SerializeField] string exitText = "Exit Boat";
 
+    [SerializeField] KeyCode inputKey = KeyCode.F;
+
     CMFirstPersonCharacter _player;
 
     void Start()
@@ -38,7 +40,7 @@ public class ControlSwitch : MonoBehaviour
     {
         if (!_player) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(inputKey))
             ToggleController();
 
     }

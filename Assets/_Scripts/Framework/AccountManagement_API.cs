@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 public class AccountManagement_API : MonoBehaviour
 {
     [Inject] protected IAuthManager _authManager;
+    [Inject] protected IUserStatsController _userStats;
 
     private AccountManagement_UI account_ui;
 
@@ -24,6 +25,12 @@ public class AccountManagement_API : MonoBehaviour
     public void Login(string email, string password)
     {
         StartCoroutine(LoginRequest(email, password));
+    }
+
+    public void LoginSuccessed()
+    {
+        Fishverse_Core.instance.account_username = _userStats.GetScheme().UserName;
+        account_ui.OnLoginSuccess();
     }
 
     public void LoadData()
@@ -52,7 +59,7 @@ public class AccountManagement_API : MonoBehaviour
         {
             account_ui.panel_loading.SetActive(true);
             //AUTO LOGIN
-            Login(account_ui.input_email.text, account_ui.input_password.text);
+            LoginSuccessed();
         }
 
     }
@@ -75,6 +82,24 @@ public class AccountManagement_API : MonoBehaviour
 
     IEnumerator LoginRequest(string email, string password)
     {
+        var loginAsync = _authManager.LoginAsync(email, password, (x) => { }, (x) => { });
+
+        yield return new WaitWhile(() => loginAsync.Status == UniTaskStatus.Pending);
+
+        if (_authManager.IsAuthorized(out _))
+        {
+            SaveData(email, password);
+            Fishverse_Core.instance.account_username = _userStats.GetScheme().UserName;
+
+            account_ui.OnLoginSuccess();
+        }
+        else
+        {
+            account_ui.OnLoginFailed(1);
+        }
+
+        yield break;
+
         //LOGIN DASHBOARD
 
         WWWForm login_dashboard_form = new WWWForm();

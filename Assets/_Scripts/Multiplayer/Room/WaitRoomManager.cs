@@ -15,12 +15,16 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
 
     int playersToStart = 2;
 
-    void Start()
+    async void Start()
     {
         // roomCode.SetText(LobbyManager.lastRoomCode);
         roomCode.SetText(PhotonNetwork.CurrentRoom.CustomProperties["RoomCode"].ToString());
 
         GetComponent<UserListManager>().RefreshUserList();
+
+        // await UniTask.WaitForSeconds(5f);
+
+        // LoadScene();
     }
 
     [ContextMenu("Leave Room")]

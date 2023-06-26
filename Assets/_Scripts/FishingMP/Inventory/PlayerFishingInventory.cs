@@ -90,8 +90,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public UnityEvent<bool> onInventory;
 
-    [SerializeField] InventoryItem currentBait;
-    [SerializeField] InventoryItem currentRod;
+    public InventoryItem currentBait;
+    public InventoryItem currentRod;
 
     int _money;
     public int Money
@@ -465,7 +465,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Content.DestroyAllChild();
     }
 
-    public void AddFishItem(int uniqueId, string FishName, float FishLength, float FishWeight, int FishRetailValue, Sprite FishSprite)
+    public void AddFishItem(FishScriptable fishInfo)
     {
         /*if (!isLocalPlayer)
             return;*/
@@ -488,20 +488,27 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         // xpLevel.Grant("Fishing", rarity + 1);
         // int maxRarity = int.Parse(currentRod.GetCustomTag("WaterType"));
+
+        float fishSizeMulti = 1f.GetRandom();
+
+        float fishLength = (float)System.Math.Round(fishInfo.FishLength.Lerp(fishSizeMulti), 1, System.MidpointRounding.AwayFromZero);
+        float fishWeightValue = (float)System.Math.Round(fishInfo.FishWeight.Lerp(fishSizeMulti), 1, System.MidpointRounding.AwayFromZero);
+        int fishValue = (int)(fishInfo.FishRetailValue * (1 + fishSizeMulti));
+
+
         int maxRarity = currentRod.rarity + 1;
 
         var fishItem = Instantiate(fishBaseItem);
         fishItem.category = fishCategory;
 
-        fishItem.icon = FishSprite;
-        fishItem.value = FishRetailValue;
-        fishItem.weight = FishWeight;
-        fishItem.displayName = FishName;
-        // fishItem.SetCustomTag("Length", FishLength.ToString());
+        fishItem.icon = fishInfo.FishSprite;
+        fishItem.value = fishValue;
+        fishItem.weight = fishLength;
+        fishItem.displayName = fishInfo.FishName;
         fishItem.rarity = Random.Range(0, maxRarity);
 
         var fishWeight = Instantiate(fishWeightEffect);
-        fishWeight.displayName = FishWeight + "cm";
+        fishWeight.displayName = fishWeightValue + "cm";
         fishWeight.description += fishWeight.displayName;
         fishItem.statEffects.Add(fishWeight);
 
@@ -509,29 +516,29 @@ public class PlayerFishingInventory : MonoBehaviourPun
         inventoryCog.RemoveItem(currentBait, 1);
 
         var xpStat = statsCog.Stats.First(x => x.displayName == "XP");
-        xpStat.SetValue(xpStat.CurrentValue + FishRetailValue);
+        xpStat.SetValue(xpStat.CurrentValue + fishValue);
 
         GameObject SpawnedInventoryFish;
 
         this.GetComponent<Animator>().SetTrigger(FishHolderAnimationName);
 
-        HoldCaughtFish(uniqueId);
+        HoldCaughtFish(fishInfo.uniqueId);
 
 
         SpawnedInventoryFish = Instantiate(InventoryFishPrefab);
         var invFish = SpawnedInventoryFish.GetComponent<InventoryFish>();
 
         SpawnedInventoryFish.transform.SetParent(Content);
-        invFish.FishName.text = FishName;
-        invFish.FishLength.text = $"Length: {FishLength}cm";
-        invFish.FishWeight.text = $"Weight: {FishWeight} kg";
-        invFish.FishRetailValue.text = $"Value: {FishRetailValue}$";
-        invFish.FishImage.sprite = FishSprite;
+        // invFish.FishName.text = FishName;
+        // invFish.FishLength.text = $"Length: {FishLength}cm";
+        // invFish.FishWeight.text = $"Weight: {FishWeight} kg";
+        // invFish.FishRetailValue.text = $"Value: {FishRetailValue}$";
+        // invFish.FishImage.sprite = FishSprite;
 
         fishInv.Add(invFish);
 
 
-        photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, uniqueId);
+        photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, fishInfo.uniqueId);
         // CmdHoldCaughtFish(uniqueId);
 
 

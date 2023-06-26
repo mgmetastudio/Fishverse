@@ -66,20 +66,32 @@ public class r_CreateRoomController : MonoBehaviour
         // m_RoomUI.m_NextGameMapButton.onClick.AddListener(delegate { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });
         // m_RoomUI.m_PreviousGameMapButton.onClick.AddListener(delegate { NextGameMap(false); r_AudioController.instance.PlayClickSound(); });
 
+        m_RoomUI.MiniGameBtn.onClick.AddListener(() => SetupAndCreateRoom(0));
+        m_RoomUI.RaceBtn.onClick.AddListener(() => SetupAndCreateRoom(1));
+        m_RoomUI.OpenWorldBtn.onClick.AddListener(() => SetupAndCreateRoom(2));
+
         //Change Map Buttons
-        m_RoomUI.m_NextGameModeButton.onClick.AddListener(delegate { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });
+        m_RoomUI.m_NextGameModeButton.onClick.AddListener(() => { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });
         m_RoomUI.m_PreviousGameModeButton.onClick.AddListener(delegate { NextGameMap(false); r_AudioController.instance.PlayClickSound(); });
 
-        //Change Game Mode Buttons
+        // Change Game Mode Buttons
         m_RoomUI.m_NextGameModeButton.onClick.AddListener(delegate { NextGameMode(true); r_AudioController.instance.PlayClickSound(); });
         m_RoomUI.m_PreviousGameModeButton.onClick.AddListener(delegate { NextGameMode(false); r_AudioController.instance.PlayClickSound(); });
 
-        //Change Player Limit Buttons 
+        // Change Player Limit Buttons 
         m_RoomUI.m_NextPlayerLimitButton.onClick.AddListener(delegate { NextPlayerLimit(true); r_AudioController.instance.PlayClickSound(); });
         m_RoomUI.m_PreviousPlayerLimitButton.onClick.AddListener(delegate { NextPlayerLimit(false); r_AudioController.instance.PlayClickSound(); });
 
-        //Create Room Button
+        // Create Room Button
         m_RoomUI.m_CreateRoomButton.onClick.AddListener(CreateRoom);
+    }
+
+    void SetupAndCreateRoom(int index)
+    {
+        SetGameMap(index);
+        SetGameMode(index);
+        // r_AudioController.instance.PlayClickSound();
+        CreateRoom();
     }
 
     void CreateRoom()
@@ -157,6 +169,12 @@ public class r_CreateRoomController : MonoBehaviour
 
         UpdateUI();
     }
+
+    void SetGameMap(int index)
+    {
+        m_CurrentGameMap = index;
+    }
+
     #endregion
 
     #region Change Game Mode
@@ -174,6 +192,11 @@ public class r_CreateRoomController : MonoBehaviour
         }
 
         UpdateUI();
+    }
+
+    void SetGameMode(int index)
+    {
+        m_CurrentGameMode = index;
     }
     #endregion
 

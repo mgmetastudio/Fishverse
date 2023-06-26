@@ -2,6 +2,7 @@
 // using Mirror;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Linq;
 
 public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
@@ -143,6 +144,21 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         _interactor.enabled = false;
         _rb.isKinematic = true;
         _rb.useGravity = false;
+    }
+
+    public bool CheckCompability(FishScriptable fish)
+    {
+        var inv = owner.GetComponent<PlayerFishingInventory>();
+
+        var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
+        if(feedType == null)
+            return false;
+
+        var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
+        if(waterType == null)
+            return false;
+
+        return true;
     }
 
     // public override void OnStartAuthority()

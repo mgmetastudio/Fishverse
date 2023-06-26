@@ -23,12 +23,16 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
         is_mobile = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 #endif
             // joystick = FindObjectOfType<Joystick>(true);
+            // carBody.useGravity = true;
+            // carBody.isKinemat = true;
             radius = rb.GetComponent<SphereCollider>().radius;
             if (movementMode == MovementMode.AngularVelocity)
             {
                 Physics.defaultMaxAngularSpeed = 100;
             }
         }
+            enabled = false;
+
     }
     public override void Update()
     {

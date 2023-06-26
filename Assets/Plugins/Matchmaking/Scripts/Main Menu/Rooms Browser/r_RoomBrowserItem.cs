@@ -10,10 +10,10 @@ public class r_RoomBrowserItem : MonoBehaviour
 {
     #region Variables
     [Header("Room Browser UI")]
-    public Text m_RoomNameText;
-    public Text m_MapNameText;
-    public Text m_GameModeText;
-    public Text m_PlayersText;
+    public TMPro.TMP_Text m_RoomNameText;
+    public TMPro.TMP_Text m_MapNameText;
+    public TMPro.TMP_Text m_GameModeText;
+    public TMPro.TMP_Text m_PlayersText;
 
     [Header("Join Room UI")]
     public Button m_JoinRoomButton;
@@ -34,6 +34,8 @@ public class r_RoomBrowserItem : MonoBehaviour
     public void SetupRoom(RoomInfo _RoomInfo)
     {
         m_RoomInfo = _RoomInfo;
+        
+        if(!m_RoomNameText) return;
 
         m_RoomNameText.text = m_RoomInfo.Name;
         m_MapNameText.text = m_RoomInfo.CustomProperties["GameMap"].ToString();

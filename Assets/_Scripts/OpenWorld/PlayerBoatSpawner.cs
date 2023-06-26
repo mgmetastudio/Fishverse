@@ -33,6 +33,16 @@ public class PlayerBoatSpawner : MonoBehaviour
 
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (!playerMask.Includes(other.gameObject.layer)) return;
+        if (!other.gameObject.GetComponent<PhotonView>().IsMine) return;
+
+        promptBtn.SetActive();
+
+        _player = other.gameObject.GetComponent<InventoryCog>();
+    }
+
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject != _player.gameObject) return;
@@ -42,26 +52,17 @@ public class PlayerBoatSpawner : MonoBehaviour
         _player = null;
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (!playerMask.Includes(other.gameObject.layer)) return;
-
-        promptBtn.SetActive();
-
-        _player = other.gameObject.GetComponent<InventoryCog>();
-    }
-
     void SpawnBoat()
     {
         var boatItem = _player.Items.FirstOrDefault(x => x.customTags.Exists(x => x.Name == boatTag));
         if (!boatItem) return;
 
-        var tag = boatItem.customTags.First(x => x.Name == boatTag);
+        var vehicleManager = _player.GetComponent<PlayerVehicleManager>();
+        if (!vehicleManager) return;
+        if(vehicleManager.spawnedBoat)
+            vehicleManager.DestroyBoat();
 
-        if(tag.Value == "1") return;
+        vehicleManager.spawnedBoat = PhotonNetwork.Instantiate(boatItem.previewObject.name, spawnPoint.position, spawnPoint.rotation);
 
-        tag.Value = "1";
-        PhotonNetwork.Instantiate(boatItem.previewObject.name, spawnPoint.position, spawnPoint.rotation);
-        
     }
 }

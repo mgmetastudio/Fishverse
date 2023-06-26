@@ -22,9 +22,9 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
 
         GetComponent<UserListManager>().RefreshUserList();
 
-        await UniTask.WaitForSeconds(5f);
+        // await UniTask.WaitForSeconds(5f);
 
-        LoadScene();
+        // LoadScene();
     }
 
     [ContextMenu("Leave Room")]

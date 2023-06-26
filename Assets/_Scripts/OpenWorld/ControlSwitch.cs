@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class ControlSwitch : MonoBehaviour
     [SerializeField] LayerMask playerMask;
     [SerializeField] MonoBehaviour controllerToToggle;
 
+    [SerializeField] PhotonView boatView;
     [SerializeField] Cinemachine.CinemachineVirtualCamera cam;
     [SerializeField] Transform playerSitPos;
 
@@ -27,6 +29,8 @@ public class ControlSwitch : MonoBehaviour
         promptText.SetText(enterText);
         promptBtn.SetInactive();
         promptBtn.onClick.AddListener(OnButton);
+
+        if(!boatView.IsMine) enabled = false;
     }
 
     void OnButton()
@@ -47,6 +51,7 @@ public class ControlSwitch : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if(!boatView.IsMine) return;
         if (!playerMask.Includes(other.gameObject.layer)) return;
 
         promptBtn.SetActive();
@@ -57,7 +62,7 @@ public class ControlSwitch : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        // if (!playerMask.Includes(other.gameObject.layer)) return;
+        if(!boatView.IsMine) return;
         if(other.gameObject != _player.gameObject) return;
 
         promptBtn.SetInactive();

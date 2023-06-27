@@ -3,9 +3,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Leguar.TotalJSON;
 using UnityEngine.SceneManagement;
+using Zenject;
+using LibEngine.Auth;
+using Cysharp.Threading.Tasks;
 
 public class AccountManagement_API : MonoBehaviour
 {
+    [Inject] protected IAuthManager _authManager;
+    [Inject] protected IUserStatsController _userStats;
+
     private AccountManagement_UI account_ui;
 
     private void Start()
@@ -19,6 +25,12 @@ public class AccountManagement_API : MonoBehaviour
     public void Login(string email, string password)
     {
         StartCoroutine(LoginRequest(email, password));
+    }
+
+    public void LoginSuccessed()
+    {
+        Fishverse_Core.instance.account_username = _userStats.GetScheme().UserName;
+        account_ui.OnLoginSuccess();
     }
 
     public void LoadData()
@@ -39,8 +51,17 @@ public class AccountManagement_API : MonoBehaviour
                 account_ui.panel_loading.SetActive(true);
                 //AUTO LOGIN
                 Login(account_ui.input_email.text, account_ui.input_password.text);
+                return;
             }
         }
+        
+        if(_authManager.IsAuthorized(out _))
+        {
+            account_ui.panel_loading.SetActive(true);
+            //AUTO LOGIN
+            LoginSuccessed();
+        }
+
     }
 
     public void LogOut()
@@ -61,6 +82,24 @@ public class AccountManagement_API : MonoBehaviour
 
     IEnumerator LoginRequest(string email, string password)
     {
+        var loginAsync = _authManager.LoginAsync(email, password, (x) => { }, (x) => { });
+
+        yield return new WaitWhile(() => loginAsync.Status == UniTaskStatus.Pending);
+
+        if (_authManager.IsAuthorized(out _))
+        {
+            SaveData(email, password);
+            Fishverse_Core.instance.account_username = _userStats.GetScheme().UserName;
+
+            account_ui.OnLoginSuccess();
+        }
+        else
+        {
+            account_ui.OnLoginFailed(1);
+        }
+
+        yield break;
+
         //LOGIN DASHBOARD
 
         WWWForm login_dashboard_form = new WWWForm();
@@ -133,8 +172,26 @@ public class AccountManagement_API : MonoBehaviour
         }
     }
 
+    private bool IsFastAuthCompleted()
+    {
+        if (_authManager == null)
+            return false;
+
+        var isAuthorized = _authManager.IsAuthorized(out _);
+        return isAuthorized;
+    }
+
     IEnumerator CheckVersionRequest()
     {
+        //string result = "";
+        //var loginProcess = _authManager.LoginAsync("john404test@gmail.com", "Bw2y7ZQMG7aJKABvFMXkd4pZLoqFCcAe", (x) => result = x, (x) => result = x);
+
+        //yield return new WaitUntil(() => loginProcess.Status != UniTaskStatus.Pending);
+
+        yield return new WaitUntil(IsFastAuthCompleted);
+
+        //Debug.Log("Login test result: " + result);
+
         WWWForm login_form = new WWWForm();
         login_form.AddField("apikey", Fishverse_Core.instance.api_key);
 

@@ -18,7 +18,7 @@ public class r_CreateRoomControllerUI : MonoBehaviour
     [Header("Room Name Field")]
     public Text m_GameMapText;
     public Text m_GameModesText;
-    public Text m_PlayerLimitText;
+    public TMPro.TMP_Text m_PlayerLimitText;
 
     [Header("Game Map UI")]
     public Button m_NextGameMapButton;
@@ -31,5 +31,9 @@ public class r_CreateRoomControllerUI : MonoBehaviour
     [Header("Player Limit UI")]
     public Button m_NextPlayerLimitButton;
     public Button m_PreviousPlayerLimitButton;
+
+    public Button OpenWorldBtn;
+    public Button MiniGameBtn;
+    public Button RaceBtn;
     #endregion
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fishing Rod (Sea)
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: d28d35b769f85864b9ac2327ee9ab274, type: 3}
-  displayName: Fishing Rod
+  displayName: Fishing Rod (Sea)
   description: 
   subtext: Sea
   category: {fileID: 11400000, guid: 23e5e99b55eaa80438e88a96b74ecf64, type: 2}
@@ -37,7 +37,7 @@ MonoBehaviour:
   canSell: 1
   projectile: {fileID: 0}
   allowHotbar: 1
-  previewObject: {fileID: 3432123332954728216, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
+  previewObject: {fileID: 3432123332954728216, guid: 85ab716c83ccf4c46b2f447bd358600a, type: 3}
   previewScale: 1
   condition: 1
   rarity: 2
@@ -54,7 +54,7 @@ MonoBehaviour:
   hasMaxStoreWeight: 0
   maxStoreWeight: 100
   storedIn: {fileID: 0}
-  equipObject: {fileID: 3432123332954728216, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
+  equipObject: {fileID: 3432123332954728216, guid: 85ab716c83ccf4c46b2f447bd358600a, type: 3}
   customizationPoint: {fileID: 0}
   customizationId: 
   autoEquip: 0
@@ -64,8 +64,8 @@ MonoBehaviour:
   canEquip: 1
   canDrop: 1
   canStore: 1
-  equipSource: 0
-  equipExpression: 1 > 0
+  equipSource: 1
+  equipExpression: (Level) > 2
   dropObject: {fileID: 0}
   equipAnimatorMods: []
   unequipAnimatorMods: []
@@ -87,7 +87,8 @@ MonoBehaviour:
   attachSlots: []
   attachObject: {fileID: 0}
   attachPoints: []
-  statEffects: []
+  statEffects:
+  - {fileID: 11400000, guid: 9c8de9011e473ee42a812391326e955f, type: 2}
   unlockCategories: []
   unlockCraftingCategories: []
   unlockRecipes: []

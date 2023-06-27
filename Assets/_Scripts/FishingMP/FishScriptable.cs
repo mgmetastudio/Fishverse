@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NullSave.TOCK.Stats;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewFish", menuName = "Fishing/Fish")]
 public class FishScriptable : ScriptableObject {
@@ -30,4 +31,8 @@ public class FishScriptable : ScriptableObject {
     public Vector2 FishWeight;
     public int FishRetailValue;
     public Sprite FishSprite;
+
+	[Space]
+	public StatEffect feedType;
+	public StatEffect waterType;
 }

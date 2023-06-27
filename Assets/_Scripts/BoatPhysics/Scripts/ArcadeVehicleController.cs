@@ -40,7 +40,8 @@ public class ArcadeVehicleController : MonoBehaviour
 
     public virtual void Start()
     {
-        // joystick = FindObjectOfType<Joystick>(true);
+        if (!joystick)
+            joystick = FindObjectOfType<Joystick>(true);
 
         radius = rb.GetComponent<SphereCollider>().radius;
         if (movementMode == MovementMode.AngularVelocity)
@@ -54,7 +55,7 @@ public class ArcadeVehicleController : MonoBehaviour
         }
 
 #if UNITY_STANDALONE_WIN
-            is_mobile = false;
+        is_mobile = false;
 #endif
     }
     public virtual void Update()

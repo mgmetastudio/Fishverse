@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fishing Rod (River)
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: d28d35b769f85864b9ac2327ee9ab274, type: 3}
-  displayName: Fishing Rod
+  displayName: Fishing Rod (River)
   description: 
   subtext: River
   category: {fileID: 11400000, guid: 23e5e99b55eaa80438e88a96b74ecf64, type: 2}
@@ -64,8 +64,8 @@ MonoBehaviour:
   canEquip: 1
   canDrop: 1
   canStore: 1
-  equipSource: 0
-  equipExpression: 1 > 0
+  equipSource: 1
+  equipExpression: (Level) > 1
   dropObject: {fileID: 0}
   equipAnimatorMods: []
   unequipAnimatorMods: []
@@ -87,7 +87,8 @@ MonoBehaviour:
   attachSlots: []
   attachObject: {fileID: 0}
   attachPoints: []
-  statEffects: []
+  statEffects:
+  - {fileID: 11400000, guid: 79adeaf8028a69e4182089db655cd35a, type: 2}
   unlockCategories: []
   unlockCraftingCategories: []
   unlockRecipes: []

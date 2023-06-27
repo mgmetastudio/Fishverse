@@ -60,6 +60,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
         Debug.LogFormat("Player {0} entered room", newPlayer.NickName);
 
         GetComponent<UserListManager>().RefreshUserList();
+return;
+        if (PhotonNetwork.IsMasterClient)
+        {
+                photonView.RPC("InstantiationPlayer", newPlayer, Random.Range(0, spawn_points.Length - 1));
+        }
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

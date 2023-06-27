@@ -26,7 +26,7 @@ public class UserListManager : MonoBehaviour
             {
                 string player_name = all_boats[i].GetComponent<PhotonView>().Owner.NickName;
                 string player_score = all_boats[i].GetComponent<Boat_PlayerScore>().score.ToString();
-                texts_all_users[i].text = player_name + ": " + player_score;
+                // texts_all_users[i].text = player_name + ": " + player_score;
             }
         }
         else

@@ -40,9 +40,11 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] private int _maxLineDistance;
     [SerializeField] private int _maxLineThrowDistance;
     [SerializeField] public string crankUpAnimationName = "Fishing_Up";
+    [SerializeField] public string crankUpAnimationNameRod = "FishingRod_Up";
     [SerializeField] public string CastAnimationName = "Fishing_In";
     [SerializeField] public GameObject FloatSimulation;
     public FloatSimulation SpawnedFloatSimulation;
+    private bool fishingUpSpeedWorking = true;
 
     [SerializeField] float onCastWait;
 
@@ -166,7 +168,7 @@ public class PlayerFishing : MonoBehaviourPun
             _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
             _rodLineRenderer.SetPosition(1, FishingFloat.transform.position);
         }
-
+       
         onRodDown = false;
         onRodUp = false;
     }
@@ -183,21 +185,44 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (CrankUpInput())
         {
+            _anim.speed = 1f;
             // FishingFloat.Pull();
             FishingFloat.photonView.RPC("Pull", RpcTarget.All);
             _anim.SetFloat("Fishing_Up_Speed", 1);
             _anim.Play(crankUpAnimationName);
+            var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
+            if (FishingRodAnim !=  null || _anim.GetBool("Fish_In_Hand") ==false)
+            {
+                FishingRodAnim.speed = 1f;
+                FishingRodAnim.SetFloat("FishingRod_Up_Speed",1);
+                FishingRodAnim.Play(crankUpAnimationNameRod);
+            }
         }
 
         if (CrankDownInput())
         {
-            _anim.SetFloat("Fishing_Up_Speed", 0);
+            _anim.speed = -1f;
+            var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
+            if (FishingRodAnim != null || _anim.GetFloat("Fishing_Up_Speed") == 0)
+            {
+                FishingRodAnim.speed=-1f;
+            }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             // CmdDestroyFloat();
             photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+            _anim.SetFloat("Fishing_Up_Speed", 0);
+            _anim.Play("Fishing_RightArm_Idle");
+            var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
+            if (FishingRodAnim != null || _anim.GetFloat("Fishing_Up_Speed") == 0)
+            {
+
+                FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+                FishingRodAnim.Play("IdleState");
+            }
+
         }
 
         if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance)
@@ -247,9 +272,9 @@ public class PlayerFishing : MonoBehaviourPun
         {
             // onCast.Invoke();
             _inv.HideFish();
-
+            _anim.speed = 1f;
             _anim.SetTrigger("FishingCast");
-
+          
 
             await UniTask.WaitForSeconds(onCastWait);
 

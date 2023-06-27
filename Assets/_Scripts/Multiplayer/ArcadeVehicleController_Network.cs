@@ -11,6 +11,8 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
 
     public override void Start()
     {
+        base.Start();
+
         photon_view = GetComponent<PhotonView>();
 
         if (!photon_view.IsMine)

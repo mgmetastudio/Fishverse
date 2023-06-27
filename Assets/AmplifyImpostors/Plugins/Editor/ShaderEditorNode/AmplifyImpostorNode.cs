@@ -897,7 +897,7 @@ namespace AmplifyShaderEditor
 
 			dataCollector.PortCategory = portCategory;
 
-			bool isHDRP = ( dataCollector.IsSRP && dataCollector.CurrentSRPType == TemplateSRPType.HDRP );
+			bool isHDRP = ( dataCollector.IsSRP && dataCollector.CurrentSRPType == TemplateSRPType.HDRP);
 
 			if( dataCollector.IsFragmentCategory )
 			{

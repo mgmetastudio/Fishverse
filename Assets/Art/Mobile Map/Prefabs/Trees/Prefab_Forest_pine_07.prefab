@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 89
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8021183113041674050
 Transform:
   m_ObjectHideFlags: 0
@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 3817513883733112400}
   - component: {fileID: 3172931674756058226}
   - component: {fileID: 4760548440059807141}
+  - component: {fileID: 1419867220162024369}
   m_Layer: 0
   m_Name: Forest_pine_07_LOD1
   m_TagString: Untagged
@@ -266,6 +267,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1419867220162024369
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7252376051628925513}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.58
+  m_Height: 25.591146
+  m_Direction: 1
+  m_Center: {x: 0, y: 12.723277, z: 0.1}
 --- !u!1 &7748974899842165981
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,15 +331,11 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 1.5
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 2238546851490678648}
-  - screenRelativeHeight: 0.93
+  - screenRelativeHeight: 0.8
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4760548440059807141}
-  - screenRelativeHeight: 0.26
+  - screenRelativeHeight: 0.34859595
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8361095426980542016}

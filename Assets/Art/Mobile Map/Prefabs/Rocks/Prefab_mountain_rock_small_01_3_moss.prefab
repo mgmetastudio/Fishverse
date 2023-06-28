@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 121
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6428589075258280514
 Transform:
   m_ObjectHideFlags: 0
@@ -147,11 +147,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.37201887
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 4489985146409946029}
-  - screenRelativeHeight: 0.06559729
+  - screenRelativeHeight: 0.34089297
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5992688795169249998}
@@ -254,6 +250,7 @@ GameObject:
   - component: {fileID: 3098874897068237021}
   - component: {fileID: 7054866633314944441}
   - component: {fileID: 5992688795169249998}
+  - component: {fileID: 8601250903276861109}
   m_Layer: 0
   m_Name: mountain_rock_small_01_3_LOD1
   m_TagString: Untagged
@@ -326,3 +323,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8601250903276861109
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4164696264986507377}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7903291524490377147, guid: 4a55363f4cd04ea4eaa307f51736dead, type: 3}

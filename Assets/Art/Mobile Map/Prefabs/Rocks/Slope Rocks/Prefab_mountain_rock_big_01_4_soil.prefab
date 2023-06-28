@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8042286748011531689}
   - component: {fileID: 2724677071566019961}
   - component: {fileID: 3757878363620409966}
+  - component: {fileID: 4906530883536951461}
   m_Layer: 0
   m_Name: mountain_rock_big_01_4_LOD1
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4906530883536951461
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926413846930523960}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8227057939543437521, guid: 62593b2fb1c41fb4c9ceaf01a17b7f7f, type: 3}
 --- !u!1 &2721174417514672056
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1412112060417924523}
   - component: {fileID: 2011784094480550767}
+  - component: {fileID: 4700676374137185469}
   m_Layer: 0
   m_Name: Prefab_mountain_rock_big_01_4_soil
   m_TagString: Untagged
@@ -126,17 +142,13 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2721174417514672056}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.054272354, y: 0.024920821, z: -0.035873085}
-  m_Size: 1.0311153
+  m_LocalReferencePoint: {x: 0.054272354, y: 0.024920821, z: -0.034086168}
+  m_Size: 1.0268245
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.4434445
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 6013347054937028414}
-  - screenRelativeHeight: 0.14972664
+  - screenRelativeHeight: 0.4145789
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3757878363620409966}
@@ -145,6 +157,29 @@ LODGroup:
     renderers:
     - renderer: {fileID: 1181097739134100596}
   m_Enabled: 1
+--- !u!114 &4700676374137185469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2721174417514672056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadcc2d9a34a1a34f93d4962ec37e6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_data: {fileID: 11400000, guid: 618c3c8ab9c4e784ab61fb21e17f60f7, type: 2}
+  m_rootTransform: {fileID: 1412112060417924523}
+  m_lodGroup: {fileID: 2011784094480550767}
+  m_renderers:
+  - {fileID: 3757878363620409966}
+  m_lodReplacement: 2
+  m_renderPipelineInUse: 2
+  m_insertIndex: 1
+  m_lastImpostor: {fileID: 0}
+  m_folderPath: Assets/Art/Mobile Map/Prefabs/Rocks/Slope Rocks/Impostors/Rock_big_01_4_soil/
+  m_cutMode: 0
 --- !u!1 &3080924106667800638
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +281,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 121
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5682883031046100027
 Transform:
   m_ObjectHideFlags: 0

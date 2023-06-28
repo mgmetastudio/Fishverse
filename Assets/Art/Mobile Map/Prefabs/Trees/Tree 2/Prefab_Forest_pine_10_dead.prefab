@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8359553953722513817}
   - component: {fileID: 6861325557657544135}
   - component: {fileID: 4076811284843804852}
+  - component: {fileID: 7287051362938809089}
   m_Layer: 0
   m_Name: Forest_pine_10_LOD1
   m_TagString: Untagged
@@ -84,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7287051362938809089
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781956381499812732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.42
+  m_Height: 24.509703
+  m_Direction: 1
+  m_Center: {x: 0, y: 11.827186, z: 0}
 --- !u!1 &3233320988596960024
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,25 +227,21 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7257683273481729910}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.007044792, y: 12.026594, z: 1.8103194}
-  m_Size: 24.90852
+  m_LocalReferencePoint: {x: -0.043317795, y: 11.843648, z: 1.5869367}
+  m_Size: 24.542627
   m_FadeMode: 1
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 1.4
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 7294659475269679047}
-  - screenRelativeHeight: 0.9
+  - screenRelativeHeight: 0.7085672
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4076811284843804852}
-  - screenRelativeHeight: 0.24
+  - screenRelativeHeight: 0.33580536
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2221718319247526183}
-  - screenRelativeHeight: 0.033
+  - screenRelativeHeight: 0.026390964
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8957295878730259279}
@@ -253,7 +264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 89
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2213895516934258029
 Transform:
   m_ObjectHideFlags: 0

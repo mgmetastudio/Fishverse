@@ -94,6 +94,12 @@ public class r_CreateRoomController : MonoBehaviour
         CreateRoom();
     }
 
+    [ContextMenu("Start Open World")]
+    void StartOpenWorld()
+    {
+SetupAndCreateRoom(2);
+    }
+
     void CreateRoom()
     {
         _roomCode = GenerateRoomCode();

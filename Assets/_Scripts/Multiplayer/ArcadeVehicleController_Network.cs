@@ -3,10 +3,16 @@ using Photon.Pun;
 
 public class ArcadeVehicleController_Network : ArcadeVehicleController
 {
+
     [HideInInspector] public PhotonView photon_view;
     public GameObject virtual_camera;
+
+    [SerializeField] bool disableOnStart;
+
     public override void Start()
     {
+        base.Start();
+
         photon_view = GetComponent<PhotonView>();
 
         if (!photon_view.IsMine)
@@ -31,6 +37,8 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
                 Physics.defaultMaxAngularSpeed = 100;
             }
         }
+
+        if(disableOnStart)
             enabled = false;
 
     }

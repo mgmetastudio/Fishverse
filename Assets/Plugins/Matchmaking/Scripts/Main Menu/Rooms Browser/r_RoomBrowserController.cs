@@ -8,8 +8,9 @@ using Photon.Realtime;
 
 public class r_RoomBrowserController : MonoBehaviour
 {
-    public static r_RoomBrowserController instance;
 
+    public static r_RoomBrowserController instance;
+    private bool isButtonClicked = false;
     #region Variables
     [Header("Room Browser")]
     public List<RoomInfo> m_RoomBrowserList = new List<RoomInfo>();
@@ -76,4 +77,13 @@ public class r_RoomBrowserController : MonoBehaviour
             Destroy(_RoomBrowserItem.gameObject);
     }
     #endregion
+
+    public void SetButtonClicked(bool value)
+    {
+        isButtonClicked = value;
+    }
+    public bool IsButtonClicked
+    {
+        get { return isButtonClicked; }
+    }
 }

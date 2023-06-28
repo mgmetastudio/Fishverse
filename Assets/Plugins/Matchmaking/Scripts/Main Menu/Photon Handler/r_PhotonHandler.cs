@@ -12,6 +12,9 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     public static r_PhotonHandler instance;
 
     [SerializeField] string roomScene;
+    [SerializeField] string roomScene_QuickMatch;
+    public r_RoomBrowserController m_RoomUI;
+    public r_CreateRoomControllerUI r_create;
 
     /// <summary>
     /// Here we are instancing our script to call easily from other scripts.
@@ -132,9 +135,12 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     #region Matchmaking
     public void LoadGame()
     {
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel(roomScene);
-            // PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString() + "_" + PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString());
+        if (PhotonNetwork.IsMasterClient && m_RoomUI.IsButtonClicked == false)
+        { PhotonNetwork.LoadLevel(roomScene); }
+      
+        if(PhotonNetwork.IsMasterClient && m_RoomUI.IsButtonClicked == true)
+        { PhotonNetwork.LoadLevel(roomScene_QuickMatch); }
+        // PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString() + "_" + PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString());
     }
     #endregion
 }

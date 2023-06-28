@@ -521,6 +521,13 @@ public class PlayerFishingInventory : MonoBehaviourPun
         GameObject SpawnedInventoryFish;
 
         this.GetComponent<Animator>().SetTrigger(FishHolderAnimationName);
+        var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
+        if (FishingRodAnim != null )
+        {
+            FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+            FishingRodAnim.Play("IdleState");
+
+        }
 
         HoldCaughtFish(fishInfo.uniqueId);
 

@@ -69,6 +69,7 @@ public class r_CreateRoomController : MonoBehaviour
         m_RoomUI.MiniGameBtn.onClick.AddListener(() => SetupAndCreateRoom(0));
         m_RoomUI.RaceBtn.onClick.AddListener(() => SetupAndCreateRoom(1));
         m_RoomUI.OpenWorldBtn.onClick.AddListener(() => SetupAndCreateRoom(2));
+        m_RoomUI.QuickMatch.onClick.AddListener(() => SetupAndCreateRoom(3));
 
         //Change Map Buttons
         m_RoomUI.m_NextGameModeButton.onClick.AddListener(() => { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });

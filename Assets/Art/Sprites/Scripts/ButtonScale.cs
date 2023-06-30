@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ButtonScale : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -11,26 +12,34 @@ public class ButtonScale : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Vector3 initialScale;
     private bool isScaling = false;
     private Coroutine scaleCoroutine;
+    public Button myButton;
+    Animator Anim;
+    private bool isHighlighted = false;
 
     private void Awake()
     {
         initialScale = parentObject.transform.localScale;
     }
-
+    public void Start()
+    {
+        Anim = GetComponent<Animator>();
+        myButton = GetComponent<Button>();
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
+            isHighlighted = true;
         if (scaleCoroutine != null)
             StopCoroutine(scaleCoroutine);
-
-        scaleCoroutine = StartCoroutine(ScaleAnimation(targetScale));
+        scaleCoroutine = StartCoroutine(ScaleAnimation(targetScale));   
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (scaleCoroutine != null)
-            StopCoroutine(scaleCoroutine);
-
-        scaleCoroutine = StartCoroutine(ScaleAnimation(initialScale));
+            isHighlighted = false;
+            if (scaleCoroutine != null)
+                StopCoroutine(scaleCoroutine);
+            scaleCoroutine = StartCoroutine(ScaleAnimation(initialScale));
+       
     }
 
     private IEnumerator ScaleAnimation(Vector3 target)
@@ -50,4 +59,41 @@ public class ButtonScale : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         parentObject.transform.localScale = target;
         isScaling = false;
     }
+    private void Update()
+    {
+        if (myButton != null && Anim != null)
+        {
+            if (myButton.interactable)
+            {
+                if (myButton == EventSystem.current.currentSelectedGameObject && isHighlighted)
+                {
+                    PlayAnimation("Selected");
+                }
+                else if (isHighlighted)
+                {
+                    PlayAnimation("Highlighted");
+                }
+                else if (Input.GetMouseButton(0) && isHighlighted)
+                {
+                    PlayAnimation("Pressed");
+                }
+                else
+                {
+                    PlayAnimation("Normal");
+                }
+            }
+            else if (!isHighlighted)
+            {
+                PlayAnimation("Disabled");
+            }
+        }
+    }
+    public void PlayAnimation(string animationName)
+    {
+        if (Anim != null)
+        {
+            Anim.Play(animationName);
+        }
+    }
+
 }

@@ -48,15 +48,6 @@ public class ArcadeVehicleController : MonoBehaviour
         {
             Physics.defaultMaxAngularSpeed = 100;
         }
-
-        if (Application.isEditor)
-        {
-            is_mobile = false;
-        }
-
-#if UNITY_STANDALONE_WIN
-        is_mobile = false;
-#endif
     }
     public virtual void Update()
     {

@@ -29,7 +29,9 @@ public class AccountManagement_API : MonoBehaviour
 
     public void LoginSuccessed()
     {
-        Fishverse_Core.instance.account_username = _userStats.GetScheme().UserName;
+        var userName = _userStats.GetScheme().UserName;
+        Fishverse_Core.instance.account_username = userName;
+        PlayerPrefs.SetString("username", userName);
         account_ui.OnLoginSuccess();
     }
 
@@ -89,8 +91,9 @@ public class AccountManagement_API : MonoBehaviour
         if (_authManager.IsAuthorized(out _))
         {
             SaveData(email, password);
-            Fishverse_Core.instance.account_username = _userStats.GetScheme().UserName;
-
+            var userName = _userStats.GetScheme().UserName;
+            Fishverse_Core.instance.account_username = userName;
+            PlayerPrefs.SetString("username", userName); //adapter
             account_ui.OnLoginSuccess();
         }
         else

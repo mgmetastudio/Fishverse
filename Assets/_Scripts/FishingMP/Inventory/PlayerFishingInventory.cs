@@ -21,6 +21,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     [SerializeField] InventoryCog inventoryCog;
     [SerializeField] StatsCog statsCog;
 
+
     [Space]
     [SerializeField] InventoryItem fishBaseItem;
     [SerializeField] Category fishCategory;
@@ -92,6 +93,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public InventoryItem currentBait;
     public InventoryItem currentRod;
+    public bool IsopenMenu;
+    Animator _anim;
 
     int _money;
     public int Money
@@ -129,6 +132,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     private void Start()
     {
+        _anim = GetComponent<Animator>();
         if (!photonView.IsMine)
         {
             InventoryCanvas.SetInactive();
@@ -394,6 +398,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     private void Update()
     {
+     IsopenMenu= inventoryCog.IsMenuOpen;
+
         if (FloatHasChanged == true & LastSelectedFloat != CurrentSelectedFloat)
         {
             SetUpFloat();
@@ -445,6 +451,15 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         onInventory.Invoke(inInventory);
+        var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
+        if (FishingRodAnim != null)
+        {
+            FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+            FishingRodAnim.Play("IdleState");
+            _anim.SetFloat("Fishing_Up_Speed", 0);
+            _anim.Play("Fishing_RightArm_Idle");
+
+        }
     }
 
     public void HideInventory()
@@ -453,8 +468,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // this.GetComponent<TestPlayerController>().canRotateCamera = true;
         // InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
         // InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         onInventory.Invoke(inInventory);
 
     }
@@ -522,14 +537,13 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         this.GetComponent<Animator>().SetTrigger(FishHolderAnimationName);
         var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
-        if (FishingRodAnim != null )
+        if (FishingRodAnim != null)
         {
             FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
             FishingRodAnim.Play("IdleState");
-
         }
 
-        HoldCaughtFish(fishInfo.uniqueId);
+            HoldCaughtFish(fishInfo.uniqueId);
 
 
         SpawnedInventoryFish = Instantiate(InventoryFishPrefab);

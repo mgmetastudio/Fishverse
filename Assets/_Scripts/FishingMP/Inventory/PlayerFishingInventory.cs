@@ -53,6 +53,10 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public Camera Camera;
     [Header("Equipment")]
 
+    [SerializeField] private EquipPoint _equipPoint;
+    [SerializeField] private Animator _animatorFishingRodAnim;
+    [SerializeField] private Animator _animatorCharacter;
+
     // [SyncVar]
     private int currentSelectedFloat = 0;
     // [SyncVar]
@@ -94,7 +98,6 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public InventoryItem currentBait;
     public InventoryItem currentRod;
     public bool IsopenMenu;
-    Animator _anim;
 
     int _money;
     public int Money
@@ -132,7 +135,6 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     private void Start()
     {
-        _anim = GetComponent<Animator>();
         if (!photonView.IsMine)
         {
             InventoryCanvas.SetInactive();
@@ -359,11 +361,12 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         SpawnedPrefab = Instantiate(prefab);
         SpawnedPrefab.transform.SetParent(parent);
-        SpawnedPrefab.GetComponent<EquipmentItem>().InventorySystem = this;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentType = "Float";
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentID = ID;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentName.text = Name;
-        SpawnedPrefab.GetComponent<EquipmentItem>().EquipmentImage = Image;
+        var equipmentItem = SpawnedPrefab.GetComponent<EquipmentItem>();
+        equipmentItem.InventorySystem = this;
+        equipmentItem.EquipmentType = "Float";
+        equipmentItem.EquipmentID = ID;
+        equipmentItem.EquipmentName.text = Name;
+        equipmentItem.EquipmentImage = Image;
     }
 
     public void SpawnFishingRodUI(GameObject prefab, Transform parent, int ID, string Name, Sprite Image)
@@ -451,14 +454,13 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         onInventory.Invoke(inInventory);
-        var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
-        if (FishingRodAnim != null)
+        var fishingRodAnim = _animatorFishingRodAnim;
+        if (fishingRodAnim != null)
         {
-            FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
-            FishingRodAnim.Play("IdleState");
-            _anim.SetFloat("Fishing_Up_Speed", 0);
-            _anim.Play("Fishing_RightArm_Idle");
-
+            fishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+            fishingRodAnim.Play("IdleState");
+            _animatorCharacter.SetFloat("Fishing_Up_Speed", 0);
+            _animatorCharacter.Play("Fishing_RightArm_Idle");
         }
     }
 
@@ -535,8 +537,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         GameObject SpawnedInventoryFish;
 
-        this.GetComponent<Animator>().SetTrigger(FishHolderAnimationName);
-        var FishingRodAnim = GetComponentInChildren<EquipPoint>().GetComponentInChildren<Animator>();
+        _animatorCharacter.SetTrigger(FishHolderAnimationName);
+        var FishingRodAnim = _animatorFishingRodAnim;
         if (FishingRodAnim != null)
         {
             FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);

@@ -5510,6 +5510,9 @@ MonoBehaviour:
   LineEnd: {fileID: 0}
   LineEndPrefab: {fileID: 7503126641723582434, guid: 1ff32947a66c49c4cbea00ac4e16ab6a, type: 3}
   Camera: {fileID: 0}
+  _equipPoint: {fileID: 1567046368762031188}
+  _animatorFishingRodAnim: {fileID: 3947198944551690906}
+  _animatorCharacter: {fileID: 226107868703521619}
   Floats:
   - InventorySystem: {fileID: 4905120567770436955}
     FloatPrefab: {fileID: 417328383077362676, guid: a8cfcd1b2432c4e41b0534a51ce0c148, type: 3}
@@ -16142,10 +16145,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5815683770144783272, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7549259684687578645, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -16155,8 +16154,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 8265879881593765892, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
-    - {fileID: 5815683770144783272, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
+    - {fileID: 0}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
 --- !u!1 &655814568 stripped
@@ -16182,6 +16180,11 @@ Transform:
 --- !u!1 &3759114701701121844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5933844292894137862, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
+  m_PrefabInstance: {fileID: 7382016708140538162}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3947198944551690906 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5815683770144783272, guid: 03d2600e4e27d9d428907c52f6a7d958, type: 3}
   m_PrefabInstance: {fileID: 7382016708140538162}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5475730842895601172 stripped

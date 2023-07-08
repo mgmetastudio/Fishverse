@@ -9,7 +9,10 @@ showStatusBar = false
 scopes = {
 	"last_search.7788661B" = ""
 	"OpenInspectorPreview.7788661B" = "0"
-	"currentGroup.7788661B" = "asset"
+	"currentGroup.7788661B" = "all"
+	"last_search.AE24D059" = ""
+	"OpenInspectorPreview.AE24D059" = "1"
+	"currentGroup.AE24D059" = "all"
 }
 providers = {
 	adb = {
@@ -52,15 +55,54 @@ providers = {
 		priority = 50
 		defaultAction = null
 	}
+	menu = {
+		active = true
+		priority = 80
+		defaultAction = null
+	}
+	settings = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	calculator = {
+		active = true
+		priority = 10
+		defaultAction = null
+	}
+	static_methods = {
+		active = true
+		priority = 85
+		defaultAction = null
+	}
 }
 objectSelectors = {
 }
 recentSearches = [
+	"m_TextureType"
+	"m_sRGBTexture"
+	"fault t:Texture "
+	"t_rock TextureType=0 t:Texture m_TextureType"
+	"t_rock TextureType=0 t:Texture"
+	"t_d TextureType=0 t:Texture"
+	"t_ground p(TextureType) = t:Texture"
+	"t_ground p(Texture Type)default = t:Texture"
+	"t_ground t:Texture "
+	"t_ground t:Texture m_TextureType ="
+	"t_ground t:Texture m_TextureType"
+	"t_ground t:Texture = Default"
+	"t_ground t:Texture"
+	"t_ground p(Texture Type) = \"Default\" t:Texture"
+	"?"
+	" "
+	"p"
+	"t_ground "
+	"t_ground"
 ]
 searchItemFavorites = [
 ]
 savedSearchesSortOrder = 0
-showSavedSearchPanel = false
+showSavedSearchPanel = true
 expandedQueries = [
 ]
 queryBuilder = false

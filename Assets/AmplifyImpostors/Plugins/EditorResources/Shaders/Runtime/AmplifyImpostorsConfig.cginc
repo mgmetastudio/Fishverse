@@ -6,7 +6,7 @@
 
 // uncomment the next define to activate neighbour frame clipping globally
 // use it only if your impostors show small artifacts at edges at some rotations
-//#define AI_CLIP_NEIGHBOURS_FRAMES
+#define AI_CLIP_NEIGHBOURS_FRAMES 1
 
 // don't touch the next define, it's automatically set by script
 #define AI_HDRP_VERSION 0

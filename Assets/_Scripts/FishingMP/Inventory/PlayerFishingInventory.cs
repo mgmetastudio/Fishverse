@@ -153,6 +153,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
         CheckForItems();
 
         SpawnEquipment();
+        _equipPoint = GetComponentInChildren<EquipPoint>();
+
     }
 
     public void OnItemEquip(InventoryItem equipedItem)
@@ -444,6 +446,11 @@ public class PlayerFishingInventory : MonoBehaviourPun
         await UniTask.WaitForSeconds(2f);
         soldUI.SetInactive();
     }
+    private void FindFishingRodAnimator()
+    {
+        // Find the child Animator component dynamically
+        _animatorFishingRodAnim = _equipPoint.GetComponentInChildren<Animator>();
+    }
 
     public void ShowInventory()
     {
@@ -454,13 +461,17 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         onInventory.Invoke(inInventory);
-        var fishingRodAnim = _animatorFishingRodAnim;
-        if (fishingRodAnim != null)
+
+        if (_equipPoint != null)
         {
-            fishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
-            fishingRodAnim.Play("IdleState");
-            _animatorCharacter.SetFloat("Fishing_Up_Speed", 0);
-            _animatorCharacter.Play("Fishing_RightArm_Idle");
+            FindFishingRodAnimator();
+            if (_animatorFishingRodAnim != null)
+            {
+                _animatorFishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+                _animatorFishingRodAnim.Play("IdleState");
+                _animatorCharacter.SetFloat("Fishing_Up_Speed", 0);
+                _animatorCharacter.Play("Fishing_RightArm_Idle");
+            }
         }
     }
 
@@ -538,16 +549,16 @@ public class PlayerFishingInventory : MonoBehaviourPun
         GameObject SpawnedInventoryFish;
 
         _animatorCharacter.SetTrigger(FishHolderAnimationName);
-        var FishingRodAnim = _animatorFishingRodAnim;
-        if (FishingRodAnim != null)
+        if (_equipPoint != null)
         {
-            FishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
-            FishingRodAnim.Play("IdleState");
+            FindFishingRodAnimator();
+            if (_animatorFishingRodAnim != null)
+            {
+                _animatorFishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+                _animatorFishingRodAnim.Play("IdleState");
+            }
         }
-
             HoldCaughtFish(fishInfo.uniqueId);
-
-
         SpawnedInventoryFish = Instantiate(InventoryFishPrefab);
         var invFish = SpawnedInventoryFish.GetComponent<InventoryFish>();
 

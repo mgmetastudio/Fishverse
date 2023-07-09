@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEditor;
+using UnityEngine.UI;
+
 
 namespace EasyCharacterMovement
 {
@@ -47,7 +50,8 @@ namespace EasyCharacterMovement
         public bool customInput;
         public Vector2 MovementInput;
         public Vector2 LookInput;
-
+        public Joystick joystick;
+        public bool is_mobile;
         #endregion
 
         #region FIELDS
@@ -228,7 +232,12 @@ namespace EasyCharacterMovement
                 x = Input.GetAxisRaw("Horizontal"),
                 y = Input.GetAxisRaw("Vertical"),
             };
-
+            if (is_mobile)
+            {
+                movementInput.x = joystick.Horizontal;
+                movementInput.y = joystick.Vertical;
+            }
+           
             if (customInput)
                 movementInput = MovementInput;
 
@@ -261,6 +270,7 @@ namespace EasyCharacterMovement
                 Sprint();
             else if (Input.GetKeyUp(KeyCode.LeftShift))
                 StopSprinting();
+
         }
 
         /// <summary>

@@ -56,6 +56,7 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] Button Btn_FishCast;
     [SerializeField] private EquipPoint _equipPoint;
     [SerializeField] private Animator _animatorFishingRodAnim;
+    private bool isfishing=false;
 
     // public UnityEvent onCast;
 
@@ -175,7 +176,6 @@ public class PlayerFishing : MonoBehaviourPun
             _rodLineRenderer.SetPosition(0, _rodEndPoint.position);
             _rodLineRenderer.SetPosition(1, FishingFloat.transform.position);
         }
-       
         onRodDown = false;
         onRodUp = false;
     }
@@ -196,7 +196,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         _floatDemo.SetActive(false);
 
-        if (CrankUpInput())
+        if (isfishing)
         {
             // FishingFloat.Pull();
             FishingFloat.photonView.RPC("Pull", RpcTarget.All);
@@ -214,7 +214,7 @@ public class PlayerFishing : MonoBehaviourPun
             }
         }
 
-        if (CrankDownInput())
+        if (!isfishing)
         {
             _anim.SetFloat("Fishing_Up_Speed", 0);
             if (_equipPoint != null)
@@ -278,7 +278,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (fishingRod.activeSelf && CastInput())
         {
-         //   Cast();
+            Cast();
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -329,13 +329,23 @@ public class PlayerFishing : MonoBehaviourPun
     bool CrankUpInput()
     {
         if (_inputProxy.mobileInput) return onRod;
-        return Input.GetButton("CrankUp");
+        return Input.GetButton("CrankUp") ;
     }
 
     bool CrankDownInput()
     {
         if (_inputProxy.mobileInput) return onRodUp;
-        return Input.GetKeyUp(KeyCode.Mouse0);
+        return Input.GetKeyUp(KeyCode.Mouse0) ;
+    }
+
+    public void CrankUpInputMobile()
+    {
+        isfishing = false;
+    }
+
+    public void CrankDownInputMobile()
+    {
+        isfishing = true;
     }
 
     [PunRPC]

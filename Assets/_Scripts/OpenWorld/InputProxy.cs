@@ -41,11 +41,11 @@ public class InputProxy : MonoBehaviour
             // tpCam.GetRig(0).GetCinemachineComponent<Cinemachine.CinemachinePOV>().m_VerticalAxis.m_InputAxisName = "";
 
         }
-        else
+        /*else
         {
             foreach (var item in mobileUI) item.SetInactive();
             enabled = false;
-        }
+        }*/
     }
 
     Vector2 lookMulti = new Vector2(2f, 1f);

@@ -458,8 +458,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // this.GetComponent<TestPlayerController>().canRotateCamera = false;
         // InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeOut");
         // InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeIn");
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        //  Cursor.visible = true;
+        // Cursor.lockState = CursorLockMode.None;
         onInventory.Invoke(inInventory);
 
         if (_equipPoint != null)
@@ -481,8 +481,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // this.GetComponent<TestPlayerController>().canRotateCamera = true;
         // InventoryCanvas.GetComponent<Animator>().ResetTrigger("FadeIn");
         // InventoryCanvas.GetComponent<Animator>().SetTrigger("FadeOut");
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
         onInventory.Invoke(inInventory);
 
     }

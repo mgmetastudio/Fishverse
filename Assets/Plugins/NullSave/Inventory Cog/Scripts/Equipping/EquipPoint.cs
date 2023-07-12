@@ -24,7 +24,7 @@ namespace NullSave.TOCK.Inventory
         public List<EquipPoint> forceStore;
         public List<EquipPoint> forceUnequip;
 
-        public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged;
+        public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged, onItemWeaponChanged;
 
         #endregion
 
@@ -429,7 +429,9 @@ namespace NullSave.TOCK.Inventory
         public virtual void UnstoreItem()
         {
             // Check for existing equip
-            if (Item != null) return;
+           
+            if (Item != null)  return;
+   
 
             // Check for ability to unstore
             if (storePoint == null)

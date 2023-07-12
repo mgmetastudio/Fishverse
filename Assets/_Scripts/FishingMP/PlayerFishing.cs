@@ -399,6 +399,18 @@ public class PlayerFishing : MonoBehaviourPun
             // RpcDisableHoldingFish();
             photonView.RPC("RpcDisableHoldingFish", RpcTarget.All);
             GameObject fishingFloatObj = PhotonNetwork.Instantiate(_fishingFloatBasePrefab.name, position, Quaternion.identity);
+            if (_inv.LineEnd != null)
+            {
+                for (int i = 0; i < fishingFloatObj.GetComponent<BaitActivator>().Baits.Length; i++)
+                {
+                    fishingFloatObj.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(false);
+                    if (_inv.LineEnd.GetComponent<BaitActivator>().Baits[i].Bait.activeSelf)
+                    {
+                        fishingFloatObj.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
+                    }
+
+                }
+            }
             // GameObject fishingFloatObj = Instantiate(_fishingFloatBasePrefab);
             FishingFloat temp = fishingFloatObj.GetComponent<FishingFloat>();
             // temp.photonView.RequestOwnership();

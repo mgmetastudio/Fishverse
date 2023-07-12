@@ -86,16 +86,18 @@ namespace NullSave.TOCK.Inventory
                     break;
                 case ItemType.Weapon:
                     // Equip Item
-                    switch(slot.AssignedItem.EquipState)
-                    {
-                        case EquipState.NotEquipped:
-                            inventoryCog.EquipItem(slot.AssignedItem);
-                            break;
-                        case EquipState.Stored:
-                            slot.AssignedItem.CurrentEquipPoint.EquipItem(slot.AssignedItem);
-                            break;
-                    }
-
+                    inventoryCog.SetSelectedWeapon(slot.AssignedItem);
+                    break;
+                switch(slot.AssignedItem.EquipState)
+                     {
+                         case EquipState.NotEquipped:
+                             inventoryCog.EquipItem(slot.AssignedItem);
+                             break;
+                         case EquipState.Stored:
+                             slot.AssignedItem.CurrentEquipPoint.EquipItem(slot.AssignedItem);
+                             break;
+                     }
+                    
                     // Attack (if manager available)
                     if (slot.AssignedItem.CurrentEquipPoint != null)
                     {
@@ -203,6 +205,8 @@ namespace NullSave.TOCK.Inventory
             if (Item.itemType == ItemType.Ammo)
             {
                 if (equippedIndicator != null) equippedIndicator.SetActive(Inventory != null && Inventory.GetSelectedAmmo(Item.ammoType) == Item);
+                if (equippedIndicator != null) equippedIndicator.SetActive(Inventory != null && Inventory.GetSelectedWeapon(Item.ammoType) == Item);
+
             }
             else if (Item.CanEquip)
             {

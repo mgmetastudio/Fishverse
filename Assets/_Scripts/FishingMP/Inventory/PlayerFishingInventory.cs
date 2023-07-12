@@ -74,7 +74,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public Image CurrentSelectedFishingRodImage;
     //Bait
     // [SyncVar]
-    private int currentSelectedBait = 0;
+    private int currentSelectedBait ;
     public Bait[] Baits;
     public Transform BaitContent;
     public GameObject BaitSelectionMenu;
@@ -97,6 +97,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public InventoryItem currentBait;
     public InventoryItem currentRod;
+    public InventoryItem currentFloat;
     public bool IsopenMenu;
 
     int _money;
@@ -165,18 +166,38 @@ public class PlayerFishingInventory : MonoBehaviourPun
             SetUpFloat();
         }
         if (equipedItem.subtext == "Fishing Bait")
+        {
             currentBait = equipedItem;
+            SetUpFloatBait();
+        }
+
+        if (equipedItem.displayName == "Float")
+        {
+            currentFloat = equipedItem;
+            if (currentRod != null)
+            {
+                SetUpFloat();
+            }
+        }
+
     }
 
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
+
         if (unequipedItem.displayName == "Fishing Rod")
         {
             currentRod = null;
 
         }
         if (unequipedItem.subtext == "Fishing Bait")
+        {
             currentBait = null;
+        }
+        if (unequipedItem.displayName == "Float")
+        {
+            currentFloat = null;
+        }
     }
 
     public void SetPlayerName(string PlayerN)
@@ -211,7 +232,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     {
         for (int i = 0; i < Floats.Length; i++)
         {
-            if (Floats[i].ID == CurrentSelectedFloat)
+            if (Floats[i].ID == currentFloat.previewScale)
             {
                 SpawnedLineEndPrefab = Instantiate(Floats[i].LineEndPrefab, transform.position + (transform.forward * 2), Floats[i].LineEndPrefab.transform.rotation);
             }
@@ -233,6 +254,24 @@ public class PlayerFishingInventory : MonoBehaviourPun
                 SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
             }
         }
+    }
+    public void SetUpFloatBait()
+    {
+
+        if (LineEnd != null)
+        { 
+
+            for (int i = 0; i < SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits.Length; i++)
+            {
+                LineEnd.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(false);
+                if (LineEnd.GetComponent<BaitActivator>().Baits[i].ID == currentBait.previewScale)
+                {
+                    LineEnd.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
+                }
+             
+            }
+        }
+ 
     }
 
     public void SetFloat(int ID)
@@ -404,6 +443,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     private void Update()
     {
      IsopenMenu= inventoryCog.IsMenuOpen;
+       // Debug.Log("CurrentSelectedFloat" + CurrentSelectedFloat);
 
         if (FloatHasChanged == true & LastSelectedFloat != CurrentSelectedFloat)
         {

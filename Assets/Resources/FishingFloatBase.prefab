@@ -463,7 +463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4283268134767349019
 Transform:
   m_ObjectHideFlags: 0
@@ -795,6 +795,7 @@ GameObject:
   - component: {fileID: 3018018079969238426}
   - component: {fileID: 8204206232849271570}
   - component: {fileID: 4725036442609230370}
+  - component: {fileID: 6615633325472981429}
   m_Layer: 8
   m_Name: FishingFloatBase
   m_TagString: Untagged
@@ -921,3 +922,20 @@ MonoBehaviour:
   _collider: {fileID: 9203172982053067450}
   fish: {fileID: 0}
   Hook: {fileID: 2170540160374687593}
+--- !u!114 &6615633325472981429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9203172982053067441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef16f0089e6f274ab39d188687ccb2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Baits:
+  - Bait: {fileID: 4283268134766989627}
+    ID: 0
+  - Bait: {fileID: 3935187289246054307}
+    ID: 1

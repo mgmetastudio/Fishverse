@@ -111,10 +111,10 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             _rb.isKinematic = true;
             _rb.useGravity = false;
         }
-
+        var inv = owner.GetComponent<PlayerFishingInventory>();
         for (int i = 0; i < _floatScriptables.Length; i++)
         {
-            if (_floatScriptables[i].uniqueId == FloatUniqueId)
+            if (_floatScriptables[i].uniqueId == inv.currentFloat.previewScale)
             {
                 _scriptable = _floatScriptables[i];
                 break;

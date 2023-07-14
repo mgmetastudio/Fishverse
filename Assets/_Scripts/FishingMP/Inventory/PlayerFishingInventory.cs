@@ -94,7 +94,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public List<InventoryFish> fishInv;
 
     public UnityEvent<bool> onInventory;
-
+    public static PlayerFishingInventory Instance { get; private set; }
     public InventoryItem currentBait;
     public InventoryItem currentRod;
     public InventoryItem currentFloat;
@@ -157,12 +157,20 @@ public class PlayerFishingInventory : MonoBehaviourPun
         _equipPoint = GetComponentInChildren<EquipPoint>();
 
     }
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
         if (equipedItem.displayName == "Fishing Rod")
         {
             currentRod = equipedItem;
+
             SetUpFloat();
         }
         if (equipedItem.subtext == "Fishing Bait")

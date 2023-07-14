@@ -7029,9 +7029,11 @@ MonoBehaviour:
   fishingRope: {fileID: 7480753741809127082}
   holsterBtn: {fileID: 8212199495856597925}
   forceSlider: {fileID: 1854785804446241998}
+  RotateReel: {fileID: 7961606226592020797}
   Btn_FishCast: {fileID: 4325160177254550132}
   _equipPoint: {fileID: 0}
   _animatorFishingRodAnim: {fileID: 0}
+  isreelrotate: 0
 --- !u!114 &5683908539426016800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11339,7 +11341,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4798208798188751018}
-  m_LocalRotation: {x: 0.28978413, y: -0.000000011218886, z: 0.0000000033968048, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: 0.000000011218886, z: -0.0000000033968048, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -19718,6 +19720,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5845239367152012051, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
   m_PrefabInstance: {fileID: 4046590367104356383}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7961606226592020797 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6220929937735149858, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
+  m_PrefabInstance: {fileID: 4046590367104356383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5304803471736162910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da63c9ba3ffbb7f47b8fcdfaca044866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8212199495856597925 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5323245489568185274, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}

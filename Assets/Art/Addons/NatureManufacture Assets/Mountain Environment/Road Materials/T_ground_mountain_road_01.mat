@@ -22,6 +22,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: T_ground_mountain_road_01
   m_Shader: {fileID: 4800000, guid: 7a80715936a39234886da853e2fd9e3b, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHATEST_ON
   - _SURFACE_TYPE_TRANSPARENT
@@ -55,6 +57,7 @@ Material:
   - TransparentBackface
   - MOTIONVECTORS
   - DepthOnly
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -379,7 +382,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
     - _AlphaClip: 1
-    - _AlphaCutoff: 0.794
+    - _AlphaCutoff: 0.503
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
@@ -403,6 +406,7 @@ Material:
     - _BaseUsePlanarUV: 0
     - _Blend: 0
     - _BlendMode: 0
+    - _BlendModePreserveSpecular: 0
     - _CastShadows: 1
     - _CoatMask: 0
     - _CoverAORemapMax: 1

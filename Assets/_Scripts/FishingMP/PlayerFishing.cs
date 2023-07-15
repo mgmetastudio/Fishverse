@@ -53,9 +53,12 @@ public class PlayerFishing : MonoBehaviourPun
     [Space]
     [SerializeField] Button holsterBtn;
     [SerializeField] Slider forceSlider;
+    [SerializeField] Button RotateReel;
     [SerializeField] Button Btn_FishCast;
     [SerializeField] private EquipPoint _equipPoint;
     [SerializeField] private Animator _animatorFishingRodAnim;
+    public static PlayerFishing InstanceFloat { get; private set; }
+    public bool isreelrotate= false;
     private bool isfishing=false;
 
     // public UnityEvent onCast;
@@ -99,6 +102,7 @@ public class PlayerFishing : MonoBehaviourPun
             rodUI.btn.onUp.AddListener(OnRodUp);
 
             forceSlider.SetInactive();
+            RotateReel.SetInactive();
 
             _inputProxy = GetComponent<InputProxy>();
         }
@@ -107,7 +111,13 @@ public class PlayerFishing : MonoBehaviourPun
         _equipPoint = GetComponentInChildren<EquipPoint>();
 
     }
-
+     void Awake()
+    {
+        if (InstanceFloat == null)
+        { InstanceFloat = this; }
+        else
+        { Destroy(gameObject); }
+    }
     void OnRodDown()
     {
         onRodDown = true;
@@ -161,9 +171,12 @@ public class PlayerFishing : MonoBehaviourPun
         if (photonView.IsMine)
         {
             if (FishingFloat == null)
+            { 
                 NoFishingFloatLogic();
+                RotateReel.SetActive(false);
+            }
             else
-                FishingFloatLogic();
+               FishingFloatLogic();
         }
 
         if (FishingFloat == null)
@@ -187,7 +200,12 @@ public class PlayerFishing : MonoBehaviourPun
 
     void FishingFloatLogic()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        _CrankDownInput();
+        _CrankUpInput();
+#endif
         forceSlider.SetActive(FishingFloat.fish);
+        RotateReel.SetActive(fishingRod.activeSelf);
         Btn_FishCast.GetComponent<Animator>().Play("Default");
         if (forceSlider.gameObject.activeSelf)
         {
@@ -198,7 +216,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (isfishing)
         {
-            // FishingFloat.Pull();
+            isreelrotate = true;
             FishingFloat.photonView.RPC("Pull", RpcTarget.All);
             _anim.SetFloat("Fishing_Up_Speed", 1);
             _anim.Play(crankUpAnimationName);
@@ -214,7 +232,7 @@ public class PlayerFishing : MonoBehaviourPun
             }
         }
 
-        if (!isfishing)
+        if (!isfishing )
         {
             _anim.SetFloat("Fishing_Up_Speed", 0);
             if (_equipPoint != null)
@@ -245,12 +263,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         }
 
-        if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance)
-        {
-            onLineBroke?.Invoke();
-            photonView.RPC("CmdDestroyFloat", RpcTarget.All);
-            // CmdDestroyFloat();
-        }
+        DestroyFloatmaxdistance();
     }
 
     void NoFishingFloatLogic()
@@ -288,6 +301,28 @@ public class PlayerFishing : MonoBehaviourPun
 
             // DrawFishingRod(!fishingRod.activeSelf);
         }
+        isreelrotate = false;
+    }
+
+   public void DestroyFloatmaxdistance()
+    {
+        if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance || fishingFloat.Destroyfloat)
+        {
+            onLineBroke?.Invoke();
+            photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+            // CmdDestroyFloat();
+            _anim.SetFloat("Fishing_Up_Speed", 0);
+            _anim.Play("Fishing_RightArm_Idle");
+            if (_equipPoint != null)
+            {
+                FindFishingRodAnimator();
+                if (_animatorFishingRodAnim != null && _anim.GetFloat("Fishing_Up_Speed") == 0)
+                {
+                    _animatorFishingRodAnim.SetFloat("FishingRod_Up_Speed", 0);
+                    _animatorFishingRodAnim.Play("IdleState");
+                }
+            }
+        }
     }
 
     void FishingCast()
@@ -316,8 +351,9 @@ public class PlayerFishing : MonoBehaviourPun
                 AllFish.SetActive(false);
             }
             _inv.FishHolder.SetActive(false);
+            isfishing = false;
         }
-    
+
     }
 
     bool CastInput()
@@ -337,7 +373,20 @@ public class PlayerFishing : MonoBehaviourPun
         if (_inputProxy.mobileInput) return onRodUp;
         return Input.GetKeyUp(KeyCode.Mouse0) ;
     }
-
+    void _CrankDownInput()
+    {
+        if(Input.GetButtonDown("Fire1"))
+        {
+            isfishing = true;
+        }
+    }
+    void _CrankUpInput()
+    {
+        if (Input.GetButtonUp("Fire1"))
+        {
+            isfishing = false;
+        }
+    }
     public void CrankUpInputMobile()
     {
         isfishing = false;

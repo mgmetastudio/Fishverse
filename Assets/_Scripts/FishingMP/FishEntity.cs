@@ -189,7 +189,16 @@ public class FishEntity : MonoBehaviourPun
                     if (controller.target.gameObject.TryGetComponent<FishingFloat>(out FishingFloat fishingFloat))
                     {
                         if (fishingFloat.CheckCompability(controller._scriptable))
-                            Bite(fishingFloat);
+                        {
+                             if (PlayerFishingInventory.Instance.currentFloat.previewScale == 2 && PlayerFishing.InstanceFloat.isreelrotate)
+                              {
+                                  Bite(fishingFloat);
+                              }
+                              else if (PlayerFishingInventory.Instance.currentFloat.previewScale <= 1)
+                              {
+                                  Bite(fishingFloat);
+                              }
+                        }
                     }
 //bruh too many ifs
                     // Bite(controller.target.gameObject.GetComponent<FishingFloat>());

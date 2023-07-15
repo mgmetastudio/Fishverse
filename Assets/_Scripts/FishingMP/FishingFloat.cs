@@ -2,6 +2,7 @@
 // using Mirror;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.Events;
 using System.Linq;
 
 public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
@@ -23,12 +24,15 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     private static FishingFloatScriptable[] _floatScriptables;
     private FishingFloatScriptable _scriptable;
-
+    [SerializeField] PlayerFishingInventory inv;
     public Rigidbody _rb;
     public Collider _collider;
 
     // [SyncVar] 
     private PlayerFishing owner;
+    public static UnityEvent onLineBroke;
+
+    [SerializeField] public bool Destroyfloat= false;
     public PlayerFishing Owner
     {
         get => owner;
@@ -70,6 +74,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             _floatScriptables = Resources.LoadAll<FishingFloatScriptable>("FishingFloats");
         }
+
     }
 
     // public void Destroy(NetworkConnection sender)
@@ -81,7 +86,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     // }
 
     // [Command(requiresAuthority = true)]
-    
+
     [PunRPC]
     public void Pull()
     {
@@ -89,18 +94,30 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             fish.controller.target = Owner._rodEndPoint;
             fish.controller.pullForce = 1f;
+            Destroyfloat = false;
         }
         else
         {
             photonView.RPC("TargetPull", RpcTarget.All);
-            // TargetPull();
+            //TargetPull();
         }
     }
 
     [PunRPC]
     public void TargetPull()
     {
+         
         _rb.AddForce((Owner._rodEndPoint.position - transform.position) * .2f);
+        Vector3 targetPosition = Owner._rodEndPoint.position;
+        targetPosition.y = transform.position.y; // Preserve the initial height
+        this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, Time.deltaTime * 1.5f);
+        // owner.DestroyFloatmaxdistance();
+        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 3)
+        {
+            Destroyfloat = !Destroyfloat;
+        }
+
+
     }
 
     private void Start()
@@ -176,4 +193,6 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     //     _rb.isKinematic = true;
     //     _rb.useGravity = false;
     // }
+
+  
 }

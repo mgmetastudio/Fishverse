@@ -37,7 +37,6 @@ public class SliderTextUpdater : MonoBehaviour
         if (textMeshProText != null)
         {
             textMeshProText.text = Mathf.Round(value * 100f).ToString();
-            Debug.Log("Slider value updated: " + textMeshProText.text);
         }
     }
 }

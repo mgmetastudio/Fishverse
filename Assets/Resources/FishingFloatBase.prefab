@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2170540160374922057}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0016343397, y: -0.23708712, z: 0.008470704}
+  m_LocalPosition: {x: -0.0016343397, y: -0.1536, z: 0.008470704}
   m_LocalScale: {x: 1.248774, y: 1.248774, z: 1.248774}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42,9 +42,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2170540160374922057}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0.05
+  m_Mass: 0.01
+  m_Drag: 2
+  m_AngularDrag: 0.1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -918,8 +918,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactor: {fileID: 9203172982053067448}
+  inv: {fileID: 0}
   _rb: {fileID: 9203172982053067447}
   _collider: {fileID: 9203172982053067450}
+  Destroyfloat: 0
   fish: {fileID: 0}
   Hook: {fileID: 2170540160374687593}
 --- !u!114 &6615633325472981429

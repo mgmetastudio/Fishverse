@@ -1,18 +1,30 @@
 trackSelection = true
 fetchPreview = true
-defaultFlags = 0
+defaultFlags = 264
 keepOpen = false
 queryFolder = "Assets"
 onBoardingDoNotAskAgain = true
-showPackageIndexes = false
-showStatusBar = false
+showPackageIndexes = true
+showStatusBar = true
 scopes = {
 	"last_search.7788661B" = ""
-	"OpenInspectorPreview.7788661B" = "0"
+	"OpenInspectorPreview.7788661B" = "1"
 	"currentGroup.7788661B" = "all"
 	"last_search.AE24D059" = ""
 	"OpenInspectorPreview.AE24D059" = "1"
 	"currentGroup.AE24D059" = "all"
+	"last_search.8824D059" = ""
+	"OpenInspectorPreview.8824D059" = "0"
+	"currentGroup.8824D059" = "all"
+	"last_search.9824D059" = ""
+	"OpenInspectorPreview.9824D059" = "0"
+	"currentGroup.9824D059" = "all"
+	"last_search.E6F67C7E" = ""
+	"OpenInspectorPreview.E6F67C7E" = "0"
+	"currentGroup.E6F67C7E" = "all"
+	"last_search.982FBD6D" = "t:object main_menu"
+	"OpenInspectorPreview.982FBD6D" = "0"
+	"currentGroup.982FBD6D" = "all"
 }
 providers = {
 	adb = {
@@ -79,25 +91,26 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
-	"m_TextureType"
-	"m_sRGBTexture"
-	"fault t:Texture "
-	"t_rock TextureType=0 t:Texture m_TextureType"
-	"t_rock TextureType=0 t:Texture"
-	"t_d TextureType=0 t:Texture"
-	"t_ground p(TextureType) = t:Texture"
-	"t_ground p(Texture Type)default = t:Texture"
-	"t_ground t:Texture "
-	"t_ground t:Texture m_TextureType ="
-	"t_ground t:Texture m_TextureType"
-	"t_ground t:Texture = Default"
-	"t_ground t:Texture"
-	"t_ground p(Texture Type) = \"Default\" t:Texture"
-	"?"
-	" "
-	"p"
-	"t_ground "
-	"t_ground"
+	"p: t:Texture ref=<$object:none,Object$>"
+	"p: t:Texture"
+	"p: t:Texture t:Image"
+	"p: t:Texture a:Prefabs"
+	"p: t:texture"
+	"h: ref=\"Assets/Art/Sprites/UI/SCI-FI UI Pack Pro/SCI-FI UI Pack_V2 Pro(Cyan)/Textures/DemoScene_Cyan/Buttons/Btn_StartMenuYellow_p.png\""
+	":"
+	"ref:AssetType:Texture t:"
+	"ref:AssetType:Texture t:prefabname"
+	"p: ref:Assets/Prefabs/Main_Menu_Canvas.prefab "
+	"p: dep:Assets/Prefabs/Main_Menu_Canvas.prefab"
+	"dep:"
+	"dep:Assets/Prefabs/Main_Menu_Canvas.prefab"
+	"Assets/Prefabs/Main_Menu_Canvas.prefabdep:"
+	" dep:Assets/Prefabs/Main_Menu_Canvas.prefab"
+	"t:texture dep:\"Assets/Prefabs/Main_Menu_Canvas.prefab\""
+	"t:texture dep:"
+	"t:texture dep:t:prefab Main_Menu_Canvas ref={t:texture} "
+	"t:texture"
+	"t:texture ref:{t:prefab Main_Menu_Canvas}"
 ]
 searchItemFavorites = [
 ]
@@ -105,7 +118,7 @@ savedSearchesSortOrder = 0
 showSavedSearchPanel = true
 expandedQueries = [
 ]
-queryBuilder = false
+queryBuilder = true
 ignoredProperties = "id;name;classname;imagecontentshash"
 helperWidgetCurrentArea = "all"
 disabledIndexers = ""

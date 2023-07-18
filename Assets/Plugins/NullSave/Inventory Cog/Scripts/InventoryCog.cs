@@ -1,4 +1,4 @@
-﻿using LibEngine.Auth;
+﻿using LibEngine;
 using NullSave.TOCK.Stats;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
-using static LibEngineInstaller;
 
 namespace NullSave.TOCK.Inventory
 {
@@ -14,6 +13,8 @@ namespace NullSave.TOCK.Inventory
     [HierarchyIcon("inventory_icon", "#ffffff")]
     public class InventoryCog : MonoBehaviour
     {
+        [Inject]
+        private InventoryRemote _inventoryRemote;
 
         #region Constants
 
@@ -32,21 +33,6 @@ namespace NullSave.TOCK.Inventory
 
         [Tooltip("Items to be placed into inventory at startup")] public List<ItemReference> startingItems;
         [Tooltip("AllExistingItems")] public List<ItemReference> AllExisingPublicItems;
-
-        //[Inject]
-        private InventoryRemote _inventoryRemote;
-
-        [Inject]
-        public void SomeInject(IAuthManager authTest)
-        {
-            _inventoryRemote = default;
-        }
-
-        [Inject]
-        public void SomeInject(InventoryRemote inventoryRemote)
-        {
-            _inventoryRemote = inventoryRemote;
-        }
 
         [Tooltip("Available game currency")] public float currency;
         private Dictionary<string, InventoryItem> activeAmmo;

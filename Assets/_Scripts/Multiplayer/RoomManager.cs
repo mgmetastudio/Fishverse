@@ -5,12 +5,16 @@ using UnityEngine.SceneManagement;
 using static LibEngineInstaller;
 using Zenject;
 using LibEngine.Auth;
+using LibEngine;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public string menu_scene;
     public GameObject player_prefab;
     public Transform[] spawn_points;
+
+    [Inject]
+    private DiContainer _diContainer;
 
     private void Start()
     {
@@ -31,23 +35,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
                 index++;
             }
         }
-    }
-
-    private InventoryRemote _inventoryRemote;
-    private DiContainer _diContainer;
-
-
-    [Inject]
-    public void SomeInject(IAuthManager authTest)
-    {
-        _inventoryRemote = null;
-    }
-
-    [Inject]
-    public void SomeInject2(InventoryRemote inventoryRemote, DiContainer diContainer)
-    {
-        _inventoryRemote = inventoryRemote;
-        _diContainer = diContainer;
     }
 
     [PunRPC]

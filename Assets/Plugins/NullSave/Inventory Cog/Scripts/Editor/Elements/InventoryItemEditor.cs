@@ -376,6 +376,8 @@ namespace NullSave.TOCK.Inventory
 
         private void DrawGeneral(bool autoLoot = false, bool autoEquip = false, InventoryDB db = null)
         {
+            SimpleProperty("customizationId");
+
             bool isSkill = (ItemType)SimpleInt("itemType") == ItemType.Skill;
 
             if (SectionToggle((int)displayFlags, (int)DisplayFlags.Behaviour, "Behaviour", BehaviourIcon))
@@ -506,7 +508,6 @@ namespace NullSave.TOCK.Inventory
                         StatsBoolToggle("canEquip", "Can Equip", "equipSource", "equipExpression");
                         if (serializedObject.FindProperty("canEquip").boolValue)
                         {
-                            SimpleProperty("canStore");
                             SimpleProperty("freeSlotWhenEquipped");
                             if (autoEquip)
                             {

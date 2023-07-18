@@ -1,9 +1,12 @@
-﻿using NullSave.TOCK.Stats;
+﻿using LibEngine.Auth;
+using NullSave.TOCK.Stats;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
+using static LibEngineInstaller;
 
 namespace NullSave.TOCK.Inventory
 {
@@ -28,6 +31,23 @@ namespace NullSave.TOCK.Inventory
 #endif
 
         [Tooltip("Items to be placed into inventory at startup")] public List<ItemReference> startingItems;
+        [Tooltip("AllExistingItems")] public List<ItemReference> AllExisingPublicItems;
+
+        //[Inject]
+        private InventoryRemote _inventoryRemote;
+
+        [Inject]
+        public void SomeInject(IAuthManager authTest)
+        {
+            _inventoryRemote = default;
+        }
+
+        [Inject]
+        public void SomeInject(InventoryRemote inventoryRemote)
+        {
+            _inventoryRemote = inventoryRemote;
+        }
+
         [Tooltip("Available game currency")] public float currency;
         private Dictionary<string, InventoryItem> activeAmmo;
         private Dictionary<string, InventoryItem> activeWeapon;
@@ -251,7 +271,12 @@ namespace NullSave.TOCK.Inventory
             }
         }
 
-        private void OnEnable()
+        private void Start()
+        {
+            Init();
+        }
+
+        private void Init()
         {
             if (StatsCog == null)
             {
@@ -348,6 +373,25 @@ namespace NullSave.TOCK.Inventory
                         if (item != null)
                         {
                             AddToInventory(item.item, item.count);
+                        }
+                    }
+                }
+
+                if (AllExisingPublicItems != null)
+                {
+                    var privateOwning = _inventoryRemote.ItemsPrivateOwningInfo;
+
+                    foreach (ItemReference item in AllExisingPublicItems)
+                    {
+                        if (item != null)
+                        {
+                            var ownedItem = privateOwning.Where(x => x.Key.ItemKeyId.ToString() == item.item.customizationId);
+
+                            foreach (var ownItem in ownedItem)
+                            {
+                                var ownItemKey = ownItem.Key;
+                                AddToInventory(item.item, ownItemKey.Count);
+                            }
                         }
                     }
                 }

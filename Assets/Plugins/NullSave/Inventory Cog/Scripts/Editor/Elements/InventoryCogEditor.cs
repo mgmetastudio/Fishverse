@@ -473,6 +473,8 @@ namespace NullSave.TOCK.Inventory
 
         private void DrawStarting()
         {
+            SimpleProperty("AllExisingPublicItems");
+
             bool hasFlag = (displayFlags & DisplayFlags.StartingItems) == DisplayFlags.StartingItems;
 
             bool resValue = hasFlag;

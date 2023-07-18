@@ -70,13 +70,14 @@ namespace NullSave.TOCK.Inventory
         // Equiping
         [Tooltip("Object to spawn when equipped")] public GameObject equipObject;
         public CustomizationPoint customizationPoint;
-        public string customizationId;
+        [Tooltip("CustomizedId")] public string customizationId;
         [Tooltip("How to handel automatic equipping")] public AutoEquipMode autoEquip = AutoEquipMode.Never;
         [Tooltip("Location to use for automatic equipping")] public AutoEquipLocation equipLocation = AutoEquipLocation.MirrorCurrent;
         [Tooltip("List of compatible Equip Point Ids")] public List<string> equipPoints;
         [Tooltip("Can item be equipped")] public bool canEquip = true;
         [Tooltip("Can item be dropped")] public bool canDrop = true;
         [Tooltip("Can item be put into a Store Point")] public bool canStore = true;
+
         public BooleanSource equipSource = BooleanSource.Static;
         [Tooltip("Expression used to determine if item can be equipped")] public string equipExpression = "1 > 0";
         private bool curCanEquip;

@@ -2,6 +2,9 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using static LibEngineInstaller;
+using Zenject;
+using LibEngine.Auth;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
@@ -30,11 +33,28 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
     }
 
+    private InventoryRemote _inventoryRemote;
+    private DiContainer _diContainer;
+
+
+    [Inject]
+    public void SomeInject(IAuthManager authTest)
+    {
+        _inventoryRemote = null;
+    }
+
+    [Inject]
+    public void SomeInject2(InventoryRemote inventoryRemote, DiContainer diContainer)
+    {
+        _inventoryRemote = inventoryRemote;
+        _diContainer = diContainer;
+    }
 
     [PunRPC]
     void InstantiationPlayer(int index)
     {
-        PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
+        var spawnedPlayerObj = PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
+        _diContainer.InjectGameObject(spawnedPlayerObj);
     }
 
     public void Leave()

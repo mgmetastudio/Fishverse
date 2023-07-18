@@ -3,13 +3,10 @@ using UnityEngine;
 public class AppSettings_API : MonoBehaviour
 {
     private AppSettings_UI app_settings_ui;
-    public int target_fps = 60;
     public AppSettings_Data app_settings;
-
     void Start()
     {
         app_settings_ui = GetComponent<AppSettings_UI>();
-        Application.targetFrameRate = target_fps;
         LoadSettings();
     }
 

@@ -112,7 +112,20 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         targetPosition.y = transform.position.y; // Preserve the initial height
         this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, Time.deltaTime * 1.5f);
         // owner.DestroyFloatmaxdistance();
-        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 3)
+        bool isTouchingGround=false ;
+
+        // Check if the float is touching the ground collider
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Default"))
+            {
+                isTouchingGround = true;
+                break;
+            }
+        }
+
+        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 1.5f || isTouchingGround)
         {
             Destroyfloat = !Destroyfloat;
         }

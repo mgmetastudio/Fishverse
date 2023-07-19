@@ -20,6 +20,7 @@ public class InputProxy : MonoBehaviour
 
     [Space]
     [SerializeField] List<GameObject> mobileUI;
+    [SerializeField] float smoothing = 5f;
 
     void Start()
     {
@@ -52,6 +53,11 @@ public class InputProxy : MonoBehaviour
     void Update()
     {
         character.MovementInput = moveJoystick.Direction;
-        character.LookInput = lookJoystick.Direction * lookMulti;
+
+        // Apply smoothing to the camera look input
+        Vector2 rawLookInput = lookJoystick.Direction * lookMulti;
+        Vector2 smoothedLookInput = Vector2.Lerp(character.LookInput, rawLookInput, Time.deltaTime * smoothing);
+        character.LookInput = smoothedLookInput;
+
     }
 }

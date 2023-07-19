@@ -24,9 +24,10 @@ public class FishEntity : MonoBehaviourPun
     public FishAIController controller;
     public GameObject FishCaughtMessage;
     public GameObject FishModel;
+    bool iscatched = false;
 
     [Space]
-    [SerializeField] float minDist = 2f;
+    [SerializeField] float minDist = 0.2f;
 
     public Rigidbody rb;
     // [SyncVar(hook = "HookedChanged")]
@@ -222,7 +223,7 @@ public class FishEntity : MonoBehaviourPun
             if (HookedTo != null)
             {
 
-
+             //   Debug.Log("Distance beteen fish and rod point in fish entity script:"+Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)));
 
                 Vector3 NewFishModelPosition = new Vector3(HookedTo.Hook.transform.position.x, HookedTo.Hook.transform.position.y - 0.15f, HookedTo.Hook.transform.position.z);
                 FishModel.transform.position = NewFishModelPosition;
@@ -248,7 +249,8 @@ public class FishEntity : MonoBehaviourPun
                     // FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
                     FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
                 }
-                if (Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist)
+                   // Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist
+                if (controller.iscatched)
                 {
                     var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
                     PlayerFishingInventory inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();

@@ -16,7 +16,9 @@ public class FishAIController : MonoBehaviour
 
     public float getOffHookTime = 10f;
     public float currentOffHookTime;
-
+    public bool iscatched=false;
+    bool isTouchingGround = false;
+    float mindistance = 0.6f;
     private Vector3 CalculateBoundsVector()
     {
         return _bounds.Contains(transform.position) ? Vector3.zero : (_bounds.center - transform.position).normalized;
@@ -95,12 +97,22 @@ public class FishAIController : MonoBehaviour
         {
             inWater = true;
         }
+        if (other.CompareTag("Ground"))
+        {
+            isTouchingGround = true;
+           // Debug.Log("Fish is touching the ground.");
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
             inWater = false;
+        }
+        if (other.CompareTag("Ground"))
+        {
+            isTouchingGround = false;
+          //  Debug.Log("Fish is no longer touching the ground.");
         }
     }
 
@@ -149,8 +161,38 @@ public class FishAIController : MonoBehaviour
             movementVector = Vector3.SmoothDamp(transform.forward, movementVector, ref _currentVelocity, _scriptable.smoothTime);
             movementVector = movementVector.normalized * (CalculateSpeed() * (doNotUpdateTarget ? 1.5f : 1f));
         }
+
         transform.forward = movementVector;
-        transform.position += ((movementVector * stamina) + (pullForce > .0f ? (target.position - transform.position) * (.2f * pullForce / stamina / stamina) : Vector3.zero)) * Time.deltaTime;
+
+        Vector3 movement = movementVector * stamina;
+
+        if (pullForce > 0.0f && target != null)
+        {
+            Vector3 targetDirection = target.position - transform.position;
+            Vector3 horizontalDirection = new Vector3(targetDirection.x, 0.0f, targetDirection.z);
+            if (Vector3.Distance(target.position, transform.position) <2f || isTouchingGround)
+            {
+                Vector3 pull = targetDirection.normalized * (0.2f * pullForce / (stamina * stamina));
+                movement += pull;
+            }
+            else
+            {
+                Vector3 pull = horizontalDirection.normalized * (0.2f * pullForce / (stamina * stamina));
+                movement += pull;
+            }
+
+            if(Vector3.Distance(target.position, transform.position) < mindistance)
+            {
+                iscatched = true;
+            }
+            else
+            {
+                iscatched = false;
+            }
+
+        }
+        transform.position += movement * Time.deltaTime;
+       // transform.position += ((movementVector * stamina) + (pullForce > .0f ? (target.position - transform.position) * (.2f * pullForce / stamina / stamina) : Vector3.zero)) * Time.deltaTime;
     }
 
     private IEnumerator CustomUpdateLoop()

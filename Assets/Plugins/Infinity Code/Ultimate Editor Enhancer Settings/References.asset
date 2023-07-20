@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea5fabd361f4d0f81a66ff0fcdd77dd, type: 3}
   m_Name: References
   m_EditorClassIdentifier: 
-  _bookmarks: []
+  _bookmarks:
+  - title: Open_World
+    type: UnityEditor.SceneAsset, UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    target: {fileID: 102900000, guid: 5e3ad913217051d4383066f8deebb507, type: 3}
+  - title: Main_Menu
+    type: UnityEditor.SceneAsset, UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    target: {fileID: 102900000, guid: 5d0147f8a257cca4ea60a2a7b809f3db, type: 3}
   _favoriteWindows: []
   _headerRules:
   - enabled: 1
@@ -185,17 +193,17 @@ MonoBehaviour:
     alignWindowToBar: 1
     windowMode: 0
   _sceneHistory:
+  - name: Main_Menu
+    path: Assets/Scenes/Menu/Main_Menu.unity
+  - name: Open_World
+    path: Assets/Scenes/Mobile - Open World/Open_World.unity
   - name: Open_World 1
     path: Assets/Scenes/Mobile - Open World/Open_World 1.unity
   - name: OpenWorld Test
     path: Assets/Scenes/Mobile - Open World/OpenWorld Test.unity
-  - name: Open_World
-    path: Assets/Scenes/Mobile - Open World/Open_World.unity
   - name: MiniGame_Racing
     path: Assets/Scenes/MiniGames/MiniGame_Racing.unity
   - name: MiniGame_Fishing
     path: Assets/Scenes/MiniGames/MiniGame_Fishing.unity
   - name: Room
     path: Assets/Scenes/Menu/Room.unity
-  - name: Main_Menu
-    path: Assets/Scenes/Menu/Main_Menu.unity

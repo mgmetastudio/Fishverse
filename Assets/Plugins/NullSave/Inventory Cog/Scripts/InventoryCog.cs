@@ -32,7 +32,7 @@ namespace NullSave.TOCK.Inventory
 #endif
 
         [Tooltip("Items to be placed into inventory at startup")] public List<ItemReference> startingItems;
-        [Tooltip("AllExistingItems")] public List<ItemReference> AllExisingPublicItems;
+        [Tooltip("AllExistingItems")] public List<InventoryItem> AllExisingPublicItems;
 
         [Tooltip("Available game currency")] public float currency;
         private Dictionary<string, InventoryItem> activeAmmo;
@@ -367,16 +367,16 @@ namespace NullSave.TOCK.Inventory
                 {
                     var privateOwning = _inventoryRemote.ItemsPrivateOwningInfo;
 
-                    foreach (ItemReference item in AllExisingPublicItems)
+                    foreach (InventoryItem item in AllExisingPublicItems)
                     {
                         if (item != null)
                         {
-                            var ownedItem = privateOwning.Where(x => x.Key.ItemKeyId.ToString() == item.item.customizationId);
+                            var ownedItem = privateOwning.Where(x => x.Key.ItemKeyId.ToString() == item.customizationId);
 
                             foreach (var ownItem in ownedItem)
                             {
                                 var ownItemKey = ownItem.Key;
-                                AddToInventory(item.item, ownItemKey.Count);
+                                AddToInventory(item, ownItemKey.Count);
                             }
                         }
                     }

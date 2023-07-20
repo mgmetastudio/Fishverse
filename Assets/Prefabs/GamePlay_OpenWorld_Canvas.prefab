@@ -5589,9 +5589,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI_Sounds, Assembly-CSharp
-        m_MethodName: PlaySound
-        m_Mode: 3
+        m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
+        m_MethodName: OnLeftRoom
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -32808,7 +32808,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &3282385167601080271
 MonoBehaviour:
@@ -33225,7 +33225,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &3282501639692918377
 MonoBehaviour:
@@ -39451,7 +39451,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &8669174852171663638
 MonoBehaviour:
@@ -39884,7 +39884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8852199973986237607}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: MiniMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40239,7 +40239,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &8852199973991993105
 MonoBehaviour:
@@ -40499,7 +40499,8 @@ GameObject:
   - component: {fileID: 8852199973986136033}
   - component: {fileID: 8852199973986679931}
   - component: {fileID: 8852199973986136032}
-  m_Layer: 10
+  - component: {fileID: 7017673201988490557}
+  m_Layer: 14
   m_Name: MiniMapCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40552,7 +40553,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1079
+    m_Bits: 32311
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: d5f9aa4149d88ca4b84a67c4488bf2d3, type: 2}
   m_TargetDisplay: 0
@@ -40597,6 +40598,21 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &7017673201988490557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852199973986496037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7171d076b3ccb6648aa600a2e7b02e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MarkPrefab: {fileID: 0}
+  Panel: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &8852199973986499091
 GameObject:
   m_ObjectHideFlags: 0

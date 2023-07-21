@@ -39,12 +39,20 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(this);
         PhotonNetwork.AutomaticallySyncScene = true;
     }
+    private void Update()
+    {
+        Debug.Log("Room Count: " + PhotonNetwork.CountOfRooms);
+        Debug.Log("Player in Room Count: " + PhotonNetwork.CountOfPlayersInRooms);
+        Debug.Log("Current room is visible: " + PhotonNetwork.CurrentRoom.IsVisible);
+        Debug.Log("Room browser list: " + r_RoomBrowserController.instance.m_RoomBrowserList.Count);
+        Debug.Log("Server Region Im using: " + PhotonNetwork.CloudRegion);
+    }
     #endregion
 
     /// <summary>
     /// Here we are connecting to Photon and make our connection ready to play.
     /// </summary>
-    
+
     #region Connecting
     public void ConnectToPhoton() => PhotonNetwork.ConnectUsingSettings();
 

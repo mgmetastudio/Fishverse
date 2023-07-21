@@ -93,4 +93,14 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
         panelLoading.SetActive(true);
     }
+    public void LoadSceneWitDelay()
+    {
+        StartCoroutine(LoadSceneAfterDelay());
+    }
+    private IEnumerator LoadSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
+        panelLoading.SetActive(true);
+    }
 }

@@ -43,9 +43,20 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     {
         Debug.Log("Room Count: " + PhotonNetwork.CountOfRooms);
         Debug.Log("Player in Room Count: " + PhotonNetwork.CountOfPlayersInRooms);
-        Debug.Log("Current room is visible: " + PhotonNetwork.CurrentRoom.IsVisible);
-        Debug.Log("Room browser list: " + r_RoomBrowserController.instance.m_RoomBrowserList.Count);
         Debug.Log("Server Region Im using: " + PhotonNetwork.CloudRegion);
+
+        if (PhotonNetwork.CurrentRoom != null)
+        {
+            try
+            {
+                Debug.Log("Current room is visible: " + PhotonNetwork.CurrentRoom.IsVisible);
+                Debug.Log("Room browser list: " + r_RoomBrowserController.instance.m_RoomBrowserList.Count);
+            }
+            catch (System.Exception)
+            {
+            }
+            
+        }
     }
     #endregion
 

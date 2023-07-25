@@ -61,6 +61,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
+        Debug.Log("Connecting to Photon server...");
+
     }
 
     public void ConnectHost()
@@ -93,6 +95,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Connected to lobby");
 
         onJoinedLobbyAction();
+        Debug.Log("Lobby joined, client state: " + PhotonNetwork.NetworkClientState);
+
 
         // panel_loading.SetActive(false);
         // panel_lobby.SetActive(true);

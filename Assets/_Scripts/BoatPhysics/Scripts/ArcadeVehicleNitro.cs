@@ -14,7 +14,7 @@ public class ArcadeVehicleNitro : MonoBehaviourPun
     [Space(10)]
     [Header("UI:")]
     public List<Image> progress_bars = new List<Image>();
-
+    public static ArcadeVehicleNitro InstanceArcadeVehicleNitro { get; private set; }
     private ArcadeVehicleController vehicle_controller;
 
     PhotonView photon_view;
@@ -24,9 +24,21 @@ public class ArcadeVehicleNitro : MonoBehaviourPun
         photon_view = GetComponent<PhotonView>();
         vehicle_controller = GetComponent<ArcadeVehicleController>();
 
-        FindObjectOfType<BoatNitroUI>(true).Setup(this);
+      //  FindObjectOfType<BoatNitroUI>(true).Setup(this);
     }
-
+    private void Awake()
+    {
+        // Ensure only one instance of the script exists
+        if (InstanceArcadeVehicleNitro == null)
+        {
+            InstanceArcadeVehicleNitro = this;
+        }
+        else
+        {
+            // If an instance already exists, destroy this duplicate
+            Destroy(gameObject);
+        }
+    }
     public void RefreshNitroUI()
     {
         if (progress_bars.Count > 0)

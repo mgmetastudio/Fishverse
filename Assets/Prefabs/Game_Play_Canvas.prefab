@@ -22765,7 +22765,7 @@ GameObject:
   - component: {fileID: 5107659887719049940}
   - component: {fileID: 5107659887719049947}
   - component: {fileID: 5107659887719049944}
-  - component: {fileID: 5283582907902700084}
+  - component: {fileID: 8515526983795228166}
   m_Layer: 5
   m_Name: Btn_BoatNitro
   m_TagString: Untagged
@@ -22847,7 +22847,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nitroImg: {fileID: 5107659887744509408}
---- !u!114 &5283582907902700084
+  nitro: {fileID: 0}
+--- !u!114 &8515526983795228166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24076,7 +24077,7 @@ GameObject:
   - component: {fileID: 5107659887800588979}
   - component: {fileID: 5107659887800588978}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: GearText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24130,7 +24131,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: N
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ee6b5adda1f542048b49c6173b174637, type: 2}
   m_sharedMaterial: {fileID: 3568012165898795625, guid: ee6b5adda1f542048b49c6173b174637, type: 2}
@@ -33454,7 +33455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5107659888288488359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37619,7 +37620,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -5.2, y: 0.00008583069}
+  m_AnchoredPosition: {x: -7, y: 0.00008583069}
   m_SizeDelta: {x: 78.8, y: 51.23}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5107659888612126288
@@ -37651,8 +37652,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 86950e6845f8a884d8a5be5cf6d16c73, type: 3}
-    m_FontSize: 35
+    m_Font: {fileID: 12800000, guid: 8dc724813ea834f40af1bc46ec2f2756, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0

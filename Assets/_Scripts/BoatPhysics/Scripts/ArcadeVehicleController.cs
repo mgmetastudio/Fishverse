@@ -14,6 +14,9 @@ public class ArcadeVehicleController : MonoBehaviour
     public float MaxSpeed, accelaration, accelaration_reverse, turn, gravity = 7f;
     public float speed_boost = 1;
     public Rigidbody rb, carBody;
+    public static ArcadeVehicleController InstanceVehicleController { get; private set; }
+    public enum Gear { Neutral, Reverse, Gear1, Gear2, Gear3, Gear4 }
+    public Gear currentGear = Gear.Neutral;
 
     [HideInInspector]
     public RaycastHit hit;
@@ -38,6 +41,9 @@ public class ArcadeVehicleController : MonoBehaviour
     public float radius, horizontalInput, verticalInput;
     private Vector3 origin;
 
+    public float maxFuel = 100f;
+    public float fuel;
+
     public virtual void Start()
     {
         if (!joystick)
@@ -47,6 +53,20 @@ public class ArcadeVehicleController : MonoBehaviour
         if (movementMode == MovementMode.AngularVelocity)
         {
             Physics.defaultMaxAngularSpeed = 100;
+        }
+        fuel = maxFuel;
+    }
+    private void Awake()
+    {
+        // Ensure only one instance of the script exists
+        if (InstanceVehicleController == null)
+        {
+            InstanceVehicleController = this;
+        }
+        else
+        {
+            // If an instance already exists, destroy this duplicate
+            Destroy(gameObject);
         }
     }
     public virtual void Update()
@@ -68,7 +88,6 @@ public class ArcadeVehicleController : MonoBehaviour
         // }
         Visuals();
         AudioManager();
-
     }
     public void AudioManager()
     {
@@ -137,12 +156,37 @@ public class ArcadeVehicleController : MonoBehaviour
 
             //body tilt
             carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, hit.normal) * carBody.transform.rotation, 0.12f));
+
+            //Fuel System
+            fuel -=  speed_boost* Time.deltaTime;
+            if (fuel <= 0f)
+            {
+                fuel = 0f;
+                // Perform any actions when the fuel runs out, like stopping the vehicle
+                // For example, you can set currentGear to Neutral to stop the vehicle from moving.
+                currentGear = Gear.Neutral;
+            }
         }
         else
         {
             carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
             rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * gravity, Time.deltaTime * gravity);
+            currentGear = Gear.Neutral;
+
         }
+
+
+        //Gear System
+        if (grounded())
+        {
+            ShiftGearsBasedOnSpeed(carVelocity.z);
+        }
+        else
+        {
+            currentGear = Gear.Neutral;
+        }
+
+        Debug.Log("Current Gear: " + currentGear);
 
     }
     public void Visuals()
@@ -193,7 +237,7 @@ public class ArcadeVehicleController : MonoBehaviour
         }
         else { return false; }
     }
-
+  
     private void OnDrawGizmos()
     {
         //debug gizmos
@@ -211,6 +255,41 @@ public class ArcadeVehicleController : MonoBehaviour
 
         }
 
+    }
+    private void ShiftGearsBasedOnSpeed(float forwardSpeed)
+    {
+        if (forwardSpeed > 0.5f)
+        {
+            // Shift up to a higher gear based on the forward speed
+            if (forwardSpeed >= 50f)
+                currentGear = Gear.Gear4;
+            else if (forwardSpeed >= 40f)
+                currentGear = Gear.Gear3;
+            else if (forwardSpeed >= 20f)
+                currentGear = Gear.Gear2;
+            else
+                currentGear = Gear.Gear1;
+        }
+        else if (forwardSpeed < -0.5f)
+        {
+            // Shift down to a lower gear if moving in reverse
+            currentGear = Gear.Reverse;
+        }
+        else
+        {
+            // If the speed is close to zero, put it in Neutral gear
+            currentGear = Gear.Neutral;
+        }
+    }
+
+    // Method to refuel the vehicle
+    public void Refuel(float amount)
+    {
+        fuel += amount;
+        if (fuel > maxFuel)
+        {
+            fuel = maxFuel;
+        }
     }
 
 }

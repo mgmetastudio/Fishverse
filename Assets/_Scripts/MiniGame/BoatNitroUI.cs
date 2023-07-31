@@ -7,22 +7,25 @@ using UnityEngine.UI;
 public class BoatNitroUI : MonoBehaviour
 {
     [SerializeField] Image nitroImg;
-    ArcadeVehicleNitro nitro;
+   public ArcadeVehicleNitro nitro;
 
     public void Setup(ArcadeVehicleNitro vNitro)
     {
         nitro = vNitro;
         vNitro.progress_bars.Add(nitroImg);
     }
-
+    public void Update()
+    {
+        ArcadeVehicleNitro.InstanceArcadeVehicleNitro.progress_bars.Add(nitroImg);
+    }
     public void StartNitro()
     {
-        nitro.StartNitro();
+        ArcadeVehicleNitro.InstanceArcadeVehicleNitro.StartNitro();
     }
 
     public void StopNitro()
     {
-        nitro.StopNitro();
+        ArcadeVehicleNitro.InstanceArcadeVehicleNitro.StopNitro();
     }
 
 }

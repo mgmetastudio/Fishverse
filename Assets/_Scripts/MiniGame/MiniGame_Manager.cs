@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.Events;
@@ -59,6 +60,13 @@ public class MiniGame_Manager : MonoBehaviour
     public UnityEvent on_remove_fish;
     public UnityEvent onMaxFish;
 
+    [Space(10)]
+    [Header("Boat Details:")]
+    public TMP_Text BoatVitesse;
+    public TMP_Text BoatGear;
+    public Slider Fuel;
+
+
     [Space]
     [SerializeField] float gameStartCameraWait = 3f;
     [SerializeField] float gameStartPanelWait = 2f;
@@ -68,6 +76,8 @@ public class MiniGame_Manager : MonoBehaviour
     private bool game_started = false;
     private float timer = 0;
     private int fishes_score_combo = 0;
+
+
 
     //Text Animations
     DOTweenAnimation text_score_anim;
@@ -124,7 +134,7 @@ public class MiniGame_Manager : MonoBehaviour
         StartCoroutine(StartGame(start_instant));
     }
 
-    IEnumerator StartGame(bool instant = false)
+    IEnumerator StartGame(bool instant )
     {
         if (instant)
         {
@@ -182,6 +192,47 @@ public class MiniGame_Manager : MonoBehaviour
                     EndGame();
                 }
             }
+            if (ArcadeVehicleController.InstanceVehicleController != null)
+            {
+                if(Mathf.RoundToInt(ArcadeVehicleController.InstanceVehicleController.carVelocity.z)>0)
+                {
+                    BoatVitesse.text = Mathf.RoundToInt(ArcadeVehicleController.InstanceVehicleController.carVelocity.z).ToString();
+                }
+                else 
+                {
+                    BoatVitesse.text = Mathf.RoundToInt(-ArcadeVehicleController.InstanceVehicleController.carVelocity.z).ToString();
+                }
+                // Gear Text
+                switch (ArcadeVehicleController.InstanceVehicleController.currentGear)
+                {
+                    case ArcadeVehicleController.Gear.Neutral:
+                        BoatGear.text = "N";
+                        break;
+                    case ArcadeVehicleController.Gear.Reverse:
+                        BoatGear.text = "R";
+                        break;
+                    case ArcadeVehicleController.Gear.Gear1:
+                        BoatGear.text = "1";
+                        break;
+                    case ArcadeVehicleController.Gear.Gear2:
+                        BoatGear.text = "2";
+                        break;
+                    case ArcadeVehicleController.Gear.Gear3:
+                        BoatGear.text = "3";
+                        break;
+                    case ArcadeVehicleController.Gear.Gear4:
+                        BoatGear.text = "4";
+                        break;
+                    default:
+                        BoatGear.text = "N";
+                        break;
+                }
+
+                Fuel.value = ArcadeVehicleController.InstanceVehicleController.fuel / 100;
+
+            }
+
+
         }
     }
 
@@ -303,6 +354,11 @@ public class MiniGame_Manager : MonoBehaviour
             vehicle_nitro.RefreshNitroUI();
 
             text_bonus.text = "Nitro Refilled";
+        }
+        else if (bonus_type == MiniGame_Bonus.BonusType.Fuel)
+        {
+            ArcadeVehicleController.InstanceVehicleController.Refuel(20);
+            text_bonus.text = "+20 Fuel";
         }
 
         panel_add_score.SetActive(false);

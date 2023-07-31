@@ -8,7 +8,7 @@ public class MiniGame_Bonus : MonoBehaviour
     public MiniGame_Manager minigame_manager;
     public BonusType current_type;
     public GameObject destroy_fx;
-    public enum BonusType { Time, Coins, CoinsBig, Nitro }
+    public enum BonusType { Time, Coins, CoinsBig, Nitro, Fuel }
     public UnityEvent on_pickup;
 
     void Update()
@@ -57,6 +57,13 @@ public class MiniGame_Bonus : MonoBehaviour
                 var vehicle_nitro = target.GetComponent<ArcadeVehicleNitro>();
                 vehicle_nitro.nitro = 1;
                 vehicle_nitro.RefreshNitroUI();
+            }
+        }
+        else if (bonus_type == MiniGame_Bonus.BonusType.Fuel)
+        {
+            if (target.GetComponent<PhotonView>().IsMine)
+            {
+                ArcadeVehicleController.InstanceVehicleController.Refuel(20);
             }
         }
         target.GetComponent<Boat_PlayerScore>().AddScore();

@@ -13,9 +13,8 @@ public class FishSpawner : MonoBehaviour
     public FishEntity Spawn(Vector3 position, int fishUniqueId)
     {
         GameObject fishEntityObj = PhotonNetwork.Instantiate(_fishEntityBasePrefab.name, position, Quaternion.identity);
-        FishEntity fishEntity = fishEntityObj.GetComponent<FishEntity>();
+        FishEntity fishEntity = fishEntityObj.GetComponentInChildren<FishEntity>();
         fishEntity.FishUniqueId = fishUniqueId;
-
         return fishEntity;
     }
 

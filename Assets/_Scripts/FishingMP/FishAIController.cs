@@ -13,12 +13,21 @@ public class FishAIController : MonoBehaviour
 
     public bool doNotUpdateTarget;
     public float stamina = 1f;
-
+    public float HealthBar = 1f;
+    public float StaminaBar = 1f;
+    private float decreaseSpeed;
     public float getOffHookTime = 10f;
     public float currentOffHookTime;
     public bool iscatched=false;
-    bool isTouchingGround = false;
+    public static FishAIController Instance { get; private set; }
+    public bool isTouchingGround = false;
     float mindistance = 0.6f;
+    private void Awake()
+    {
+        // Ensure there's only one instance of the script
+        if (Instance == null)
+            Instance = this;
+    }
     private Vector3 CalculateBoundsVector()
     {
         return _bounds.Contains(transform.position) ? Vector3.zero : (_bounds.center - transform.position).normalized;
@@ -120,15 +129,18 @@ public class FishAIController : MonoBehaviour
     private void Update()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-
+        decreaseSpeed = Random.Range(0.015f, 0.025f);
         if (pullForce > .0f)
         {
             pullForce -= Time.deltaTime * 1.6f;
             stamina -= Time.deltaTime * .04f;
+            HealthBar-= decreaseSpeed * .12f;
+            StaminaBar -= Time.deltaTime * .3f;
         }
         else
         {
             stamina += Time.deltaTime * .08f;
+            StaminaBar += Time.deltaTime * .5f;
         }
 
         if (stamina > .9f)
@@ -140,8 +152,11 @@ public class FishAIController : MonoBehaviour
             if (currentOffHookTime > 0f) currentOffHookTime -= Time.deltaTime;
         }
 
+
         pullForce = Mathf.Clamp(pullForce, .0f, 1f);
         stamina = Mathf.Clamp(stamina, .0f, 1f);
+        HealthBar = Mathf.Clamp(HealthBar, .0f, 1f);
+        StaminaBar = Mathf.Clamp(StaminaBar, .0f, 1f);
         fearfulness = Mathf.Clamp(fearfulness, .0f, 1f);
         Vector3 movementVector = (CalculateBoundsVector() * _scriptable.boundsVectorWeight) +
             (CalculateAvoidanceVector() * _scriptable.avoidanceVectorWeight);

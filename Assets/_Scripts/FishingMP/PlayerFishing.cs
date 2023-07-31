@@ -59,7 +59,8 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] private Animator _animatorFishingRodAnim;
     public static PlayerFishing InstanceFloat { get; private set; }
     public bool isreelrotate= false;
-    private bool isfishing=false;
+    public bool isfishing=false;
+    public bool isDestroyFloat=false;
 
     // public UnityEvent onCast;
 
@@ -67,6 +68,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     PlayerFishingInventory _inv;
     Animator _anim;
+     private Animator _animReel;
 
     Transform _localCamera;
 
@@ -109,6 +111,7 @@ public class PlayerFishing : MonoBehaviourPun
         _inv = GetComponent<PlayerFishingInventory>();
         _anim = GetComponent<Animator>();
         _equipPoint = GetComponentInChildren<EquipPoint>();
+        _animReel = RotateReel.GetComponent<Animator>();
 
     }
      void Awake()
@@ -145,7 +148,10 @@ public class PlayerFishing : MonoBehaviourPun
                 }
             }
             else
+            {
                 photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+                isDestroyFloat = true;
+            }
         }
     }
 
@@ -191,6 +197,7 @@ public class PlayerFishing : MonoBehaviourPun
         }
         onRodDown = false;
         onRodUp = false;
+      
     }
     private void FindFishingRodAnimator()
     {
@@ -206,12 +213,19 @@ public class PlayerFishing : MonoBehaviourPun
 #endif
         forceSlider.SetActive(FishingFloat.fish);
         RotateReel.SetActive(fishingRod.activeSelf);
+        Btn_FishCast.SetActive(false);
         Btn_FishCast.GetComponent<Animator>().Play("Default");
         if (forceSlider.gameObject.activeSelf)
         {
-            forceSlider.value = FishingFloat.fish.controller.pullForce;
+            isDestroyFloat = false;
+            _animReel.SetBool("Hook_Reel", true);
+            float speedFactor = 0.1f;
+            forceSlider.value = 1f - (FishingFloat.fish.controller.StaminaBar);
         }
-
+        else
+        {
+          _animReel.SetBool("Hook_Reel", false);
+        }
         _floatDemo.SetActive(false);
 
         if (isfishing)
@@ -235,6 +249,7 @@ public class PlayerFishing : MonoBehaviourPun
         if (!isfishing )
         {
             _anim.SetFloat("Fishing_Up_Speed", 0);
+
             if (_equipPoint != null)
             {
                 FindFishingRodAnimator();
@@ -249,6 +264,7 @@ public class PlayerFishing : MonoBehaviourPun
         {
             // CmdDestroyFloat();
             photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+            isDestroyFloat = true;
             _anim.SetFloat("Fishing_Up_Speed", 0);
             _anim.Play("Fishing_RightArm_Idle");
             if (_equipPoint != null)
@@ -293,7 +309,7 @@ public class PlayerFishing : MonoBehaviourPun
         {
             Cast();
         }
-
+        Btn_FishCast.SetActive(true);
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (rodHolder.childCount > 1)
@@ -375,9 +391,15 @@ public class PlayerFishing : MonoBehaviourPun
     }
     void _CrankDownInput()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             isfishing = true;
+            if (FishingFloat.fish == null)
+            { _animReel.SetBool("Rotate_Reel", true); }
+            else
+            {
+                _animReel.SetBool("ReelIn_Reel", true);
+            }
         }
     }
     void _CrankUpInput()
@@ -385,16 +407,27 @@ public class PlayerFishing : MonoBehaviourPun
         if (Input.GetButtonUp("Fire1"))
         {
             isfishing = false;
+            _animReel.SetBool("Rotate_Reel", false);
+            _animReel.SetBool("ReelIn_Reel", false);
         }
     }
     public void CrankUpInputMobile()
     {
         isfishing = false;
+        _animReel.SetBool("Rotate_Reel", false);
+        _animReel.SetBool("ReelIn_Reel", false);
+
     }
 
     public void CrankDownInputMobile()
     {
         isfishing = true;
+        if (FishingFloat.fish == null)
+        { _animReel.SetBool("Rotate_Reel", true); }
+        else
+        {
+            _animReel.SetBool("ReelIn_Reel", true);
+        }
     }
 
     [PunRPC]
@@ -496,6 +529,7 @@ public class PlayerFishing : MonoBehaviourPun
             AllFish.SetActive(false);
         }
         _inv.FishHolder.SetActive(false);
+
     }
 
     public void SpawnFloatSimulation()

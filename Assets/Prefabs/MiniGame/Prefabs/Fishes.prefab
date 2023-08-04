@@ -5221,6 +5221,9 @@ MonoBehaviour:
     - 5.399702
     - 4.641936
     - 4.5901175
+    type: 1
+    subdivisionsXSegment: 10
+    subdivisions: 70
     wps:
     - {x: -11.5, y: -0.37, z: -194.75}
     - {x: -8.290676, y: -0.390625, z: -192.1185}
@@ -5229,9 +5232,6 @@ MonoBehaviour:
     - {x: -13.467837, y: -0.375, z: -203.32178}
     - {x: -13.536456, y: -0.38671875, z: -198.82677}
     - {x: -11.5, y: -0.37, z: -194.75}
-    type: 1
-    subdivisionsXSegment: 10
-    subdivisions: 70
     controlPoints:
     - a: {x: -13.536456, y: -0.38671875, z: -198.82677}
       b: {x: 0, y: 0, z: 0}
@@ -5531,6 +5531,9 @@ MonoBehaviour:
     - 5.493383
     - 4.552233
     - 3.9354558
+    type: 1
+    subdivisionsXSegment: 10
+    subdivisions: 70
     wps:
     - {x: -11.04, y: -0.37, z: -195.58}
     - {x: -7.9710336, y: -0.39453125, z: -195.15747}
@@ -5539,9 +5542,6 @@ MonoBehaviour:
     - {x: -12.443228, y: -0.3828125, z: -203.07901}
     - {x: -13.192504, y: -0.3828125, z: -198.77847}
     - {x: -11.04, y: -0.37, z: -195.58}
-    type: 1
-    subdivisionsXSegment: 10
-    subdivisions: 70
     controlPoints:
     - a: {x: -13.192504, y: -0.3828125, z: -198.77847}
       b: {x: 0, y: 0, z: 0}
@@ -9452,6 +9452,7 @@ GameObject:
   - component: {fileID: 2024115492444961655}
   - component: {fileID: 6525443718307523682}
   - component: {fileID: 1818675659}
+  - component: {fileID: 1466702114547623783}
   m_Layer: 0
   m_Name: Fishes
   m_TagString: Untagged
@@ -9556,6 +9557,7 @@ MonoBehaviour:
   - {fileID: 0}
   btn_catch: {fileID: 0}
   fishVFX: {fileID: 0}
+  fishes_catched: 0
 --- !u!135 &1818675659
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9569,6 +9571,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 7.78
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1466702114547623783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024115492444961654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7961b1a4117b0c4d8b940e307b19b2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ActivationType: 0
+  Icon: {fileID: 21300000, guid: c4c9a18a4e32d31408a36a68b2e83dd5, type: 3}
+  IconColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2024115492468006289
 GameObject:
   m_ObjectHideFlags: 0
@@ -10345,6 +10362,9 @@ MonoBehaviour:
     - 4.9018497
     - 5.406457
     - 5.2420073
+    type: 1
+    subdivisionsXSegment: 10
+    subdivisions: 70
     wps:
     - {x: -9.47, y: -0.37, z: -202.78}
     - {x: -5.709389, y: -0.375, z: -198.00282}
@@ -10353,9 +10373,6 @@ MonoBehaviour:
     - {x: -16.501984, y: -0.37890625, z: -197.41612}
     - {x: -14.480006, y: -0.375, z: -202.25587}
     - {x: -9.47, y: -0.37, z: -202.78}
-    type: 1
-    subdivisionsXSegment: 10
-    subdivisions: 70
     controlPoints:
     - a: {x: -14.480006, y: -0.375, z: -202.25587}
       b: {x: 0, y: 0, z: 0}
@@ -10809,6 +10826,9 @@ MonoBehaviour:
     - 7.960048
     - 5.5715985
     - 4.472106
+    type: 1
+    subdivisionsXSegment: 10
+    subdivisions: 70
     wps:
     - {x: -10.320001, y: -0.37, z: -202.93001}
     - {x: -5.5452795, y: -0.3828125, z: -198.68806}
@@ -10817,9 +10837,6 @@ MonoBehaviour:
     - {x: -17.48041, y: -0.3828125, z: -197.59088}
     - {x: -14.486061, y: -0.37890625, z: -201.92012}
     - {x: -10.320001, y: -0.37, z: -202.93001}
-    type: 1
-    subdivisionsXSegment: 10
-    subdivisions: 70
     controlPoints:
     - a: {x: -14.486061, y: -0.37890625, z: -201.92012}
       b: {x: 0, y: 0, z: 0}

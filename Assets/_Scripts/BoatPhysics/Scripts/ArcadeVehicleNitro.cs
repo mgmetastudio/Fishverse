@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -14,30 +15,46 @@ public class ArcadeVehicleNitro : MonoBehaviourPun
     [Space(10)]
     [Header("UI:")]
     public List<Image> progress_bars = new List<Image>();
-    public static ArcadeVehicleNitro InstanceArcadeVehicleNitro { get; private set; }
     private ArcadeVehicleController vehicle_controller;
 
     PhotonView photon_view;
+    private void OnEnable()
+    {
+        photon_view = GetComponent<PhotonView>();
+        if (photon_view.IsMine)
+        {
+            BoatNitroUI.OnNitroClickedDown += NitroClickDownEventHandler;
+            BoatNitroUI.OnNitroClickedUp += NitroClickUpEventHandler;
+            BoatNitroUI.OnProgressBar += ProgressEventHandler;
+        }
+    }
+
+    private void NitroClickDownEventHandler()
+    {
+        StartNitro();
+    }
+    private void ProgressEventHandler(Image img)
+    {
+        progress_bars.Add(img);
+    }
+    private void NitroClickUpEventHandler()
+    {
+        StopNitro();
+    }
+    private void OnDisable()
+    {
+        if (photon_view.IsMine)
+        {
+            BoatNitroUI.OnNitroClickedDown -= NitroClickDownEventHandler;
+            BoatNitroUI.OnNitroClickedUp -= NitroClickUpEventHandler;
+            BoatNitroUI.OnProgressBar -= ProgressEventHandler;
+        }
+    }
 
     private void Start()
     {
-        photon_view = GetComponent<PhotonView>();
         vehicle_controller = GetComponent<ArcadeVehicleController>();
-
-      //  FindObjectOfType<BoatNitroUI>(true).Setup(this);
-    }
-    private void Awake()
-    {
-        // Ensure only one instance of the script exists
-        if (InstanceArcadeVehicleNitro == null)
-        {
-            InstanceArcadeVehicleNitro = this;
-        }
-        else
-        {
-            // If an instance already exists, destroy this duplicate
-            Destroy(gameObject);
-        }
+        //Debug.Log("ArcadeVehicleNitro Start");
     }
     public void RefreshNitroUI()
     {
@@ -82,4 +99,5 @@ public class ArcadeVehicleNitro : MonoBehaviourPun
         nitro_activated = false;
         vehicle_controller.speed_boost = 1f;
     }
+
 }

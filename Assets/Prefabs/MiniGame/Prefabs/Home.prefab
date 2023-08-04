@@ -529,6 +529,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
+    gravitySource: 0
     maxNumParticles: 1000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
@@ -3970,6 +3971,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minVertexDistance: 0.2
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     ribbonCount: 1
     shadowBias: 0.5
     worldSpace: 0
@@ -4891,6 +4893,7 @@ GameObject:
   - component: {fileID: 9044856016273944465}
   - component: {fileID: 9044856016273944466}
   - component: {fileID: 9044856016273944467}
+  - component: {fileID: 1050676107996628176}
   m_Layer: 0
   m_Name: Home
   m_TagString: Untagged
@@ -4913,7 +4916,7 @@ Transform:
   - {fileID: 8795373792007408339}
   - {fileID: 3214323244473446028}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &9044856016273944466
 SphereCollider:
@@ -4941,3 +4944,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   game_manager: {fileID: 0}
+--- !u!114 &1050676107996628176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9044856016273944464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7961b1a4117b0c4d8b940e307b19b2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ActivationType: 0
+  Icon: {fileID: 21300000, guid: a1ad2a3b40295184eaa04ba844054de6, type: 3}
+  IconColor: {r: 1, g: 1, b: 1, a: 1}

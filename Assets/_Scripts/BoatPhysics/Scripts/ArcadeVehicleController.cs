@@ -14,10 +14,6 @@ public class ArcadeVehicleController : MonoBehaviour
     public float MaxSpeed, accelaration, accelaration_reverse, turn, gravity = 7f;
     public float speed_boost = 1;
     public Rigidbody rb, carBody;
-    public static ArcadeVehicleController InstanceVehicleController { get; private set; }
-    public enum Gear { Neutral, Reverse, Gear1, Gear2, Gear3, Gear4 }
-    public Gear currentGear = Gear.Neutral;
-
     [HideInInspector]
     public RaycastHit hit;
     public AnimationCurve frictionCurve;
@@ -36,7 +32,6 @@ public class ArcadeVehicleController : MonoBehaviour
     public float minPitch;
     [Range(0, 2)]
     public float MaxPitch;
-
     [HideInInspector]
     public float radius, horizontalInput, verticalInput;
     private Vector3 origin;
@@ -55,19 +50,6 @@ public class ArcadeVehicleController : MonoBehaviour
             Physics.defaultMaxAngularSpeed = 100;
         }
         fuel = maxFuel;
-    }
-    private void Awake()
-    {
-        // Ensure only one instance of the script exists
-        if (InstanceVehicleController == null)
-        {
-            InstanceVehicleController = this;
-        }
-        else
-        {
-            // If an instance already exists, destroy this duplicate
-            Destroy(gameObject);
-        }
     }
     public virtual void Update()
     {
@@ -94,6 +76,31 @@ public class ArcadeVehicleController : MonoBehaviour
         engineSound.pitch = Mathf.Lerp(minPitch, MaxPitch, Mathf.Abs(carVelocity.z) / MaxSpeed * speed_boost);
     }
 
+    private void OnEnable()
+    {
+        // Subscribe to the ButtonClick event
+        MiniGame_Manager.Onspeedboat += SpeedboatFloatEventHandler;
+        MiniGame_Manager.Onfuel += FuelFloatEventHandler;
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribe from the ButtonClick event
+        MiniGame_Manager.Onspeedboat -= SpeedboatFloatEventHandler;
+        MiniGame_Manager.Onfuel -= FuelFloatEventHandler;
+
+    }
+
+    private float SpeedboatFloatEventHandler()
+    {
+        // Return a float value
+        return carVelocity.z;
+    }
+    private float FuelFloatEventHandler()
+    {
+        // Return a float value
+        return fuel;
+    }
 
     public virtual void FixedUpdate()
     {
@@ -121,6 +128,8 @@ public class ArcadeVehicleController : MonoBehaviour
             }
 
             //brakelogic
+
+
             if (Input.GetAxis("Jump") > 0.1f)
             {
                 rb.constraints = RigidbodyConstraints.FreezeRotationX;
@@ -162,33 +171,18 @@ public class ArcadeVehicleController : MonoBehaviour
             if (fuel <= 0f)
             {
                 fuel = 0f;
-                // Perform any actions when the fuel runs out, like stopping the vehicle
-                // For example, you can set currentGear to Neutral to stop the vehicle from moving.
-                currentGear = Gear.Neutral;
             }
         }
         else
         {
             carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
             rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * gravity, Time.deltaTime * gravity);
-            currentGear = Gear.Neutral;
-
         }
 
-
-        //Gear System
-        if (grounded())
-        {
-            ShiftGearsBasedOnSpeed(carVelocity.z);
-        }
-        else
-        {
-            currentGear = Gear.Neutral;
-        }
-
-        Debug.Log("Current Gear: " + currentGear);
 
     }
+ 
+  
     public void Visuals()
     {
         //Body
@@ -256,31 +250,7 @@ public class ArcadeVehicleController : MonoBehaviour
         }
 
     }
-    private void ShiftGearsBasedOnSpeed(float forwardSpeed)
-    {
-        if (forwardSpeed > 0.5f)
-        {
-            // Shift up to a higher gear based on the forward speed
-            if (forwardSpeed >= 50f)
-                currentGear = Gear.Gear4;
-            else if (forwardSpeed >= 40f)
-                currentGear = Gear.Gear3;
-            else if (forwardSpeed >= 20f)
-                currentGear = Gear.Gear2;
-            else
-                currentGear = Gear.Gear1;
-        }
-        else if (forwardSpeed < -0.5f)
-        {
-            // Shift down to a lower gear if moving in reverse
-            currentGear = Gear.Reverse;
-        }
-        else
-        {
-            // If the speed is close to zero, put it in Neutral gear
-            currentGear = Gear.Neutral;
-        }
-    }
+    
 
     // Method to refuel the vehicle
     public void Refuel(float amount)

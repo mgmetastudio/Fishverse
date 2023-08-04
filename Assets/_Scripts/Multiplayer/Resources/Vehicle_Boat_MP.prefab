@@ -713,7 +713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8914489093490791871}
   - component: {fileID: 785203669325330888}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fisher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2039,7 +2039,7 @@ GameObject:
   - component: {fileID: 3249070208802019060}
   - component: {fileID: 5348027510860702315}
   - component: {fileID: 5232885036031632185}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Motor_Rotor_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2186,7 +2186,7 @@ GameObject:
   - component: {fileID: 6080461387429768021}
   - component: {fileID: 6080461387429768016}
   - component: {fileID: 6080461387429768023}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cooler_Box_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2269,7 +2269,7 @@ GameObject:
   - component: {fileID: 6080461387607113706}
   - component: {fileID: 6080461387607113701}
   - component: {fileID: 6080461387607113700}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cooler_Box_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12020,7 +12020,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3098373181431371174}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12409,7 +12409,7 @@ GameObject:
   - component: {fileID: 5203316951997491175}
   - component: {fileID: 6196824306782037486}
   - component: {fileID: 5907674556175385773}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WaterSpray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17348,7 +17348,7 @@ GameObject:
   - component: {fileID: 7884602155204624915}
   - component: {fileID: 303580404923420946}
   - component: {fileID: 6367352670459545817}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Motor_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17564,7 +17564,7 @@ GameObject:
   - component: {fileID: 4908988987335063280}
   - component: {fileID: 5888078077596951299}
   - component: {fileID: 663103148580606259}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Motor_Rotor_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17679,7 +17679,7 @@ GameObject:
   - component: {fileID: 6601670822374726935}
   - component: {fileID: 5255357648921415753}
   - component: {fileID: 5627790382370616743}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Motor_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18109,7 +18109,7 @@ GameObject:
   - component: {fileID: 8286642020332748624}
   - component: {fileID: 1376588019631730655}
   - component: {fileID: 2822937331394751774}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18564,6 +18564,7 @@ GameObject:
   - component: {fileID: 2179818869766925248}
   - component: {fileID: 6805411913406118240}
   - component: {fileID: 3856750379081699964}
+  - component: {fileID: 5050510733554546268}
   m_Layer: 0
   m_Name: Vehicle_Boat_MP
   m_TagString: Boat
@@ -18707,6 +18708,8 @@ MonoBehaviour:
   radius: 0.8
   horizontalInput: 0
   verticalInput: 0
+  maxFuel: 100
+  fuel: 0
   photon_view: {fileID: 0}
   virtual_camera: {fileID: 7987859187079455038}
   disableOnStart: 0
@@ -18917,6 +18920,18 @@ MonoBehaviour:
   nitro_activated: 0
   nitro_boost_amount: 2
   progress_bars: []
+--- !u!114 &5050510733554546268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8787277135012178891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da66335ee48af94c8f95b714686f02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8787277135393040973
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1028891350979068418
 MonoBehaviour:
@@ -51,6 +51,7 @@ MonoBehaviour:
   panel_game_started: {fileID: 0}
   camera_spectator: {fileID: 0}
   panel_score: {fileID: 0}
+  panel_pos: {fileID: 0}
   panel_fishes: {fileID: 0}
   panel_time: {fileID: 0}
   panel_add_score: {fileID: 0}
@@ -60,16 +61,24 @@ MonoBehaviour:
   text_score: {fileID: 0}
   text_time: {fileID: 0}
   text_fishes: {fileID: 0}
+  text_position: {fileID: 0}
   text_bonus: {fileID: 0}
   panel_end_screen: {fileID: 0}
-  text_ending_score: {fileID: 0}
+  Text_Username: {fileID: 0}
   text_best_score: {fileID: 0}
+  text_ending_score: {fileID: 0}
+  text_time_played: {fileID: 0}
+  text_scoretime_played: {fileID: 0}
+  text_coins: {fileID: 0}
+  text_TotalScore: {fileID: 0}
   score: 0
   best_score: 0
   fishes: 0
   start_time: 120
   time: 120
   start_instant: 0
+  unlimitedTime: 0
+  maxFish: 20
   all_fishes:
   - {fileID: 0}
   - {fileID: 0}
@@ -166,6 +175,23 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  on_catch_fish:
+    m_PersistentCalls:
+      m_Calls: []
+  on_remove_fish:
+    m_PersistentCalls:
+      m_Calls: []
+  onMaxFish:
+    m_PersistentCalls:
+      m_Calls: []
+  BoatVitesse: {fileID: 0}
+  BoatGear: {fileID: 0}
+  Fuel: {fileID: 0}
+  gameStartCameraWait: 3
+  gameStartPanelWait: 2
+  gameStartUIWait: 0.5
+  gameStartControlsWait: 0.5
+  playerToStart: 2
 --- !u!114 &7892231617639788644
 MonoBehaviour:
   m_ObjectHideFlags: 0

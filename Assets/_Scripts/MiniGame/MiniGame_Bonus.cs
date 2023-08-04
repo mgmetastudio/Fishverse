@@ -42,11 +42,15 @@ public class MiniGame_Bonus : MonoBehaviour
         else if (bonus_type == MiniGame_Bonus.BonusType.Coins)
         {
             target.GetComponent<Boat_PlayerScore>().AddScore(15);
+            if (target.GetComponent<PhotonView>().IsMine)
+                minigame_manager.AddBonus(bonus_type, target);
         }
 
         else if (bonus_type == MiniGame_Bonus.BonusType.CoinsBig)
         {
             target.GetComponent<Boat_PlayerScore>().AddScore(35);
+            if (target.GetComponent<PhotonView>().IsMine)
+                minigame_manager.AddBonus(bonus_type, target);
         }
 
         else if (bonus_type == MiniGame_Bonus.BonusType.Nitro)
@@ -63,7 +67,9 @@ public class MiniGame_Bonus : MonoBehaviour
         {
             if (target.GetComponent<PhotonView>().IsMine)
             {
-                ArcadeVehicleController.InstanceVehicleController.Refuel(20);
+                var vehicle_fuel = target.GetComponent<ArcadeVehicleController>();
+
+                vehicle_fuel.Refuel(20);
             }
         }
         target.GetComponent<Boat_PlayerScore>().AddScore();

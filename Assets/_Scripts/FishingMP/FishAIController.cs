@@ -132,24 +132,24 @@ public class FishAIController : MonoBehaviour
         decreaseSpeed = Random.Range(0.015f, 0.025f);
         if (pullForce > .0f)
         {
-            pullForce -= Time.deltaTime * 1.6f;
-            stamina -= Time.deltaTime * .04f;
-            HealthBar-= decreaseSpeed * .12f;
-            StaminaBar -= Time.deltaTime * .3f;
+            pullForce -= Time.fixedDeltaTime * 1.6f;
+            stamina -= Time.fixedDeltaTime * .04f;
+            HealthBar-= Time.fixedDeltaTime * .12f;
+            StaminaBar -= Time.fixedDeltaTime * .3f;
         }
         else
         {
-            stamina += Time.deltaTime * .08f;
-            StaminaBar += Time.deltaTime * .5f;
+            stamina += Time.fixedDeltaTime * .08f;
+            StaminaBar += Time.fixedDeltaTime * .5f;
         }
 
         if (stamina > .9f)
         {
-            currentOffHookTime += Time.deltaTime;
+            currentOffHookTime += Time.fixedDeltaTime;
         }
         else
         {
-            if (currentOffHookTime > 0f) currentOffHookTime -= Time.deltaTime;
+            if (currentOffHookTime > 0f) currentOffHookTime -= Time.fixedDeltaTime;
         }
 
 

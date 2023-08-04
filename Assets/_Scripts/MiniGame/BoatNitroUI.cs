@@ -1,14 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BoatNitroUI : MonoBehaviour
 {
-    [SerializeField] Image nitroImg;
-   public ArcadeVehicleNitro nitro;
+    public ArcadeVehicleNitro nitro;
 
+    [SerializeField] Image nitroImg;
+    RoomManager Rm;
+    public delegate void NitroAction();
+    public static event NitroAction OnNitroClickedDown;
+    public static event NitroAction OnNitroClickedUp;
+    public delegate void ProgressBarAction(Image img);
+    public static event ProgressBarAction OnProgressBar;
     public void Setup(ArcadeVehicleNitro vNitro)
     {
         nitro = vNitro;
@@ -16,16 +20,15 @@ public class BoatNitroUI : MonoBehaviour
     }
     public void Update()
     {
-        ArcadeVehicleNitro.InstanceArcadeVehicleNitro.progress_bars.Add(nitroImg);
+        OnProgressBar?.Invoke(nitroImg);
     }
     public void StartNitro()
     {
-        ArcadeVehicleNitro.InstanceArcadeVehicleNitro.StartNitro();
+        OnNitroClickedDown?.Invoke();
     }
 
     public void StopNitro()
     {
-        ArcadeVehicleNitro.InstanceArcadeVehicleNitro.StopNitro();
+        OnNitroClickedUp?.Invoke();
     }
-
 }

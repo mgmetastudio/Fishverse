@@ -45,13 +45,11 @@ public class MiniGame_Manager : MonoBehaviour
     public TMP_Text text_time_played;
     public TMP_Text text_scoretime_played;
     public TMP_Text text_coins;
-    public TMP_Text text_TotalScore;
     public Text text_CurrentScore;
 
     [Space(10)]
     [Header("Game Data:")]
     public int score;
-    public int totalscore;
     public int ScoreCoins;
     public int best_score;
     public int fishes;
@@ -91,8 +89,7 @@ public class MiniGame_Manager : MonoBehaviour
     private int scoretime_played = 0;
     private int fishes_score_combo = 0;
     private float gameStartTime;
-
-
+    float timePlayed;
 
     //Text Animations
     DOTweenAnimation text_score_anim;
@@ -220,13 +217,10 @@ public class MiniGame_Manager : MonoBehaviour
                     EndGame();
                 }
             }
-            float timePlayed = Mathf.Clamp(Time.time - gameStartTime, 0, float.MaxValue);
-
+             timePlayed = Mathf.Clamp(Time.time - gameStartTime, 0, float.MaxValue);
             // Update the text_time_played UI element
             text_time_played.text = ((int)timePlayed).ToString();
 
-            // Debug.Log("Speed boat" + floatValue);
-            // Debug.Log("Fuelll" + _fuel);
             if (Mathf.RoundToInt(speedboat) > 0)
             {
                 BoatVitesse.text = Mathf.RoundToInt(speedboat).ToString();
@@ -237,29 +231,9 @@ public class MiniGame_Manager : MonoBehaviour
             }
 
             Fuel.value = _fuel / 100;
-            // Calculate Score Time Played
-            if ((timePlayed) > 0 && (timePlayed) < 20)
-            {
-                scoretime_played = 30;
-            }
-            else if ((timePlayed) > 20 && (timePlayed) < 40)
-            {
-                scoretime_played = 60;
-            }
-            else if ((timePlayed) > 40 && (timePlayed) < 80)
-            {
-                scoretime_played = 100;
-            }
-            else if ((timePlayed) > 80)
-            {
-                scoretime_played = 150;
-            }
-            else
-            {
-                scoretime_played = 0;
-            }
-            totalscore = score + scoretime_played;
-            text_CurrentScore.text = totalscore.ToString();
+            text_CurrentScore.text = score.ToString();
+          //  Debug.Log("avatar" + Fishverse_Core.instance.avatar);
+
         }
     }
 
@@ -273,14 +247,14 @@ public class MiniGame_Manager : MonoBehaviour
        
         // End Game Game Panel Texts
         Text_Username.text = OnNameEnter?.Invoke().ToString();
-        text_ending_score.text = score.ToString();
         text_coins.text = ScoreCoins.ToString();
-        text_TotalScore.text = (score + scoretime_played).ToString();
         text_scoretime_played.text = scoretime_played.ToString();
+        text_ending_score.text = score.ToString();
+        
         panel_end_screen.SetActive(true);
-        if (totalscore > best_score)
+        if (score > best_score)
         {
-            best_score = totalscore;
+            best_score = score;
             GetComponent<MiniGameServer_API>().SubmitScore(best_score);
         }
         text_best_score.text = best_score.ToString();
@@ -363,7 +337,9 @@ public class MiniGame_Manager : MonoBehaviour
 
         if (bonus_type == MiniGame_Bonus.BonusType.Time)
         {
+            scoretime_played += 20;
             time += 20;
+            score += 20 ;
             BonusPanel.SetActive(false);
             TimerPanel.SetActive(true);
             text_Timer.text = "+20 Seconds";

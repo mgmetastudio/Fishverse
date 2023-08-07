@@ -30,8 +30,11 @@ public class AccountManagement_API : MonoBehaviour
     public void LoginSuccessed()
     {
         var userName = _userStats.GetScheme().UserName;
+        var userAvatar = _userStats.GetScheme().Avatar;
         Fishverse_Core.instance.account_username = userName;
+        Fishverse_Core.instance.avatar = userAvatar;
         PlayerPrefs.SetString("username", userName);
+        PlayerPrefs.SetString("avatar", userAvatar);
         account_ui.OnLoginSuccess();
     }
 

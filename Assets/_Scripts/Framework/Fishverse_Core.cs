@@ -11,6 +11,7 @@ public class Fishverse_Core : MonoBehaviour
     public string account_username = "";
     public string app_version = "";
     public string app_version_local = "0.13";
+    public string avatar= "";
 
     private void Awake()
     {

@@ -8,7 +8,6 @@ public class MiniGameServer_API : MonoBehaviour
     public string[] leadearboard_string;
     public List<MiniGameLeaderboardUser> leaderboard_users;
     public MiniGameLeaderboard_UI leaderboard_UI;
-
     public void GetLeaderboard()
     {
         StartCoroutine(GetLeaderboardRequest());

@@ -41,7 +41,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void InstantiationPlayer(int index)
     {
         var spawnedPlayerObj = PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
-      //  _diContainer.InjectGameObject(spawnedPlayerObj);
+        _diContainer.InjectGameObject(spawnedPlayerObj);
     }
 
     public void Leave()

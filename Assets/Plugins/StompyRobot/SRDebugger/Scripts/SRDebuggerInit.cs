@@ -24,7 +24,9 @@ namespace SRDebugger
                 return;
             }
 
+#if !PRODUCTION
             SRDebug.Init();
+#endif
         }
 
         protected override void Start()

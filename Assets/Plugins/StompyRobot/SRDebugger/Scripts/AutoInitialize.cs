@@ -31,7 +31,7 @@ namespace SRDebugger
         {
             if (Settings.Instance.IsEnabled)
             {
-#if !PRODUCTION || UNITY_EDITOR
+#if !PRODUCTION
                 SRDebug.Init();
 #endif
             }

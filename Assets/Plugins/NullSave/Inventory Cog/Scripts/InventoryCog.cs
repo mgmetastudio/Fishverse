@@ -363,25 +363,33 @@ namespace NullSave.TOCK.Inventory
                     }
                 }
 
-                if (AllExisingPublicItems != null)
+                try
                 {
-                    var privateOwning = _inventoryRemote.ItemsPrivateOwningInfo;
-
-                    foreach (InventoryItem item in AllExisingPublicItems)
+                    if (AllExisingPublicItems != null)
                     {
-                        if (item != null)
-                        {
-                            var ownedItem = privateOwning.Where(x => x.Key.ItemKeyId.ToString() == item.customizationId);
+                        var privateOwning = _inventoryRemote.ItemsPrivateOwningInfo;
 
-                            foreach (var ownItem in ownedItem)
+                        foreach (InventoryItem item in AllExisingPublicItems)
+                        {
+                            if (item != null)
                             {
-                                var ownItemKey = ownItem.Key;
-                                AddToInventory(item, ownItemKey.Count);
+                                var ownedItem = privateOwning.Where(x => x.Key.ItemKeyId.ToString() == item.customizationId);
+
+                                foreach (var ownItem in ownedItem)
+                                {
+                                    var ownItemKey = ownItem.Key;
+                                    AddToInventory(item, ownItemKey.Count);
+                                }
                             }
                         }
                     }
-                }
 
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError("Handled exception: " + ex.Message);
+                }
+                
                 // Setup Recipes
                 Recipes = new List<CraftingRecipe>();
                 if (InventoryDB.Recipes != null)

@@ -7034,9 +7034,12 @@ MonoBehaviour:
   Btn_FishCast: {fileID: 4325160177254550132}
   _equipPoint: {fileID: 0}
   _animatorFishingRodAnim: {fileID: 0}
+  isFishCaught: 0
   isreelrotate: 0
   isfishing: 0
   isDestroyFloat: 0
+  Linebroke: {fileID: 3568302771659321671}
+  _Linebroke: {fileID: 0}
 --- !u!114 &5683908539426016800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8156,6 +8159,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d478e0501c8c79342abcaa739c071225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MiniGame_Manager: {fileID: 0}
+  PanelPause: {fileID: 0}
+  PanelEndGame: {fileID: 0}
 --- !u!1 &2643130203272408292
 GameObject:
   m_ObjectHideFlags: 0
@@ -19815,6 +19821,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3568302771659321671 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 697292720083722584, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
+  m_PrefabInstance: {fileID: 4046590367104356383}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4207525612181024977 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 165580127872065742, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}

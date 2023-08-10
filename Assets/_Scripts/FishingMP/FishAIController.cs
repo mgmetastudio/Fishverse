@@ -10,23 +10,27 @@ public class FishAIController : MonoBehaviour
 
     public Transform target;
     public float pullForce;
-
     public bool doNotUpdateTarget;
     public float stamina = 1f;
+    public float stamina_move = 0.2f;
     public float HealthBar = 1f;
-    public float StaminaBar = 1f;
-    private float decreaseSpeed;
+    public float StaminaBar = 0.5f;
+    private float frameTime=0.019f;
     public float getOffHookTime = 10f;
     public float currentOffHookTime;
-    public bool iscatched=false;
-    public static FishAIController Instance { get; private set; }
+    public bool iscatched = false;
     public bool isTouchingGround = false;
     float mindistance = 0.6f;
-    private void Awake()
+    private bool isStaminaBarStarted = true;
+    public FishEntity fishEntity;
+    public delegate bool FishPlayer_FishCtrBoolAction();
+    public static event FishPlayer_FishCtrBoolAction OnisDestroyFloat;
+    public static event FishPlayer_FishCtrBoolAction Onisfishing;
+    public static event FishPlayer_FishCtrBoolAction OnisFishCaught;
+    private void Start()
     {
-        // Ensure there's only one instance of the script
-        if (Instance == null)
-            Instance = this;
+        StaminaBar = 0.5f;
+        isStaminaBarStarted = true;
     }
     private Vector3 CalculateBoundsVector()
     {
@@ -109,7 +113,7 @@ public class FishAIController : MonoBehaviour
         if (other.CompareTag("Ground"))
         {
             isTouchingGround = true;
-           // Debug.Log("Fish is touching the ground.");
+            // Debug.Log("Fish is touching the ground.");
         }
     }
     private void OnTriggerExit(Collider other)
@@ -121,7 +125,7 @@ public class FishAIController : MonoBehaviour
         if (other.CompareTag("Ground"))
         {
             isTouchingGround = false;
-          //  Debug.Log("Fish is no longer touching the ground.");
+            //  Debug.Log("Fish is no longer touching the ground.");
         }
     }
 
@@ -129,29 +133,68 @@ public class FishAIController : MonoBehaviour
     private void Update()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        decreaseSpeed = Random.Range(0.015f, 0.025f);
-        if (pullForce > .0f)
+
+        bool isDestroyFloat = OnisDestroyFloat?.Invoke() ?? false;
+        if (isDestroyFloat)
         {
-            pullForce -= Time.fixedDeltaTime * 1.6f;
-            stamina -= Time.fixedDeltaTime * .04f;
-            HealthBar-= Time.fixedDeltaTime * .12f;
-            StaminaBar -= Time.fixedDeltaTime * .3f;
+            StaminaBar = 0.5f;
+            isStaminaBarStarted = true;
+
+        }
+        bool isfishing = Onisfishing?.Invoke() ?? false;
+        if (pullForce > .0f && isfishing)
+        {
+            pullForce -= frameTime * 1.6f;
+            stamina -= frameTime * .2f;
+            HealthBar -= frameTime * .12f;
+            StaminaBar -= frameTime * .3f;
+            isStaminaBarStarted = false;
+            if (StaminaBar < 0.25 && stamina < 0.60)
+            {
+                StaminaBar = ExponentialDecrease(StaminaBar, 0.27f, 8f, 1.2f); // Adjust exponent as needed
+                HealthBar -= frameTime * .13f;
+            }
+
+            if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina < 0.85)
+            {
+                HealthBar -= frameTime * .14f;
+                StaminaBar += frameTime * .10f;
+            }
+
         }
         else
         {
-            stamina += Time.fixedDeltaTime * .08f;
-            StaminaBar += Time.fixedDeltaTime * .5f;
+            if (StaminaBar >= 0.77  && stamina != 1 && stamina < 8)
+            {
+                StaminaBar = ExponentialIncrease(StaminaBar, 0.27f, 25f);
+                HealthBar -= frameTime * .19f;
+            }
+            if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina != 1 && stamina < 8)
+            {
+                StaminaBar  -= frameTime * .3f;
+            }
+           
+            stamina += frameTime * .3f;
+
+            if (!isStaminaBarStarted)
+            {
+                StaminaBar += frameTime * .5f;
+            }
+            else if (doNotUpdateTarget && isStaminaBarStarted)
+            {
+                StaminaBar += frameTime * .4f;
+            }
+
         }
 
         if (stamina > .9f)
         {
-            currentOffHookTime += Time.fixedDeltaTime;
+            currentOffHookTime += frameTime;
         }
         else
         {
-            if (currentOffHookTime > 0f) currentOffHookTime -= Time.fixedDeltaTime;
+            if (currentOffHookTime > 0f) currentOffHookTime -= frameTime;
         }
-
 
         pullForce = Mathf.Clamp(pullForce, .0f, 1f);
         stamina = Mathf.Clamp(stamina, .0f, 1f);
@@ -178,25 +221,33 @@ public class FishAIController : MonoBehaviour
         }
 
         transform.forward = movementVector;
-
-        Vector3 movement = movementVector * stamina;
-
-        if (pullForce > 0.0f && target != null)
+        Vector3 movement;
+        if (stamina > 0.2)
         {
+            movement = movementVector * stamina;
+        }
+        else
+        { movement = movementVector * stamina_move; }
+
+        bool isFishCaught = OnisFishCaught?.Invoke() ?? false;
+
+        if (pullForce > 0.0f && target != null && isFishCaught)
+        {
+            //pullForce = 0;
             Vector3 targetDirection = target.position - transform.position;
             Vector3 horizontalDirection = new Vector3(targetDirection.x, 0.0f, targetDirection.z);
-            if (Vector3.Distance(target.position, transform.position) <2f || isTouchingGround)
+            if (((Vector3.Distance(target.position, transform.position) < 2f || isTouchingGround)))
             {
-                Vector3 pull = targetDirection.normalized * (0.2f * pullForce / (stamina * stamina));
+                Vector3 pull = targetDirection.normalized * 6f;
                 movement += pull;
             }
             else
             {
-                Vector3 pull = horizontalDirection.normalized * (0.2f * pullForce / (stamina * stamina));
+                Vector3 pull = horizontalDirection.normalized * 6f;
                 movement += pull;
             }
 
-            if(Vector3.Distance(target.position, transform.position) < mindistance)
+            if (Vector3.Distance(target.position, transform.position) < mindistance)
             {
                 iscatched = true;
             }
@@ -206,8 +257,9 @@ public class FishAIController : MonoBehaviour
             }
 
         }
-        transform.position += movement * Time.deltaTime;
-       // transform.position += ((movementVector * stamina) + (pullForce > .0f ? (target.position - transform.position) * (.2f * pullForce / stamina / stamina) : Vector3.zero)) * Time.deltaTime;
+
+        transform.position += movement * frameTime;
+        // transform.position += ((movementVector * stamina) + (pullForce > .0f ? (target.position - transform.position) * (.2f * pullForce / stamina / stamina) : Vector3.zero)) * Time.deltaTime;
     }
 
     private IEnumerator CustomUpdateLoop()
@@ -215,7 +267,6 @@ public class FishAIController : MonoBehaviour
         while (PhotonNetwork.IsMasterClient)
         {
             yield return new WaitForSeconds(.4f);
-
             UpdateTarget(); // Vision
         }
     }
@@ -251,6 +302,24 @@ public class FishAIController : MonoBehaviour
                 break;
             }
         }
+    }
+    private float ExponentialDecrease(float current, float target, float speed, float exponent)
+    {
+        float t = Mathf.Clamp01(frameTime * speed);
+        float easedT = EaseIn(t);
+        float lerpedValue = Mathf.Lerp(current, target, easedT);
+        return 1.0f - Mathf.Pow(1.0f - lerpedValue, exponent);
+    }
+    private float EaseIn(float t)
+    {
+        return t * t;
+    }
+
+    private float ExponentialIncrease(float current, float target, float speed)
+    {
+        float t = Mathf.Clamp01(frameTime * speed);
+        float easedT = EaseIn(t);
+        return Mathf.Lerp(current, target, easedT);
     }
 
 #if UNITY_EDITOR // (Editor)

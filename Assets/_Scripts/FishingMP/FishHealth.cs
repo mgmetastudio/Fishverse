@@ -18,6 +18,7 @@ public class FishHealth : MonoBehaviourPun
     private float initialStamina;
     private float initialHealth;
     float maxHealth;
+    public float currentHealth;
     private void Start()
     {
         maxHealth = 100f;
@@ -33,7 +34,17 @@ public class FishHealth : MonoBehaviourPun
         directionToCamera.y = 0;
         Quaternion targetRotation = Quaternion.LookRotation(-directionToCamera);
         canvas.rotation = targetRotation;
-        float currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
+
+       // currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
+        if (fishEntity.controller.HealthBar >= 1f)
+        {
+            currentHealth = maxHealth; // Reset the health to maxHealth
+        }
+        else
+        {
+            // Calculate the current health based on fishEntity's controller
+            currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
+        }
 
         // Calculate the fill amount for the health bar
         float fillAmount = currentHealth / maxHealth;

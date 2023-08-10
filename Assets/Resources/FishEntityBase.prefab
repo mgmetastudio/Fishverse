@@ -51,8 +51,11 @@ MonoBehaviour:
   controller: {fileID: 0}
   FishCaughtMessage: {fileID: 2980875477364911874, guid: 919d409c7a0ae6a4994771be386ec2fc, type: 3}
   FishModel: {fileID: 0}
+  fishAIController: {fileID: 0}
   minDist: 2
   rb: {fileID: 0}
+  Canvas: {fileID: 0}
+  fishHealth: {fileID: 0}
 --- !u!65 &4030093234878129713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -64,7 +67,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.7382951, z: 0.2}
+  m_Size: {x: 0.2, y: 0.7382951, z: 0.58}
   m_Center: {x: 0, y: -0.26914817, z: 0}
 --- !u!114 &82811782402532428
 MonoBehaviour:
@@ -118,5 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
-  waterObject: {fileID: 0}
-  yOffset: 1
+  healthBar: {fileID: 0}
+  pull: 25
+  fishEntity: {fileID: 0}
+  currentHealth: 0

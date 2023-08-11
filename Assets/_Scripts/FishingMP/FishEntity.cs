@@ -203,14 +203,8 @@ public class FishEntity : MonoBehaviourPun
                         if (fishingFloat.CheckCompability(controller._scriptable))
                         {
                             bool isreelrotate = Onisreelrotate?.Invoke() ?? false;
-                            if (PlayerFishingInventory.Instance.currentFloat.previewScale == 2 && isreelrotate)
-                              {
-                                  Bite(fishingFloat);
-                              }
-                              else if (PlayerFishingInventory.Instance.currentFloat.previewScale <= 1)
-                              {
-                                  Bite(fishingFloat);
-                            }
+                            Bite(fishingFloat);
+                            
                         }
                     }
 //bruh too many ifs

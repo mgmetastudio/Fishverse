@@ -74,7 +74,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public Image CurrentSelectedFishingRodImage;
     //Bait
     // [SyncVar]
-    private int currentSelectedBait ;
+    private int currentSelectedBait = 0;
     public Bait[] Baits;
     public Transform BaitContent;
     public GameObject BaitSelectionMenu;
@@ -94,10 +94,9 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public List<InventoryFish> fishInv;
 
     public UnityEvent<bool> onInventory;
-    public static PlayerFishingInventory Instance { get; private set; }
+
     public InventoryItem currentBait;
     public InventoryItem currentRod;
-    public InventoryItem currentFloat;
     public bool IsopenMenu;
 
     int _money;
@@ -157,55 +156,27 @@ public class PlayerFishingInventory : MonoBehaviourPun
         _equipPoint = GetComponentInChildren<EquipPoint>();
 
     }
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
         if (equipedItem.displayName == "Fishing Rod")
         {
             currentRod = equipedItem;
-
             SetUpFloat();
         }
         if (equipedItem.subtext == "Fishing Bait")
-        {
             currentBait = equipedItem;
-            SetUpFloatBait();
-        }
-
-        if (equipedItem.displayName == "Float")
-        {
-            currentFloat = equipedItem;
-            if (currentRod != null)
-            {
-                SetUpFloat();
-            }
-        }
-
     }
 
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
-
         if (unequipedItem.displayName == "Fishing Rod")
         {
             currentRod = null;
 
         }
         if (unequipedItem.subtext == "Fishing Bait")
-        {
             currentBait = null;
-        }
-        if (unequipedItem.displayName == "Float")
-        {
-            currentFloat = null;
-        }
     }
 
     public void SetPlayerName(string PlayerN)
@@ -240,7 +211,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     {
         for (int i = 0; i < Floats.Length; i++)
         {
-            if (Floats[i].ID == currentFloat.previewScale)
+            if (Floats[i].ID == CurrentSelectedFloat)
             {
                 SpawnedLineEndPrefab = Instantiate(Floats[i].LineEndPrefab, transform.position + (transform.forward * 2), Floats[i].LineEndPrefab.transform.rotation);
             }
@@ -262,24 +233,6 @@ public class PlayerFishingInventory : MonoBehaviourPun
                 SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
             }
         }
-    }
-    public void SetUpFloatBait()
-    {
-
-        if (LineEnd != null)
-        { 
-
-            for (int i = 0; i < SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits.Length; i++)
-            {
-                LineEnd.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(false);
-                if (LineEnd.GetComponent<BaitActivator>().Baits[i].ID == currentBait.previewScale)
-                {
-                    LineEnd.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
-                }
-             
-            }
-        }
- 
     }
 
     public void SetFloat(int ID)
@@ -450,8 +403,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     private void Update()
     {
-     IsopenMenu= inventoryCog.IsMenuOpen;
-       // Debug.Log("CurrentSelectedFloat" + CurrentSelectedFloat);
+        IsopenMenu = inventoryCog.IsMenuOpen;
 
         if (FloatHasChanged == true & LastSelectedFloat != CurrentSelectedFloat)
         {
@@ -606,7 +558,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
                 _animatorFishingRodAnim.Play("IdleState");
             }
         }
-            HoldCaughtFish(fishInfo.uniqueId);
+        HoldCaughtFish(fishInfo.uniqueId);
         SpawnedInventoryFish = Instantiate(InventoryFishPrefab);
         var invFish = SpawnedInventoryFish.GetComponent<InventoryFish>();
 

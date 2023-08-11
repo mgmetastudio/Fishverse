@@ -41,6 +41,8 @@ public class FishEntity : MonoBehaviourPun
     public delegate bool FishPlayerBoolAction();
     public static event FishPlayerBoolAction OnisDestroyFloat;
     public static event FishPlayerBoolAction Onisreelrotate;
+    public delegate float CurrentFloatAction();
+    public static event CurrentFloatAction Oncurrentfloat;
 
     public FishingFloat HookedTo
     {
@@ -203,8 +205,15 @@ public class FishEntity : MonoBehaviourPun
                         if (fishingFloat.CheckCompability(controller._scriptable))
                         {
                             bool isreelrotate = Onisreelrotate?.Invoke() ?? false;
-                            Bite(fishingFloat);
-                            
+                            float currentfloat = Oncurrentfloat?.Invoke() ?? -1;
+                            if (currentfloat == 2 && isreelrotate)
+                              {
+                                  Bite(fishingFloat);
+                              }
+                              else if (currentfloat <= 1)
+                              {
+                                  Bite(fishingFloat);
+                            }
                         }
                     }
 //bruh too many ifs

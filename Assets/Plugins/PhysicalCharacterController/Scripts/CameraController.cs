@@ -9,8 +9,10 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] Cinemachine.CinemachineVirtualCamera firstPerson;
     [SerializeField] Cinemachine.CinemachineFreeLook thirdPerson;
+    [SerializeField] Cinemachine.CinemachineVirtualCamera thridPerson_fishing;
     [SerializeField] List<SkinnedMeshRenderer> firstPersonRend;
     [SerializeField] List<SkinnedMeshRenderer> thirdPersonRend;
+    [SerializeField] List<SkinnedMeshRenderer> thridPersonfishingRend;
 
     [Space]
     [SerializeField] Button cameraBtn;
@@ -33,30 +35,51 @@ public class CameraController : MonoBehaviour
     {
         if (!photonView.IsMine) return;
 
-        // if (Input.GetKeyDown(KeyCode.F))
-        // {
-        //     ToggleView();
-        // }
+      /*   if (Input.GetKeyDown(KeyCode.F))
+         {
+             ToggleView();
+         }*/
 
     }
 
-    void ToggleView()
+    public void CameraToggleView()
     {
-        if (firstPerson.Priority == 0)
+        if (thridPerson_fishing.Priority == 0)
         {
-            firstPerson.Priority = 10;
+            thridPerson_fishing.Priority = 10;
             thirdPerson.Priority = 0;
             SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+            SetShadowMode(thridPersonfishingRend, UnityEngine.Rendering.ShadowCastingMode.On);
 
         }
         else
         {
-            firstPerson.Priority = 0;
+            thridPerson_fishing.Priority = 0;
             thirdPerson.Priority = 10;
             SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.On);
         }
     }
+    public void ThridPersonToggleView()
+    {
+        if (thirdPerson.Priority == 0)
+        {
+            thridPerson_fishing.Priority = 0;
+            thirdPerson.Priority = 10;
+            SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.On);
+        }
+    }
+    public void ThridPersonfishingToggleView()
+    {
+        if (thridPerson_fishing.Priority == 0)
+        {
+            thridPerson_fishing.Priority = 10;
+            thirdPerson.Priority = 0;
+            SetShadowMode(thirdPersonRend, UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly);
+            SetShadowMode(thridPersonfishingRend, UnityEngine.Rendering.ShadowCastingMode.On);
 
+        }
+
+    }
     void SetShadowMode(List<SkinnedMeshRenderer> rend, UnityEngine.Rendering.ShadowCastingMode mode)
     {
         foreach (var item in rend)

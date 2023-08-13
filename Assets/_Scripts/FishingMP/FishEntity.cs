@@ -43,6 +43,7 @@ public class FishEntity : MonoBehaviourPun
     public static event FishPlayerBoolAction Onisreelrotate;
     public delegate float CurrentFloatAction();
     public static event CurrentFloatAction Oncurrentfloat;
+    [SerializeField] float FailedCatchValue;
 
     public FishingFloat HookedTo
     {
@@ -208,11 +209,13 @@ public class FishEntity : MonoBehaviourPun
                             float currentfloat = Oncurrentfloat?.Invoke() ?? -1;
                             if (currentfloat == 2 && isreelrotate)
                               {
-                                  Bite(fishingFloat);
+                                FailedCatchValue = Random.value;
+                                Bite(fishingFloat);
                               }
                               else if (currentfloat <= 1)
                               {
-                                  Bite(fishingFloat);
+                                FailedCatchValue = Random.value;
+                                Bite(fishingFloat);
                             }
                         }
                     }
@@ -246,6 +249,16 @@ public class FishEntity : MonoBehaviourPun
 
             if (HookedTo != null)
             {
+                if (FailedCatchValue > 0 && FailedCatchValue < 0.2)
+                {
+                    controller.isUpgradeFishingRod = true;
+                    HookedTo.Owner.GetComponent<PlayerFishing>().UpgradeFishingRodText.SetActive(true);
+                }
+                else
+                {
+                    controller.isUpgradeFishingRod = false;
+                    FailedCatchValue = 0;
+                }
                 Vector3 NewFishModelPosition = new Vector3(HookedTo.Hook.transform.position.x, HookedTo.Hook.transform.position.y - 0.15f, HookedTo.Hook.transform.position.z);
                 FishModel.transform.position = NewFishModelPosition;
                 if (fishHealth.healthBar.value != 0)

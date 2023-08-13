@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample;
 using UnityEngine;
+using NullSave.TOCK.Inventory;
+using UnityEngine.UI;
 
 public class InputProxy : MonoBehaviour
 {
@@ -9,8 +11,17 @@ public class InputProxy : MonoBehaviour
     [SerializeField] Joystick lookJoystick;
 
     [Space]
+    [SerializeField] ButtonXL ButtonRun;
+    [SerializeField] ButtonXL ButtonJump;
+    [SerializeField] ButtonXL Buttonholster;
+    [SerializeField] Button ButtonInventory;
+
+
+    [Space]
     [SerializeField] Cinemachine.CinemachineVirtualCamera fpCam;
     [SerializeField] Cinemachine.CinemachineFreeLook tpCam;
+    [SerializeField] PlayerFishing Playerfishing;
+    [SerializeField] InventoryCog PlayerInventory;
 
     [Space]
     [SerializeField] CMFirstPersonCharacter character;
@@ -19,7 +30,7 @@ public class InputProxy : MonoBehaviour
     public bool mobileInput;
 
     [Space]
-    [SerializeField] List<GameObject> mobileUI;
+    [SerializeField] GameObject CameraRotateUI;
     [SerializeField] float smoothing = 5f;
 
     void Start()
@@ -38,14 +49,27 @@ public class InputProxy : MonoBehaviour
             pov.m_VerticalAxis.m_InputAxisName = "";
             tpCam.m_XAxis.m_InputAxisName = "";
             tpCam.m_YAxis.m_InputAxisName = "";
+            ButtonRun.onDown.AddListener(character.Sprint);
+            ButtonRun.onUp.AddListener(character.StopSprinting);
+            ButtonJump.onDown.AddListener(character.Jump);
+            ButtonJump.onUp.AddListener(character.StopJumping);
+            Buttonholster.onClick.AddListener(Playerfishing.Holster);
+            ButtonInventory.onClick.AddListener(PlayerInventory.MenuOpen);
+
             // .m_HorizontalAxis.m_InputAxisName = "";
             // tpCam.GetRig(0).GetCinemachineComponent<Cinemachine.CinemachinePOV>().m_VerticalAxis.m_InputAxisName = "";
 
         }
         else
         {
-            mobileUI[0].SetInactive();
+            CameraRotateUI.SetInactive();
             enabled = false;
+            ButtonRun.onDown.AddListener(character.Sprint);
+            ButtonRun.onUp.AddListener(character.StopSprinting);
+            ButtonJump.onDown.AddListener(character.Jump);
+            ButtonJump.onUp.AddListener(character.StopJumping);
+            Buttonholster.onClick.AddListener(Playerfishing.Holster);
+            ButtonInventory.onClick.AddListener(PlayerInventory.MenuOpen);
         }
     }
 

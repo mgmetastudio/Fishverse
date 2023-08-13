@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 // using Mirror;
+using System.Collections.Generic;
 using UnityEngine.Events;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using UnityEngine.UI;
+using TMPro;
 using System.Threading.Tasks;
 using NullSave.TOCK.Inventory;
 
@@ -14,6 +16,13 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] private GameObject _fishingFloatBasePrefab;
     // [SyncVar]
     [HideInInspector] private FishingFloat fishingFloat;
+
+    [Header("Upgrade Fishing Rod Texts ")]
+    public TMP_Text UpgradeFishingRodText;
+
+    [Header("Hidden Buttons In Fishing")]
+    [SerializeField] public List <GameObject> HiddenButtons ;
+    [SerializeField] public RectTransform btnholster;
     public FishingFloat FishingFloat
     {
         get => fishingFloat;
@@ -71,7 +80,7 @@ public class PlayerFishing : MonoBehaviourPun
     private Animator _animReel;
     private Animator _Btn_FishCast;
     public Animator _Linebroke ;
-
+    public CameraController CameraController_;
     Transform _localCamera;
 
     CastRodUI rodUI;
@@ -98,7 +107,6 @@ public class PlayerFishing : MonoBehaviourPun
             _floatDemo = Instantiate(_floatDemoPrefab);
             _localCamera = Camera.main.transform;
             rodUI = FindObjectOfType<CastRodUI>();
-            holsterBtn.onClick.AddListener(Holster);
             Btn_FishCast.onClick.AddListener(FishingCast);
             rodUI.btn.onDown.AddListener(OnRodDown);
             rodUI.btn.onUp.AddListener(OnRodUp);
@@ -136,7 +144,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         isFishCaught = isCaught;
     }
-    void Holster()
+    public void Holster()
     {
         if (!canFish) return;
 
@@ -233,6 +241,7 @@ public class PlayerFishing : MonoBehaviourPun
         _CrankDownInput();
         _CrankUpInput();
 #endif
+        ToggleZoom_Buttons_In();
         RotateReel.SetActive(fishingRod.activeSelf);
         Btn_FishCast.SetActive(false);
        _Btn_FishCast.Play("Default_FishCast");
@@ -364,9 +373,12 @@ public class PlayerFishing : MonoBehaviourPun
         }
         isreelrotate = false;
         forceSlider.SetActive(false);
+        ToggleZoom_Buttons_Out();
+        UpgradeFishingRodText.SetActive(false);
+
     }
 
-   public void DestroyFloatmaxdistance()
+    public void DestroyFloatmaxdistance()
     {
         if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance || fishingFloat.Destroyfloat)
         {
@@ -500,8 +512,10 @@ public class PlayerFishing : MonoBehaviourPun
         photonView.RPC("DrawFishingRod", RpcTarget.All, false);
         _floatDemo.SetActive(false);
         canFish = false;
+        _animReel.SetBool("Hook_Reel", false);
         _Btn_FishCast.Play("Default_FishCast");
         forceSlider.SetActive(false);
+        ToggleZoom_Buttons_Out();
     }
 
     public void OnSwimEnd()
@@ -560,6 +574,8 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (FishingFloat != null)
         {
+            ToggleZoom_Buttons_Out();
+            UpgradeFishingRodText.SetActive(false);
             isDestroyFloat = true;
             isLinebroke = true;
             // _fishingFloat.Destroy(connectionToClient);
@@ -599,6 +615,29 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (SpawnedFloatSimulation.gameObject)
             Destroy(SpawnedFloatSimulation.gameObject);
+    }
+
+    // Zoom Camera and Hide Buttons in Fishing
+    private void ToggleZoom_Buttons_In()
+    {
+        CameraController_.ThridPersonfishingToggleView();
+        HideControllerButtons(false, 86.875f);
+    }
+    private void ToggleZoom_Buttons_Out()
+    {
+        CameraController_.ThridPersonToggleView();
+        HideControllerButtons(true, 148.8f);
+    }
+
+
+    public void HideControllerButtons(bool isactive, float t)
+    {
+        foreach (GameObject btn in HiddenButtons)
+        {
+            btn.SetActive(isactive);
+        }
+        Vector2 newPosition = new(btnholster.anchoredPosition.x, t);
+        btnholster.anchoredPosition = newPosition;
     }
 
 

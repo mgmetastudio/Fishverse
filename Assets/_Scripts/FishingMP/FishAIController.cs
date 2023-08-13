@@ -20,6 +20,7 @@ public class FishAIController : MonoBehaviour
     public float currentOffHookTime;
     public bool iscatched = false;
     public bool isTouchingGround = false;
+    public bool isUpgradeFishingRod = false;
     float mindistance = 0.6f;
     private bool isStaminaBarStarted = true;
     public FishEntity fishEntity;
@@ -142,32 +143,36 @@ public class FishAIController : MonoBehaviour
 
         }
         bool isfishing = Onisfishing?.Invoke() ?? false;
-        if (pullForce > .0f && isfishing)
+        if (pullForce > .0f && isfishing )
         {
             pullForce -= frameTime * 1.6f;
-            stamina -= frameTime * .2f;
-            HealthBar -= frameTime * .12f;
+            if (!isUpgradeFishingRod)
+            {
+                HealthBar -= frameTime * .12f;
+                stamina -= frameTime * .2f;
+            }
             StaminaBar -= frameTime * .3f;
             isStaminaBarStarted = false;
             if (StaminaBar < 0.25 && stamina < 0.60)
             {
                 StaminaBar = ExponentialDecrease(StaminaBar, 0.27f, 8f, 1.2f); // Adjust exponent as needed
-                HealthBar -= frameTime * .13f;
+                if (!isUpgradeFishingRod) { HealthBar -= frameTime * .135f; }
+
             }
 
             if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina < 0.85)
             {
-                HealthBar -= frameTime * .14f;
+                if (!isUpgradeFishingRod) { HealthBar -= frameTime * .145f; }
                 StaminaBar += frameTime * .10f;
             }
 
         }
-        else
+        else 
         {
             if (StaminaBar >= 0.77  && stamina != 1 && stamina < 8)
             {
                 StaminaBar = ExponentialIncrease(StaminaBar, 0.27f, 25f);
-                HealthBar -= frameTime * .19f;
+                if (!isUpgradeFishingRod) { HealthBar -= frameTime * .19f; }
             }
             if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina != 1 && stamina < 8)
             {

@@ -14,7 +14,7 @@ public class FishHealth : MonoBehaviourPun
     public Slider healthBar;
     public float pull = 25f;
     // [SyncVar]
-    public FishEntity fishEntity;
+    [SerializeField] FishEntity fishEntity;
     private float initialStamina;
     private float initialHealth;
     float maxHealth;
@@ -28,30 +28,36 @@ public class FishHealth : MonoBehaviourPun
 
     void Update()
     {
-        Vector3 canvasPosition = new Vector3(transform.position.x, canvas.transform.position.y, transform.position.z);
-        canvas.transform.position = canvasPosition;
-        Vector3 directionToCamera = Camera.main.transform.position - canvas.transform.position;
-        directionToCamera.y = 0;
-        Quaternion targetRotation = Quaternion.LookRotation(-directionToCamera);
-        canvas.rotation = targetRotation;
+        if (fishEntity.controller == null)
+        return;
 
-       // currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
-        if (fishEntity.controller.HealthBar >= 1f)
+        if (fishEntity.HookedTo != null)
         {
-            currentHealth = maxHealth; // Reset the health to maxHealth
-        }
-        else
-        {
-            // Calculate the current health based on fishEntity's controller
-            currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
-        }
+            Vector3 canvasPosition = new Vector3(transform.position.x, canvas.transform.position.y, transform.position.z);
+            canvas.transform.position = canvasPosition;
+            Vector3 directionToCamera = Camera.main.transform.position - canvas.transform.position;
+            directionToCamera.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(-directionToCamera);
+            canvas.rotation = targetRotation;
 
-        // Calculate the fill amount for the health bar
-        float fillAmount = currentHealth / maxHealth;
+            // currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
+            if (fishEntity.controller.HealthBar >= 1f)
+            {
+                currentHealth = maxHealth; // Reset the health to maxHealth
+            }
+            else
+            {
+                // Calculate the current health based on fishEntity's controller
+                currentHealth = Mathf.Clamp(initialHealth - (initialHealth * (1f - fishEntity.controller.HealthBar)), 0f, maxHealth);
+            }
 
-        // Update the health bar's fill amount
-        healthBar.value = fillAmount;
-       // Debug.Log("Stamina is" + fishEntity.controller.stamina);
+            // Calculate the fill amount for the health bar
+            float fillAmount = currentHealth / maxHealth;
+
+            // Update the health bar's fill amount
+            healthBar.value = fillAmount;
+            // Debug.Log("Stamina is" + fishEntity.controller.stamina);
+        }
     }
 
 }

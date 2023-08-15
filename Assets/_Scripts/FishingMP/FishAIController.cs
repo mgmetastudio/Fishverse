@@ -2,7 +2,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class FishAIController : MonoBehaviour
+public class FishAIController : MonoBehaviourPun
 {
 
     public FishScriptable _scriptable;
@@ -23,15 +23,18 @@ public class FishAIController : MonoBehaviour
     public bool isUpgradeFishingRod = false;
     float mindistance = 0.6f;
     private bool isStaminaBarStarted = true;
-    public FishEntity fishEntity;
-    public delegate bool FishPlayer_FishCtrBoolAction();
-    public static event FishPlayer_FishCtrBoolAction OnisDestroyFloat;
-    public static event FishPlayer_FishCtrBoolAction Onisfishing;
-    public static event FishPlayer_FishCtrBoolAction OnisFishCaught;
+    private FishEntity fishEntity;
+    [SerializeField] PlayerFishing PlayerFishing;
     private void Start()
     {
         StaminaBar = 0.5f;
         isStaminaBarStarted = true;
+        fishEntity = GetComponent<FishEntity>();
+        if (photonView.IsMine)
+        {
+            PlayerFishing = FindObjectOfType<PlayerFishing>();
+        }
+        
     }
     private Vector3 CalculateBoundsVector()
     {
@@ -135,15 +138,12 @@ public class FishAIController : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        bool isDestroyFloat = OnisDestroyFloat?.Invoke() ?? false;
-        if (isDestroyFloat)
+        if (fishEntity.isDestroyFloat)
         {
             StaminaBar = 0.5f;
             isStaminaBarStarted = true;
-
         }
-        bool isfishing = Onisfishing?.Invoke() ?? false;
-        if (pullForce > .0f && isfishing )
+        if (pullForce > .0f && PlayerFishing.isfishing)
         {
             pullForce -= frameTime * 1.6f;
             if (!isUpgradeFishingRod)
@@ -234,9 +234,7 @@ public class FishAIController : MonoBehaviour
         else
         { movement = movementVector * stamina_move; }
 
-        bool isFishCaught = OnisFishCaught?.Invoke() ?? false;
-
-        if (pullForce > 0.0f && target != null && isFishCaught)
+        if (pullForce > 0.0f && target != null && HealthBar==0)
         {
             //pullForce = 0;
             Vector3 targetDirection = target.position - transform.position;

@@ -51,8 +51,6 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] public string CastAnimationName = "Fishing_In";
     [SerializeField] public GameObject FloatSimulation;
     public FloatSimulation SpawnedFloatSimulation;
-    private bool fishingUpSpeedWorking = true;
-
     [SerializeField] float onCastWait;
 
     [SerializeField] GameObject fishingRod;
@@ -65,16 +63,13 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] Button Btn_FishCast;
     [SerializeField] private EquipPoint _equipPoint;
     [SerializeField] private Animator _animatorFishingRodAnim;
-    public bool isFishCaught = false;
+  
     public bool isreelrotate= false;
     public bool isfishing=false;
     public bool isDestroyFloat=false;
     public GameObject Linebroke;
     private bool isLinebroke=false;
     // public UnityEvent onCast;
-
-    public static UnityEvent onLineBroke;
-
     PlayerFishingInventory _inv;
     Animator _anim;
     private Animator _animReel;
@@ -87,9 +82,7 @@ public class PlayerFishing : MonoBehaviourPun
     bool onRodDown;
     bool onRodUp;
     bool onRod;
-
     InputProxy _inputProxy;
-
     [PunRPC]
     void SetFishingFloat(int value)
     {
@@ -132,17 +125,6 @@ public class PlayerFishing : MonoBehaviourPun
     {
         onRodUp = true;
         onRod = false;
-    }
-    private void OnDestroy()
-    {
-        if (photonView.IsMine)
-        {
-            FishEntity.OnFishCatched -= HandleFishCatched;
-        }
-    }
-    private void HandleFishCatched(bool isCaught)
-    {
-        isFishCaught = isCaught;
     }
     public void Holster()
     {
@@ -187,6 +169,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
+
             if (FishingFloat == null)
             {
                 NoFishingFloatLogic();
@@ -194,11 +177,7 @@ public class PlayerFishing : MonoBehaviourPun
             }
             else
             {
-                FishEntity.OnFishCatched += HandleFishCatched;
                 FishingFloatLogic();
-
-
-
             }
             if (isLinebroke && canFish && fishingRod.activeSelf && FishingFloat.fish!=null)
             {
@@ -250,7 +229,9 @@ public class PlayerFishing : MonoBehaviourPun
         {
             if (FishingFloat.fish)
             {
-                if (isFishCaught)
+               // FishCamerafollow= FishingFloat.fish.transform.position;
+                //  Debug.Log("FishCamerafollow is "+FishCamerafollow);
+                if (FishingFloat.fish.controller.HealthBar == 0)
                 {
                     _Linebroke.Play("Default_FishCast");
                     forceSlider.SetActive(false);
@@ -382,7 +363,6 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (Vector3.Distance(_rodEndPoint.position, FishingFloat.transform.position) > _maxLineDistance || fishingFloat.Destroyfloat)
         {
-            onLineBroke?.Invoke();
             photonView.RPC("CmdDestroyFloat", RpcTarget.All);
             // CmdDestroyFloat();
             _anim.SetFloat("Fishing_Up_Speed", 0);
@@ -639,47 +619,5 @@ public class PlayerFishing : MonoBehaviourPun
         Vector2 newPosition = new(btnholster.anchoredPosition.x, t);
         btnholster.anchoredPosition = newPosition;
     }
-
-
-    private void OnEnable()
-    {
-        FishEntity.OnisDestroyFloat += isDestroyFloatEventHandler;
-        FishEntity.Onisreelrotate += OnisreelrotateEventHandler;
-        FishAIController.OnisDestroyFloat += isDestroyFloatEventHandler;
-        FishAIController.Onisfishing += isfishingEventHandler;
-        FishAIController.OnisFishCaught += isFishCaughtEventHandler;
-    }
-
-    private void OnDisable()
-    {
-        FishEntity.OnisDestroyFloat -= isDestroyFloatEventHandler;
-        FishEntity.Onisreelrotate -= OnisreelrotateEventHandler;
-        FishAIController.OnisDestroyFloat -= isDestroyFloatEventHandler;
-        FishAIController.Onisfishing -= isfishingEventHandler;
-        FishAIController.OnisFishCaught -= isFishCaughtEventHandler;
-
-    }
-
-    private bool isDestroyFloatEventHandler()
-    {
-        // Return a bool value
-        return isDestroyFloat;
-    }
-    private bool OnisreelrotateEventHandler()
-    {
-        // Return a bool value
-        return isreelrotate;
-    }
-    private bool isfishingEventHandler()
-    {
-        // Return a bool value
-        return isfishing;
-    }
-    private bool isFishCaughtEventHandler()
-    {
-        // Return a bool value
-        return isFishCaught;
-    }
-
 
 }

@@ -220,7 +220,7 @@ public class PlayerFishing : MonoBehaviourPun
         _CrankDownInput();
         _CrankUpInput();
 #endif
-        ToggleZoom_Buttons_In();
+      //  ToggleZoom_Buttons_In();
         RotateReel.SetActive(fishingRod.activeSelf);
         Btn_FishCast.SetActive(false);
        _Btn_FishCast.Play("Default_FishCast");
@@ -354,7 +354,7 @@ public class PlayerFishing : MonoBehaviourPun
         }
         isreelrotate = false;
         forceSlider.SetActive(false);
-        ToggleZoom_Buttons_Out();
+       // ToggleZoom_Buttons_Out();
         UpgradeFishingRodText.SetActive(false);
 
     }
@@ -495,7 +495,7 @@ public class PlayerFishing : MonoBehaviourPun
         _animReel.SetBool("Hook_Reel", false);
         _Btn_FishCast.Play("Default_FishCast");
         forceSlider.SetActive(false);
-        ToggleZoom_Buttons_Out();
+        //ToggleZoom_Buttons_Out();
     }
 
     public void OnSwimEnd()
@@ -554,7 +554,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (FishingFloat != null)
         {
-            ToggleZoom_Buttons_Out();
+            //ToggleZoom_Buttons_Out();
             UpgradeFishingRodText.SetActive(false);
             isDestroyFloat = true;
             isLinebroke = true;

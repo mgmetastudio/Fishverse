@@ -15,6 +15,7 @@ public abstract class FluidInteractorBase : MonoBehaviour {
 	protected Fluid _fluid;
 
 	protected virtual void Start() {
+		
 		_rb = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
 
@@ -34,10 +35,13 @@ public abstract class FluidInteractorBase : MonoBehaviour {
 
 	public virtual void EnterFluid(Fluid fluid) {
 		_fluid = fluid;
-
-		_rb.drag = fluid.drag;
-		_rb.angularDrag = fluid.angularDrag;
+		if (_rb != null)
+		{
+			_rb.drag = fluid.drag;
+			_rb.angularDrag = fluid.angularDrag;
+		}
 	}
+
 
 	public virtual void ExitFluid() {
 		_fluid = null;

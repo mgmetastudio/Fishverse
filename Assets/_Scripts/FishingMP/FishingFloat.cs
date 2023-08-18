@@ -56,7 +56,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void SetOwner(int value)
     {
         PlayerFishing newPlayerFishing = PhotonView.Find(value).GetComponent<PlayerFishing>();
-        print("SETING OWNER: " + newPlayerFishing);
+        print("SETING OWNER: " + newPlayerFishing+ "SETING OWNER"+value);
         owner = newPlayerFishing;
     }
 
@@ -141,15 +141,18 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             _rb.isKinematic = true;
             _rb.useGravity = false;
         }
-        var inv = owner.GetComponent<PlayerFishingInventory>();
+
+        inv = owner.GetComponent<PlayerFishingInventory>();
+
         for (int i = 0; i < _floatScriptables.Length; i++)
-        {
-            if (_floatScriptables[i].uniqueId == inv.currentFloat.previewScale)
             {
-                _scriptable = _floatScriptables[i];
-                break;
+                if (_floatScriptables[i].uniqueId == inv.currentFloat.previewScale)
+                {
+                    _scriptable = _floatScriptables[i];
+                    break;
+                }
             }
-        }
+      
 
         // Assign your customization variables here ~
         _ = Instantiate(_scriptable.modelPrefab, transform); // Model
@@ -178,15 +181,19 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public bool CheckCompability(FishScriptable fish)
     {
-        var inv = owner.GetComponent<PlayerFishingInventory>();
+        if (!photonView.IsMine)
+            return false;
+        inv = owner.GetComponent<PlayerFishingInventory>();
 
         var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
-        if(feedType == null)
+        if (feedType == null)
             return false;
 
         var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
-        if(waterType == null)
+        if (waterType == null)
             return false;
+
+
 
         return true;
     }
@@ -207,5 +214,5 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     //     _rb.useGravity = false;
     // }
 
-  
+
 }

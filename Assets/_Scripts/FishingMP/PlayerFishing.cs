@@ -190,9 +190,9 @@ public class PlayerFishing : MonoBehaviourPun
                     _Linebroke.SetBool("Linebroke_End", false);
                 }
 
-
             }
           
+
         }
         if (FishingFloat == null)
         {
@@ -206,6 +206,7 @@ public class PlayerFishing : MonoBehaviourPun
         }
         onRodDown = false;
         onRodUp = false;
+
 
     }
     private void FindFishingRodAnimator()
@@ -473,22 +474,29 @@ public class PlayerFishing : MonoBehaviourPun
     public void DrawFishingRod(bool draw)
     {
         //change to holder
-        rodHolder.SetActive(draw);
+        if (photonView.IsMine)
+        {
+            rodHolder.SetActive(draw);
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
-        var inv = GetComponent<PlayerFishingInventory>();
+        
+            var inv = GetComponent<PlayerFishingInventory>();
+     
 
         if (draw)
             inv.SetFloat(0);
         else
             Destroy(inv.LineEnd);
-
+        
         _anim.SetLayerWeight(2, draw.Int());
+        }
 
     }
 
     public void OnSwimStart()
     {
+        if (!photonView.IsMine)
+            return;
         photonView.RPC("DrawFishingRod", RpcTarget.All, false);
         _floatDemo.SetActive(false);
         canFish = false;
@@ -512,6 +520,9 @@ public class PlayerFishing : MonoBehaviourPun
     [PunRPC]
     private void CmdSpawnFloat(Vector3 position, int uniqueId)
     {
+        if (!photonView.IsMine)
+            return;
+
         if (FishingFloat == null)
         {
             foreach (GameObject AllFish in _inv.Fishes)
@@ -552,6 +563,9 @@ public class PlayerFishing : MonoBehaviourPun
     [PunRPC]
     private void CmdDestroyFloat()
     {
+        if (!photonView.IsMine)
+            return;
+
         if (FishingFloat != null)
         {
             //ToggleZoom_Buttons_Out();
@@ -570,11 +584,15 @@ public class PlayerFishing : MonoBehaviourPun
     [PunRPC]
     public void RpcDisableHoldingFish()
     {
-        foreach (GameObject AllFish in _inv.Fishes)
+        if (photonView.IsMine)
         {
-            AllFish.SetActive(false);
+
+            foreach (GameObject AllFish in _inv.Fishes)
+            {
+                AllFish.SetActive(false);
+            }
+            _inv.FishHolder.SetActive(false);
         }
-        _inv.FishHolder.SetActive(false);
 
     }
 

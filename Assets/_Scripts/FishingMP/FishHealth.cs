@@ -23,7 +23,10 @@ public class FishHealth : MonoBehaviourPun
     {
         maxHealth = 100f;
         initialHealth = maxHealth;
-        initialStamina = fishEntity.controller.stamina;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            initialStamina = fishEntity.controller.stamina;
+        }
     }
 
     void Update()

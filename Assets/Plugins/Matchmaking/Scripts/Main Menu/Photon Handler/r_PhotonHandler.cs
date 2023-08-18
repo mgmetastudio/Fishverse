@@ -80,7 +80,7 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
-    private void Update()
+    private void LogPhoton()
     {
         Debug.Log("Room Count: " + PhotonNetwork.CountOfRooms);
         Debug.Log("Player in Room Count: " + PhotonNetwork.CountOfPlayersInRooms);
@@ -139,6 +139,8 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
         }
 
         r_LobbyController.instance.ReceiveRoomList(roomList);
+
+        LogPhoton();
     }
     #endregion
 
@@ -147,7 +149,7 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     /// If they are waiting in the lobby, we have to call the enter lobby function. See the Lobby Controller for the functionalities.
     /// If the room players already started with playing the game, we join the game scene.
     /// </summary>
-    
+
     #region On Join
     public override void OnJoinedRoom()
     {

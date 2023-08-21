@@ -24,17 +24,11 @@ public class FishAIController : MonoBehaviourPun
     float mindistance = 0.6f;
     private bool isStaminaBarStarted = true;
     private FishEntity fishEntity;
-    [SerializeField] PlayerFishing PlayerFishing;
     private void Start()
     {
         StaminaBar = 0.5f;
         isStaminaBarStarted = true;
         fishEntity = GetComponent<FishEntity>();
-        if (photonView.IsMine)
-        {
-            PlayerFishing = FindObjectOfType<PlayerFishing>();
-        }
-        
     }
     private Vector3 CalculateBoundsVector()
     {
@@ -143,53 +137,56 @@ public class FishAIController : MonoBehaviourPun
             StaminaBar = 0.5f;
             isStaminaBarStarted = true;
         }
-        if (pullForce > .0f && PlayerFishing.isfishing)
+        if (fishEntity.HookedTo != null)
         {
-            pullForce -= frameTime * 1.6f;
-            if (!isUpgradeFishingRod)
+            if (pullForce > .0f && fishEntity.HookedTo.Owner.isfishing)
             {
-                HealthBar -= frameTime * .12f;
-                stamina -= frameTime * .2f;
-            }
-            StaminaBar -= frameTime * .3f;
-            isStaminaBarStarted = false;
-            if (StaminaBar < 0.25 && stamina < 0.60)
-            {
-                StaminaBar = ExponentialDecrease(StaminaBar, 0.27f, 8f, 1.2f); // Adjust exponent as needed
-                if (!isUpgradeFishingRod) { HealthBar -= frameTime * .135f; }
+                pullForce -= frameTime * 1.6f;
+                if (!isUpgradeFishingRod)
+                {
+                    HealthBar -= frameTime * .12f;
+                    stamina -= frameTime * .2f;
+                }
+                StaminaBar -= frameTime * .3f;
+                isStaminaBarStarted = false;
+                if (StaminaBar < 0.25 && stamina < 0.60)
+                {
+                    StaminaBar = ExponentialDecrease(StaminaBar, 0.27f, 8f, 1.2f); // Adjust exponent as needed
+                    if (!isUpgradeFishingRod) { HealthBar -= frameTime * .135f; }
 
-            }
+                }
 
-            if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina < 0.85)
-            {
-                if (!isUpgradeFishingRod) { HealthBar -= frameTime * .145f; }
-                StaminaBar += frameTime * .10f;
-            }
-
-        }
-        else 
-        {
-            if (StaminaBar >= 0.77  && stamina != 1 && stamina < 8)
-            {
-                StaminaBar = ExponentialIncrease(StaminaBar, 0.27f, 25f);
-                if (!isUpgradeFishingRod) { HealthBar -= frameTime * .19f; }
-            }
-            if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina != 1 && stamina < 8)
-            {
-                StaminaBar  -= frameTime * .3f;
-            }
-           
-            stamina += frameTime * .3f;
-
-            if (!isStaminaBarStarted)
-            {
-                StaminaBar += frameTime * .5f;
-            }
-            else if (doNotUpdateTarget && isStaminaBarStarted)
-            {
-                StaminaBar += frameTime * .4f;
+                if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina < 0.85)
+                {
+                    if (!isUpgradeFishingRod) { HealthBar -= frameTime * .145f; }
+                    StaminaBar += frameTime * .10f;
+                }
             }
 
+            else
+            {
+                if (StaminaBar >= 0.77 && stamina != 1 && stamina < 8)
+                {
+                    StaminaBar = ExponentialIncrease(StaminaBar, 0.27f, 25f);
+                    if (!isUpgradeFishingRod) { HealthBar -= frameTime * .19f; }
+                }
+                if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina != 1 && stamina < 8)
+                {
+                    StaminaBar -= frameTime * .3f;
+                }
+
+                stamina += frameTime * .3f;
+
+                if (!isStaminaBarStarted)
+                {
+                    StaminaBar += frameTime * .5f;
+                }
+                else if (doNotUpdateTarget && isStaminaBarStarted)
+                {
+                    StaminaBar += frameTime * .4f;
+                }
+
+            }
         }
 
         if (stamina > .9f)
@@ -234,7 +231,7 @@ public class FishAIController : MonoBehaviourPun
         else
         { movement = movementVector * stamina_move; }
 
-        if (pullForce > 0.0f && target != null && HealthBar==0)
+        if (pullForce > 0.0f && target != null && HealthBar == 0)
         {
             //pullForce = 0;
             Vector3 targetDirection = target.position - transform.position;

@@ -130,7 +130,7 @@ public class FishAIController : MonoBehaviourPun
     private Vector3 _currentVelocity;
     private void Update()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
+        if (!photonView.IsMine) return;
 
         if (fishEntity.isDestroyFloat)
         {
@@ -264,7 +264,7 @@ public class FishAIController : MonoBehaviourPun
 
     private IEnumerator CustomUpdateLoop()
     { // (Server)
-        while (PhotonNetwork.IsMasterClient)
+        while (true)
         {
             yield return new WaitForSeconds(.4f);
             UpdateTarget(); // Vision

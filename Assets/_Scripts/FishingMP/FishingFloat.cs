@@ -183,7 +183,8 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (!photonView.IsMine)
             return false;
-        inv = owner.GetComponent<PlayerFishingInventory>();
+
+        inv = Owner.GetComponent<PlayerFishingInventory>();
 
         var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
         if (feedType == null)

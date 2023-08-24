@@ -110,7 +110,10 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         _rb.AddForce((Owner._rodEndPoint.position - transform.position) * .2f);
         Vector3 targetPosition = Owner._rodEndPoint.position;
         targetPosition.y = transform.position.y; // Preserve the initial height
-        this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, Time.deltaTime * 1.5f);
+        if (fish == null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * 1.5f);
+        }
         // owner.DestroyFloatmaxdistance();
         bool isTouchingGround=false ;
 
@@ -125,9 +128,9 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
         }
 
-        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 1.5f || isTouchingGround)
+        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 1.5f || isTouchingGround && fish == null)
         {
-            Destroyfloat = !Destroyfloat;
+            Destroyfloat = true;
         }
 
 

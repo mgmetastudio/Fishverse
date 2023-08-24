@@ -156,22 +156,14 @@ public class FishEntity : MonoBehaviourPun
         {
             // _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
             // _targetFloat.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
-            _targetFloat.GetComponent<PhotonView>().RequestOwnership();
             Canvas.enabled = false;
-            _targetFloat._collider.enabled = false;
-            _targetFloat._interactor.enabled = false;
-            _targetFloat._rb.isKinematic = true;
-            _targetFloat._rb.useGravity = false;
-            _targetFloat.transform.SetParent(transform);
-            Vector3 NewFloatPosition = new Vector3(transform.position.x, transform.position.y + 0.0f, transform.position.z);
-            _targetFloat.transform.position = NewFloatPosition;
-            HookedTo = _targetFloat;
-            //photonView.RPC("SetFishReference", RpcTarget.All);
+            photonView.RPC("SetHookedToValue", RpcTarget.All, _targetFloat.photonView.ViewID);
             _targetFloat.fish = this;
-            rb = gameObject.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            rb.useGravity = false;
-            
+
+            this.rb = gameObject.AddComponent<Rigidbody>();
+            this.rb.isKinematic = true;
+            this.rb.useGravity = false;
+
             controller.stamina = 1f;
             controller.doNotUpdateTarget = true;
             controller.fearfulness = 1f;
@@ -179,7 +171,10 @@ public class FishEntity : MonoBehaviourPun
 
             if (_targetFloat.Owner.SpawnedFloatSimulation)
                 _targetFloat.Owner.SpawnedFloatSimulation.SimulateBite();
-           
+
+
+            // HookedTo = _targetFloat;
+
             // var owner = HookedTo.Owner.SpawnedFloatSimulation.;
             // var player = owner.GetComponent<PlayerFishing>();
             // var floatSim = player.SpawnedFloatSimulation;
@@ -188,7 +183,22 @@ public class FishEntity : MonoBehaviourPun
             // floatSim.SimulateBite();
         }
     }
-  
+    [PunRPC]
+    private void SetHookedToValue(int viewID)
+    {
+        FishingFloat _hookedToNew = viewID == -1 ? null : PhotonView.Find(viewID).GetComponent<FishingFloat>();
+
+        _hookedToNew.GetComponent<PhotonView>().RequestOwnership();
+        _hookedToNew._collider.enabled = false;
+        _hookedToNew._interactor.enabled = false;
+        _hookedToNew._rb.isKinematic = true;
+        _hookedToNew._rb.useGravity = false;
+        _hookedToNew.transform.SetParent(transform);
+        Vector3 NewFloatPosition = new Vector3(transform.position.x, transform.position.y + 0.0f, transform.position.z);
+        _hookedToNew.transform.position = NewFloatPosition;
+        _hookedTo = _hookedToNew;
+    }
+
     private IEnumerator BiteLoop()
     {
         while (true)
@@ -200,7 +210,7 @@ public class FishEntity : MonoBehaviourPun
                 {
                     if (controller.target.gameObject.TryGetComponent<FishingFloat>(out FishingFloat fishingFloat))
                     {
-                       if (fishingFloat.CheckCompability(controller._scriptable))
+                        if (fishingFloat.CheckCompability(controller._scriptable))
                         {
                             FailedCatchValue = Random.value;
                             Bite(fishingFloat);
@@ -217,10 +227,8 @@ public class FishEntity : MonoBehaviourPun
     {
         if (controller.target != null)
         {
-            Debug.Log("target is +" + controller.target.name);
+            //Debug.Log("target is +" + controller.target.name);
         }
-        if (!photonView.IsMine) return;
-
         if (HookedTo == null && rb != null)
         {
             Canvas.enabled = false;
@@ -233,6 +241,7 @@ public class FishEntity : MonoBehaviourPun
 
         if (HookedTo != null)
         {
+            if (!HookedTo.Owner.GetComponent<PhotonView>().IsMine) return;
             isDestroyFloat = false;
             if (FailedCatchValue > 0 && FailedCatchValue < 0.2)
             {
@@ -244,19 +253,20 @@ public class FishEntity : MonoBehaviourPun
                 controller.isUpgradeFishingRod = false;
                 FailedCatchValue = 0;
             }
-            Vector3 NewFishModelPosition = new Vector3(HookedTo.Hook.transform.position.x, HookedTo.Hook.transform.position.y - 0.15f, HookedTo.Hook.transform.position.z);
-            FishModel.transform.position = NewFishModelPosition;
+            // Vector3 NewFishModelPosition = new Vector3(HookedTo.Hook.transform.position.x, HookedTo.Hook.transform.position.y - 0.15f, HookedTo.Hook.transform.position.z);
+            // FishModel.transform.position = NewFishModelPosition;
+            //transform.position = Vector3.Lerp(FishModel.transform.position, NewFishModelPosition, 10 * Time.deltaTime);
             if (fishHealth.healthBar.value != 0)
             {
                 Canvas.enabled = true;
             }
-            if (HookedTo.Owner.isDestroyFloat)
-            {
-                controller.HealthBar += 1;
-                Canvas.enabled = false;
-                HookedTo = null;
-                FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
-            }
+            /* if (HookedTo.Owner.isDestroyFloat)
+             {
+                 controller.HealthBar += 1;
+                 Canvas.enabled = false;
+                 HookedTo = null;
+                 FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
+             }*/
 
             if (fishHealth.healthBar.value == 0)
             {
@@ -276,34 +286,33 @@ public class FishEntity : MonoBehaviourPun
             {
                 FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
             }
-           /* if ((controller.StaminaBar == 0f || controller.StaminaBar == 1f) && fishHealth.healthBar.value != 0)
+            if ((controller.StaminaBar == 0f || controller.StaminaBar == 1f) && fishHealth.healthBar.value != 0)
             {
                 HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
-                HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
-                controller.doNotUpdateTarget = false;
+                // HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+                // controller.doNotUpdateTarget = false;
                 controller.fearfulness = .0f;
-                HookedTo = null;
+                //HookedTo = null;
                 FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
 
-            }*/
+            }
             if (((controller.StaminaBar > 0 && controller.StaminaBar < 0.25) || (controller.StaminaBar > 0.75 && controller.StaminaBar < 1)) && fishHealth.healthBar.value != 0 && controller.doNotUpdateTarget)
             {
-                if (HookedTo != null)
-                {
-                    HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", true);
-                }
+                /* if (HookedTo != null)
+                 {
+                     HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", true);
+                 }*/
             }
             else
             {
-                if (HookedTo != null)
-                {
-                    HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
-                }
+                /* if (HookedTo != null)
+                 {
+                     HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
+                 }*/
             }
             // Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist
             if (controller.iscatched && fishHealth.healthBar.value == 0)
             {
-
                 HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
 
                 var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
@@ -333,6 +342,7 @@ public class FishEntity : MonoBehaviourPun
                 PhotonNetwork.Destroy(gameObject);
             }
         }
+
 
 
     }

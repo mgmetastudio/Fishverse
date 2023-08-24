@@ -13,17 +13,18 @@ public class FishAIController : MonoBehaviourPun
     public bool doNotUpdateTarget;
     public float stamina = 1f;
     public float stamina_move = 0.2f;
-    public float HealthBar = 1f;
+    [SerializeField] public float HealthBar = 1f;
     public float StaminaBar = 0.5f;
     private float frameTime=0.019f;
     public float getOffHookTime = 10f;
     public float currentOffHookTime;
     public bool iscatched = false;
-    public bool isTouchingGround = false;
+    [SerializeField] bool isTouchingGround = false;
     public bool isUpgradeFishingRod = false;
     float mindistance = 0.6f;
     private bool isStaminaBarStarted = true;
     private FishEntity fishEntity;
+    [SerializeField] bool ispulling=false;
     private void Start()
     {
         StaminaBar = 0.5f;
@@ -111,7 +112,7 @@ public class FishAIController : MonoBehaviourPun
         if (other.CompareTag("Ground"))
         {
             isTouchingGround = true;
-            // Debug.Log("Fish is touching the ground.");
+         // Debug.Log("Fish is touching the ground.");
         }
     }
     private void OnTriggerExit(Collider other)
@@ -123,15 +124,31 @@ public class FishAIController : MonoBehaviourPun
         if (other.CompareTag("Ground"))
         {
             isTouchingGround = false;
-            //  Debug.Log("Fish is no longer touching the ground.");
+            //Debug.Log("Fish is no longer touching the ground.");
         }
     }
 
     private Vector3 _currentVelocity;
     private void Update()
     {
-        if (!photonView.IsMine) return;
+           
+      //  Debug.Log($"Fish entity owned by player: {photonView.Owner.NickName}");
+        if (fishEntity.HookedTo != null)
+        {
+            PhotonView hookedToPhotonView = fishEntity.HookedTo.Owner.GetComponent<PhotonView>();
 
+
+            if (hookedToPhotonView != null && photonView.Owner != hookedToPhotonView.Owner)
+            {
+               // Debug.Log($"Fish entity: ViewID = {photonView.ViewID}, Current Owner = {photonView.Owner.NickName}, New Owner = {hookedToPhotonView.Owner.NickName}");
+
+                photonView.RequestOwnership(); // Request ownership first
+                photonView.TransferOwnership(hookedToPhotonView.OwnerActorNr);
+
+                //Debug.Log($"Fish entity after transfer: ViewID = {photonView.ViewID}, Owner = {photonView.Owner.NickName}");
+
+            }
+        }
         if (fishEntity.isDestroyFloat)
         {
             StaminaBar = 0.5f;
@@ -188,6 +205,10 @@ public class FishAIController : MonoBehaviourPun
 
             }
         }
+        else
+        {
+            ispulling = false;
+        }
 
         if (stamina > .9f)
         {
@@ -210,29 +231,37 @@ public class FishAIController : MonoBehaviourPun
 
         // if (target)
         //     movementVector = movementVector.WithY(.1f);
-        if (!inWater)
+        if (!ispulling)
         {
-            movementVector = Vector3.down;
-            movementVector = Vector3.SmoothDamp(transform.forward, movementVector, ref _currentVelocity, .1f);
-            movementVector = movementVector.normalized * (CalculateSpeed() * (doNotUpdateTarget ? 1.5f : 1f) * 1.4f);
+            if (!inWater)
+            {
+                movementVector = Vector3.down;
+                movementVector = Vector3.SmoothDamp(transform.forward, movementVector, ref _currentVelocity, .1f);
+                movementVector = movementVector.normalized * (CalculateSpeed() * (doNotUpdateTarget ? 1.5f : 1f) * 1.4f);
+            }
+            else
+            {
+                movementVector = Vector3.SmoothDamp(transform.forward, movementVector, ref _currentVelocity, _scriptable.smoothTime);
+                movementVector = movementVector.normalized * (CalculateSpeed() * (doNotUpdateTarget ? 1.5f : 1f));
+            }
+            transform.forward = movementVector;
         }
-        else
-        {
-            movementVector = Vector3.SmoothDamp(transform.forward, movementVector, ref _currentVelocity, _scriptable.smoothTime);
-            movementVector = movementVector.normalized * (CalculateSpeed() * (doNotUpdateTarget ? 1.5f : 1f));
-        }
-
-        transform.forward = movementVector;
+       // transform.forward = movementVector;
         Vector3 movement;
         if (stamina > 0.2)
         {
             movement = movementVector * stamina;
         }
-        else
+        else if (HealthBar != 0)
         { movement = movementVector * stamina_move; }
+        else 
+        {
+            movement = movementVector * 0f;
+        }
 
         if (pullForce > 0.0f && target != null && HealthBar == 0)
         {
+            ispulling = true;
             //pullForce = 0;
             Vector3 targetDirection = target.position - transform.position;
             Vector3 horizontalDirection = new Vector3(targetDirection.x, 0.0f, targetDirection.z);

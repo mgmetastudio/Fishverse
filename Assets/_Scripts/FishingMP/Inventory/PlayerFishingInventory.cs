@@ -27,7 +27,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
     [SerializeField] Category fishCategory;
     [SerializeField] StatEffect fishWeightEffect;
     // public  XpTracker xpLevel;
-
+    [Header("GamePlay UI")]
+    public GameObject GamePlayUI;
     [Header("Inventory")]
     public GameObject InventoryCanvas;
     public Transform Content;
@@ -139,6 +140,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
         if (!photonView.IsMine)
         {
             InventoryCanvas.SetInactive();
+            GamePlayUI.SetInactive();
             return;
         }
 

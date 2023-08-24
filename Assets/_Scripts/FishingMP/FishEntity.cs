@@ -289,26 +289,26 @@ public class FishEntity : MonoBehaviourPun
             if ((controller.StaminaBar == 0f || controller.StaminaBar == 1f) && fishHealth.healthBar.value != 0)
             {
                 HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
-                // HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
-                // controller.doNotUpdateTarget = false;
+                HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+                controller.doNotUpdateTarget = false;
                 controller.fearfulness = .0f;
-                //HookedTo = null;
+                HookedTo = null;
                 FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
 
             }
             if (((controller.StaminaBar > 0 && controller.StaminaBar < 0.25) || (controller.StaminaBar > 0.75 && controller.StaminaBar < 1)) && fishHealth.healthBar.value != 0 && controller.doNotUpdateTarget)
             {
-                /* if (HookedTo != null)
-                 {
-                     HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", true);
-                 }*/
+                if (HookedTo != null)
+                {
+                    HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", true);
+                }
             }
             else
             {
-                /* if (HookedTo != null)
-                 {
-                     HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
-                 }*/
+                if (HookedTo != null)
+                {
+                    HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
+                }
             }
             // Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist
             if (controller.iscatched && fishHealth.healthBar.value == 0)

@@ -143,9 +143,13 @@ public class PlayerFishingInventory : MonoBehaviourPun
             GamePlayUI.SetInactive();
             return;
         }
+        if (photonView.IsMine)
+        {
+            playerName = Fishverse_Core.instance.account_username;
+            // Delay the RPC to give time for synchronization
+            Invoke("SendPlayerNameRPC", 0.5f); 
+        }
 
-        playerName = Fishverse_Core.instance.account_username;
-        SetPlayerName(playerName);
 
         Manager = GameObject.FindGameObjectWithTag("Manager");
 
@@ -224,11 +228,23 @@ public class PlayerFishingInventory : MonoBehaviourPun
     }
 
     // [ClientRpc]
-    [PunRPC]
-    public void RpcSetPlayerName(string PlayerN)
+
+
+    private void SendPlayerNameRPC()
     {
-        PlayerN = playerName;
-        PlayerNameText.text = PlayerN;
+        photonView.RPC("RpcSetPlayerName", RpcTarget.AllBuffered, playerName);
+    }
+
+    [PunRPC]
+    private void RpcSetPlayerName(string name)
+    {
+        playerName = name;
+        UpdatePlayerNameDisplay();
+    }
+
+    private void UpdatePlayerNameDisplay()
+    {
+        PlayerNameText.text = playerName;
     }
 
     public void SetUpFloat()
@@ -683,21 +699,6 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Camera.nearClipPlane = Value;
     }
 
-    private void OnEnable()
-    {
-        FishEntity.Oncurrentfloat += currentfloatEventHandler;
-    }
-
-    private void OnDisable()
-    {
-        FishEntity.Oncurrentfloat -= currentfloatEventHandler;
-    }
-
-    private float currentfloatEventHandler()
-    {
-        // Return a float value
-        return currentFloat.previewScale;
-    }
 
 }
 

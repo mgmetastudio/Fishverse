@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
 using NullSave.TOCK.Inventory;
+using System.Collections;
 
 public class PlayerFishing : MonoBehaviourPun
 {
@@ -63,7 +64,8 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] Button Btn_FishCast;
     [SerializeField] private EquipPoint _equipPoint;
     [SerializeField] private Animator _animatorFishingRodAnim;
-  
+    [SerializeField] PlayerUI PlayerUI;
+    private bool hasInvoked = false;
     public bool isreelrotate= false;
     public bool isfishing=false;
     public bool isDestroyFloat=false;
@@ -161,6 +163,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (unequipedItem.displayName == "Fishing Rod")
             DrawFishingRod(false);
+
     }
 
     private void Update()
@@ -393,25 +396,45 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (_floatDemo.activeSelf)
         {
-  
-            // onCast.Invoke();
-            _inv.HideFish();
-            _anim.SetTrigger("FishingCast");
-            await UniTask.WaitForSeconds(onCastWait);
-
-            //TODO: this
-            photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
-            // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
-            foreach (GameObject AllFish in _inv.Fishes)
+            if (!PlayerUI.Isfishingfull)
             {
-                AllFish.SetActive(false);
+                // onCast.Invoke();
+                _inv.HideFish();
+                _anim.SetTrigger("FishingCast");
+                await UniTask.WaitForSeconds(onCastWait);
+
+                //TODO: this
+                photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
+                // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
+                foreach (GameObject AllFish in _inv.Fishes)
+                {
+                    AllFish.SetActive(false);
+                }
+                _inv.FishHolder.SetActive(false);
+                isfishing = false;
+
             }
-            _inv.FishHolder.SetActive(false);
-            isfishing = false;
+            else
+            {
+                _Linebroke.SetBool("PackBack_Full", true);
+                if (!hasInvoked)
+                {
+                    StartCoroutine(InvokeStopPackBackAnim());
+                }
+            }
         }
 
     }
+    private IEnumerator InvokeStopPackBackAnim()
+    {
+        hasInvoked = true;
 
+        _Linebroke.SetBool("PackBack_Full", false);
+
+        yield return new WaitForSeconds(1f);
+
+        hasInvoked = false; // Reset the flag
+    }
     bool CastInput()
     {
         if (_inputProxy.mobileInput) return onRodDown;
@@ -474,15 +497,12 @@ public class PlayerFishing : MonoBehaviourPun
     public void DrawFishingRod(bool draw)
     {
         //change to holder
-        if (photonView.IsMine)
-        {
-            rodHolder.SetActive(draw);
+        rodHolder.SetActive(draw);
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
-        
-            var inv = GetComponent<PlayerFishingInventory>();
-     
-
+        if (photonView.IsMine)
+        {
+         var inv = GetComponent<PlayerFishingInventory>();
         if (draw)
             inv.SetFloat(0);
         else
@@ -493,11 +513,14 @@ public class PlayerFishing : MonoBehaviourPun
 
     }
 
+
     public void OnSwimStart()
     {
-        if (!photonView.IsMine)
-            return;
-        photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+        if (!photonView.IsMine) return;
+        if (fishingRod.activeSelf)
+        {
+            photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+        }
         _floatDemo.SetActive(false);
         canFish = false;
         _animReel.SetBool("Hook_Reel", false);
@@ -508,7 +531,12 @@ public class PlayerFishing : MonoBehaviourPun
 
     public void OnSwimEnd()
     {
+        if (!photonView.IsMine) return;
         canFish = true;
+        if (rodHolder.childCount > 1)
+        {
+            photonView.RPC("DrawFishingRod", RpcTarget.All, true);
+        }
     }
 
     public void ToggleCantFish(bool value)

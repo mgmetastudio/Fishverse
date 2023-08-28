@@ -36,8 +36,7 @@ public class FishEntity : MonoBehaviourPun
     public FishHealth fishHealth;
     public bool isFishCatched = false;
     public bool isDestroyFloat;
-    public delegate float CurrentFloatAction();
-    public static event CurrentFloatAction Oncurrentfloat;
+
     [SerializeField] float FailedCatchValue;
     bool isreelrotate;
     float currentfloat;
@@ -275,10 +274,8 @@ public class FishEntity : MonoBehaviourPun
                     isStaminaTransitioning = true;
                     StartCoroutine(SmoothStaminaTransition());
                 }
-                if (HookedTo != null)
-                {
-                    FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
-                }
+
+                FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
                 Canvas.enabled = false;
 
             }
@@ -373,6 +370,7 @@ public class FishEntity : MonoBehaviourPun
 
         inv.CheckForItems();
     }
+
 
     private void OnGUI()
     {

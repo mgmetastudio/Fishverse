@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 
-public class MiniGame_Manager : MonoBehaviour
+public class MiniGame_Manager : MonoBehaviourPunCallbacks
 {
     [Header("Scene Refs:")]
     public ArcadeVehicleController vehicle_controller;
@@ -97,19 +97,23 @@ public class MiniGame_Manager : MonoBehaviour
     DOTweenAnimation text_pos_anim;
 
     public int playerToStart = 2;
-    public delegate float SpeedBoatFloatAction();
-    public static event SpeedBoatFloatAction Onspeedboat;
-    public static event SpeedBoatFloatAction Onfuel;
     public delegate string NameAction();
     public static event NameAction OnNameEnter;
 
     private PhotonView photon_view;
+    private float speedboat;
+    private float _fuel;
+    [SerializeField] RoomManager owner;
+
+  
+
     private void Start()
     {
+        photon_view = GetComponent<PhotonView>();
+
 #if !UNITY_EDITOR
         unlimitedTime = false;
 #endif
-        photon_view = GetComponent<PhotonView>();
         //Init Components
         gameStartTime = Time.time;
         BonusPanel.SetActive(false);
@@ -203,8 +207,9 @@ public class MiniGame_Manager : MonoBehaviour
     {
         if (game_started)
         {
-            float speedboat = Onspeedboat?.Invoke() ?? 0.0f;
-            float _fuel = Onfuel?.Invoke() ?? 0.0f;
+            speedboat = owner.boatController.carVelocity.z;
+            _fuel = owner.boatController.fuel;
+
             timer += Time.deltaTime;
             if (timer > 1f)
             {
@@ -396,8 +401,9 @@ public class MiniGame_Manager : MonoBehaviour
         }
         else
         {
-            text_fishes.color = Color.red;
-            text_fishes.text = fishes.ToString() + $"/{maxFish} (FULL)";
+            text_fishes.color = Color.white;
+            text_fishes.text = fishes.ToString() + $"/{maxFish}";
         }
     }
+  
 }

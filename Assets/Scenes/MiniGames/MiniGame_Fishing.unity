@@ -44520,17 +44520,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8378387582245555949, guid: 03d4ea115a21d234e9ca2f7ed712a18e, type: 3}
   m_PrefabInstance: {fileID: 55018116}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1238935737 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9008599621827508944, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
-  m_PrefabInstance: {fileID: 845112850}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1238935738 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8497784719309939725, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
@@ -85204,6 +85193,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 637367761}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: owner
+      value: 
+      objectReference: {fileID: 961809113}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: maxFish
       value: 20
       objectReference: {fileID: 0}
@@ -85294,7 +85287,7 @@ PrefabInstance:
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: text_TotalScore
       value: 
-      objectReference: {fileID: 1238935737}
+      objectReference: {fileID: 0}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: text_best_score
       value: 
@@ -85827,6 +85820,10 @@ PrefabInstance:
       propertyPath: on_remove_fish.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6024053287047806630, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: sceneViewId
+      value: 39
+      objectReference: {fileID: 0}
     - target: {fileID: 7892231617639788644, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: leaderboard_UI
       value: 
@@ -85875,6 +85872,7 @@ MonoBehaviour:
   account_username: 
   app_version: 
   app_version_local: 0.13
+  avatar: 
 --- !u!33 &1212346335353095930
 MeshFilter:
   m_ObjectHideFlags: 0

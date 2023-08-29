@@ -15,6 +15,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     [Inject]
     private DiContainer _diContainer;
+    public ArcadeVehicleController_Network boatController;
 
     private void Start()
     {
@@ -43,6 +44,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         var spawnedPlayerObj = PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
         if(_diContainer != null)
             _diContainer.InjectGameObject(spawnedPlayerObj);
+
+        boatController = spawnedPlayerObj.GetComponent<ArcadeVehicleController_Network>();
+
     }
 
     public void Leave()
@@ -62,7 +66,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect();
         SceneManager.LoadScene(menu_scene);
     }
-
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.LogFormat("Player {0} entered room", newPlayer.NickName);
@@ -79,6 +82,21 @@ return;
     {
         Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
 
-        GetComponent<UserListManager>().RefreshUserList();
+        foreach (PhotonView photonView in PhotonNetwork.PhotonViews)
+        {
+            // Check if the PhotonView is owned by the leaving player
+            if (photonView.Owner.ActorNumber == otherPlayer.ActorNumber)
+            {
+                // Disable the player GameObject associated with the leaving player
+                photonView.gameObject.SetActive(false);
+            }
+            if(!PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(photonView);
+            }
+        }
+
+            GetComponent<UserListManager>().RefreshUserList();
+ 
     }
 }

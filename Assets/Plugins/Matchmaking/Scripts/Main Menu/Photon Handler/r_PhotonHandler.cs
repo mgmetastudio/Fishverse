@@ -184,7 +184,7 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
         switch (_RoomState)
         {
             case "InLobby": r_LobbyController.instance.ListLobbyPlayers(); break;
-            case "InGame": r_InGameController.instance.CheckMasterClient(); break;
+          //  case "InGame": r_InGameController.instance.CheckMasterClient(); break;
         }
     }
     #endregion

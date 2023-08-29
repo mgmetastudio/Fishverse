@@ -62,7 +62,10 @@ MonoBehaviour:
   text_time: {fileID: 0}
   text_fishes: {fileID: 0}
   text_position: {fileID: 0}
+  BonusPanel: {fileID: 0}
   text_bonus: {fileID: 0}
+  TimerPanel: {fileID: 0}
+  text_Timer: {fileID: 0}
   panel_end_screen: {fileID: 0}
   Text_Username: {fileID: 0}
   text_best_score: {fileID: 0}
@@ -70,8 +73,9 @@ MonoBehaviour:
   text_time_played: {fileID: 0}
   text_scoretime_played: {fileID: 0}
   text_coins: {fileID: 0}
-  text_TotalScore: {fileID: 0}
+  text_CurrentScore: {fileID: 0}
   score: 0
+  ScoreCoins: 0
   best_score: 0
   fishes: 0
   start_time: 120
@@ -191,7 +195,9 @@ MonoBehaviour:
   gameStartPanelWait: 2
   gameStartUIWait: 0.5
   gameStartControlsWait: 0.5
+  gameLeaderBoard: 0
   playerToStart: 2
+  owner: {fileID: 0}
 --- !u!114 &7892231617639788644
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -19,14 +19,14 @@ public class PlayerUI : MonoBehaviour
     [Header("Timer and Fish Text")]
     [SerializeField] TMP_Text TimerText;
     [SerializeField] TMP_Text FishText;
-    private float startTime;
     [SerializeField] public bool Isfishingfull=false;
     private bool hasStartedTimer = false;
+    private OpenWorld_Manager OpenWorld_Manager;
 
 
     void Start()
     {
-        startTime = Time.time;
+        OpenWorld_Manager = FindObjectOfType<OpenWorld_Manager>();
     }
     // Update is called once per frame
     void Update()
@@ -48,13 +48,6 @@ public class PlayerUI : MonoBehaviour
 
     private void UpdateTimerText()
     {
-        float elapsedTime = Time.time - startTime;
-
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
-
-        // Format the timer string with leading zeros
-        string timerString = string.Format("{0:00}:{1:00}", minutes, seconds);
-        TimerText.text = timerString;
+        TimerText.text = OpenWorld_Manager.timer;
     }
 }

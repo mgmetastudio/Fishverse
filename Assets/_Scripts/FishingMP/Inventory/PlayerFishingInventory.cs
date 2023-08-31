@@ -99,7 +99,10 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public InventoryItem currentRod;
     public InventoryItem currentFloat;
     public bool IsopenMenu;
-   
+    public int Score =0;
+    public int highestScore = 0;
+    private OpenWorld_Manager openWorldManager;
+
 
     int _money;
     public int Money
@@ -149,10 +152,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
             // Delay the RPC to give time for synchronization
             Invoke("SendPlayerNameRPC", 0.5f); 
         }
-
-
         Manager = GameObject.FindGameObjectWithTag("Manager");
-
+        openWorldManager = FindObjectOfType<OpenWorld_Manager>();
         Camera = Camera.main;
 
         // SetUpFloat();
@@ -461,8 +462,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     private void Update()
     {
-     IsopenMenu= inventoryCog.IsMenuOpen;
-       // Debug.Log("CurrentSelectedFloat" + CurrentSelectedFloat);
+        IsopenMenu = inventoryCog.IsMenuOpen;
 
         if (FloatHasChanged == true & LastSelectedFloat != CurrentSelectedFloat)
         {
@@ -629,7 +629,13 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // invFish.FishImage.sprite = FishSprite;
 
         fishInv.Add(invFish);
+        if (openWorldManager != null)
+        {
+            openWorldManager.Addscore(35); // Update score in OpenWorld_Manager
+            int totalScore = openWorldManager.Score;
+            photonView.RPC("UpdateHighScoreOnServer", RpcTarget.All, totalScore);
 
+        }
 
         photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, fishInfo.uniqueId);
         // CmdHoldCaughtFish(uniqueId);
@@ -639,7 +645,12 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         CheckForItems();
     }
-
+    [PunRPC]
+    private void UpdateHighScoreOnServer(int newScore)
+    {
+        OpenWorld_Manager openWorldManager = FindObjectOfType<OpenWorld_Manager>();
+        openWorldManager.UpdateHighScore(newScore);
+    }
     public async void HoldCaughtFish(int uniqueId)
     {
         _lastUniqueId = uniqueId;

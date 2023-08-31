@@ -139,7 +139,12 @@ namespace NullSave.TOCK.Inventory
                 UpdateCheckoutUI();
             }
         }
+        public void Start()
+        {
 
+         itemTooltip.BtnClose.onClick.AddListener(CloseTooltip);
+            
+        }
         public override ItemUI SelectedItem
         {
             get

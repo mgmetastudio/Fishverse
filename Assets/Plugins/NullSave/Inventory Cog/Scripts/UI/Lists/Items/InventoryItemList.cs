@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace NullSave.TOCK.Inventory
 {
@@ -481,6 +482,15 @@ namespace NullSave.TOCK.Inventory
 
         internal void ItemPointerEnter(ItemUI item)
         {
+            if (itemTooltip.isPlayerInventory)
+            {
+                itemTooltip.ItemTooltipHiden.gameObject.SetActive(false);
+            }
+            else
+            {
+                itemTooltip.ItemTooltipHiden.gameObject.SetActive(false);
+            }
+
             if (item.Item == null) return;
             itemTooltip.gameObject.SetActive(true);
             itemTooltip.ShowTooltip(item.Inventory ?? ThemeHost, item);
@@ -488,12 +498,14 @@ namespace NullSave.TOCK.Inventory
 
         internal void ItemPointerExit(ItemUI item)
         {
-            if (itemTooltip.Target == item)
-            {
-                itemTooltip.gameObject.SetActive(false);
-            }
-        }
 
+        }
+        public void CloseTooltip()
+        {
+            itemTooltip.gameObject.SetActive(false);
+        }
+        
+    
         internal virtual void LockStateChanged() { }
 
         private void UnlockInput()

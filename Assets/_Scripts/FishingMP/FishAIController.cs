@@ -109,7 +109,7 @@ public class FishAIController : MonoBehaviourPun
         {
             inWater = true;
         }
-        if (other.CompareTag("Ground"))
+        if (other.CompareTag("Ground") || other.CompareTag("Untagged"))
         {
             isTouchingGround = true;
          // Debug.Log("Fish is touching the ground.");
@@ -121,7 +121,7 @@ public class FishAIController : MonoBehaviourPun
         {
             inWater = false;
         }
-        if (other.CompareTag("Ground"))
+        if (other.CompareTag("Ground") || other.CompareTag("Untagged"))
         {
             isTouchingGround = false;
             //Debug.Log("Fish is no longer touching the ground.");
@@ -265,14 +265,24 @@ public class FishAIController : MonoBehaviourPun
             //pullForce = 0;
             Vector3 targetDirection = target.position - transform.position;
             Vector3 horizontalDirection = new Vector3(targetDirection.x, 0.0f, targetDirection.z);
-            if (((Vector3.Distance(target.position, transform.position) < 2f || isTouchingGround)))
+            Vector3 VerticalDirection = new Vector3(0.0f, targetDirection.y, 0.0f);
+            // Debug.Log("Rotation of fish" + fishEntity.FishModel.transform.rotation.eulerAngles.x);
+            if (Vector3.Distance(target.position, transform.position) < 2f || isTouchingGround)
             {
+
                 Vector3 pull = targetDirection.normalized * 6f;
                 movement += pull;
+      
             }
-            else
+            else if(inWater)
             {
                 Vector3 pull = horizontalDirection.normalized * 6f;
+                movement += pull;
+            }
+            if(fishEntity.FishModel.transform.rotation.eulerAngles.x > 270f && fishEntity.FishModel.transform.rotation.eulerAngles.x < 275f)
+            {
+              //  Debug.Log("You can pull it up");
+                Vector3 pull = VerticalDirection.normalized * 6f;
                 movement += pull;
             }
 

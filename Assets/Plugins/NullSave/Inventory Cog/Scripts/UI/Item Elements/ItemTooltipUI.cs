@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.UI;
 namespace NullSave.TOCK.Inventory
 {
     public class ItemTooltipUI : MonoBehaviour, IItemHost
@@ -11,7 +11,9 @@ namespace NullSave.TOCK.Inventory
         public Vector2 offset;
 
         public ItemUI itemUI;
-
+        public Button BtnClose;
+        public bool isPlayerInventory;
+        public GameObject ItemTooltipHiden;
         #endregion
 
         #region Properties

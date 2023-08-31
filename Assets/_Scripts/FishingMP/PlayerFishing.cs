@@ -154,7 +154,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (equipedItem.displayName == "Fishing Rod")
         {
-            DrawFishingRod(true);
+            photonView.RPC("DrawFishingRod", RpcTarget.All, true);
             // fishingRod.SetActive();
         }
     }
@@ -162,7 +162,7 @@ public class PlayerFishing : MonoBehaviourPun
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
         if (unequipedItem.displayName == "Fishing Rod")
-            DrawFishingRod(false);
+            photonView.RPC("DrawFishingRod", RpcTarget.All, false);
 
     }
 

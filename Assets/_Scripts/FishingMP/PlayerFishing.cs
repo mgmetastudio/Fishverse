@@ -14,6 +14,11 @@ public class PlayerFishing : MonoBehaviourPun
 {
     [SerializeField] Transform rodHolder;
     [SerializeField] bool canFish;
+    [SerializeField] bool IsmissingBait;
+    [SerializeField] bool IsmissingFloat;
+    [SerializeField] bool Isfishingfloat;
+    public GameObject FishingNotif;
+
     [SerializeField] private GameObject _fishingFloatBasePrefab;
     // [SyncVar]
     [HideInInspector] private FishingFloat fishingFloat;
@@ -99,6 +104,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+             FishingNotif.SetActive(false);
             _floatDemo = Instantiate(_floatDemoPrefab);
             _localCamera = Camera.main.transform;
             rodUI = FindObjectOfType<CastRodUI>();
@@ -152,7 +158,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
-        if (equipedItem.displayName == "Fishing Rod")
+        if (equipedItem.subtext == "Fishing Rod")
         {
             photonView.RPC("DrawFishingRod", RpcTarget.All, true);
             // fishingRod.SetActive();
@@ -161,7 +167,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
-        if (unequipedItem.displayName == "Fishing Rod")
+        if (unequipedItem.subtext == "Fishing Rod")
             photonView.RPC("DrawFishingRod", RpcTarget.All, false);
 
     }
@@ -172,7 +178,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-
+            //if(_inv.)
             if (FishingFloat == null)
             {
                 NoFishingFloatLogic();
@@ -319,7 +325,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     void NoFishingFloatLogic()
     {
-        if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
+        if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask) )
         {
             if (!Physics.Raycast(_localCamera.position, _localCamera.forward, Vector3.Distance(_localCamera.position, hitInfo.point) + .01f, _obstacleMask))
             {
@@ -396,7 +402,8 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (_floatDemo.activeSelf)
         {
-            if (!PlayerUI.Isfishingfull)
+            CheckEquipment();
+            if (!PlayerUI.Isfishingfull && Isfishingfloat)
             {
                 // onCast.Invoke();
                 _inv.HideFish();
@@ -655,7 +662,48 @@ public class PlayerFishing : MonoBehaviourPun
         HideControllerButtons(true, 148.8f);
     }
 
+    private void CheckEquipment()
+    {
+        if(_inv.currentBait != null)
+        {
+            IsmissingBait = false;
+        }
+        else
+        {
+            IsmissingBait = true;
+        }
 
+        if (_inv.currentFloat != null)
+        {
+            IsmissingFloat = false;
+        }
+        else
+        {
+            IsmissingFloat = true;
+        }
+
+        //Fishing Logic
+
+        if ((!IsmissingBait && !IsmissingFloat && _inv.currentFloat.previewScale <= 1) || (!IsmissingFloat && _inv.currentFloat.previewScale == 2))
+        {
+            Isfishingfloat = true;
+        }
+        else
+        {
+            if(FishingNotif.activeSelf)
+            {
+                FishingNotif.SetActive(false);
+            }
+            Isfishingfloat = false;
+            FishingNotif.SetActive(true);
+            Invoke("HideFishingNotif", 1f);
+        }
+
+    }
+    private void HideFishingNotif()
+    {
+        FishingNotif.SetActive(false);
+    }
     public void HideControllerButtons(bool isactive, float t)
     {
         foreach (GameObject btn in HiddenButtons)

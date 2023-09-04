@@ -24,7 +24,7 @@ namespace NullSave.TOCK.Inventory
         public List<EquipPoint> forceStore;
         public List<EquipPoint> forceUnequip;
 
-        public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged, onItemWeaponChanged;
+        public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged;
 
         #endregion
 

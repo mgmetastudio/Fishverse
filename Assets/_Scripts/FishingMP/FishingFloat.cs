@@ -98,6 +98,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
         else
         {
+          
             photonView.RPC("TargetPull", RpcTarget.All);
             //TargetPull();
         }
@@ -160,7 +161,26 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // Assign your customization variables here ~
         _ = Instantiate(_scriptable.modelPrefab, transform); // Model
     }
-
+    public void Update()
+    {
+        if (fish == null)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+            bool isTouchingGround = false;
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Default"))
+                {
+                    isTouchingGround = true;
+                    break;
+                }
+            }
+            if (isTouchingGround && fish == null)
+            {
+                Destroyfloat = true;
+            }
+        }
+    }
     public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
     {
         _interactor.enabled = true;
@@ -189,9 +209,13 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         inv = Owner.GetComponent<PlayerFishingInventory>();
 
-        var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
-        if (feedType == null)
-            return false;
+        if (inv.currentBait != null)
+        {
+            var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
+
+            if (feedType == null)
+                return false;
+        }
 
         var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
         if (waterType == null)
@@ -218,5 +242,5 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     //     _rb.useGravity = false;
     // }
 
-
+   
 }

@@ -141,8 +141,10 @@ namespace NullSave.TOCK.Inventory
         }
         public void Start()
         {
-
-         itemTooltip.BtnClose.onClick.AddListener(CloseTooltip);
+            if (itemTooltip != null)
+            {
+                itemTooltip.BtnClose.onClick.AddListener(CloseTooltip);
+            }
             
         }
         public override ItemUI SelectedItem

@@ -78,10 +78,7 @@ public class InputProxy : MonoBehaviour
     {
         character.MovementInput = moveJoystick.Direction;
 
-        // Apply smoothing to the camera look input
-        Vector2 rawLookInput = lookJoystick.Direction * lookMulti;
-        Vector2 smoothedLookInput = Vector2.Lerp(character.LookInput, rawLookInput, Time.deltaTime * smoothing);
-        character.LookInput = smoothedLookInput;
+        character.LookInput = lookJoystick.Direction * lookMulti;
 
     }
 }

@@ -35,6 +35,7 @@ namespace NullSave.TOCK.Inventory
         [Tooltip("AllExistingItems")] public List<InventoryItem> AllExisingPublicItems;
 
         [Tooltip("Available game currency")] public float currency;
+        [Tooltip("Available game currency")] public float Fishcurrency;
         private Dictionary<string, InventoryItem> activeAmmo;
         // Sharing
         [Tooltip("Tag name used to share inventory between multiple sources")] public string shareTag;
@@ -99,6 +100,7 @@ namespace NullSave.TOCK.Inventory
         public List<Category> Categories { get; private set; }
 
         public List<CraftingCategory> CraftingCategories { get; private set; }
+        public List<StockItemReference> ItemsStock { get; private set; }
 
         public List<CraftingQueueItem> CraftingQueue { get; private set; }
 
@@ -485,6 +487,7 @@ namespace NullSave.TOCK.Inventory
             int looted = 0;
 
             currency += item.currency;
+            Fishcurrency +=item.currency;
             item.currency = 0;
             if (item.item == null)
             {
@@ -1940,6 +1943,7 @@ namespace NullSave.TOCK.Inventory
 
             return count;
         }
+     
 
         /// <summary>
         /// Get a count of item from all stacks in inventory with minimum condition & rarity
@@ -2504,6 +2508,8 @@ namespace NullSave.TOCK.Inventory
             {
                 if (currency == 0) return 0;
                 return Mathf.Min((int)(currency / item.incrementCost), availCount);
+                if (Fishcurrency == 0) return 0;
+                return Mathf.Min((int)(Fishcurrency / item.incrementCost), availCount);
             }
 
             return availCount;
@@ -2670,6 +2676,7 @@ namespace NullSave.TOCK.Inventory
             if (version >= 1.2f)
             {
                 currency = stream.ReadFloat();
+                Fishcurrency= stream.ReadFloat();
             }
 
             Items.Clear();
@@ -2806,6 +2813,7 @@ namespace NullSave.TOCK.Inventory
 
             stream.WriteFloat(TotalWeight);
             stream.WriteFloat(currency);
+            stream.WriteFloat(Fishcurrency);
 
             // Write item data
             stream.WriteInt(Items.Count);
@@ -3087,6 +3095,7 @@ namespace NullSave.TOCK.Inventory
 
             // Remove currency
             currency -= item.incrementCost * availCount;
+            Fishcurrency -= item.incrementCost * availCount;
 
             // Apply repair
             item.condition = Mathf.Clamp(item.condition + item.repairIncrement * availCount, 0, 1);

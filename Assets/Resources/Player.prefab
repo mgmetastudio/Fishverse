@@ -7101,6 +7101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryCog: {fileID: 7673373076513939534}
+  InventoryMerchant: {fileID: 0}
   statsCog: {fileID: 5725039192018758667}
   fishBaseItem: {fileID: 11400000, guid: 7b9893c622e907443a2240f853fc7a2f, type: 2}
   fishCategory: {fileID: 11400000, guid: 6b1a8ad9d86c2674fb0c2fa5a558dab8, type: 2}
@@ -7929,6 +7930,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0586b34e2e23c6c4380e01943c58c264, type: 2}
   - {fileID: 11400000, guid: 56bb0179613cf2c4ea0ac4b30b905055, type: 2}
   currency: 0
+  Fishcurrency: 0
   shareTag: 
   defaultTheme: FishVerse
   headless: 0
@@ -11411,7 +11413,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4798208798188751018}
-  m_LocalRotation: {x: 0.28978413, y: 0.000000011218886, z: -0.0000000033968048, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000011218886, z: 0.0000000033968048, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -18000,15 +18002,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9108797228404786421}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.506, y: 2.2, z: -0.86}
+  m_LocalRotation: {x: 0.06060382, y: -0, z: -0, w: 0.9981619}
+  m_LocalPosition: {x: 0.506, y: 2, z: -0.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5335067421956568391}
   m_Father: {fileID: 2643130203272408289}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.949, y: 0, z: 0}
 --- !u!114 &5232797751706939619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18196,7 +18198,6 @@ GameObject:
   - component: {fileID: 5335067421956568391}
   - component: {fileID: 5845948186464983415}
   - component: {fileID: 46641109797486153}
-  - component: {fileID: 5425035184644747006}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -18244,7 +18245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0.506, y: 2.2, z: -0.86}
+  m_FollowOffset: {x: 0.506, y: 2, z: -0.86}
   m_XDamping: 0.1
   m_YDamping: 0.1
   m_ZDamping: 0.1
@@ -18253,68 +18254,6 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
---- !u!114 &5425035184644747006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9222412957632460972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c9beda531928fc40968802117a5d256, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RecenterTarget: 0
-  m_VerticalAxis:
-    Value: 3
-    m_SpeedMode: 0
-    m_MaxSpeed: 150
-    m_AccelTime: 0.1
-    m_DecelTime: 0.1
-    m_InputAxisName: Mouse Y
-    m_InputAxisValue: -13.45
-    m_InvertInput: 1
-    m_MinValue: -70
-    m_MaxValue: 70
-    m_Wrap: 0
-    m_Recentering:
-      m_enabled: 0
-      m_WaitTime: 1
-      m_RecenteringTime: 2
-      m_LegacyHeadingDefinition: -1
-      m_LegacyVelocityFilterStrength: -1
-  m_VerticalRecentering:
-    m_enabled: 0
-    m_WaitTime: 1
-    m_RecenteringTime: 2
-    m_LegacyHeadingDefinition: -1
-    m_LegacyVelocityFilterStrength: -1
-  m_HorizontalAxis:
-    Value: 0
-    m_SpeedMode: 0
-    m_MaxSpeed: 0
-    m_AccelTime: 0.1
-    m_DecelTime: 0.1
-    m_InputAxisName: Mouse X
-    m_InputAxisValue: -1.3000001
-    m_InvertInput: 0
-    m_MinValue: -180
-    m_MaxValue: 180
-    m_Wrap: 1
-    m_Recentering:
-      m_enabled: 0
-      m_WaitTime: 1
-      m_RecenteringTime: 2
-      m_LegacyHeadingDefinition: -1
-      m_LegacyVelocityFilterStrength: -1
-  m_HorizontalRecentering:
-    m_enabled: 0
-    m_WaitTime: 1
-    m_RecenteringTime: 2
-    m_LegacyHeadingDefinition: -1
-    m_LegacyVelocityFilterStrength: -1
-  m_ApplyBeforeBody: 0
 --- !u!1001 &26614864166186264
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     [Space]
     [SerializeField] InventoryCog inventoryCog;
+    [SerializeField] InventoryMerchant InventoryMerchant;
     [SerializeField] StatsCog statsCog;
 
 
@@ -466,8 +467,16 @@ public class PlayerFishingInventory : MonoBehaviourPun
     private void Update()
     {
         IsopenMenu = inventoryCog.IsMenuOpen;
+        if (openWorldManager != null)
+        {
+            openWorldManager.Addscore((int)inventoryCog.Fishcurrency); // Update score in OpenWorld_Manager
+            int totalScore = openWorldManager.Score;
+            photonView.RPC("UpdateHighScoreOnServer", RpcTarget.All, totalScore);
+
+        }
         //if(inventoryCog.GetItemTotalCount())
-        if(currentBait!= null)
+        Debug.Log("Fish Curency" + inventoryCog.Fishcurrency);
+        if (currentBait!= null)
         {
             if(inventoryCog.GetItemTotalCount(currentBait)==0)
             {
@@ -659,14 +668,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // invFish.FishImage.sprite = FishSprite;
 
         fishInv.Add(invFish);
-        if (openWorldManager != null)
-        {
-            openWorldManager.Addscore(35); // Update score in OpenWorld_Manager
-            int totalScore = openWorldManager.Score;
-            photonView.RPC("UpdateHighScoreOnServer", RpcTarget.All, totalScore);
-
-        }
-
+       
         photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, fishInfo.uniqueId);
         // CmdHoldCaughtFish(uniqueId);
 

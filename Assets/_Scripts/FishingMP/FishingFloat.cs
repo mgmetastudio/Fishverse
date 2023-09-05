@@ -149,6 +149,8 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         inv = owner.GetComponent<PlayerFishingInventory>();
 
         for (int i = 0; i < _floatScriptables.Length; i++)
+        {
+            if (inv.currentFloat != null)
             {
                 if (_floatScriptables[i].uniqueId == inv.currentFloat.previewScale)
                 {
@@ -156,10 +158,14 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     break;
                 }
             }
-      
+        }
+
 
         // Assign your customization variables here ~
-        _ = Instantiate(_scriptable.modelPrefab, transform); // Model
+        if (photonView.IsMine)
+        {
+            _ = Instantiate(_scriptable.modelPrefab, transform); // Model
+        }
     }
     public void Update()
     {

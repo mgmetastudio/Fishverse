@@ -76,7 +76,7 @@ public class OpenWorld_Manager : MonoBehaviour
     }
     public void Addscore(int coin)
     {
-        Score += coin;
+        Score = coin;
     }
   
     public void EndGame()
@@ -124,7 +124,7 @@ public class OpenWorld_Manager : MonoBehaviour
         if (newScore > highScore)
         {
             highScore = newScore;
-            PlayerPrefs.SetInt("HighScore", highScore);
+           // PlayerPrefs.SetInt("HighScore", highScore);
             SyncHighScore(highScore);
         }
     }

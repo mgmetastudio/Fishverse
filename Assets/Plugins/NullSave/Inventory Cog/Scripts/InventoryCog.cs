@@ -1221,7 +1221,7 @@ namespace NullSave.TOCK.Inventory
         public void EquipItem(InventoryItem item)
         {
             if (item == null) return;
-
+         
             if (item.itemType == ItemType.Ammo)
             {
 
@@ -1735,7 +1735,18 @@ namespace NullSave.TOCK.Inventory
             }
             return 0;
         }
+        public int GetEquippedAmmoSpinningCount(string ammoType)
+        {
+            if (activeAmmo.ContainsKey(ammoType))
+            {
+                if(activeAmmo[ammoType].previewScale==2)
+                {
+                    return GetItemTotalCount(activeAmmo[ammoType]);
+                }
 
+            }
+            return 0;
+        }
         /// <summary>
         /// Get the first unused slot id (does not check if there is room for item)
         /// </summary>
@@ -3109,10 +3120,27 @@ namespace NullSave.TOCK.Inventory
         {
             if (activeAmmo.ContainsKey(item.ammoType))
             {
+                if (GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.ammoType == "Float")
+                {
+                    activeAmmo.Remove("Bait");
+                }
+                if (item.ammoType == "Bait" && GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    return;
+                }
+
                 activeAmmo[item.ammoType] = item;
             }
             else
             {
+                if (GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.ammoType == "Float")
+                {
+                    activeAmmo.Remove("Bait");
+                }
+                if (item.ammoType == "Bait" && GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    return;
+                }
                 activeAmmo.Add(item.ammoType, item);
             }
             

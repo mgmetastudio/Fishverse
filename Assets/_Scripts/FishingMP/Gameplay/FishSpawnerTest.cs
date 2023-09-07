@@ -17,7 +17,7 @@ public class FishSpawnerTest : MonoBehaviour
 
     async void Start()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
+        //if (!PhotonNetwork.IsMasterClient) return;
 
         var fishes = GetComponentsInChildren<FishEntity>();
         foreach (var item in fishes)
@@ -47,7 +47,7 @@ public class FishSpawnerTest : MonoBehaviour
     {
         // if (true)//Mirror.NetworkServer.active
         
-            spawner.Spawn(transform.position + _position, fishUniqueIds.GetRandom(), bounds);
+            spawner.Spawn(transform.position + _position, fishUniqueIds.GetRandom(), bounds, spawner.currentLocation);
     }
 
 #if UNITY_EDITOR

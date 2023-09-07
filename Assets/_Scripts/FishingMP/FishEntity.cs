@@ -17,6 +17,7 @@ public class FishEntity : MonoBehaviourPun
                 photonView.RPC("SetFishUniqueId", RpcTarget.All, value);
         }
     }
+    public string Location;
     private static FishScriptable[] _fishScriptables;
     private FishScriptable _scriptable;
     public FishAIController controller;
@@ -40,7 +41,9 @@ public class FishEntity : MonoBehaviourPun
     [SerializeField] float FailedCatchValue;
     bool isreelrotate;
     float currentfloat;
-
+    string BaitLocation = "";
+    string FloatLocation = "";
+    string RodLocation = "";
     public FishingFloat HookedTo
     {
         get => _hookedTo;
@@ -242,7 +245,9 @@ public class FishEntity : MonoBehaviourPun
         {
             if (!HookedTo.Owner.GetComponent<PhotonView>().IsMine) return;
             isDestroyFloat = false;
-            if (FailedCatchValue > 0 && FailedCatchValue < 0.2)
+            itemsCompatibility();
+            Debug.Log("Bait location" + BaitLocation + "/ Float location" + FloatLocation + "/ Rod location" + RodLocation);
+            if (((BaitLocation != Location && HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentFloat.previewScale <= 1) || FloatLocation != Location || RodLocation != Location) && FailedCatchValue > 0 && FailedCatchValue < 0.5)
             {
                 controller.isUpgradeFishingRod = true;
                 HookedTo.Owner.UpgradeFishingRodText.SetActive(true);
@@ -342,6 +347,92 @@ public class FishEntity : MonoBehaviourPun
 
 
 
+    }
+    void itemsCompatibility()
+    {
+        if (HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentBait != null)
+        {
+            foreach (var tag in HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentBait.customTags)
+            {
+                string tagValue1 = tag.Value;
+                if (tagValue1 == "Yellow")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+                else if (tagValue1 == "Blue")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+                else if (tagValue1 == "Orange")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+                else if (tagValue1 == "Purple")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+
+            }
+        }
+        if (HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentFloat != null)
+        {
+            foreach (var tag in HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentFloat.customTags)
+            {
+                string tagValue2 = tag.Value;
+                if (tagValue2 == "Yellow")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+                else if (tagValue2 == "Blue")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+                else if (tagValue2 == "Orange")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+                else if (tagValue2 == "Purple")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+            }
+        }
+        if (HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentRod != null)
+        {
+            foreach (var tag in HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentRod.customTags)
+            {
+                string tagValue3 = tag.Value;
+                if (tagValue3 == "Yellow")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+                else if (tagValue3 == "Blue")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+                else if (tagValue3 == "Orange")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+                else if (tagValue3 == "Purple")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+
+            }
+        }
     }
 
     // [ClientRpc]

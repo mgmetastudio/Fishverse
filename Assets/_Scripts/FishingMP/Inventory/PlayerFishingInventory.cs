@@ -183,6 +183,10 @@ public class PlayerFishingInventory : MonoBehaviourPun
         if (equipedItem.subtext == "Float")
         {
             currentFloat = equipedItem;
+            if(currentFloat.previewScale ==2 && currentBait != null)
+            {
+                currentBait = null;
+            }
             if (currentRod != null)
             {
                 SetUpFloat();
@@ -475,7 +479,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         }
         //if(inventoryCog.GetItemTotalCount())
-        Debug.Log("Fish Curency" + inventoryCog.Fishcurrency);
+       // Debug.Log("Fish Curency" + inventoryCog.Fishcurrency);
         if (currentBait!= null)
         {
             if(inventoryCog.GetItemTotalCount(currentBait)==0)
@@ -632,14 +636,16 @@ public class PlayerFishingInventory : MonoBehaviourPun
         fishItem.weight = fishLength;
         fishItem.displayName = fishInfo.FishName;
         fishItem.rarity = Random.Range(0, maxRarity);
-
+        fishItem.description = "Sell if in the store to get money and Win the game!";
         var fishWeight = Instantiate(fishWeightEffect);
         fishWeight.displayName = fishWeightValue + "cm";
         fishWeight.description += fishWeight.displayName;
         fishItem.statEffects.Add(fishWeight);
-
         inventoryCog.AddToInventory(fishItem);
-        inventoryCog.RemoveItem(currentBait, 1);
+        if (currentBait != null)
+        {
+            inventoryCog.RemoveItem(currentBait, 1);
+        }
 
         var xpStat = statsCog.Stats.First(x => x.displayName == "XP");
         xpStat.SetValue(xpStat.CurrentValue + fishValue);

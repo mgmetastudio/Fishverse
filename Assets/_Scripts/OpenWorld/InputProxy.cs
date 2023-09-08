@@ -30,7 +30,7 @@ public class InputProxy : MonoBehaviour
     public bool mobileInput;
 
     [Space]
-    [SerializeField] GameObject CameraRotateUI;
+    [SerializeField] public GameObject CameraRotateUI;
     [SerializeField] float smoothing = 5f;
 
     void Start()

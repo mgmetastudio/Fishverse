@@ -365,6 +365,7 @@ public class PlayerFishing : MonoBehaviourPun
         }
         isreelrotate = false;
         forceSlider.SetActive(false);
+       // Invoke("ToggleZoom_Buttons_Out", 2f);
         ToggleZoom_Buttons_Out();
         UpgradeFishingRodText.SetActive(false);
 
@@ -657,10 +658,10 @@ public class PlayerFishing : MonoBehaviourPun
         if (photonView.IsMine)
         {
             CameraController_.ThridPersonfishingToggleView();
-            if (fishingFloat != null)
+            _inputProxy.CameraRotateUI.SetInactive();
+            if (fishingFloat != null && FishingFloat.fish != null && FishingFloat.fish.controller.HealthBar != 0)
             {
                 transform.LookAtY(fishingFloat.transform);
-                //transform.LookAt(fishingFloat.transform);
             }
             HideControllerButtons(false, 86.875f);
         }
@@ -671,6 +672,7 @@ public class PlayerFishing : MonoBehaviourPun
         {
             CameraController_.ThridPersonToggleView();
             HideControllerButtons(true, 148.8f);
+            _inputProxy.CameraRotateUI.SetActive();
         }
     }
 

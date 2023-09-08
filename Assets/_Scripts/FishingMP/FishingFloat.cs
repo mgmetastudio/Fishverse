@@ -222,10 +222,12 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (feedType == null)
                 return false;
         }
-
-        var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
-        if (waterType == null)
-            return false;
+        if (inv.currentRod != null)
+        {
+            var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
+            if (waterType == null)
+                return false;
+        }
 
 
 

@@ -3,6 +3,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 [System.Serializable]
 public enum SeverRegionCode
@@ -45,7 +46,7 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     [SerializeField] string roomScene_QuickMatch;
     public r_RoomBrowserController m_RoomUI;
     public r_CreateRoomControllerUI r_create;
-
+    public GameObject notConnectedPanel;
     [Header("PhotonSettings")]
     public SeverRegionCode DefaultServer = SeverRegionCode.eu;
 
@@ -78,6 +79,8 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     {
         DontDestroyOnLoad(this);
         PhotonNetwork.AutomaticallySyncScene = true;
+        StartCoroutine(CheckInternetConnection());
+
     }
 
     private void LogPhoton()
@@ -118,7 +121,13 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
     /// </summary>
 
     #region Room Creation
-    public void CreateRoom(string _RoomName, RoomOptions _RoomOptions) => PhotonNetwork.CreateRoom(_RoomName, _RoomOptions, null, null);
+    public void CreateRoom(string _RoomName, RoomOptions _RoomOptions)
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.CreateRoom(_RoomName, _RoomOptions, null, null);
+        }
+    }
 
     public override void OnCreatedRoom() => Debug.Log("Created Room");
     #endregion
@@ -203,6 +212,39 @@ public class r_PhotonHandler : MonoBehaviourPunCallbacks
         if(PhotonNetwork.IsMasterClient && m_RoomUI.IsButtonClicked == true)
         { PhotonNetwork.LoadLevel(roomScene_QuickMatch); }
         // PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString() + "_" + PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString());
+    }
+    private void ShowNotConnectedPanel()
+    {
+        if (notConnectedPanel != null)
+        {
+            notConnectedPanel.SetActive(true);
+        }
+    }
+
+    public void HideNotConnectedPanel()
+    {
+        if (notConnectedPanel != null)
+        {
+            notConnectedPanel.SetActive(false);
+        }
+    }
+    private IEnumerator CheckInternetConnection()
+    {
+        while (true)
+        {
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                // No internet connection, show the "Not Connected" panel
+                ShowNotConnectedPanel();
+            }
+            else
+            {
+                // Internet connection is available, hide the panel
+                HideNotConnectedPanel();
+            }
+
+            yield return new WaitForSeconds(2.0f); // Check every 2 seconds (adjust as needed)
+        }
     }
     #endregion
 }

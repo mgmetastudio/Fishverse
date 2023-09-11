@@ -13,7 +13,7 @@ public class InputProxy : MonoBehaviour
     [Space]
     [SerializeField] ButtonXL ButtonRun;
     [SerializeField] ButtonXL ButtonJump;
-    [SerializeField] ButtonXL Buttonholster;
+    [SerializeField] public ButtonXL Buttonholster;
     [SerializeField] Button ButtonInventory;
 
 

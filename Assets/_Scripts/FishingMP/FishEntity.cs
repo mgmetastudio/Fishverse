@@ -240,6 +240,14 @@ public class FishEntity : MonoBehaviourPun
             controller.fearfulness = .0f;
             isDestroyFloat = true;
         }
+        if(HookedTo == null)
+        {
+            if (controller.stamina < 0.2)
+            {
+                FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
+                controller.stamina_move = 0.5f;
+            }
+        }
 
         if (HookedTo != null)
         {
@@ -264,7 +272,7 @@ public class FishEntity : MonoBehaviourPun
             {
                 Canvas.enabled = true;
             }
-            /* if (HookedTo.Owner.isDestroyFloat)
+             /*if (HookedTo.Owner.isDestroyFloat)
              {
                  controller.HealthBar += 1;
                  Canvas.enabled = false;

@@ -663,6 +663,10 @@ public class PlayerFishing : MonoBehaviourPun
             {
                 transform.LookAtY(fishingFloat.transform);
             }
+            if (fishingFloat != null && FishingFloat.fish != null && FishingFloat.fish.controller.HealthBar == 0)
+            {
+                _inputProxy.Buttonholster.interactable = false;
+            }
             HideControllerButtons(false, 86.875f);
         }
     }
@@ -673,6 +677,8 @@ public class PlayerFishing : MonoBehaviourPun
             CameraController_.ThridPersonToggleView();
             HideControllerButtons(true, 148.8f);
             _inputProxy.CameraRotateUI.SetActive();
+            _inputProxy.Buttonholster.interactable = true;
+
         }
     }
 

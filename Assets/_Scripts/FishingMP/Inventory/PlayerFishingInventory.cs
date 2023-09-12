@@ -102,6 +102,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public bool IsopenMenu;
     public int Score =0;
     public int highestScore = 0;
+    public int Fishcount = 0;
     private OpenWorld_Manager openWorldManager;
 
 
@@ -474,6 +475,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
         if (openWorldManager != null)
         {
             openWorldManager.Addscore((int)inventoryCog.Fishcurrency); // Update score in OpenWorld_Manager
+            openWorldManager.AddFishCaught(fishInv.Count); // Update Total fish caught in OpenWorld_Manager
             int totalScore = openWorldManager.Score;
             photonView.RPC("UpdateHighScoreOnServer", RpcTarget.All, totalScore);
 

@@ -9,23 +9,26 @@ public class OpenWorld_Manager : MonoBehaviour
     public GameObject GameEndPanel;
     [Header("GameEndPanel Text")]
     [SerializeField] TMP_Text ScoreText;
-    [SerializeField] TMP_Text BonusWinningText;
+    [SerializeField] TMP_Text TotalFishCaughtText;
     [SerializeField] TMP_Text HighScoreText;
     [SerializeField] Text Username;
     [Header("GameEndPanel Enable/Disable")]
     public GameObject WinningPanel;
     public GameObject LosePanel;
+    public GameObject DrawPanel;
     public Image ImgWinLose;
     public List<Sprite> Sprites;
     private float startTime;
     public string timer;
     public int Score = 0;
-    public int Bonus = 10;
+    public int TotalFishCaught = 0;
+    //public int Bonus = 10;
     [SerializeField] float HighestScore;
     private bool game_started = false;
     private bool isLocalPlayerWinner = false;
     // Start is called before the first frame update
     public int highScore = 0;
+    public int LowScore = 0;
     private bool GameEnded=false;
     void Start()
     {
@@ -78,29 +81,42 @@ public class OpenWorld_Manager : MonoBehaviour
     {
         Score = coin;
     }
-  
+    public void AddFishCaught(int FishCount)
+    {
+        TotalFishCaught = FishCount;
+    }
+
     public void EndGame()
     {
 
-        ScoreText.text = (Score + Bonus).ToString();
-        BonusWinningText.text = Bonus.ToString();
+        ScoreText.text = Score.ToString();
+        TotalFishCaughtText.text = TotalFishCaught.ToString();
         GameEndPanel.SetActive(true);
         Username.text = Fishverse_Core.instance.account_username;
-        HighScoreText.text = (highScore + Bonus).ToString();
+        HighScoreText.text = highScore.ToString();
 
         // Determine if the local player has won or lost
-        isLocalPlayerWinner = Score >= highScore || PhotonNetwork.CurrentRoom.PlayerCount == 1;
+        isLocalPlayerWinner = (Score >= highScore && Score > LowScore )|| PhotonNetwork.CurrentRoom.PlayerCount == 1;
 
         if (isLocalPlayerWinner)
         {
             WinningPanel.SetActive(true);
             LosePanel.SetActive(false);
+            DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[0];
         }
-        else
+        else if(highScore == LowScore && Score == highScore)
+        {
+            WinningPanel.SetActive(false);
+            LosePanel.SetActive(false);
+            DrawPanel.SetActive(true);
+            ImgWinLose.sprite = Sprites[0];
+        }
+        else 
         {
             WinningPanel.SetActive(false);
             LosePanel.SetActive(true);
+            DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[1];
         }
         GameEnded = true;
@@ -126,6 +142,10 @@ public class OpenWorld_Manager : MonoBehaviour
             highScore = newScore;
            // PlayerPrefs.SetInt("HighScore", highScore);
             SyncHighScore(highScore);
+        }
+        if (newScore < highScore)
+        {
+            LowScore = newScore;
         }
     }
 

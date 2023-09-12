@@ -129,7 +129,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
         }
 
-        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 1.5f || isTouchingGround && fish == null)
+        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 2f || isTouchingGround && fish == null)
         {
             Destroyfloat = true;
         }

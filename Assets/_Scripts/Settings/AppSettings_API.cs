@@ -8,6 +8,7 @@ public class AppSettings_API : MonoBehaviour
     {
         app_settings_ui = GetComponent<AppSettings_UI>();
         LoadSettings();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void LoadSettings()

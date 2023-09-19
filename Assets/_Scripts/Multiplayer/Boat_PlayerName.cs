@@ -17,19 +17,5 @@ public class Boat_PlayerName : MonoBehaviour
     {
         text_name.text = photon_view.Owner.NickName;
     }
-
-    private void OnEnable()
-    {
-        MiniGame_Manager.OnNameEnter += NameTextEventHandler;
-    }
-
-    private string NameTextEventHandler()
-    {
-        return text_name.text;
-    }
-
-    private void OnDisable()
-    {
-        MiniGame_Manager.OnNameEnter -= NameTextEventHandler;
-    }
+   
 }

@@ -21341,6 +21341,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6c1b05e4c37313343a725521133ab660, type: 3}
   m_PrefabInstance: {fileID: 535973376}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &540343284 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2915197681730091980, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+  m_PrefabInstance: {fileID: 845112850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &540343285 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5041214447443574534, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+  m_PrefabInstance: {fileID: 845112850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &540343286 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7535884442469645812, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+  m_PrefabInstance: {fileID: 845112850}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &540776373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31197,6 +31212,22 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 491626672}
+    - target: {fileID: 2467247501185398280, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467247501185398280, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467247501185398280, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467247501185398280, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3838088747205701291, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
       propertyPath: world_target
       value: 
@@ -34069,6 +34100,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6c1b05e4c37313343a725521133ab660, type: 3}
   m_PrefabInstance: {fileID: 909715851}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &910615280 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5107659887325153859, guid: 5391970bead47154ab53ebebce07eacd, type: 3}
+  m_PrefabInstance: {fileID: 845112850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &914144870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85557,6 +85599,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 845112854}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: DrawPanel
+      value: 
+      objectReference: {fileID: 540343284}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: LosePanel
+      value: 
+      objectReference: {fileID: 540343285}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: btn_boost
       value: 
       objectReference: {fileID: 845112853}
@@ -85572,6 +85622,10 @@ PrefabInstance:
       propertyPath: BonusPanel
       value: 
       objectReference: {fileID: 1094436251}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: ImgWinLose
+      value: 
+      objectReference: {fileID: 910615280}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: TimerPanel
       value: 
@@ -85608,6 +85662,10 @@ PrefabInstance:
       propertyPath: text_fishes
       value: 
       objectReference: {fileID: 845112857}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: WinningPanel
+      value: 
+      objectReference: {fileID: 540343286}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: panel_fishes
       value: 
@@ -85661,6 +85719,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 845112864}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: Sprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: panel_game_started
       value: 
       objectReference: {fileID: 845112863}
@@ -85668,6 +85730,14 @@ PrefabInstance:
       propertyPath: vehicle_controller
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: Sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: c09c2463feb1a514bac3b801f6ee22d7, type: 3}
+    - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
+      propertyPath: Sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 72b60481ea3437b4187d5985270f7924, type: 3}
     - target: {fileID: 1028891350979068418, guid: af9420b201caacf4aa08e91285e94f18, type: 3}
       propertyPath: text_scoretime_played
       value: 

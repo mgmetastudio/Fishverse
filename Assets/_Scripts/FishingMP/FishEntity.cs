@@ -327,29 +327,32 @@ public class FishEntity : MonoBehaviourPun
 
                 var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
                 PlayerFishingInventory inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();
-
-                FishAIController ai = controller;
-                // FishAIController ai = this.GetComponent<FishAIController>();
-
-                Debug.Log("Fish with ID " + ai._scriptable.uniqueId + " caught!");
+                Debug.Log("Fish with ID " + controller._scriptable.uniqueId + " caught!");
 
                 anim.FishCatch();
-                inv.HoldCaughtFish(ai._scriptable.uniqueId);
-
-                var fishInfo = ai._scriptable;
+                if (inv != null && controller != null)
+                {
+                    inv.HoldCaughtFish(controller._scriptable.uniqueId);
+                    inv.AddFishItem(controller._scriptable);
+                }
+                var fishInfo = controller._scriptable;
                 Canvas.enabled = false;
-
-                inv.AddFishItem(ai._scriptable);
-                photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
+                photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, controller._scriptable.uniqueId);
                 // RpcHoldCaughtFish(ai._scriptable.uniqueId);
-                Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
+               
+                Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + controller._scriptable.FishWeight + "</color>" + " " + "<color=green>" + controller._scriptable.FishName + "</color>";
+                if (photonView.IsMine)
+                {
+                    // Destroy the GameObject across the network.
+                    PhotonNetwork.Destroy(gameObject);
+                }
                 HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
                 // HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
 
 
                 // NetworkServer.Destroy(gameObject);
                 // Debug.Break();
-                PhotonNetwork.Destroy(gameObject);
+                
             }
         }
 

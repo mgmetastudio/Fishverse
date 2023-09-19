@@ -55,6 +55,10 @@ public class OpenWorld_Manager : MonoBehaviour
     {
         if (game_started)
         {
+            if(LowScore==0 && Score < highScore)
+            {
+                LowScore = Score;
+            }
             UpdateTimerText();
             if (timer == "00:00" && !GameEnded)
             {

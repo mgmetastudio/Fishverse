@@ -304,6 +304,7 @@ public class PlayerFishing : MonoBehaviourPun
             }
         }
 
+#if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButtonDown(1))
         {
             // CmdDestroyFloat();
@@ -320,7 +321,7 @@ public class PlayerFishing : MonoBehaviourPun
                 }
             }
         }
-
+#endif
         DestroyFloatmaxdistance();
     }
 

@@ -21,7 +21,7 @@ public class FishAIController : MonoBehaviourPun
     public bool iscatched = false;
     [SerializeField] bool isTouchingGround = false;
     public bool isUpgradeFishingRod = false;
-    float mindistance = 0.6f;
+    float mindistance = 1.2f;
     private bool isStaminaBarStarted = true;
     private FishEntity fishEntity;
     [SerializeField] bool ispulling=false;
@@ -137,15 +137,27 @@ public class FishAIController : MonoBehaviourPun
         {
             PhotonView hookedToPhotonView = fishEntity.HookedTo.Owner.GetComponent<PhotonView>();
 
+            //Debug.Log("Before conditional check");
 
             if (hookedToPhotonView != null && photonView.Owner != hookedToPhotonView.Owner)
             {
-               // Debug.Log($"Fish entity: ViewID = {photonView.ViewID}, Current Owner = {photonView.Owner.NickName}, New Owner = {hookedToPhotonView.Owner.NickName}");
+                Debug.Log($"Fish entity: ViewID = {photonView.ViewID}, Current Owner = {photonView.Owner.NickName}, New Owner = {hookedToPhotonView.Owner.NickName}");
 
-                photonView.RequestOwnership(); // Request ownership first
-                photonView.TransferOwnership(hookedToPhotonView.OwnerActorNr);
+                photonView.RequestOwnership();
 
-                //Debug.Log($"Fish entity after transfer: ViewID = {photonView.ViewID}, Owner = {photonView.Owner.NickName}");
+                // Ensure you have the latest owner before transferring ownership
+                Photon.Realtime.Player newOwner = hookedToPhotonView.Owner;
+
+                if (newOwner != null)
+                {
+                    photonView.TransferOwnership(newOwner.ActorNumber);
+
+                   // Debug.Log($"Fish entity after transfer: ViewID = {photonView.ViewID}, Owner = {photonView.Owner.NickName}");
+                }
+                else
+                {
+                    Debug.Log("Failed to get the new owner's PhotonPlayer.");
+                }
 
             }
         }

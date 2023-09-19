@@ -158,7 +158,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
-        if (equipedItem.subtext == "Fishing Rod")
+        if (equipedItem.subtext == "Fishing Rod" || equipedItem.subtext == "Fishing Rod Nft")
         {
             photonView.RPC("DrawFishingRod", RpcTarget.All, true);
             // fishingRod.SetActive();
@@ -167,7 +167,7 @@ public class PlayerFishing : MonoBehaviourPun
 
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
-        if (unequipedItem.subtext == "Fishing Rod")
+        if (unequipedItem.subtext == "Fishing Rod" || unequipedItem.subtext == "Fishing Rod Nft")
             photonView.RPC("DrawFishingRod", RpcTarget.All, false);
 
     }

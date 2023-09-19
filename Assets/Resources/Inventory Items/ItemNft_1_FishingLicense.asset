@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 3a17a3cef50be834aacf4e2584415fea, type: 3}
   displayName: Fishing License
   description: Nft item id 1
-  subtext: Nft
+  subtext: Float Nft
   category: {fileID: 11400000, guid: 0d328f5d51cc6aa4c9ed4e2318a32977, type: 2}
   uiTags: []
   displayRecipe: {fileID: 0}
@@ -23,7 +23,9 @@ MonoBehaviour:
   modifyName: 0
   nameModifier: 
   modifierOrder: 0
-  customTags: []
+  customTags:
+  - Name: Location Color
+    Value: Yellow
   itemType: 4
   usesAmmo: 1
   ammoType: Float
@@ -34,14 +36,14 @@ MonoBehaviour:
   freeSlotWhenEquipped: 0
   canSell: 1
   projectile: {fileID: 0}
-  allowHotbar: 0
+  allowHotbar: 1
   previewObject: {fileID: 0}
   previewScale: 0
   condition: 1
   rarity: 0
   weight: 0
   value: 1
-  canStack: 0
+  canStack: 1
   countPerStack: 20
   hasMaxStacks: 0
   maxStacks: 4

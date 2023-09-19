@@ -169,19 +169,19 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
-        if (equipedItem.subtext == "Fishing Rod")
+        if (equipedItem.subtext == "Fishing Rod" || equipedItem.subtext == "Fishing Rod Nft")
         {
             currentRod = equipedItem;
 
             SetUpFloat();
         }
-        if (equipedItem.subtext == "Bait")
+        if (equipedItem.subtext == "Bait" || equipedItem.subtext == "Bait Nft")
         {
             currentBait = equipedItem;
             SetUpFloatBait();
         }
 
-        if (equipedItem.subtext == "Float")
+        if (equipedItem.subtext == "Float" || equipedItem.subtext == "Float Nft")
         {
             currentFloat = equipedItem;
             if(currentFloat.previewScale ==2 && currentBait != null)
@@ -199,16 +199,16 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
 
-        if (unequipedItem.subtext == "Fishing Rod")
+        if (unequipedItem.subtext == "Fishing Rod" || unequipedItem.subtext == "Fishing Rod Nft")
         {
             currentRod = null;
 
         }
-        if (unequipedItem.subtext == "Bait")
+        if (unequipedItem.subtext == "Bait" || unequipedItem.subtext == "Bait Nft")
         {
             currentBait = null;
         }
-        if (unequipedItem.subtext == "Float")
+        if (unequipedItem.subtext == "Float" || unequipedItem.subtext == "Float Nft")
         {
             currentFloat = null;
         }

@@ -132,7 +132,35 @@ namespace NullSave.TOCK.Inventory
                 Debug.Log(name + ".EquipItem requested item .canEquip = false; ignoring request");
                 return;
             }
+            //if(Item.e)
+            if (Inventory.activeAmmo.ContainsKey(item.ammoType))
+            {
+                if (Inventory.GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.equipPoints[0] == "Float")
+                {
+                    Inventory.UnequipBaitItem();
+                    Inventory.activeAmmo.Remove("Bait");
+                }
 
+                if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    return;
+                }
+                Inventory.activeAmmo[item.ammoType] = item;
+            }
+            else
+            {
+                if (Inventory.GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.equipPoints[0] == "Float")
+                {
+                    Inventory.UnequipBaitItem();
+                    Inventory.activeAmmo.Remove("Bait");
+                }
+
+                if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    return;
+                }
+                Inventory.activeAmmo.Add(item.ammoType, item);
+            }
             // Check if item is currently equipped
             if (item == Item) return;
 
@@ -179,7 +207,7 @@ namespace NullSave.TOCK.Inventory
             item.CurrentEquipPoint = this;
 
             // Create object (as needed)
-            if (item.equipObject != null)
+            if (item.equipObject != null && item.equipPoints[0] != "Float" && item.equipPoints[0] != "Bait")
             {
                 ObjectReference = CreateInstance(item.equipObject, item.category);
                 DamageDealer dd = ObjectReference.GetComponentInChildren<DamageDealer>();

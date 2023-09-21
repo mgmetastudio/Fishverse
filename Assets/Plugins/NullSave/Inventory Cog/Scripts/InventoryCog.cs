@@ -36,7 +36,7 @@ namespace NullSave.TOCK.Inventory
 
         [Tooltip("Available game currency")] public float currency;
         [Tooltip("Available game currency")] public float Fishcurrency;
-        private Dictionary<string, InventoryItem> activeAmmo;
+        public Dictionary<string, InventoryItem> activeAmmo;
         // Sharing
         [Tooltip("Tag name used to share inventory between multiple sources")] public string shareTag;
 
@@ -3242,6 +3242,24 @@ namespace NullSave.TOCK.Inventory
                 }
 
                 if (point.IsItemStored && point.storePoint.Item == item)
+                {
+                    point.UnequipItem();
+                    return;
+                }
+            }
+        }
+
+        public void UnequipBaitItem()
+        {
+            foreach (EquipPoint point in EquipPoints)
+            {
+                if (point.IsItemEquipped && point.Item.equipPoints[0] == "Bait")
+                {
+                    point.UnequipItem();
+                    return;
+                }
+
+                if (point.IsItemStored && point.storePoint.Item.equipPoints[0] == "Bait")
                 {
                     point.UnequipItem();
                     return;

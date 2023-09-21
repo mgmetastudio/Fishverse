@@ -140,6 +140,7 @@ namespace NullSave.TOCK.Inventory
                 if (itemTooltip != null)
                 {
                     ui.onPointerEnter.AddListener(ItemPointerEnter);
+                    ui.onClick.AddListener(ItemPointerEnter);
                     ui.onPointerExit.AddListener(ItemPointerExit);
                 }
 

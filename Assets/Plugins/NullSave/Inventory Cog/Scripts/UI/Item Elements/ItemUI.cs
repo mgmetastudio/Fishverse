@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace NullSave.TOCK.Inventory
 {
     [HierarchyIcon("item_icon", "#ffffff", false)]
-    public class ItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public class ItemUI : MonoBehaviour, IPointerClickHandler
     {
 
         #region Variables

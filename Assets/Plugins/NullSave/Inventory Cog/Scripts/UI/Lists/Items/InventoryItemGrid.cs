@@ -747,6 +747,7 @@ namespace NullSave.TOCK.Inventory
             if (itemTooltip != null)
             {
                 item.onPointerEnter.AddListener(ItemPointerEnter);
+                item.onClick.AddListener(ItemPointerEnter);
                 item.onPointerExit.AddListener(ItemPointerExit);
             }
         }

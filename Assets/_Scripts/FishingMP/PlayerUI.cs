@@ -16,6 +16,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] InventoryCog InventoryCog;
     [SerializeField] Category fishCategory;
     [Space]
+    [Header("Balance Text")]
+    [SerializeField] TMP_Text BalanceText;
+    [Space]
     [Header("Timer and Fish Text")]
     [SerializeField] TMP_Text TimerText;
     [SerializeField] TMP_Text FishText;
@@ -34,6 +37,7 @@ public class PlayerUI : MonoBehaviour
 
         UpdateTimerText();
         FishText.text = InventoryCog.GetItems(fishCategory).Count + "/20";
+        BalanceText.text = InventoryCog.currency.ToString()+"$";
         if (InventoryCog.GetItems(fishCategory).Count >= 20)
         {
             Isfishingfull = true;

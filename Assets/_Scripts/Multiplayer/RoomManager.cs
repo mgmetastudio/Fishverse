@@ -6,13 +6,16 @@ using static LibEngineInstaller;
 using Zenject;
 using LibEngine.Auth;
 using LibEngine;
+using System.Collections.Generic;
+
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public string menu_scene;
     public GameObject player_prefab;
     public Transform[] spawn_points;
-
+    private List<Transform> availableSpawnPoints = new List<Transform>(); // List to track available spawn points
+    private List<int> usedSpawnPointIndexes = new List<int>(); // List to track used spawn point indexes
     [Inject]
     private DiContainer _diContainer;
     public ArcadeVehicleController_Network boatController;
@@ -26,14 +29,18 @@ public class RoomManager : MonoBehaviourPunCallbacks
             return;
         }
 
+        // Create a copy of the spawn points list for randomization
+        availableSpawnPoints.AddRange(spawn_points);
+
         var photonView = PhotonView.Get(this);
-        int index = 0;
+        //int index = 0;
         if (PhotonNetwork.IsMasterClient)
         {
             foreach (Player pl in PhotonNetwork.PlayerList)
             {
-                photonView.RPC("InstantiationPlayer", pl, index);
-                index++;
+                int randomIndex = GetRandomUnusedSpawnIndex();
+                photonView.RPC("InstantiationPlayer", pl, randomIndex);
+                //index++;
             }
         }
     }
@@ -48,7 +55,16 @@ public class RoomManager : MonoBehaviourPunCallbacks
         boatController = spawnedPlayerObj.GetComponent<ArcadeVehicleController_Network>();
 
     }
-
+    private int GetRandomUnusedSpawnIndex()
+    {
+        int randomIndex = Random.Range(0, availableSpawnPoints.Count);
+        while (usedSpawnPointIndexes.Contains(randomIndex))
+        {
+            randomIndex = Random.Range(0, availableSpawnPoints.Count);
+        }
+        usedSpawnPointIndexes.Add(randomIndex);
+        return randomIndex;
+    }
     public void Leave()
     {
         if (PhotonNetwork.IsConnected)

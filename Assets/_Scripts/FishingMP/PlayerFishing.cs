@@ -222,7 +222,7 @@ public class PlayerFishing : MonoBehaviourPun
             {
                 FishingFloatLogic();
             }
-            if (isLinebroke && canFish && fishingRod.activeSelf && FishingFloat.fish!=null)
+            if (isLinebroke && canFish && fishingRod.activeSelf && FishingFloat.fish != null)
             {
                 if (!FishingFloat.fish.HookedTo)
                 {
@@ -234,67 +234,66 @@ public class PlayerFishing : MonoBehaviourPun
                 }
 
             }
-          
 
-        }
 
-        // Change RENDER lINE Of Rod
-        if (_inv.currentRod != null)
-        {
-            if (_inv.currentRod.customTags.Count >1)
+
+            if (_inv.currentRod != null)
             {
-                string color = _inv.currentRod.customTags[1].Value;
-                ColorEnum currentColor;
-
-                // Map the color string to a ColorEnum value
-                switch (color)
+                if (_inv.currentRod.customTags.Count > 1)
                 {
-                    case "Red":
-                        currentColor = ColorEnum.Red;
-                        break;
-                    case "Pink":
-                        currentColor = ColorEnum.Pink;
-                        break;
-                    case "Blue":
-                        currentColor = ColorEnum.Blue;
-                        break;
-                    case "Gold":
-                        currentColor = ColorEnum.Gold;
-                        break;
-                    case "Orange":
-                        currentColor = ColorEnum.Orange;
-                        break;
-                    case "White":
-                        currentColor = ColorEnum.White;
-                        break;
-                    case "Purple":
-                        currentColor = ColorEnum.Purple;
-                        break;
-                    default:
-                        Debug.LogWarning("Color string not recognized.");
-                        return;
-                }
+                    string color = _inv.currentRod.customTags[1].Value;
+                    ColorEnum currentColor;
 
-                if (colorMap.ContainsKey(currentColor))
-                {
-                    Debug.Log("Color Line render" + colorMap[currentColor]);
-                    _rodLineRenderer.startColor = colorMap[currentColor];
-                    _rodLineRenderer.endColor = colorMap[currentColor];
+                    // Map the color string to a ColorEnum value
+                    switch (color)
+                    {
+                        case "Red":
+                            currentColor = ColorEnum.Red;
+                            break;
+                        case "Pink":
+                            currentColor = ColorEnum.Pink;
+                            break;
+                        case "Blue":
+                            currentColor = ColorEnum.Blue;
+                            break;
+                        case "Gold":
+                            currentColor = ColorEnum.Gold;
+                            break;
+                        case "Orange":
+                            currentColor = ColorEnum.Orange;
+                            break;
+                        case "White":
+                            currentColor = ColorEnum.White;
+                            break;
+                        case "Purple":
+                            currentColor = ColorEnum.Purple;
+                            break;
+                        default:
+                            Debug.LogWarning("Color string not recognized.");
+                            return;
+                    }
+
+                    if (colorMap.ContainsKey(currentColor))
+                    {
+                        Debug.Log("Color Line render" + colorMap[currentColor]);
+                        _rodLineRenderer.startColor = colorMap[currentColor];
+                        _rodLineRenderer.endColor = colorMap[currentColor];
+                    }
+                    else
+                    {
+                        _rodLineRenderer.startColor = Color.black;
+                        _rodLineRenderer.endColor = Color.black;
+                        Debug.LogWarning("ColorEnum not found in colorMap. LineRenderer color not changed.");
+                    }
                 }
                 else
                 {
                     _rodLineRenderer.startColor = Color.black;
                     _rodLineRenderer.endColor = Color.black;
-                    Debug.LogWarning("ColorEnum not found in colorMap. LineRenderer color not changed.");
                 }
             }
-            else
-            {
-                _rodLineRenderer.startColor = Color.black;
-                _rodLineRenderer.endColor = Color.black;
-            }
         }
-       
+
         if (FishingFloat == null)
         {
             _rodLineRenderer.SetPosition(0, Vector3.zero);

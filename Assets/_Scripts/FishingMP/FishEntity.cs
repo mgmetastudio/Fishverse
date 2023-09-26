@@ -19,7 +19,7 @@ public class FishEntity : MonoBehaviourPun
     }
     public string Location;
     private static FishScriptable[] _fishScriptables;
-    private FishScriptable _scriptable;
+    public FishScriptable _scriptable;
     public FishAIController controller;
     public GameObject FishCaughtMessage;
     public float frameTime = 0.019f;

@@ -35,6 +35,7 @@ public class r_CreateRoomControllerUI : MonoBehaviour
     public Button OpenWorldBtn;
     public Button MiniGameBtn;
     public Button RaceBtn;
+    public Button OpenWorld_soloBtn;
     public Button QuickMatch;
     #endregion
 }

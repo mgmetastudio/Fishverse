@@ -18,6 +18,7 @@ public class EntryControlManager : MonoBehaviour
         {
             EntryControlManagerUI.E_LoginPanel.SetActive(true);
             EntryControlManagerUI.E_FirstContentPanel.SetActive(false);
+            r_AudioController.instance.PlayBackground();
         }
         EntryControlManagerUI.E_Panel.SetActive(false);
         EntryControlManagerUI.E_Register.onClick.AddListener(() => Register());
@@ -49,6 +50,7 @@ public class EntryControlManager : MonoBehaviour
         EntryControlManagerUI.E_PanelWelcomeVideo.SetActive(false);
         EntryControlManagerUI.E_Video.Stop();
         EntryControlManagerUI.E_Panel.SetActive(true);
+        r_AudioController.instance.PlayBackground();
     }
     private void OnVideoEnd(VideoPlayer vp)
     {

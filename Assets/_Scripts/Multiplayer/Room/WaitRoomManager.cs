@@ -16,6 +16,8 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     [SerializeField] TMPro.TMP_Text GameMode;
     [SerializeField] TMPro.TMP_Text GameMap;
 
+    [Header("Hide Panels For solo Player")]
+    [SerializeField] List< GameObject> PanlesSolo;
     [Header("Game Modes Sprites")]
     public Sprite[] sprites;
     public Image imageComponent;
@@ -42,6 +44,18 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
             imageComponent.sprite = sprites[2];
         }
 
+        else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Open World Solo")
+        {
+            imageComponent.sprite = sprites[2];
+            foreach (GameObject obj in PanlesSolo)
+            {
+                if (obj != null)
+                {
+                    Destroy(obj);
+                }
+            }
+        }
+
         // await UniTask.WaitForSeconds(5f);
 
         // LoadScene();
@@ -63,6 +77,8 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         PhotonNetwork.Disconnect();
+        MixerManager.Instance.UpdateAudioSource(SoundType.MainMenu);
+        r_AudioController.instance.PlayClickSound();
         SceneManager.LoadScene(menu_scene);
     }
 
@@ -99,8 +115,10 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     }
     private IEnumerator LoadSceneAfterDelay()
     {
+        r_AudioController.instance.PlayClickSound();
         yield return new WaitForSeconds(2f);
         PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
+        MixerManager.Instance.UpdateAudioSource(SoundType.Ingame);
         panelLoading.SetActive(true);
     }
 }

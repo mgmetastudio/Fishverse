@@ -12,6 +12,7 @@ public class LeavingRoom : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
+            MixerManager.Instance.UpdateAudioSource(SoundType.MainMenu);
             PhotonNetwork.LeaveRoom();
         }
     }

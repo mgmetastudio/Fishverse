@@ -30,6 +30,7 @@ public class OpenWorld_Manager : MonoBehaviour
     public int highScore = 0;
     public int LowScore = 0;
     private bool GameEnded=false;
+    private bool solomode=false;
     void Start()
     {
         startTime = Time.time;
@@ -39,7 +40,10 @@ public class OpenWorld_Manager : MonoBehaviour
 
         // Only the master client starts the game
         StartGame();
- 
+        if((string)PhotonNetwork.CurrentRoom.CustomProperties["GameMode"] == "Open World Solo")
+        {
+            solomode = true;
+        }
  
 
 
@@ -60,7 +64,7 @@ public class OpenWorld_Manager : MonoBehaviour
                 LowScore = Score;
             }
             UpdateTimerText();
-            if (timer == "00:00" && !GameEnded)
+            if (timer == "00:00" && !GameEnded && !solomode)
             {
                 EndGame();
             }
@@ -69,17 +73,32 @@ public class OpenWorld_Manager : MonoBehaviour
     }
     private void UpdateTimerText()
     {
-        float elapsedTime = Time.time - startTime;
-        float countdownDuration = 240f; // 4 minutes in seconds
+        if (!solomode)
+        {
+            float elapsedTime = Time.time - startTime;
+            float countdownDuration = 240f; // 4 minutes in seconds
 
-        float remainingTime = Mathf.Max(countdownDuration - elapsedTime, 0f);
+            float remainingTime = Mathf.Max(countdownDuration - elapsedTime, 0f);
 
-        int minutes = Mathf.FloorToInt(remainingTime / 60f);
-        int seconds = Mathf.FloorToInt(remainingTime % 60f);
+            int minutes = Mathf.FloorToInt(remainingTime / 60f);
+            int seconds = Mathf.FloorToInt(remainingTime % 60f);
 
-        // Format the timer string with leading zeros
-        string timerString = string.Format("{0:00}:{1:00}", minutes, seconds);
-        timer = timerString;
+            // Format the timer string with leading zeros
+            string timerString = string.Format("{0:00}:{1:00}", minutes, seconds);
+            timer = timerString;
+        }
+        else
+        {
+            // This code will count from 0:00 to infinity
+            float elapsedTime = Time.time - startTime;
+
+            int minutes = Mathf.FloorToInt(elapsedTime / 60f);
+            int seconds = Mathf.FloorToInt(elapsedTime % 60f);
+
+            // Format the timer string with leading zeros
+            string timerString = string.Format("{0:00}:{1:00}", minutes, seconds);
+            timer = timerString;
+        }
     }
     public void Addscore(int coin)
     {

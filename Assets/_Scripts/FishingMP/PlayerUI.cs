@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample;
-using UnityEngine;
 using NullSave.TOCK.Inventory;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using MTAssets.EasyMinimapSystem;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -22,7 +22,9 @@ public class PlayerUI : MonoBehaviour
     [Header("Timer and Fish Text")]
     [SerializeField] TMP_Text TimerText;
     [SerializeField] TMP_Text FishText;
-    [SerializeField] public bool Isfishingfull=false;
+    [SerializeField] public bool Isfishingfull = false;
+    [SerializeField] Button FullscreenMap;
+    [SerializeField] private GameController GameController;
     private bool hasStartedTimer = false;
     private OpenWorld_Manager OpenWorld_Manager;
 
@@ -30,6 +32,8 @@ public class PlayerUI : MonoBehaviour
     void Start()
     {
         OpenWorld_Manager = FindObjectOfType<OpenWorld_Manager>();
+        GameController = FindObjectOfType<GameController>();
+        FullscreenMap.onClick.AddListener(OpenFullscreenMap);
     }
     // Update is called once per frame
     void Update()
@@ -54,4 +58,10 @@ public class PlayerUI : MonoBehaviour
     {
         TimerText.text = OpenWorld_Manager.timer;
     }
+    public void OpenFullscreenMap()
+    {
+        if (GameController.fullScreenMapObj.activeSelf == false)
+            GameController.OpenFullscreenMap();
+    }
 }
+

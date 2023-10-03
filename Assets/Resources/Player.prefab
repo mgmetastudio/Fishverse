@@ -6431,6 +6431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5333627587895582214}
   - component: {fileID: 1567046368762031188}
+  - component: {fileID: 6302162405770579213}
   m_Layer: 0
   m_Name: EquipPoint_LeftHand
   m_TagString: Untagged
@@ -6490,6 +6491,20 @@ MonoBehaviour:
   onItemAmmoChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6302162405770579213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512850844392031281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ae85d7767efd44ebfabdd8178128c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TooltipBait_: {fileID: 7636495272843305745, guid: c58e99676d945b24dbe6dc272d6e276d, type: 3}
+  Parent: {fileID: 8323395733610780373}
 --- !u!1 &2553619076652715425
 GameObject:
   m_ObjectHideFlags: 0
@@ -7912,13 +7927,13 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 25bb496ea0de75f4e944946d6c490113, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: b7fdca9eb23bf3b48a5faa7324879fc1, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: 3d7020ebf9547b147b6402850daf4ad9, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: dc159272f28d6cb4987af6e1f2a35668, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 6a867f02989f19545aec11b75985370b, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: 37b001f5d802f9643a81ca2802dd2e74, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: f27b22c732be94647bf73f403351e6b8, type: 2}
@@ -7932,9 +7947,9 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: a77d894082b20c646ad24317c8797b58, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: d3068a753c70a77448106fa8176bfcc8, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: 7a4b970b1b4113445a43ebfed5246c6e, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: fdeb137272c6a904b8d7c411929ec3ac, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 4a2685dc04b5ce74c98439a3b6df46d8, type: 2}
@@ -7942,9 +7957,9 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 7ce9229c7d986a74491f8abdfec382b3, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 330691349c3e31e4fafe756ab3211474, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: f95754fbd020cf24b82cd0cb3e0bf7b4, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: 87254c0c8428452459f638c1bb7be609, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 89e3a798a2f941d43a54f3ed5322b7d3, type: 2}
@@ -7952,9 +7967,9 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: c561d9801dbb7994bb4320290ab35526, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 97b4417a6272b6340a8b3c02150d44fe, type: 2}
-    count: 5
+    count: 1
   - item: {fileID: 11400000, guid: c018f67f3f365a248895d3935bdcf9ff, type: 2}
-    count: 5
+    count: 1
   AllExisingPublicItems:
   - {fileID: 11400000, guid: df6ef00007e954145a9d517fb8c6c414, type: 2}
   - {fileID: 11400000, guid: 7d521a3506f2a4244ab25ead4b99f844, type: 2}
@@ -8251,7 +8266,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   footstepSound: {fileID: 1619573231199855445}
   character: {fileID: 1393101928442627636}
-  animator: {fileID: 0}
 --- !u!1 &2643130203272408292
 GameObject:
   m_ObjectHideFlags: 0
@@ -8264,6 +8278,7 @@ GameObject:
   - component: {fileID: 7482881158607771775}
   - component: {fileID: 1026628341935788323}
   - component: {fileID: 7001122417791019106}
+  - component: {fileID: 4717521002088953083}
   m_Layer: 8
   m_Name: Camera
   m_TagString: MainCamera
@@ -8340,6 +8355,33 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2643130203272408292}
   m_Enabled: 1
+--- !u!114 &4717521002088953083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2643130203272408292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f709c7dd788d4e4a9177a93761ce7c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: 2791e98c0c4f2924f9bd9eb9ac07873a, type: 3}
+  spriteColor: {r: 1, g: 1, b: 1, a: 1}
+  flipInX: 0
+  flipInY: 1
+  raycastTarget: 1
+  sizeOnMinimap: {x: 20, y: 0, z: 20}
+  sizeOnHighlight: 40
+  orderInLayer: 5
+  particlesHighlightMode: 0
+  particlesSprite: {fileID: 0}
+  particlesColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  particlesSizeMultiplier: 1
+  followRotationOf: 1
+  customGameObjectToFollowRotation: {fileID: 2643130202294811682}
+  movementsSmoothing: 14
 --- !u!1 &2667524488948400914
 GameObject:
   m_ObjectHideFlags: 0
@@ -10163,7 +10205,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4089206194068971324}
-  m_LocalRotation: {x: 0.2285964, y: 0.000000008375389, z: -0.0000000019666584, w: 0.9735213}
+  m_LocalRotation: {x: 0.2285964, y: 0.000000008380333, z: -0.0000000019678197, w: 0.9735213}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10507,7 +10549,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4376271452939512104}
-  m_LocalRotation: {x: 0.2591971, y: 0.000000016618344, z: -0.0000000044598445, w: 0.9658245}
+  m_LocalRotation: {x: 0.2591971, y: 0.000000016628153, z: -0.0000000044624757, w: 0.9658245}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10974,13 +11016,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecenterTarget: 0
   m_VerticalAxis:
-    Value: 3
+    Value: -47.46441
     m_SpeedMode: 0
     m_MaxSpeed: 150
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
-    m_InputAxisValue: -13.45
+    m_InputAxisValue: 0
     m_InvertInput: 1
     m_MinValue: -70
     m_MaxValue: 70
@@ -11004,7 +11046,7 @@ MonoBehaviour:
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
-    m_InputAxisValue: -1.3000001
+    m_InputAxisValue: 0
     m_InvertInput: 0
     m_MinValue: -180
     m_MaxValue: 180
@@ -11498,7 +11540,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4798208798188751018}
-  m_LocalRotation: {x: 0.28978413, y: 0.000000016468093, z: -0.0000000049861373, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000016645487, z: 0.0000000050398485, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

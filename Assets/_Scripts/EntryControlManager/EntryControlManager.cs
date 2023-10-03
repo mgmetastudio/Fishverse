@@ -21,9 +21,9 @@ public class EntryControlManager : MonoBehaviour
             r_AudioController.instance.PlayBackground();
         }
         EntryControlManagerUI.E_Panel.SetActive(false);
-        EntryControlManagerUI.E_Register.onClick.AddListener(() => Register());
-        EntryControlManagerUI.E_Login.onClick.AddListener(() => Login());
-        EntryControlManagerUI.E_SkipButton.onClick.AddListener(() => SkipVideo());
+        EntryControlManagerUI.E_Register.onClick.AddListener(() => { Register(); r_AudioController.instance.PlayClickSound(); });
+        EntryControlManagerUI.E_Login.onClick.AddListener(() => { Login(); r_AudioController.instance.PlayClickSound(); });
+        EntryControlManagerUI.E_SkipButton.onClick.AddListener(() => { SkipVideo(); r_AudioController.instance.PlayClickSound(); });
 
         if (EntryControlManagerUI.E_Video != null)
         {

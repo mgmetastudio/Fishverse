@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using Photon.Pun;
 namespace NullSave.TOCK.Inventory
 {
     [HierarchyIcon("equip_point", false)]
@@ -23,13 +23,12 @@ namespace NullSave.TOCK.Inventory
 
         public List<EquipPoint> forceStore;
         public List<EquipPoint> forceUnequip;
-
+        //public TooltipBait TooltipBait;
         public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged;
 
         #endregion
 
         #region Properties
-
         public Animator Animator { get; set; }
 
         public InventoryItem EquipedOrStoredItem
@@ -143,6 +142,17 @@ namespace NullSave.TOCK.Inventory
 
                 if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
                 {
+                    PhotonView photonView = GetComponentInParent<PhotonView>();
+
+                    if (photonView != null && photonView.IsMine)
+                    {
+                        TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
+                        if (tooltipBaitComponent != null)
+                        {
+                            tooltipBaitComponent.ShowTooltipBait();
+                        }
+                    }
+                   
                     return;
                 }
                 Inventory.activeAmmo[item.ammoType] = item;
@@ -157,6 +167,16 @@ namespace NullSave.TOCK.Inventory
 
                 if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
                 {
+                    PhotonView photonView = GetComponentInParent<PhotonView>();
+
+                    if (photonView != null && photonView.IsMine)
+                    {
+                        TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
+                        if (tooltipBaitComponent != null)
+                        {
+                            tooltipBaitComponent.ShowTooltipBait();
+                        }
+                    }
                     return;
                 }
                 Inventory.activeAmmo.Add(item.ammoType, item);

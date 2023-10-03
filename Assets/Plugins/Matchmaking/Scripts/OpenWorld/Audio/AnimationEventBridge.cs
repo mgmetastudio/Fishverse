@@ -2,15 +2,17 @@ using System.Collections;
 using EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class AnimationEventBridge : MonoBehaviour
+public class AnimationEventBridge : MonoBehaviourPun
 {
     public FootstepSound footstepSound; // Reference to the FootstepSound script on the target GameObject.
     [SerializeField] CMFirstPersonCharacter character;
     private bool isrunning;
+    
     public void Walk()
     {
-        if(!character.IsSprinting() && !isrunning)
+        if(!character.IsSprinting() && !isrunning && photonView.IsMine)
         {
          CallPlayFootstepSound();
         }
@@ -18,14 +20,14 @@ public class AnimationEventBridge : MonoBehaviour
 
     public void Run()
     {
-        if (character.IsSprinting() && isrunning)
+        if (character.IsSprinting() && isrunning && photonView.IsMine)
         {
             CallPlayFootstepSound();
         }
     }
     public void Update()
     {
-        if(character.IsSprinting())
+        if(character.IsSprinting() && photonView.IsMine)
         {
             isrunning = true;
         }
@@ -36,7 +38,7 @@ public class AnimationEventBridge : MonoBehaviour
     }
     public void CallPlayFootstepSound()
     {
-        if (footstepSound != null)
+        if (footstepSound != null && photonView.IsMine)
         {
             footstepSound.PlayFootstepSound();
         }

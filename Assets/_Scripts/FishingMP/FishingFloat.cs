@@ -171,26 +171,28 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (photonView.IsMine)
         {
             _ = Instantiate(_scriptable.modelPrefab, transform); // Model
+            if (FloatLandClips.Count > 0)
+            {
+                // Generate a random index to select a random clip from the list
+                int randomIndex = Random.Range(0, FloatLandClips.Count);
+
+                // Get the randomly selected AudioClip
+                AudioClip randomClip = FloatLandClips[randomIndex];
+
+                // Set the AudioSource's clip to the randomly selected clip
+                r_AudioSource.clip = randomClip;
+
+                // Play the audio
+                r_AudioSource.Play();
+            }
+            else
+            {
+                Debug.LogError("FloatLandClips list is empty. Add some audio clips to the list.");
+            }
         }
 
-        if (FloatLandClips.Count > 0)
-        {
-            // Generate a random index to select a random clip from the list
-            int randomIndex = Random.Range(0, FloatLandClips.Count);
+      
 
-            // Get the randomly selected AudioClip
-            AudioClip randomClip = FloatLandClips[randomIndex];
-
-            // Set the AudioSource's clip to the randomly selected clip
-            r_AudioSource.clip = randomClip;
-
-            // Play the audio
-            r_AudioSource.Play();
-        }
-        else
-        {
-            Debug.LogError("FloatLandClips list is empty. Add some audio clips to the list.");
-        }
     }
     public void Update()
     {

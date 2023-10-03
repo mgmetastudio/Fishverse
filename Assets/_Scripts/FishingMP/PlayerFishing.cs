@@ -333,15 +333,18 @@ public class PlayerFishing : MonoBehaviourPun
         {
             if (FishingFloat.fish)
             {
-               // FishCamerafollow= FishingFloat.fish.transform.position;
+                // FishCamerafollow= FishingFloat.fish.transform.position;
                 //  Debug.Log("FishCamerafollow is "+FishCamerafollow);
-                if(!isfishing)
+                if (photonView.IsMine)
                 {
-                    r_AudioFishing.PlayCastSound();
-                }
-                else
-                {
-                    r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Cast);
+                    if (!isfishing)
+                    {
+                        r_AudioFishing.PlayCastSound();
+                    }
+                    else
+                    {
+                        r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Cast);
+                    }
                 }
 
                 if (FishingFloat.fish.controller.HealthBar == 0)
@@ -349,12 +352,16 @@ public class PlayerFishing : MonoBehaviourPun
                     _Linebroke.Play("Default_FishCast");
                     forceSlider.SetActive(false);
                     isfishing = true;
-                    r_AudioFishing.PlayDragSound();
-                    r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Reeling);
-                    if (FishingFloat.fish.controller.iscatched)
+                    if (photonView.IsMine)
                     {
-                        r_AudioFishing.StopSound( r_AudioFishing.r_AudioSource_Drag);
+                        r_AudioFishing.PlayDragSound();
+                        r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Reeling);
+                        if (FishingFloat.fish.controller.iscatched)
+                        {
+                            r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Drag);
+                        }
                     }
+                
                     _animReel.SetBool("ReelIn_Reel", false);
                     RotateReel.SetActive(false);
                     Btn_FishCast.SetActive(true);
@@ -383,7 +390,7 @@ public class PlayerFishing : MonoBehaviourPun
         if (isfishing)
         {
             isreelrotate = true;
-            r_AudioFishing.PlayReelingSound();
+            if (photonView.IsMine) { r_AudioFishing.PlayReelingSound(); }
             FishingFloat.photonView.RPC("Pull", RpcTarget.All);
             _anim.SetFloat("Fishing_Up_Speed", 1);
             _anim.Play(crankUpAnimationName);

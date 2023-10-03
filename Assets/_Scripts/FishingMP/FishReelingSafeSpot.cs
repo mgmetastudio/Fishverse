@@ -71,15 +71,15 @@ public class FishReelingSafeSpot : MonoBehaviour
                             isInsideCondition = true;
 
                             // Calculate the target scale based on how far the sprite is from the bar.
-                            float targetScale = Mathf.Lerp(barScale, 1f, barScaleSpeed * Time.deltaTime);
+                            float targetScale = Mathf.Lerp(barScale, 1.1f, barScaleSpeed * Time.deltaTime);
 
                             // Apply the target scale smoothly.
                             barScale = targetScale;
 
                             // If the bar scale is close to 1, set it to 1.
-                            if (Mathf.Abs(barScale - 1) < 0.01f)
+                            if (Mathf.Abs(barScale - 1.1f) < 0.01f)
                             {
-                                barScale = 1;
+                                barScale = 1.1f;
                             }
 
                             // Enable the XCounterText.

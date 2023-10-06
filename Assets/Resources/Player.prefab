@@ -8252,6 +8252,10 @@ MonoBehaviour:
   sprite: {fileID: 4593351863480230394}
   bar: {fileID: 1154335210514023792}
   PlayerFishing: {fileID: 4449791172451686112}
+  minScale: 0.32
+  maxScale: 1.1
+  minMultiplier: 1.2
+  maxMultiplier: 3.7
 --- !u!114 &6356358348395117620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10205,7 +10209,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4089206194068971324}
-  m_LocalRotation: {x: 0.2285964, y: 0.000000008380333, z: -0.0000000019678197, w: 0.9735213}
+  m_LocalRotation: {x: 0.2285964, y: 4.703563e-17, z: 1.8402421e-16, w: 0.9735213}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10549,7 +10553,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4376271452939512104}
-  m_LocalRotation: {x: 0.2591971, y: 0.000000016628153, z: -0.0000000044624757, w: 0.9658245}
+  m_LocalRotation: {x: 0.2591971, y: -0, z: -0, w: 0.9658245}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11540,7 +11544,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4798208798188751018}
-  m_LocalRotation: {x: 0.28978413, y: -0.000000016645487, z: 0.0000000050398485, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000011218886, z: 0.0000000033968048, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20807,6 +20811,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -149.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4441800373836295640, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.32
+      objectReference: {fileID: 0}
     - target: {fileID: 5323245489568185274, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -21114,6 +21122,10 @@ PrefabInstance:
     - target: {fileID: 7711435553259699597, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7994317683296452344, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 8027246963690343375, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

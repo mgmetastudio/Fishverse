@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class FishReelingSafeSpot : MonoBehaviour
 {
     [Header("XCounter")]
@@ -19,6 +20,10 @@ public class FishReelingSafeSpot : MonoBehaviour
     private Coroutine scaleAnimationCoroutine; // Store the coroutine reference.
     private bool barScalestart = true;
     private bool isWaiting = true;
+    public float minScale = 0.32f;
+    public float maxScale = 1.1f;
+    public float minMultiplier = 1.2f;
+    public float maxMultiplier = 3.7f;
     private void Start()
     {
         // Initialize the XCounterText as disabled.
@@ -30,6 +35,14 @@ public class FishReelingSafeSpot : MonoBehaviour
         {
             if (PlayerFishing.FishingFloat.fish != null)
             {
+
+                float targetScale_ = Mathf.Lerp(barScale, 1.1f, barScaleSpeed * Time.deltaTime);
+                float currentScale = targetScale_;
+                float clampedScale = Mathf.Clamp(currentScale, minScale, maxScale);
+                float lerpFactor = Mathf.InverseLerp(minScale, maxScale, clampedScale);
+                float newMultiplier = Mathf.Lerp(minMultiplier, maxMultiplier, lerpFactor);
+                bar.GetComponent<Image>().pixelsPerUnitMultiplier = newMultiplier;
+
                 if (PlayerFishing.FishingFloat.fish.HookedTo && !PlayerFishing.FishingFloat.fish.controller.isUpgradeFishingRod)
                 {
                     if (barScalestart)

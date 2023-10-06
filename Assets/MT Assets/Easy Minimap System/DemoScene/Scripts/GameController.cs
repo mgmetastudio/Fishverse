@@ -15,7 +15,7 @@ namespace MTAssets.EasyMinimapSystem
         private int clicksToCreateMarkInMinimap = 0;
         private Vector3 lastWorldPosClickInMinimap = Vector3.zero;
         private Dictionary<MinimapItem, Vector3> allMinimapItemsAndOriginalSizes = new Dictionary<MinimapItem, Vector3>();
-
+        public WorldMapZoom WorldMapZoom;
         //Public variables
         public GameObject fullScreenMapObj;
         public PlayerScript player;
@@ -23,6 +23,51 @@ namespace MTAssets.EasyMinimapSystem
         public MinimapItem marker;
         public MinimapItem cursor;
         public MinimapItem playerFieldOfView;
+        Dictionary<int, int> Limit0 = new Dictionary<int, int>
+        {
+            {0, -120},
+            {1, 120},
+            {2, -120},
+            {3, 120},
+            {4, 0},
+            {5, 250}
+        };
+
+        Dictionary<int, int> Limit1 = new Dictionary<int, int>
+        {
+            {0, -105},
+            {1, 105},
+            {2, -120},
+            {3, 120},
+            {4, 10},
+            {5, 240}
+        };
+        Dictionary<int, int> Limit2 = new Dictionary<int, int>
+        {
+            {0, -30},
+            {1, 30},
+            {2, -180},
+            {3, 200},
+            {4, 100},
+            {5, 160}
+        };
+        Dictionary<int, int> Limit3 = new Dictionary<int, int>
+        {
+            {0, -5},
+            {1, 20},
+            {2, -140},
+            {3, 160},
+            {4, 115},
+            {5, 142}
+        };
+        public float minXLimit = -500f;  // Set your own values
+        public float maxXLimit = 500f;   // Set your own values
+        public float minYLimit = -400f;  // Set your own values
+        public float maxYLimit = 400f;   // Set your own values
+        public float minZLimit = -230f;  // Set your own values
+        public float maxZLimit = 500f;   // Set your own values
+
+
 
         //On update
 
@@ -114,6 +159,63 @@ namespace MTAssets.EasyMinimapSystem
             playerMinimapCamera.transform.position += (deltaPositionToMoveMap * 10.0f * Time.deltaTime);
         }
 
+        public void OnDragInMinimapRendererArea_(Vector3 onStartThisDragWorldPos, Vector3 onDraggingWorldPos)
+        {
+            if (WorldMapZoom != null && WorldMapZoom.isHandlePinchZoom)
+            {
+                // Pinch zoom is being handled, don't move the camera
+                return;
+            }
+            if (playerMinimapCamera.fieldOfView < WorldMapZoom.defaultFieldOfView)
+            {
+                // Calculate the delta position to move the Minimap Camera
+                Vector3 deltaPositionToMoveMap = (onDraggingWorldPos - onStartThisDragWorldPos) * -1.0f;
+
+                // Calculate the new position
+
+
+                if (WorldMapZoom.zoomSlider.value >= 0.70f)
+                {
+                    Vector3 newPosition = playerMinimapCamera.transform.position + (deltaPositionToMoveMap * 10.0f * Time.deltaTime);
+                    // Clamp the new position within the canvas boundaries
+                    newPosition.x = Mathf.Clamp(newPosition.x, Limit0[0], Limit0[1]);
+                    newPosition.y = Mathf.Clamp(newPosition.y, Limit0[2], Limit0[3]);
+                    newPosition.z = Mathf.Clamp(newPosition.z, Limit0[4], Limit0[5]);
+                    playerMinimapCamera.transform.position = newPosition;
+                }
+                else
+                if (WorldMapZoom.zoomSlider.value >= 0.55f && WorldMapZoom.zoomSlider.value < 0.70f)
+                {
+                    Vector3 newPosition = playerMinimapCamera.transform.position + (deltaPositionToMoveMap * 10.0f * Time.deltaTime);
+                    newPosition.x = Mathf.Clamp(newPosition.x, Limit1[0], Limit1[1]);
+                    newPosition.y = Mathf.Clamp(newPosition.y, Limit1[2], Limit1[3]);
+                    newPosition.z = Mathf.Clamp(newPosition.z, Limit1[4], Limit1[5]);
+                    playerMinimapCamera.transform.position = newPosition;
+                }
+                else
+                if (WorldMapZoom.zoomSlider.value >= 0.16f && WorldMapZoom.zoomSlider.value < 0.55f)
+                {
+                    Vector3 newPosition = playerMinimapCamera.transform.position + (deltaPositionToMoveMap * 10.0f * Time.deltaTime);
+                    newPosition.x = Mathf.Clamp(newPosition.x, Limit2[0], Limit2[1]);
+                    newPosition.y = Mathf.Clamp(newPosition.y, Limit2[2], Limit2[3]);
+                    newPosition.z = Mathf.Clamp(newPosition.z, Limit2[4], Limit2[5]);
+                    playerMinimapCamera.transform.position = newPosition;
+                }
+                else
+                if (WorldMapZoom.zoomSlider.value >= 0.025f && WorldMapZoom.zoomSlider.value < 0.16f)
+                {
+                    Vector3 newPosition = playerMinimapCamera.transform.position + (deltaPositionToMoveMap * 10.0f * Time.deltaTime);
+                    newPosition.x = Mathf.Clamp(newPosition.x, Limit3[0], Limit3[1]);
+                    newPosition.y = Mathf.Clamp(newPosition.y, Limit3[2], Limit3[3]);
+                    newPosition.z = Mathf.Clamp(newPosition.z, Limit3[4], Limit3[5]);
+                    playerMinimapCamera.transform.position = newPosition;
+                }
+
+                // Set the new position
+
+            }
+        }
+  
         public void OnOverInMinimapRendererArea(bool isOverMinimapRendererArea, Vector3 mouseWorldPos, MinimapItem overMinimapItem)
         {
             if (cursor == null) return;

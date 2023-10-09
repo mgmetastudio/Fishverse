@@ -70,7 +70,7 @@ public class r_CreateRoomController : MonoBehaviour
         m_RoomUI.RaceBtn.onClick.AddListener(() => { SetupAndCreateRoom(1); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
         m_RoomUI.OpenWorldBtn.onClick.AddListener(() => { SetupAndCreateRoom(2); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
         m_RoomUI.QuickMatch.onClick.AddListener(() => SetupAndCreateRoom(3));
-        m_RoomUI.OpenWorld_soloBtn.onClick.AddListener(() => { SetupAndCreateRoom(3); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
+        m_RoomUI.OpenWorld_soloBtn.onClick.AddListener(() => { SetupAndCreateRoom(3); MatchmakingSolo(); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
 
         //Change Map Buttons
         m_RoomUI.m_NextGameModeButton.onClick.AddListener(() => { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });
@@ -86,10 +86,14 @@ public class r_CreateRoomController : MonoBehaviour
 
         // Create Room Button
         m_RoomUI.m_CreateRoomButton.onClick.AddListener(() => CreateRoom());
+        m_RoomUI.m_RetourButton.onClick.AddListener(() => { ResetMatchmaking(); r_AudioController.instance.PlayClickSound(); });
+
+
     }
 
     void SetupAndCreateRoom(int index)
     {
+        m_RoomUI.m_Matchmakingpanel.SetActive(true);
         SetGameMap(index);
         SetGameMode(index);
         // r_AudioController.instance.PlayClickSound();
@@ -98,9 +102,29 @@ public class r_CreateRoomController : MonoBehaviour
     [ContextMenu("Start Open World")]
     void StartOpenWorld()
     {
-SetupAndCreateRoom(2);
+     SetupAndCreateRoom(2);
     }
 
+    // Reset matchmaking as default
+    void ResetMatchmaking()
+    {
+        m_RoomUI.m_Matchmakingpanel.SetActive(false);
+        m_RoomUI.m_LoadingText.text = "SEARCHING FOR A GAME";
+        foreach (GameObject go in m_RoomUI.m_HideGroupSinglePlayer)
+        {
+            go.SetActive(true);
+        }
+    }
+
+    // Matchmaking for solo open world
+    void MatchmakingSolo()
+    {
+        m_RoomUI.m_LoadingText.text = "Loading";
+        foreach (GameObject go in m_RoomUI.m_HideGroupSinglePlayer)
+        {
+            go.SetActive(false);
+        }
+    }
     void CreateRoom()
     {
         _roomCode = GenerateRoomCode();

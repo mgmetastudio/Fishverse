@@ -66,10 +66,11 @@ public class r_CreateRoomController : MonoBehaviour
         // m_RoomUI.m_NextGameMapButton.onClick.AddListener(delegate { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });
         // m_RoomUI.m_PreviousGameMapButton.onClick.AddListener(delegate { NextGameMap(false); r_AudioController.instance.PlayClickSound(); });
 
-        m_RoomUI.MiniGameBtn.onClick.AddListener(() => SetupAndCreateRoom(0));
-        m_RoomUI.RaceBtn.onClick.AddListener(() => SetupAndCreateRoom(1));
-        m_RoomUI.OpenWorldBtn.onClick.AddListener(() => SetupAndCreateRoom(2));
+        m_RoomUI.MiniGameBtn.onClick.AddListener(() => { SetupAndCreateRoom(0); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); }) ;
+        m_RoomUI.RaceBtn.onClick.AddListener(() => { SetupAndCreateRoom(1); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
+        m_RoomUI.OpenWorldBtn.onClick.AddListener(() => { SetupAndCreateRoom(2); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
         m_RoomUI.QuickMatch.onClick.AddListener(() => SetupAndCreateRoom(3));
+        m_RoomUI.OpenWorld_soloBtn.onClick.AddListener(() => { SetupAndCreateRoom(3); MatchmakingSolo(); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
 
         //Change Map Buttons
         m_RoomUI.m_NextGameModeButton.onClick.AddListener(() => { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });
@@ -84,28 +85,59 @@ public class r_CreateRoomController : MonoBehaviour
         m_RoomUI.m_PreviousPlayerLimitButton.onClick.AddListener(delegate { NextPlayerLimit(false); r_AudioController.instance.PlayClickSound(); });
 
         // Create Room Button
-        m_RoomUI.m_CreateRoomButton.onClick.AddListener(CreateRoom);
+        m_RoomUI.m_CreateRoomButton.onClick.AddListener(() => CreateRoom());
+        m_RoomUI.m_RetourButton.onClick.AddListener(() => { ResetMatchmaking(); r_AudioController.instance.PlayClickSound(); });
+
+
     }
 
     void SetupAndCreateRoom(int index)
     {
+        m_RoomUI.m_Matchmakingpanel.SetActive(true);
         SetGameMap(index);
         SetGameMode(index);
         // r_AudioController.instance.PlayClickSound();
         CreateRoom();
     }
-
     [ContextMenu("Start Open World")]
     void StartOpenWorld()
     {
-SetupAndCreateRoom(2);
+     SetupAndCreateRoom(2);
     }
 
+    // Reset matchmaking as default
+    void ResetMatchmaking()
+    {
+        m_RoomUI.m_Matchmakingpanel.SetActive(false);
+        m_RoomUI.m_LoadingText.text = "SEARCHING FOR A GAME";
+        foreach (GameObject go in m_RoomUI.m_HideGroupSinglePlayer)
+        {
+            go.SetActive(true);
+        }
+    }
+
+    // Matchmaking for solo open world
+    void MatchmakingSolo()
+    {
+        m_RoomUI.m_LoadingText.text = "Loading";
+        foreach (GameObject go in m_RoomUI.m_HideGroupSinglePlayer)
+        {
+            go.SetActive(false);
+        }
+    }
     void CreateRoom()
     {
         _roomCode = GenerateRoomCode();
         // r_PhotonHandler.instance.CreateRoom(m_RoomUI.m_RoomNameInput.text, SetRoomOptions(false));
-        r_PhotonHandler.instance.CreateRoom(_roomCode, SetRoomOptions(false));
+        if (m_CurrentGameMode == 3)
+        {
+            r_PhotonHandler.instance.CreateRoom(_roomCode, SetRoomOptionsSolo(false));
+        }
+        else
+        {
+            r_PhotonHandler.instance.CreateRoom(_roomCode, SetRoomOptions(false));
+        }
+
         r_AudioController.instance.PlayClickSound();
         m_RoomUI.m_CreateRoomButton.interactable = false;
     }
@@ -131,7 +163,41 @@ SetupAndCreateRoom(2);
         {
             IsVisible = true,
             IsOpen = true,
-            MaxPlayers = _RandomRoomOptions ? (byte)8 : m_PlayerLimit[m_CurrentPlayerLimit],
+            MaxPlayers = _RandomRoomOptions ? (byte)1 : m_PlayerLimit[m_CurrentPlayerLimit],
+        };
+
+        _RoomOptions.CustomRoomProperties = new Hashtable();
+
+        int _RandomMapID = Random.Range(0, m_GameMaps.Length);
+
+        _RoomOptions.CustomRoomProperties.Add("GameMap", _RandomRoomOptions ? m_GameMaps[_RandomMapID].m_MapName : m_GameMaps[m_CurrentGameMap].m_MapName);
+        _RoomOptions.CustomRoomProperties.Add("GameMapImageID", _RandomRoomOptions ? _RandomMapID : m_CurrentGameMap);
+        _RoomOptions.CustomRoomProperties.Add("GameMode", _RandomRoomOptions ? m_GameModes[Random.Range(0, m_GameModes.Length)] : m_GameModes[m_CurrentGameMode]);
+        _RoomOptions.CustomRoomProperties.Add("RoomState", _RandomRoomOptions ? "InLobby" : "InGame");
+        _RoomOptions.CustomRoomProperties.Add("RoomCode", _roomCode);
+
+        string[] _CustomLobbyProperties = new string[4];
+
+        _CustomLobbyProperties[0] = "GameMap";
+        _CustomLobbyProperties[1] = "GameMapImageID";
+        _CustomLobbyProperties[2] = "GameMode";
+        _CustomLobbyProperties[3] = "RoomState";
+
+        _RoomOptions.CustomRoomPropertiesForLobby = _CustomLobbyProperties;
+
+        return _RoomOptions;
+    }
+    #endregion
+
+
+    #region Set Room Solo Options
+    public RoomOptions SetRoomOptionsSolo(bool _RandomRoomOptions)
+    {
+        RoomOptions _RoomOptions = new RoomOptions
+        {
+            IsVisible = true,
+            IsOpen = true,
+            MaxPlayers =  (byte)1,
         };
 
         _RoomOptions.CustomRoomProperties = new Hashtable();

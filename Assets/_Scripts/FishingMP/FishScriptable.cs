@@ -21,6 +21,9 @@ public class FishScriptable : ScriptableObject {
 	public LayerMask avoidanceMask;
 	public float avoidanceDist;
 
+	[Header("Safe Reeling Spot")]
+	public float SafeReelingSpot;
+
 	[Header("Vision")]
 	public float visionDistance;
 	public LayerMask targetMask;

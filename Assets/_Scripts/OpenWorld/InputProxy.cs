@@ -13,7 +13,7 @@ public class InputProxy : MonoBehaviour
     [Space]
     [SerializeField] ButtonXL ButtonRun;
     [SerializeField] ButtonXL ButtonJump;
-    [SerializeField] ButtonXL Buttonholster;
+    [SerializeField] public ButtonXL Buttonholster;
     [SerializeField] Button ButtonInventory;
 
 
@@ -30,7 +30,7 @@ public class InputProxy : MonoBehaviour
     public bool mobileInput;
 
     [Space]
-    [SerializeField] GameObject CameraRotateUI;
+    [SerializeField] public GameObject CameraRotateUI;
     [SerializeField] float smoothing = 5f;
 
     void Start()
@@ -78,10 +78,7 @@ public class InputProxy : MonoBehaviour
     {
         character.MovementInput = moveJoystick.Direction;
 
-        // Apply smoothing to the camera look input
-        Vector2 rawLookInput = lookJoystick.Direction * lookMulti;
-        Vector2 smoothedLookInput = Vector2.Lerp(character.LookInput, rawLookInput, Time.deltaTime * smoothing);
-        character.LookInput = smoothedLookInput;
+        character.LookInput = lookJoystick.Direction * lookMulti;
 
     }
 }

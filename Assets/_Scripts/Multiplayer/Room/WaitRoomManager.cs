@@ -16,6 +16,10 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     [SerializeField] TMPro.TMP_Text GameMode;
     [SerializeField] TMPro.TMP_Text GameMap;
 
+    [Header("Hide Multiplayer Panel Player")]
+    [SerializeField] GameObject PanlesMultiplayer;
+    [Header("Hide Multiplayer Panel Player")]
+    [SerializeField] GameObject PanlesSolo;
     [Header("Game Modes Sprites")]
     public Sprite[] sprites;
     public Image imageComponent;
@@ -31,15 +35,29 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
         GetComponent<UserListManager>().RefreshUserList();
         if(PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString()== "Fishing")
         {
+            PanlesMultiplayer.SetActive(true);
             imageComponent.sprite = sprites[0];
+            PanlesSolo.SetActive(false);
         }
         else if(PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Racing")
         {
+            PanlesMultiplayer.SetActive(true);
             imageComponent.sprite = sprites[1];
+            PanlesSolo.SetActive(false);
         }
         else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Open World")
         {
+            PanlesMultiplayer.SetActive(true);
             imageComponent.sprite = sprites[2];
+            PanlesSolo.SetActive(false);
+        }
+
+        else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Open World Solo")
+        {
+            PanlesSolo.SetActive(true);
+            imageComponent.sprite = sprites[2];
+            PanlesMultiplayer.SetActive(false);
+            StartCoroutine(LoadSceneAfterDelay_Solo());
         }
 
         // await UniTask.WaitForSeconds(5f);
@@ -63,6 +81,8 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         PhotonNetwork.Disconnect();
+        MixerManager.Instance.UpdateAudioSource(SoundType.MainMenu);
+        r_AudioController.instance.PlayClickSound();
         SceneManager.LoadScene(menu_scene);
     }
 
@@ -99,8 +119,17 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
     }
     private IEnumerator LoadSceneAfterDelay()
     {
+        r_AudioController.instance.PlayClickSound();
         yield return new WaitForSeconds(2f);
         PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
+        MixerManager.Instance.UpdateAudioSource(SoundType.Ingame);
         panelLoading.SetActive(true);
+    }
+
+    private IEnumerator LoadSceneAfterDelay_Solo()
+    {
+        yield return new WaitForSeconds(6f);
+        PhotonNetwork.LoadLevel(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
+        MixerManager.Instance.UpdateAudioSource(SoundType.Ingame);
     }
 }

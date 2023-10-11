@@ -7,12 +7,13 @@ using UnityEngine.UI;
 namespace NullSave.TOCK.Inventory
 {
     [HierarchyIcon("item_icon", "#ffffff", false)]
-    public class ItemUI : MonoBehaviour, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public class ItemUI : MonoBehaviour, IPointerClickHandler
     {
 
         #region Variables
 
         public Image itemImage;
+        public Image Location;
         public TextMeshProUGUI displayName;
         public TextMeshProUGUI description;
         public TextMeshProUGUI subtext;
@@ -189,10 +190,20 @@ namespace NullSave.TOCK.Inventory
             {
                 lockedIndicator.gameObject.SetActive(false);
             }
+            if (Item != null && bkgItem != null)
+            {
+                if (bkgItem.GetComponent<LocationIndicator>() != null)
+                {
 
+                    bkgItem.GetComponent<LocationIndicator>().LoadItem(Item);
+
+                }
+            }
             if (Item == null)
             {
                 if (itemImage != null) itemImage.enabled = false;
+                if (Location != null) Location.enabled = false;
+                if (bkgItem != null) bkgItem.SetActive(false);
                 if (count != null) count.text = string.Empty;
                 if (equippedIndicator != null) equippedIndicator.SetActive(false);
                 if (equipableIndicator != null) equipableIndicator.SetActive(false);
@@ -258,6 +269,8 @@ namespace NullSave.TOCK.Inventory
             }
 
             if (itemImage != null) itemImage.enabled = false;
+            if (Location != null) Location.enabled = false;
+            if (bkgItem != null) bkgItem.enabled = false;
             if (count != null) count.text = string.Empty;
             if (equippedIndicator != null) equippedIndicator.SetActive(false);
             if (displayName != null) displayName.text = string.Empty;
@@ -311,7 +324,7 @@ namespace NullSave.TOCK.Inventory
 
         private void UpdateUI()
         {
-            if (bkgItem != null) bkgItem.gameObject.SetActive(Item != null);
+            if (bkgItem != null) bkgItem.gameObject.SetActive(Item != null && Item.category.name != "Fishes");
             if (bkgNoItem != null) bkgNoItem.gameObject.SetActive(Item == null);
 
             if (itemImage != null)

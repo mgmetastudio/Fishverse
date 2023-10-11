@@ -19,6 +19,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     [Space]
     [SerializeField] InventoryCog inventoryCog;
+    [SerializeField] InventoryMerchant InventoryMerchant;
     [SerializeField] StatsCog statsCog;
 
 
@@ -27,7 +28,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
     [SerializeField] Category fishCategory;
     [SerializeField] StatEffect fishWeightEffect;
     // public  XpTracker xpLevel;
-
+    [Header("GamePlay UI")]
+    public GameObject GamePlayUI;
     [Header("Inventory")]
     public GameObject InventoryCanvas;
     public Transform Content;
@@ -98,7 +100,11 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public InventoryItem currentRod;
     public InventoryItem currentFloat;
     public bool IsopenMenu;
-   
+    public int Score =0;
+    public int highestScore = 0;
+    public int Fishcount = 0;
+    private OpenWorld_Manager openWorldManager;
+
 
     int _money;
     public int Money
@@ -139,14 +145,17 @@ public class PlayerFishingInventory : MonoBehaviourPun
         if (!photonView.IsMine)
         {
             InventoryCanvas.SetInactive();
+            GamePlayUI.SetInactive();
             return;
         }
-
-        playerName = Fishverse_Core.instance.account_username;
-        SetPlayerName(playerName);
-
+        if (photonView.IsMine)
+        {
+            playerName = Fishverse_Core.instance.account_username;
+            // Delay the RPC to give time for synchronization
+            Invoke("SendPlayerNameRPC", 0.5f); 
+        }
         Manager = GameObject.FindGameObjectWithTag("Manager");
-
+        openWorldManager = FindObjectOfType<OpenWorld_Manager>();
         Camera = Camera.main;
 
         // SetUpFloat();
@@ -160,21 +169,25 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
-        if (equipedItem.displayName == "Fishing Rod")
+        if (equipedItem.subtext == "Fishing Rod" || equipedItem.subtext == "Fishing Rod Nft")
         {
             currentRod = equipedItem;
 
             SetUpFloat();
         }
-        if (equipedItem.subtext == "Fishing Bait")
+        if (equipedItem.subtext == "Bait" || equipedItem.subtext == "Bait Nft")
         {
             currentBait = equipedItem;
             SetUpFloatBait();
         }
 
-        if (equipedItem.displayName == "Float")
+        if (equipedItem.subtext == "Float" || equipedItem.subtext == "Float Nft")
         {
             currentFloat = equipedItem;
+            if(currentFloat.previewScale ==2 && currentBait != null)
+            {
+                currentBait = null;
+            }
             if (currentRod != null)
             {
                 SetUpFloat();
@@ -186,16 +199,16 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
 
-        if (unequipedItem.displayName == "Fishing Rod")
+        if (unequipedItem.subtext == "Fishing Rod" || unequipedItem.subtext == "Fishing Rod Nft")
         {
             currentRod = null;
 
         }
-        if (unequipedItem.subtext == "Fishing Bait")
+        if (unequipedItem.subtext == "Bait" || unequipedItem.subtext == "Bait Nft")
         {
             currentBait = null;
         }
-        if (unequipedItem.displayName == "Float")
+        if (unequipedItem.subtext == "Float" || unequipedItem.subtext == "Float Nft")
         {
             currentFloat = null;
         }
@@ -222,37 +235,52 @@ public class PlayerFishingInventory : MonoBehaviourPun
     }
 
     // [ClientRpc]
-    [PunRPC]
-    public void RpcSetPlayerName(string PlayerN)
+
+
+    private void SendPlayerNameRPC()
     {
-        PlayerN = playerName;
-        PlayerNameText.text = PlayerN;
+        photonView.RPC("RpcSetPlayerName", RpcTarget.AllBuffered, playerName);
+    }
+
+    [PunRPC]
+    private void RpcSetPlayerName(string name)
+    {
+        playerName = name;
+        UpdatePlayerNameDisplay();
+    }
+
+    private void UpdatePlayerNameDisplay()
+    {
+        PlayerNameText.text = playerName;
     }
 
     public void SetUpFloat()
     {
-        for (int i = 0; i < Floats.Length; i++)
+        if (currentFloat != null)
         {
-            if (Floats[i].ID == currentFloat.previewScale)
+            for (int i = 0; i < Floats.Length; i++)
             {
-                SpawnedLineEndPrefab = Instantiate(Floats[i].LineEndPrefab, transform.position + (transform.forward * 2), Floats[i].LineEndPrefab.transform.rotation);
+                if (Floats[i].ID == currentFloat.previewScale)
+                {
+                    SpawnedLineEndPrefab = Instantiate(Floats[i].LineEndPrefab, transform.position + (transform.forward * 2), Floats[i].LineEndPrefab.transform.rotation);
+                }
             }
-        }
 
-        if (LineEnd != null)
-            Destroy(LineEnd);
+            if (LineEnd != null)
+                Destroy(LineEnd);
 
-        LineEnd = SpawnedLineEndPrefab;
+            LineEnd = SpawnedLineEndPrefab;
 
-        LineStart.GetComponent<SpringJoint>().connectedBody = SpawnedLineEndPrefab.GetComponent<Rigidbody>();
+            LineStart.GetComponent<SpringJoint>().connectedBody = SpawnedLineEndPrefab.GetComponent<Rigidbody>();
 
-        for (int i = 0; i < SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits.Length; i++)
-        {
-            SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(false);
-
-            if (SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].ID == CurrentSelectedBait)
+            for (int i = 0; i < SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits.Length; i++)
             {
-                SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
+                SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(false);
+
+                if (SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].ID == CurrentSelectedBait)
+                {
+                    SpawnedLineEndPrefab.GetComponent<BaitActivator>().Baits[i].Bait.SetActive(true);
+                }
             }
         }
     }
@@ -443,9 +471,44 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
     private void Update()
     {
-     IsopenMenu= inventoryCog.IsMenuOpen;
-       // Debug.Log("CurrentSelectedFloat" + CurrentSelectedFloat);
+        IsopenMenu = inventoryCog.IsMenuOpen;
+        if (openWorldManager != null)
+        {
+            openWorldManager.Addscore((int)inventoryCog.Fishcurrency); // Update score in OpenWorld_Manager
+            openWorldManager.AddFishCaught(fishInv.Count); // Update Total fish caught in OpenWorld_Manager
+            int totalScore = openWorldManager.Score;
+            photonView.RPC("UpdateHighScoreOnServer", RpcTarget.All, totalScore);
 
+        }
+        //if(inventoryCog.GetItemTotalCount())
+       // Debug.Log("Fish Curency" + inventoryCog.Fishcurrency);
+        if (currentBait!= null)
+        {
+            if(inventoryCog.GetItemTotalCount(currentBait)==0)
+            {
+                OnItemUnequip(currentBait);
+                currentBait = null;
+            }
+        }
+        if (currentFloat != null)
+        {
+            if (inventoryCog.GetItemTotalCount(currentFloat) == 0)
+            {
+                if (LineEnd != null)
+                {
+                    Destroy(LineEnd);
+                }
+                currentFloat = null;  
+            }
+        }
+        if (currentRod != null)
+        {
+            if (inventoryCog.GetItemTotalCount(currentRod) == 0)
+            {
+                currentRod = null;
+            }
+        }
+        //Debug.Log("Bait are :"+inventoryCog.GetItemTotalCount(currentBait));
         if (FloatHasChanged == true & LastSelectedFloat != CurrentSelectedFloat)
         {
             SetUpFloat();
@@ -575,14 +638,16 @@ public class PlayerFishingInventory : MonoBehaviourPun
         fishItem.weight = fishLength;
         fishItem.displayName = fishInfo.FishName;
         fishItem.rarity = Random.Range(0, maxRarity);
-
+        fishItem.description = "Sell if in the store to get money and Win the game!";
         var fishWeight = Instantiate(fishWeightEffect);
         fishWeight.displayName = fishWeightValue + "cm";
         fishWeight.description += fishWeight.displayName;
         fishItem.statEffects.Add(fishWeight);
-
         inventoryCog.AddToInventory(fishItem);
-        inventoryCog.RemoveItem(currentBait, 1);
+        if (currentBait != null)
+        {
+            inventoryCog.RemoveItem(currentBait, 1);
+        }
 
         var xpStat = statsCog.Stats.First(x => x.displayName == "XP");
         xpStat.SetValue(xpStat.CurrentValue + fishValue);
@@ -611,8 +676,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
         // invFish.FishImage.sprite = FishSprite;
 
         fishInv.Add(invFish);
-
-
+       
         photonView.RPC("CmdHoldCaughtFish", RpcTarget.All, fishInfo.uniqueId);
         // CmdHoldCaughtFish(uniqueId);
 
@@ -621,7 +685,12 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         CheckForItems();
     }
-
+    [PunRPC]
+    private void UpdateHighScoreOnServer(int newScore)
+    {
+        OpenWorld_Manager openWorldManager = FindObjectOfType<OpenWorld_Manager>();
+        openWorldManager.UpdateHighScore(newScore);
+    }
     public async void HoldCaughtFish(int uniqueId)
     {
         _lastUniqueId = uniqueId;
@@ -681,21 +750,6 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Camera.nearClipPlane = Value;
     }
 
-    private void OnEnable()
-    {
-        FishEntity.Oncurrentfloat += currentfloatEventHandler;
-    }
-
-    private void OnDisable()
-    {
-        FishEntity.Oncurrentfloat -= currentfloatEventHandler;
-    }
-
-    private float currentfloatEventHandler()
-    {
-        // Return a float value
-        return currentFloat.previewScale;
-    }
 
 }
 

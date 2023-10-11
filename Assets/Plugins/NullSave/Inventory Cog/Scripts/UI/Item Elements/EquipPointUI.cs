@@ -170,7 +170,6 @@ namespace NullSave.TOCK.Inventory
             point.onItemStored.AddListener(UpdateUI);
             point.onItemUnequipped.AddListener((InventoryItem item) => UpdateUI(null));
             point.onItemAmmoChanged.AddListener(UpdateUI);
-            point.onItemWeaponChanged.AddListener(UpdateUI);
         }
 
         private void Unsubscribe()
@@ -179,7 +178,6 @@ namespace NullSave.TOCK.Inventory
             point.onItemStored.RemoveListener(UpdateUI);
             point.onItemUnequipped.RemoveListener(UpdateUI);
             point.onItemAmmoChanged.RemoveListener(UpdateUI);
-            point.onItemWeaponChanged.RemoveListener(UpdateUI);
 
         }
 

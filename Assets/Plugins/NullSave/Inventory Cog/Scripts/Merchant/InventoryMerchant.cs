@@ -33,7 +33,6 @@ namespace NullSave.TOCK.Inventory
 
         private float replenishWait;
         private CountSelectUI spawnedCount;
-
         #endregion
 
         #region Properties
@@ -117,7 +116,7 @@ namespace NullSave.TOCK.Inventory
         #endregion
 
         #region Public Methods
-
+       
         public int AvailableStock(InventoryItem item)
         {
             foreach (StockItemReference stockItem in Stock)
@@ -180,7 +179,10 @@ namespace NullSave.TOCK.Inventory
             // Update currencies
             currency -= cost;
             playerInventory.currency += cost;
-
+            if (item.category.displayName == "Fishes")
+            {
+                playerInventory.Fishcurrency += cost;
+            }
             // Add to bought stock
             AddBoughtStock(item, count);
             playerInventory.RemoveItem(item, count);
@@ -367,7 +369,10 @@ namespace NullSave.TOCK.Inventory
             // Update currencies
             currency += cost;
             playerInventory.currency -= cost;
-
+            if (item.category.displayName == "Fishes")
+            { 
+                playerInventory.Fishcurrency -= cost;
+            }
             // Transfer stock
             playerInventory.AddToInventory(item, count);
             RemoveStock(item, count);

@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 3de333f4ff2775141aef40b900a3c961, type: 3}
   displayName: SEA MASTER
   description: Nft item id 15
-  subtext: Boat
+  subtext: Float Nft
   category: {fileID: 11400000, guid: 0d328f5d51cc6aa4c9ed4e2318a32977, type: 2}
   uiTags: []
   displayRecipe: {fileID: 0}
@@ -23,10 +23,12 @@ MonoBehaviour:
   modifyName: 0
   nameModifier: 
   modifierOrder: 0
-  customTags: []
+  customTags:
+  - Name: Location Color
+    Value: Yellow
   itemType: 1
   usesAmmo: 1
-  ammoType: 
+  ammoType: Float
   ammoPerUse: 1
   displayInInventory: 1
   useSlotId: 1
@@ -58,7 +60,7 @@ MonoBehaviour:
   autoEquip: 0
   equipLocation: 0
   equipPoints:
-  - RightHand
+  - Float
   canEquip: 1
   canDrop: 0
   canStore: 0

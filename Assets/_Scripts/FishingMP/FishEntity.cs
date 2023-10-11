@@ -17,8 +17,9 @@ public class FishEntity : MonoBehaviourPun
                 photonView.RPC("SetFishUniqueId", RpcTarget.All, value);
         }
     }
+    public string Location;
     private static FishScriptable[] _fishScriptables;
-    private FishScriptable _scriptable;
+    public FishScriptable _scriptable;
     public FishAIController controller;
     public GameObject FishCaughtMessage;
     public float frameTime = 0.019f;
@@ -36,12 +37,13 @@ public class FishEntity : MonoBehaviourPun
     public FishHealth fishHealth;
     public bool isFishCatched = false;
     public bool isDestroyFloat;
-    public delegate float CurrentFloatAction();
-    public static event CurrentFloatAction Oncurrentfloat;
+
     [SerializeField] float FailedCatchValue;
     bool isreelrotate;
     float currentfloat;
-
+    string BaitLocation = "";
+    string FloatLocation = "";
+    string RodLocation = "";
     public FishingFloat HookedTo
     {
         get => _hookedTo;
@@ -238,12 +240,22 @@ public class FishEntity : MonoBehaviourPun
             controller.fearfulness = .0f;
             isDestroyFloat = true;
         }
+        if(HookedTo == null)
+        {
+            if (controller.stamina < 0.2)
+            {
+                FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
+                controller.stamina_move = 0.5f;
+            }
+        }
 
         if (HookedTo != null)
         {
             if (!HookedTo.Owner.GetComponent<PhotonView>().IsMine) return;
             isDestroyFloat = false;
-            if (FailedCatchValue > 0 && FailedCatchValue < 0.2)
+            itemsCompatibility();
+            Debug.Log("Bait location" + BaitLocation + "/ Float location" + FloatLocation + "/ Rod location" + RodLocation);
+            if (((BaitLocation != Location && HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentFloat.previewScale <= 1) || FloatLocation != Location || RodLocation != Location) && FailedCatchValue > 0 && FailedCatchValue < 0.5)
             {
                 controller.isUpgradeFishingRod = true;
                 HookedTo.Owner.UpgradeFishingRodText.SetActive(true);
@@ -260,7 +272,7 @@ public class FishEntity : MonoBehaviourPun
             {
                 Canvas.enabled = true;
             }
-            /* if (HookedTo.Owner.isDestroyFloat)
+             /*if (HookedTo.Owner.isDestroyFloat)
              {
                  controller.HealthBar += 1;
                  Canvas.enabled = false;
@@ -275,10 +287,8 @@ public class FishEntity : MonoBehaviourPun
                     isStaminaTransitioning = true;
                     StartCoroutine(SmoothStaminaTransition());
                 }
-                if (HookedTo != null)
-                {
-                    FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
-                }
+
+                FishModel.transform.LookAt(HookedTo.Owner._rodEndPoint.position);
                 Canvas.enabled = false;
 
             }
@@ -289,26 +299,26 @@ public class FishEntity : MonoBehaviourPun
             if ((controller.StaminaBar == 0f || controller.StaminaBar == 1f) && fishHealth.healthBar.value != 0)
             {
                 HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
-                // HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
-                // controller.doNotUpdateTarget = false;
+                HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+                controller.doNotUpdateTarget = false;
                 controller.fearfulness = .0f;
-                //HookedTo = null;
+                HookedTo = null;
                 FishModel.transform.rotation = new Quaternion(0, 0, 0, 0);
 
             }
             if (((controller.StaminaBar > 0 && controller.StaminaBar < 0.25) || (controller.StaminaBar > 0.75 && controller.StaminaBar < 1)) && fishHealth.healthBar.value != 0 && controller.doNotUpdateTarget)
             {
-                /* if (HookedTo != null)
-                 {
-                     HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", true);
-                 }*/
+                if (HookedTo != null)
+                {
+                    HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", true);
+                }
             }
             else
             {
-                /* if (HookedTo != null)
-                 {
-                     HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
-                 }*/
+                if (HookedTo != null)
+                {
+                    HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
+                }
             }
             // Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist
             if (controller.iscatched && fishHealth.healthBar.value == 0)
@@ -317,34 +327,123 @@ public class FishEntity : MonoBehaviourPun
 
                 var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
                 PlayerFishingInventory inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();
-
-                FishAIController ai = controller;
-                // FishAIController ai = this.GetComponent<FishAIController>();
-
-                Debug.Log("Fish with ID " + ai._scriptable.uniqueId + " caught!");
+                Debug.Log("Fish with ID " + controller._scriptable.uniqueId + " caught!");
 
                 anim.FishCatch();
-                inv.HoldCaughtFish(ai._scriptable.uniqueId);
-
-                var fishInfo = ai._scriptable;
+                if (inv != null && controller != null)
+                {
+                    inv.HoldCaughtFish(controller._scriptable.uniqueId);
+                    inv.AddFishItem(controller._scriptable);
+                }
+                var fishInfo = controller._scriptable;
                 Canvas.enabled = false;
-
-                inv.AddFishItem(ai._scriptable);
-                photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, ai._scriptable.uniqueId);
+                photonView.RPC("RpcHoldCaughtFish", RpcTarget.All, controller._scriptable.uniqueId);
                 // RpcHoldCaughtFish(ai._scriptable.uniqueId);
-                Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + ai._scriptable.FishWeight + "</color>" + " " + "<color=green>" + ai._scriptable.FishName + "</color>";
+               
+                Instantiate(FishCaughtMessage).GetComponent<FishCaughtMessage>().Message.text = "<color=orange>" + inv.playerName + "</color>" + " caught a " + "<color=green>" + controller._scriptable.FishWeight + "</color>" + " " + "<color=green>" + controller._scriptable.FishName + "</color>";
+                if (photonView.IsMine)
+                {
+                    // Destroy the GameObject across the network.
+                    PhotonNetwork.Destroy(gameObject);
+                }
                 HookedTo.Owner.GetComponent<PlayerFishing>().photonView.RPC("CmdDestroyFloat", RpcTarget.All);
                 // HookedTo.Owner.GetComponent<PlayerFishing>().DestroyFloatSimulation();
 
 
                 // NetworkServer.Destroy(gameObject);
                 // Debug.Break();
-                PhotonNetwork.Destroy(gameObject);
+                
             }
         }
 
 
 
+    }
+    void itemsCompatibility()
+    {
+        if (HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentBait != null)
+        {
+            foreach (var tag in HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentBait.customTags)
+            {
+                string tagValue1 = tag.Value;
+                if (tagValue1 == "Yellow")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+                else if (tagValue1 == "Blue")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+                else if (tagValue1 == "Orange")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+                else if (tagValue1 == "Purple")
+                {
+                    BaitLocation = tagValue1;
+                    break;
+                }
+
+            }
+        }
+        if (HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentFloat != null)
+        {
+            foreach (var tag in HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentFloat.customTags)
+            {
+                string tagValue2 = tag.Value;
+                if (tagValue2 == "Yellow")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+                else if (tagValue2 == "Blue")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+                else if (tagValue2 == "Orange")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+                else if (tagValue2 == "Purple")
+                {
+                    FloatLocation = tagValue2;
+                    break;
+                }
+            }
+        }
+        if (HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentRod != null)
+        {
+            foreach (var tag in HookedTo.Owner.GetComponent<PlayerFishingInventory>().currentRod.customTags)
+            {
+                string tagValue3 = tag.Value;
+                if (tagValue3 == "Yellow")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+                else if (tagValue3 == "Blue")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+                else if (tagValue3 == "Orange")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+                else if (tagValue3 == "Purple")
+                {
+                    RodLocation = tagValue3;
+                    break;
+                }
+
+            }
+        }
     }
 
     // [ClientRpc]
@@ -373,6 +472,7 @@ public class FishEntity : MonoBehaviourPun
 
         inv.CheckForItems();
     }
+
 
     private void OnGUI()
     {

@@ -139,7 +139,14 @@ namespace NullSave.TOCK.Inventory
                 UpdateCheckoutUI();
             }
         }
-
+        public void Start()
+        {
+            if (itemTooltip != null)
+            {
+                itemTooltip.BtnClose.onClick.AddListener(CloseTooltip);
+            }
+            
+        }
         public override ItemUI SelectedItem
         {
             get
@@ -444,6 +451,7 @@ namespace NullSave.TOCK.Inventory
             if (itemTooltip != null)
             {
                 item.onPointerEnter.AddListener(ItemPointerEnter);
+                item.onClick.AddListener(ItemPointerEnter);
                 item.onPointerExit.AddListener(ItemPointerExit);
             }
         }

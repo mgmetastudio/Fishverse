@@ -29,7 +29,7 @@ public class EquipmentItem : MonoBehaviour
 
         }
 
-        if (EquipmentType == "Float")
+        if (EquipmentType == "Float" || EquipmentType == "Float Nft")
         {
             for (int i = 0; i < _floatScriptables.Length; i++)
             {
@@ -49,7 +49,7 @@ public class EquipmentItem : MonoBehaviour
 
     public void SelectEquipment()
     {
-        if(EquipmentType == "Fishing Rod")
+        if(EquipmentType == "Fishing Rod" || EquipmentType == "Fishing Rod Nft")
         {
             InventorySystem.CurrentSelectedFishingRod = EquipmentID;
             InventorySystem.CurrentSelectedFishingRodImage.sprite = EquipmentImage;
@@ -58,7 +58,7 @@ public class EquipmentItem : MonoBehaviour
             InventorySystem.FishingRodSelectionMenu.SetActive(false);
         }
 
-        if (EquipmentType == "Float")
+        if (EquipmentType == "Float" || EquipmentType == "Float Nft")
         {
             InventorySystem.LastSelectedFloat = InventorySystem.CurrentSelectedFloat;
             InventorySystem.CurrentSelectedFloat = EquipmentID;
@@ -70,7 +70,7 @@ public class EquipmentItem : MonoBehaviour
             InventorySystem.FloatHasChanged = true;
         }
 
-        if (EquipmentType == "Bait")
+        if (EquipmentType == "Bait" || EquipmentType == "Bait Nft")
         {
             InventorySystem.CurrentSelectedBait = EquipmentID;
             InventorySystem.SetBait(EquipmentID);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using Photon.Pun;
 namespace NullSave.TOCK.Inventory
 {
     [HierarchyIcon("equip_point", false)]
@@ -23,13 +23,12 @@ namespace NullSave.TOCK.Inventory
 
         public List<EquipPoint> forceStore;
         public List<EquipPoint> forceUnequip;
-
-        public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged, onItemWeaponChanged;
+        //public TooltipBait TooltipBait;
+        public ItemChanged onItemEquipped, onItemUnequipped, onItemStored, onItemAmmoChanged;
 
         #endregion
 
         #region Properties
-
         public Animator Animator { get; set; }
 
         public InventoryItem EquipedOrStoredItem
@@ -132,7 +131,56 @@ namespace NullSave.TOCK.Inventory
                 Debug.Log(name + ".EquipItem requested item .canEquip = false; ignoring request");
                 return;
             }
+            //if(Item.e)
+            if (Inventory.activeAmmo.ContainsKey(item.ammoType))
+            {
+                if (Inventory.GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.equipPoints[0] == "Float")
+                {
+                    Inventory.UnequipBaitItem();
+                    Inventory.activeAmmo.Remove("Bait");
+                }
 
+                if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    PhotonView photonView = GetComponentInParent<PhotonView>();
+
+                    if (photonView != null && photonView.IsMine)
+                    {
+                        TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
+                        if (tooltipBaitComponent != null)
+                        {
+                            tooltipBaitComponent.ShowTooltipBait();
+                        }
+                    }
+                   
+                    return;
+                }
+                Inventory.activeAmmo[item.ammoType] = item;
+            }
+            else
+            {
+                if (Inventory.GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.equipPoints[0] == "Float")
+                {
+                    Inventory.UnequipBaitItem();
+                    Inventory.activeAmmo.Remove("Bait");
+                }
+
+                if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    PhotonView photonView = GetComponentInParent<PhotonView>();
+
+                    if (photonView != null && photonView.IsMine)
+                    {
+                        TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
+                        if (tooltipBaitComponent != null)
+                        {
+                            tooltipBaitComponent.ShowTooltipBait();
+                        }
+                    }
+                    return;
+                }
+                Inventory.activeAmmo.Add(item.ammoType, item);
+            }
             // Check if item is currently equipped
             if (item == Item) return;
 
@@ -179,7 +227,7 @@ namespace NullSave.TOCK.Inventory
             item.CurrentEquipPoint = this;
 
             // Create object (as needed)
-            if (item.equipObject != null)
+            if (item.equipObject != null && item.equipPoints[0] != "Float" && item.equipPoints[0] != "Bait")
             {
                 ObjectReference = CreateInstance(item.equipObject, item.category);
                 DamageDealer dd = ObjectReference.GetComponentInChildren<DamageDealer>();

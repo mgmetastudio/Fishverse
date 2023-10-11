@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Photon.Realtime;
 using UnityEngine.Events;
 using Photon.Pun;
 // using Mirror;
@@ -10,7 +11,7 @@ using Cysharp.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 
-public class MiniGame_Manager : MonoBehaviour
+public class MiniGame_Manager : MonoBehaviourPunCallbacks
 {
     [Header("Scene Refs:")]
     public ArcadeVehicleController vehicle_controller;
@@ -46,12 +47,20 @@ public class MiniGame_Manager : MonoBehaviour
     public TMP_Text text_scoretime_played;
     public TMP_Text text_coins;
     public Text text_CurrentScore;
+    [Header("GameEndPanel Enable/Disable")]
+    public GameObject WinningPanel;
+    public GameObject LosePanel;
+    public GameObject DrawPanel;
+    public Image ImgWinLose;
+    public List<Sprite> Sprites;
 
     [Space(10)]
     [Header("Game Data:")]
     public int score;
     public int ScoreCoins;
-    public int best_score;
+    public int best_score=0;
+    public int LowScore ;
+    public float HighTimePlayed ;
     public int fishes;
     public int start_time = 90;
     public int time = 90;
@@ -89,7 +98,7 @@ public class MiniGame_Manager : MonoBehaviour
     private int scoretime_played = 0;
     private int fishes_score_combo = 0;
     private float gameStartTime;
-    float timePlayed;
+    public float timePlayed;
 
     //Text Animations
     DOTweenAnimation text_score_anim;
@@ -97,19 +106,22 @@ public class MiniGame_Manager : MonoBehaviour
     DOTweenAnimation text_pos_anim;
 
     public int playerToStart = 2;
-    public delegate float SpeedBoatFloatAction();
-    public static event SpeedBoatFloatAction Onspeedboat;
-    public static event SpeedBoatFloatAction Onfuel;
-    public delegate string NameAction();
-    public static event NameAction OnNameEnter;
 
     private PhotonView photon_view;
+    private float speedboat;
+    private float _fuel;
+    [SerializeField] RoomManager owner;
+    private bool isLocalPlayerWinner = false;
+    public Dictionary<int, int> playerScores = new Dictionary<int, int>(); // Maps player IDs to their scores
+
+
     private void Start()
     {
+        photon_view = GetComponent<PhotonView>();
+
 #if !UNITY_EDITOR
         unlimitedTime = false;
 #endif
-        photon_view = GetComponent<PhotonView>();
         //Init Components
         gameStartTime = Time.time;
         BonusPanel.SetActive(false);
@@ -120,11 +132,11 @@ public class MiniGame_Manager : MonoBehaviour
             text_pos_anim = anm;
 
         if (Fishverse_Core.instance)
-            GetComponent<MiniGameServer_API>().GetBestScore();
+        // GetComponent<MiniGameServer_API>().GetBestScore();
 
         //Set FPS
         Application.targetFrameRate = 60;
-
+       // GetComponent<MiniGameServer_API>().SubmitScore(0);
         //Set Default Parameters
         fishes = 0;
         score = 0;
@@ -156,7 +168,6 @@ public class MiniGame_Manager : MonoBehaviour
         gameLeaderBoard = true;
         StartCoroutine(StartGame(start_instant));
     }
-
     IEnumerator StartGame(bool instant)
     {
         if (instant)
@@ -203,8 +214,13 @@ public class MiniGame_Manager : MonoBehaviour
     {
         if (game_started)
         {
-            float speedboat = Onspeedboat?.Invoke() ?? 0.0f;
-            float _fuel = Onfuel?.Invoke() ?? 0.0f;
+            /*foreach (var kvp in playerScores)
+            {
+                Debug.Log($"Player ID: {kvp.Key}, Score: {kvp.Value}");
+            }*/
+            speedboat = owner.boatController.carVelocity.z;
+            _fuel = owner.boatController.fuel;
+
             timer += Time.deltaTime;
             if (timer > 1f)
             {
@@ -229,7 +245,7 @@ public class MiniGame_Manager : MonoBehaviour
             {
                 BoatVitesse.text = Mathf.RoundToInt(-speedboat).ToString();
             }
-
+            //Debug.Log("HighTimePlayed"+HighTimePlayed);
             Fuel.value = _fuel / 100;
             text_CurrentScore.text = score.ToString();
           //  Debug.Log("avatar" + Fishverse_Core.instance.avatar);
@@ -243,10 +259,8 @@ public class MiniGame_Manager : MonoBehaviour
         gameLeaderBoard = false;
         if (vehicle_controller)
             vehicle_controller.gameObject.SetActive(false);
-
-       
         // End Game Game Panel Texts
-        Text_Username.text = OnNameEnter?.Invoke().ToString();
+        Text_Username.text = Fishverse_Core.instance.account_username.ToString();
         text_coins.text = ScoreCoins.ToString();
         text_scoretime_played.text = scoretime_played.ToString();
         text_ending_score.text = score.ToString();
@@ -254,12 +268,64 @@ public class MiniGame_Manager : MonoBehaviour
         panel_end_screen.SetActive(true);
         if (score > best_score)
         {
-            best_score = score;
+           // best_score = score;
             GetComponent<MiniGameServer_API>().SubmitScore(best_score);
         }
-        text_best_score.text = best_score.ToString();
-    }
 
+        text_best_score.text = best_score.ToString();
+
+        isLocalPlayerWinner = (score >= best_score && score > LowScore ) || PhotonNetwork.CurrentRoom.PlayerCount == 1 ;
+
+        if (isLocalPlayerWinner)
+        {
+            WinningPanel.SetActive(true);
+            LosePanel.SetActive(false);
+            DrawPanel.SetActive(false);
+            ImgWinLose.sprite = Sprites[0];
+        }
+        else if (best_score == LowScore && score == best_score && LowScore>=0 )
+        {
+            WinningPanel.SetActive(false);
+            LosePanel.SetActive(false);
+            DrawPanel.SetActive(true);
+            ImgWinLose.sprite = Sprites[0];
+        }
+        else
+        {
+            WinningPanel.SetActive(false);
+            LosePanel.SetActive(true);
+            DrawPanel.SetActive(false);
+            ImgWinLose.sprite = Sprites[1];
+        }
+
+    }
+    public void UpdateHighScore(int newScore , float time)
+    {
+       
+        if (newScore > best_score)
+        {
+            best_score = newScore;
+        }
+        if(time>= timePlayed)
+        {
+            HighTimePlayed = time;
+        }
+        LowScore = playerScores.Count > 0 ? playerScores.Values.Min() : 0;
+
+    }
+    // Add a method to add or update a player's score in the dictionary
+    public void UpdatePlayerScore(int playerId, int playerScore)
+    {
+        if (playerScores.ContainsKey(playerId))
+        {
+            playerScores[playerId] = playerScore; // Update the existing score
+        }
+        else
+        {
+            playerScores.Add(playerId, playerScore); // Add a new player and score
+        }
+    }
+  
     public void AddFish()
     {
         if (fishes < maxFish)
@@ -396,8 +462,19 @@ public class MiniGame_Manager : MonoBehaviour
         }
         else
         {
-            text_fishes.color = Color.red;
-            text_fishes.text = fishes.ToString() + $"/{maxFish} (FULL)";
+            text_fishes.color = Color.white;
+            text_fishes.text = fishes.ToString() + $"/{maxFish}";
         }
     }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
+
+        // Remove the player's score from the dictionary
+        if (playerScores.ContainsKey(otherPlayer.ActorNumber))
+        {
+            playerScores.Remove(otherPlayer.ActorNumber);
+        }
+    }
+
 }

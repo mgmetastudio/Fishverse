@@ -75,22 +75,7 @@ public class ArcadeVehicleController : MonoBehaviour
     {
         engineSound.pitch = Mathf.Lerp(minPitch, MaxPitch, Mathf.Abs(carVelocity.z) / MaxSpeed * speed_boost);
     }
-
-    private void OnEnable()
-    {
-        // Subscribe to the ButtonClick event
-        MiniGame_Manager.Onspeedboat += SpeedboatFloatEventHandler;
-        MiniGame_Manager.Onfuel += FuelFloatEventHandler;
-    }
-
-    private void OnDisable()
-    {
-        // Unsubscribe from the ButtonClick event
-        MiniGame_Manager.Onspeedboat -= SpeedboatFloatEventHandler;
-        MiniGame_Manager.Onfuel -= FuelFloatEventHandler;
-
-    }
-
+    
     private float SpeedboatFloatEventHandler()
     {
         // Return a float value

@@ -84,10 +84,6 @@ namespace NullSave.TOCK.Inventory
                 case ItemType.Ammo:
                     inventoryCog.SetSelectedAmmo(slot.AssignedItem);
                     break;
-                case ItemType.Weapon:
-                    // Equip Item
-                    inventoryCog.SetSelectedWeapon(slot.AssignedItem);
-                    break;
                 switch(slot.AssignedItem.EquipState)
                      {
                          case EquipState.NotEquipped:
@@ -205,7 +201,6 @@ namespace NullSave.TOCK.Inventory
             if (Item.itemType == ItemType.Ammo)
             {
                 if (equippedIndicator != null) equippedIndicator.SetActive(Inventory != null && Inventory.GetSelectedAmmo(Item.ammoType) == Item);
-                if (equippedIndicator != null) equippedIndicator.SetActive(Inventory != null && Inventory.GetSelectedWeapon(Item.ammoType) == Item);
 
             }
             else if (Item.CanEquip)

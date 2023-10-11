@@ -8,11 +8,17 @@ using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
 using NullSave.TOCK.Inventory;
+using System.Collections;
 
 public class PlayerFishing : MonoBehaviourPun
 {
     [SerializeField] Transform rodHolder;
     [SerializeField] bool canFish;
+    [SerializeField] bool IsmissingBait;
+    [SerializeField] bool IsmissingFloat;
+    [SerializeField] bool Isfishingfloat;
+    public GameObject FishingNotif;
+
     [SerializeField] private GameObject _fishingFloatBasePrefab;
     // [SyncVar]
     [HideInInspector] private FishingFloat fishingFloat;
@@ -43,7 +49,29 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] private GameObject _floatDemoPrefab;
     private GameObject _floatDemo;
     [SerializeField] public Transform _rodEndPoint;
+    [Space]
+    [Header("RodLine Colors")]
+    public Color customColorRed; 
+    public Color customColorPink;
+    public Color customColorBlue;
+    public Color customColorGold;
+    public Color customColorOrange;
+    public Color customColorWhite;
+    public Color customColorPurple;
+
+    public enum ColorEnum
+    {
+        Red,
+        Pink,
+        Blue,
+        Gold,
+        Orange,
+        White,
+        Purple
+    }
+    private  Dictionary<ColorEnum, Color> colorMap;
     [SerializeField] private LineRenderer _rodLineRenderer;
+
     [SerializeField] private int _maxLineDistance;
     [SerializeField] private int _maxLineThrowDistance;
     [SerializeField] public string crankUpAnimationName = "Fishing_Up";
@@ -63,7 +91,8 @@ public class PlayerFishing : MonoBehaviourPun
     [SerializeField] Button Btn_FishCast;
     [SerializeField] private EquipPoint _equipPoint;
     [SerializeField] private Animator _animatorFishingRodAnim;
-  
+    [SerializeField] PlayerUI PlayerUI;
+    private bool hasInvoked = false;
     public bool isreelrotate= false;
     public bool isfishing=false;
     public bool isDestroyFloat=false;
@@ -83,6 +112,8 @@ public class PlayerFishing : MonoBehaviourPun
     bool onRodUp;
     bool onRod;
     InputProxy _inputProxy;
+    [Header("Audio Fishing ")]
+    public r_AudioFishing r_AudioFishing;
     [PunRPC]
     void SetFishingFloat(int value)
     {
@@ -97,6 +128,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            FishingNotif.SetActive(false);
             _floatDemo = Instantiate(_floatDemoPrefab);
             _localCamera = Camera.main.transform;
             rodUI = FindObjectOfType<CastRodUI>();
@@ -110,11 +142,23 @@ public class PlayerFishing : MonoBehaviourPun
             _anim = GetComponent<Animator>();
             _equipPoint = GetComponentInChildren<EquipPoint>();
             _animReel = RotateReel.GetComponent<Animator>();
-            _Btn_FishCast= Btn_FishCast.GetComponent<Animator>();
-            _Linebroke= Linebroke.GetComponent<Animator>();
+            _Btn_FishCast = Btn_FishCast.GetComponent<Animator>();
+            _Linebroke = Linebroke.GetComponent<Animator>();
+
+            //Line Render Colors
+            colorMap = new Dictionary<ColorEnum, Color>
+            {
+              { ColorEnum.Red, customColorRed },
+              { ColorEnum.Pink, customColorPink },
+              { ColorEnum.Blue, customColorBlue },
+              { ColorEnum.Gold, customColorGold },
+              { ColorEnum.Orange, customColorOrange },
+              { ColorEnum.White, customColorWhite },
+              { ColorEnum.Purple, customColorPurple }
+            };
         }
     }
-   
+
     void OnRodDown()
     {
         onRodDown = true;
@@ -150,17 +194,18 @@ public class PlayerFishing : MonoBehaviourPun
 
     public void OnItemEquip(InventoryItem equipedItem)
     {
-        if (equipedItem.displayName == "Fishing Rod")
+        if (equipedItem.subtext == "Fishing Rod" || equipedItem.subtext == "Fishing Rod Nft")
         {
-            DrawFishingRod(true);
+            photonView.RPC("DrawFishingRod", RpcTarget.All, true);
             // fishingRod.SetActive();
         }
     }
 
     public void OnItemUnequip(InventoryItem unequipedItem)
     {
-        if (unequipedItem.displayName == "Fishing Rod")
-            DrawFishingRod(false);
+        if (unequipedItem.subtext == "Fishing Rod" || unequipedItem.subtext == "Fishing Rod Nft")
+            photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+
     }
 
     private void Update()
@@ -169,7 +214,7 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-
+            //if(_inv.)
             if (FishingFloat == null)
             {
                 NoFishingFloatLogic();
@@ -179,7 +224,7 @@ public class PlayerFishing : MonoBehaviourPun
             {
                 FishingFloatLogic();
             }
-            if (isLinebroke && canFish && fishingRod.activeSelf && FishingFloat.fish!=null)
+            if (isLinebroke && canFish && fishingRod.activeSelf && FishingFloat.fish != null)
             {
                 if (!FishingFloat.fish.HookedTo)
                 {
@@ -191,9 +236,66 @@ public class PlayerFishing : MonoBehaviourPun
                 }
 
             }
-          
 
+
+
+            if (_inv.currentRod != null)
+            {
+                if (_inv.currentRod.customTags.Count > 1)
+                {
+                    string color = _inv.currentRod.customTags[1].Value;
+                    ColorEnum currentColor;
+
+                    // Map the color string to a ColorEnum value
+                    switch (color)
+                    {
+                        case "Red":
+                            currentColor = ColorEnum.Red;
+                            break;
+                        case "Pink":
+                            currentColor = ColorEnum.Pink;
+                            break;
+                        case "Blue":
+                            currentColor = ColorEnum.Blue;
+                            break;
+                        case "Gold":
+                            currentColor = ColorEnum.Gold;
+                            break;
+                        case "Orange":
+                            currentColor = ColorEnum.Orange;
+                            break;
+                        case "White":
+                            currentColor = ColorEnum.White;
+                            break;
+                        case "Purple":
+                            currentColor = ColorEnum.Purple;
+                            break;
+                        default:
+                            Debug.LogWarning("Color string not recognized.");
+                            return;
+                    }
+
+                    if (colorMap.ContainsKey(currentColor))
+                    {
+                        Debug.Log("Color Line render" + colorMap[currentColor]);
+                        _rodLineRenderer.startColor = colorMap[currentColor];
+                        _rodLineRenderer.endColor = colorMap[currentColor];
+                    }
+                    else
+                    {
+                        _rodLineRenderer.startColor = Color.black;
+                        _rodLineRenderer.endColor = Color.black;
+                        Debug.LogWarning("ColorEnum not found in colorMap. LineRenderer color not changed.");
+                    }
+                }
+                else
+                {
+                    _rodLineRenderer.startColor = Color.black;
+                    _rodLineRenderer.endColor = Color.black;
+                }
+            }
         }
+
         if (FishingFloat == null)
         {
             _rodLineRenderer.SetPosition(0, Vector3.zero);
@@ -221,7 +323,8 @@ public class PlayerFishing : MonoBehaviourPun
         _CrankDownInput();
         _CrankUpInput();
 #endif
-      //  ToggleZoom_Buttons_In();
+
+        ToggleZoom_Buttons_In();
         RotateReel.SetActive(fishingRod.activeSelf);
         Btn_FishCast.SetActive(false);
        _Btn_FishCast.Play("Default_FishCast");
@@ -230,13 +333,35 @@ public class PlayerFishing : MonoBehaviourPun
         {
             if (FishingFloat.fish)
             {
-               // FishCamerafollow= FishingFloat.fish.transform.position;
+                // FishCamerafollow= FishingFloat.fish.transform.position;
                 //  Debug.Log("FishCamerafollow is "+FishCamerafollow);
+                if (photonView.IsMine)
+                {
+                    if (!isfishing)
+                    {
+                        r_AudioFishing.PlayCastSound();
+                    }
+                    else
+                    {
+                        r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Cast);
+                    }
+                }
+
                 if (FishingFloat.fish.controller.HealthBar == 0)
                 {
                     _Linebroke.Play("Default_FishCast");
                     forceSlider.SetActive(false);
                     isfishing = true;
+                    if (photonView.IsMine)
+                    {
+                        r_AudioFishing.PlayDragSound();
+                        r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Reeling);
+                        if (FishingFloat.fish.controller.iscatched)
+                        {
+                            r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Drag);
+                        }
+                    }
+                
                     _animReel.SetBool("ReelIn_Reel", false);
                     RotateReel.SetActive(false);
                     Btn_FishCast.SetActive(true);
@@ -265,6 +390,7 @@ public class PlayerFishing : MonoBehaviourPun
         if (isfishing)
         {
             isreelrotate = true;
+            if (photonView.IsMine) { r_AudioFishing.PlayReelingSound(); }
             FishingFloat.photonView.RPC("Pull", RpcTarget.All);
             _anim.SetFloat("Fishing_Up_Speed", 1);
             _anim.Play(crankUpAnimationName);
@@ -294,6 +420,7 @@ public class PlayerFishing : MonoBehaviourPun
             }
         }
 
+#if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButtonDown(1))
         {
             // CmdDestroyFloat();
@@ -310,13 +437,13 @@ public class PlayerFishing : MonoBehaviourPun
                 }
             }
         }
-
+#endif
         DestroyFloatmaxdistance();
     }
 
     void NoFishingFloatLogic()
     {
-        if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask))
+        if (fishingRod.activeSelf && Physics.Raycast(_localCamera.position, _localCamera.forward, out RaycastHit hitInfo, _maxLineThrowDistance, _fluidMask) )
         {
             if (!Physics.Raycast(_localCamera.position, _localCamera.forward, Vector3.Distance(_localCamera.position, hitInfo.point) + .01f, _obstacleMask))
             {
@@ -355,7 +482,8 @@ public class PlayerFishing : MonoBehaviourPun
         }
         isreelrotate = false;
         forceSlider.SetActive(false);
-       // ToggleZoom_Buttons_Out();
+       // Invoke("ToggleZoom_Buttons_Out", 2f);
+        ToggleZoom_Buttons_Out();
         UpgradeFishingRodText.SetActive(false);
 
     }
@@ -393,25 +521,46 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (_floatDemo.activeSelf)
         {
-  
-            // onCast.Invoke();
-            _inv.HideFish();
-            _anim.SetTrigger("FishingCast");
-            await UniTask.WaitForSeconds(onCastWait);
-
-            //TODO: this
-            photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
-            // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
-            foreach (GameObject AllFish in _inv.Fishes)
+            CheckEquipment();
+            if (!PlayerUI.Isfishingfull && Isfishingfloat)
             {
-                AllFish.SetActive(false);
+                // onCast.Invoke();
+                _inv.HideFish();
+                _anim.SetTrigger("FishingCast");
+                await UniTask.WaitForSeconds(onCastWait);
+
+                //TODO: this
+                photonView.RPC("CmdSpawnFloat", RpcTarget.All, _floatDemo.transform.position, _inv.CurrentSelectedFloat);
+                // CmdSpawnFloat(_floatDemo.transform.position, _inv.CurrentSelectedFloat);
+                foreach (GameObject AllFish in _inv.Fishes)
+                {
+                    AllFish.SetActive(false);
+                }
+                _inv.FishHolder.SetActive(false);
+                isfishing = false;
+
             }
-            _inv.FishHolder.SetActive(false);
-            isfishing = false;
+            else
+            {
+                _Linebroke.SetBool("PackBack_Full", true);
+                if (!hasInvoked)
+                {
+                    StartCoroutine(InvokeStopPackBackAnim());
+                }
+            }
         }
 
     }
+    private IEnumerator InvokeStopPackBackAnim()
+    {
+        hasInvoked = true;
 
+        _Linebroke.SetBool("PackBack_Full", false);
+
+        yield return new WaitForSeconds(1f);
+
+        hasInvoked = false; // Reset the flag
+    }
     bool CastInput()
     {
         if (_inputProxy.mobileInput) return onRodDown;
@@ -446,6 +595,7 @@ public class PlayerFishing : MonoBehaviourPun
     {
         if (Input.GetButtonUp("Fire1"))
         {
+            r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Reeling);
             isfishing = false;
             _animReel.SetBool("Rotate_Reel", false);
             _animReel.SetBool("ReelIn_Reel", false);
@@ -453,6 +603,7 @@ public class PlayerFishing : MonoBehaviourPun
     }
     public void CrankUpInputMobile()
     {
+        r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Reeling);
         isfishing = false;
         _animReel.SetBool("Rotate_Reel", false);
         _animReel.SetBool("ReelIn_Reel", false);
@@ -474,15 +625,12 @@ public class PlayerFishing : MonoBehaviourPun
     public void DrawFishingRod(bool draw)
     {
         //change to holder
-        if (photonView.IsMine)
-        {
-            rodHolder.SetActive(draw);
+        rodHolder.SetActive(draw);
         fishingRod.SetActive(draw);
         fishingRope.SetActive(draw);
-        
-            var inv = GetComponent<PlayerFishingInventory>();
-     
-
+        if (photonView.IsMine)
+        {
+         var inv = GetComponent<PlayerFishingInventory>();
         if (draw)
             inv.SetFloat(0);
         else
@@ -493,22 +641,30 @@ public class PlayerFishing : MonoBehaviourPun
 
     }
 
+
     public void OnSwimStart()
     {
-        if (!photonView.IsMine)
-            return;
-        photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+        if (!photonView.IsMine) return;
+        if (fishingRod.activeSelf)
+        {
+            photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+        }
         _floatDemo.SetActive(false);
         canFish = false;
         _animReel.SetBool("Hook_Reel", false);
         _Btn_FishCast.Play("Default_FishCast");
         forceSlider.SetActive(false);
-        //ToggleZoom_Buttons_Out();
+        ToggleZoom_Buttons_Out();
     }
 
     public void OnSwimEnd()
     {
+        if (!photonView.IsMine) return;
         canFish = true;
+        if (rodHolder.childCount > 1)
+        {
+            photonView.RPC("DrawFishingRod", RpcTarget.All, true);
+        }
     }
 
     public void ToggleCantFish(bool value)
@@ -568,7 +724,9 @@ public class PlayerFishing : MonoBehaviourPun
 
         if (FishingFloat != null)
         {
-            //ToggleZoom_Buttons_Out();
+            r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Drag);
+            r_AudioFishing.StopSound(r_AudioFishing.r_AudioSource_Cast);
+            ToggleZoom_Buttons_Out();
             UpgradeFishingRodText.SetActive(false);
             isDestroyFloat = true;
             isLinebroke = true;
@@ -618,16 +776,75 @@ public class PlayerFishing : MonoBehaviourPun
     // Zoom Camera and Hide Buttons in Fishing
     private void ToggleZoom_Buttons_In()
     {
-        CameraController_.ThridPersonfishingToggleView();
-        HideControllerButtons(false, 86.875f);
+        if (photonView.IsMine)
+        {
+            CameraController_.ThridPersonfishingToggleView();
+            _inputProxy.CameraRotateUI.SetInactive();
+            if (fishingFloat != null && FishingFloat.fish != null && FishingFloat.fish.controller.HealthBar != 0)
+            {
+                transform.LookAtY(fishingFloat.transform);
+            }
+            if (fishingFloat != null && FishingFloat.fish != null && FishingFloat.fish.controller.HealthBar == 0)
+            {
+                _inputProxy.Buttonholster.interactable = false;
+            }
+            HideControllerButtons(false, 86.875f);
+        }
     }
     private void ToggleZoom_Buttons_Out()
     {
-        CameraController_.ThridPersonToggleView();
-        HideControllerButtons(true, 148.8f);
+        if (photonView.IsMine)
+        {
+            CameraController_.ThridPersonToggleView();
+            HideControllerButtons(true, 148.8f);
+            _inputProxy.CameraRotateUI.SetActive();
+            _inputProxy.Buttonholster.interactable = true;
+
+        }
     }
 
+    private void CheckEquipment()
+    {
+        if(_inv.currentBait != null)
+        {
+            IsmissingBait = false;
+        }
+        else
+        {
+            IsmissingBait = true;
+        }
 
+        if (_inv.currentFloat != null)
+        {
+            IsmissingFloat = false;
+        }
+        else
+        {
+            IsmissingFloat = true;
+        }
+
+        //Fishing Logic
+
+        if ((!IsmissingBait && !IsmissingFloat && _inv.currentFloat.previewScale <= 1) || (!IsmissingFloat && _inv.currentFloat.previewScale == 2))
+        {
+            Isfishingfloat = true;
+        }
+        else
+        {
+            if(FishingNotif.activeSelf)
+            {
+                FishingNotif.SetActive(false);
+            }
+            Isfishingfloat = false;
+            FishingNotif.SetActive(true);
+            Invoke("HideFishingNotif", 1f);
+        }
+
+    }
+    private void HideFishingNotif()
+    {
+        FishingNotif.SetActive(false);
+    }
     public void HideControllerButtons(bool isactive, float t)
     {
         foreach (GameObject btn in HiddenButtons)

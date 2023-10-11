@@ -28,17 +28,17 @@ public class ButtonScale : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
             isHighlighted = true;
-        if (scaleCoroutine != null)
-            StopCoroutine(scaleCoroutine);
-        scaleCoroutine = StartCoroutine(ScaleAnimation(targetScale));   
+      //  if (scaleCoroutine != null)
+          //  StopCoroutine(scaleCoroutine);
+      //  scaleCoroutine = StartCoroutine(ScaleAnimation(targetScale));   
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
             isHighlighted = false;
-            if (scaleCoroutine != null)
-                StopCoroutine(scaleCoroutine);
-            scaleCoroutine = StartCoroutine(ScaleAnimation(initialScale));
+            //if (scaleCoroutine != null)
+               // StopCoroutine(scaleCoroutine);
+           // scaleCoroutine = StartCoroutine(ScaleAnimation(initialScale));
        
     }
 

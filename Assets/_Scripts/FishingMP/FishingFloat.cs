@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 // using Mirror;
 using Photon.Pun;
 using Photon.Realtime;
@@ -50,6 +51,11 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public Transform Hook;
 
+    [Header("Audio Source")]
+    public AudioSource r_AudioSource;
+
+    [Header("Float Land Clips")]
+    public List<AudioClip> FloatLandClips;
     [PunRPC]
     void SetFloatUniqueId(int value) => floatUniqueId = value;
     [PunRPC]
@@ -98,6 +104,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
         else
         {
+          
             photonView.RPC("TargetPull", RpcTarget.All);
             //TargetPull();
         }
@@ -128,7 +135,7 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
         }
 
-        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 1.5f || isTouchingGround && fish == null)
+        if (Vector3.Distance(owner._rodEndPoint.position, owner.FishingFloat.transform.position) < 2f || isTouchingGround && fish == null)
         {
             Destroyfloat = true;
         }
@@ -148,6 +155,8 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         inv = owner.GetComponent<PlayerFishingInventory>();
 
         for (int i = 0; i < _floatScriptables.Length; i++)
+        {
+            if (inv.currentFloat != null)
             {
                 if (_floatScriptables[i].uniqueId == inv.currentFloat.previewScale)
                 {
@@ -155,12 +164,56 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     break;
                 }
             }
-      
+        }
+
 
         // Assign your customization variables here ~
-        _ = Instantiate(_scriptable.modelPrefab, transform); // Model
-    }
+        if (photonView.IsMine)
+        {
+            _ = Instantiate(_scriptable.modelPrefab, transform); // Model
+            if (FloatLandClips.Count > 0)
+            {
+                // Generate a random index to select a random clip from the list
+                int randomIndex = Random.Range(0, FloatLandClips.Count);
 
+                // Get the randomly selected AudioClip
+                AudioClip randomClip = FloatLandClips[randomIndex];
+
+                // Set the AudioSource's clip to the randomly selected clip
+                r_AudioSource.clip = randomClip;
+
+                // Play the audio
+                r_AudioSource.Play();
+            }
+            else
+            {
+                Debug.LogError("FloatLandClips list is empty. Add some audio clips to the list.");
+            }
+        }
+
+      
+
+    }
+    public void Update()
+    {
+        if (fish == null)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+            bool isTouchingGround = false;
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Default"))
+                {
+                    isTouchingGround = true;
+                    break;
+                }
+            }
+            if (isTouchingGround && fish == null)
+            {
+                Destroyfloat = true;
+            }
+        }
+    }
     public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
     {
         _interactor.enabled = true;
@@ -189,13 +242,19 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         inv = Owner.GetComponent<PlayerFishingInventory>();
 
-        var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
-        if (feedType == null)
-            return false;
+        if (inv.currentBait != null)
+        {
+            var feedType = inv.currentBait.statEffects.FirstOrDefault(x => x == fish.feedType);
 
-        var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
-        if (waterType == null)
-            return false;
+            if (feedType == null)
+                return false;
+        }
+        if (inv.currentRod != null)
+        {
+            var waterType = inv.currentRod.statEffects.FirstOrDefault(x => x == fish.waterType);
+            if (waterType == null)
+                return false;
+        }
 
 
 
@@ -218,5 +277,5 @@ public class FishingFloat : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     //     _rb.useGravity = false;
     // }
 
-
+   
 }

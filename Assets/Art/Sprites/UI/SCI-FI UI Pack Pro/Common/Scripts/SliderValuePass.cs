@@ -1,21 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
+public class SliderValuePass : MonoBehaviour
+{
+    Text progress;
 
-public class SliderValuePass : MonoBehaviour {
+    void Start()
+    {
+        progress = GetComponent<Text>();
+        StartCoroutine(AnimateProgress(1f, 6f));
+    }
 
-	Text progress;
+    IEnumerator AnimateProgress(float targetProgress, float duration)
+    {
+        float initialProgress = 0f;
+        float elapsedTime = 0f;
 
-	// Use this for initialization
-	void Start () {
-		progress = GetComponent<Text>();
+        while (elapsedTime < duration)
+        {
+            float currentProgress = Mathf.Lerp(initialProgress, targetProgress, elapsedTime / duration);
+            progress.text = Mathf.Round(currentProgress * 100) + "%";
 
-	}
-	
-	public  void UpdateProgress (float content) {
-		progress.text = Mathf.Round( content*100) +"%";
-	}
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
 
-
+        // Ensure the final progress is set accurately
+        progress.text = Mathf.Round(targetProgress * 100) + "%";
+    }
 }

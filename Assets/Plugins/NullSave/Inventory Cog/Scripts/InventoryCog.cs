@@ -35,9 +35,8 @@ namespace NullSave.TOCK.Inventory
         [Tooltip("AllExistingItems")] public List<InventoryItem> AllExisingPublicItems;
 
         [Tooltip("Available game currency")] public float currency;
-        private Dictionary<string, InventoryItem> activeAmmo;
-        private Dictionary<string, InventoryItem> activeWeapon;
-
+        [Tooltip("Available game currency")] public float Fishcurrency;
+        public Dictionary<string, InventoryItem> activeAmmo;
         // Sharing
         [Tooltip("Tag name used to share inventory between multiple sources")] public string shareTag;
 
@@ -101,6 +100,7 @@ namespace NullSave.TOCK.Inventory
         public List<Category> Categories { get; private set; }
 
         public List<CraftingCategory> CraftingCategories { get; private set; }
+        public List<StockItemReference> ItemsStock { get; private set; }
 
         public List<CraftingQueueItem> CraftingQueue { get; private set; }
 
@@ -310,9 +310,6 @@ namespace NullSave.TOCK.Inventory
                 // Setup ammo
                 activeAmmo = new Dictionary<string, InventoryItem>();
 
-                // Setup weapon
-                activeWeapon = new Dictionary<string, InventoryItem>();
-
                 // Setup categories
                 Categories = new List<Category>();
                 if (InventoryDB.Categories != null)
@@ -490,6 +487,7 @@ namespace NullSave.TOCK.Inventory
             int looted = 0;
 
             currency += item.currency;
+            Fishcurrency +=item.currency;
             item.currency = 0;
             if (item.item == null)
             {
@@ -555,8 +553,6 @@ namespace NullSave.TOCK.Inventory
                     if (raiseEvents)
                     {
                         if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                        if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
-
                         onItemAdded?.Invoke(item, orgCount - dropCount);
                     }
                     return dropCount;
@@ -623,21 +619,13 @@ namespace NullSave.TOCK.Inventory
                 {
                     if (GetSelectedAmmo(itemReference.ammoType) == null)
                     {
-                        SetSelectedAmmo(itemReference);
+                        //SetSelectedAmmo(itemReference);
                     }
                 }
-                if (itemReference.itemType == ItemType.Weapon)
-                {
-                    if (GetSelectedAmmo(itemReference.ammoType) == null)
-                    {
-                        SetSelectedAmmo(itemReference);
-                    }
-                }
+       
                 if (raiseEvents)
                 {
                     if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                    if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
-
                     onItemAdded?.Invoke(item, orgCount - dropCount);
                 }
             }
@@ -652,7 +640,6 @@ namespace NullSave.TOCK.Inventory
                 if (raiseEvents)
                 {
                     if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                    if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
                     onItemAdded?.Invoke(item, orgCount - dropCount);
                 }
                 return dropCount;
@@ -661,8 +648,6 @@ namespace NullSave.TOCK.Inventory
             if (raiseEvents)
             {
                 if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
-
                 onItemAdded?.Invoke(item, orgCount - holdOver);
             }
             return 0;
@@ -1236,7 +1221,7 @@ namespace NullSave.TOCK.Inventory
         public void EquipItem(InventoryItem item)
         {
             if (item == null) return;
-
+         
             if (item.itemType == ItemType.Ammo)
             {
 
@@ -1244,17 +1229,7 @@ namespace NullSave.TOCK.Inventory
 
                 return;
             }
-            if (item.itemType == ItemType.Weapon)
-            {
-                InventoryItem t = GetItemInstanceInInventory(item);
-                if (t == null)
-                {
-                    Debug.Log("let me check ");
-                }
-                SetSelectedWeapon(item);
-                EquipFirstOrEmpty(t);
-                return;
-            }
+      
             if (!item.CanEquip) return;
 
             InventoryItem targetItem = GetItemInstanceInInventory(item);
@@ -1278,11 +1253,6 @@ namespace NullSave.TOCK.Inventory
         public void EquipItem(InventoryItem item, string equipPointId)
         {
             if (item.itemType == ItemType.Ammo)
-            {
-                SetSelectedAmmo(item);
-                return;
-            }
-            if (item.itemType == ItemType.Weapon)
             {
                 SetSelectedAmmo(item);
                 return;
@@ -1765,7 +1735,18 @@ namespace NullSave.TOCK.Inventory
             }
             return 0;
         }
+        public int GetEquippedAmmoSpinningCount(string ammoType)
+        {
+            if (activeAmmo.ContainsKey(ammoType))
+            {
+                if(activeAmmo[ammoType].previewScale==2)
+                {
+                    return GetItemTotalCount(activeAmmo[ammoType]);
+                }
 
+            }
+            return 0;
+        }
         /// <summary>
         /// Get the first unused slot id (does not check if there is room for item)
         /// </summary>
@@ -1973,6 +1954,7 @@ namespace NullSave.TOCK.Inventory
 
             return count;
         }
+     
 
         /// <summary>
         /// Get a count of item from all stacks in inventory with minimum condition & rarity
@@ -2537,6 +2519,8 @@ namespace NullSave.TOCK.Inventory
             {
                 if (currency == 0) return 0;
                 return Mathf.Min((int)(currency / item.incrementCost), availCount);
+                if (Fishcurrency == 0) return 0;
+                return Mathf.Min((int)(Fishcurrency / item.incrementCost), availCount);
             }
 
             return availCount;
@@ -2684,15 +2668,6 @@ namespace NullSave.TOCK.Inventory
             return null;
         }
 
-        public InventoryItem GetSelectedWeapon(string ammoType)
-        {
-            if (activeAmmo.ContainsKey(ammoType))
-            {
-                return activeAmmo[ammoType];
-            }
-            return null;
-        }
-
         /// <summary>
         /// Load inventory state from stream
         /// </summary>
@@ -2712,6 +2687,7 @@ namespace NullSave.TOCK.Inventory
             if (version >= 1.2f)
             {
                 currency = stream.ReadFloat();
+                Fishcurrency= stream.ReadFloat();
             }
 
             Items.Clear();
@@ -2848,6 +2824,7 @@ namespace NullSave.TOCK.Inventory
 
             stream.WriteFloat(TotalWeight);
             stream.WriteFloat(currency);
+            stream.WriteFloat(Fishcurrency);
 
             // Write item data
             stream.WriteInt(Items.Count);
@@ -3073,7 +3050,6 @@ namespace NullSave.TOCK.Inventory
                         TotalWeight -= invItem.weight * count;
                         onItemRemoved?.Invoke(item, count);
                         if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                        if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
                     }
                     else if (invItem.canStack)
                     {
@@ -3085,7 +3061,6 @@ namespace NullSave.TOCK.Inventory
                         count -= invItem.CurrentCount;
                         TotalWeight -= invItem.weight * invItem.CurrentCount;
                         if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                        if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
 
                         if (count > 0)
                         {
@@ -3102,8 +3077,6 @@ namespace NullSave.TOCK.Inventory
                         FinalizeRemove(invItem, GetItemCategory(invItem));
                         count -= 1;
                         if (item.itemType == ItemType.Ammo) UpdateAmmoEvents(item);
-                        if (item.itemType == ItemType.Weapon) UpdateWeaponEvents(item);
-
                         if (count > 0)
                         {
                             RemoveItem(GetItemFromInventory(invItem), count, minCondition, minRarity);
@@ -3133,6 +3106,7 @@ namespace NullSave.TOCK.Inventory
 
             // Remove currency
             currency -= item.incrementCost * availCount;
+            Fishcurrency -= item.incrementCost * availCount;
 
             // Apply repair
             item.condition = Mathf.Clamp(item.condition + item.repairIncrement * availCount, 0, 1);
@@ -3146,10 +3120,27 @@ namespace NullSave.TOCK.Inventory
         {
             if (activeAmmo.ContainsKey(item.ammoType))
             {
+                if (GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.ammoType == "Float")
+                {
+                    activeAmmo.Remove("Bait");
+                }
+                if (item.ammoType == "Bait" && GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    return;
+                }
+
                 activeAmmo[item.ammoType] = item;
             }
             else
             {
+                if (GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.ammoType == "Float")
+                {
+                    activeAmmo.Remove("Bait");
+                }
+                if (item.ammoType == "Bait" && GetEquippedAmmoSpinningCount("Float") != 0)
+                {
+                    return;
+                }
                 activeAmmo.Add(item.ammoType, item);
             }
             
@@ -3157,22 +3148,6 @@ namespace NullSave.TOCK.Inventory
             onItemEquipped?.Invoke(item);
 
             UpdateAmmoEvents(item);
-        }
-        public void SetSelectedWeapon(InventoryItem item)
-        {
-            if (activeWeapon.ContainsKey(item.ammoType))
-            {
-                activeWeapon[item.ammoType] = item;
-            }
-            else
-            {
-                activeWeapon.Add(item.ammoType, item);
-            }
-
-
-            onItemEquipped?.Invoke(item);
-
-            UpdateWeaponEvents(item);
         }
 
 
@@ -3267,6 +3242,24 @@ namespace NullSave.TOCK.Inventory
                 }
 
                 if (point.IsItemStored && point.storePoint.Item == item)
+                {
+                    point.UnequipItem();
+                    return;
+                }
+            }
+        }
+
+        public void UnequipBaitItem()
+        {
+            foreach (EquipPoint point in EquipPoints)
+            {
+                if (point.IsItemEquipped && point.Item.equipPoints[0] == "Bait")
+                {
+                    point.UnequipItem();
+                    return;
+                }
+
+                if (point.IsItemStored && point.storePoint.Item.equipPoints[0] == "Bait")
                 {
                     point.UnequipItem();
                     return;
@@ -3815,17 +3808,6 @@ namespace NullSave.TOCK.Inventory
                 if (ep.Item != null && ep.Item.usesAmmo && ep.Item.ammoType == ammoItem.ammoType)
                 {
                     ep.onItemAmmoChanged?.Invoke(ep.Item);
-                }
-            }
-        }
-
-        private void UpdateWeaponEvents(InventoryItem ammoItem)
-        {
-            foreach (EquipPoint ad in EquipPoints)
-            {
-                if (ad.Item != null )
-                {
-                    ad.onItemWeaponChanged?.Invoke(ad.Item);
                 }
             }
         }

@@ -35,7 +35,6 @@ public class r_CreateRoomControllerUI : MonoBehaviour
     public Button OpenWorldBtn;
     public Button MiniGameBtn;
     public Button RaceBtn;
-    public Button OpenWorld_soloBtn;
     public Button QuickMatch;
 
     [Header("Match making panel")]
@@ -43,5 +42,8 @@ public class r_CreateRoomControllerUI : MonoBehaviour
     public Button m_RetourButton;
     public List <GameObject> m_HideGroupSinglePlayer;
     public TMPro.TMP_Text m_LoadingText;
+
+    [Header("Solo Mode UI")]
+    public r_CreateSoloRoomControllerUI r_CreateSoloRoomControllerUI;
     #endregion
 }

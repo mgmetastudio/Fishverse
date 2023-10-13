@@ -2,7 +2,7 @@ using UnityEngine;
 // using Mirror;
 using System.Collections;
 using Photon.Pun;
-
+using NullSave.GDTK.Stats;
 public class FishEntity : MonoBehaviourPun
 {
 
@@ -44,6 +44,7 @@ public class FishEntity : MonoBehaviourPun
     string BaitLocation = "";
     string FloatLocation = "";
     string RodLocation = "";
+    public StatArea StatArea;
     public FishingFloat HookedTo
     {
         get => _hookedTo;
@@ -107,6 +108,10 @@ public class FishEntity : MonoBehaviourPun
         controller.Setup(_scriptable);
         StartCoroutine(BiteLoop());
         Canvas.enabled = false;
+        if (StatArea != null)
+        {
+            StatArea.enabled = false;
+        }
 
     }
 
@@ -239,8 +244,13 @@ public class FishEntity : MonoBehaviourPun
             controller.doNotUpdateTarget = false;
             controller.fearfulness = .0f;
             isDestroyFloat = true;
+            if (StatArea != null)
+            {
+                StatArea.enabled = false;
+            }
+
         }
-        if(HookedTo == null)
+        if (HookedTo == null)
         {
             if (controller.stamina < 0.2)
             {
@@ -321,6 +331,13 @@ public class FishEntity : MonoBehaviourPun
                 }
             }
             // Vector3.Distance(transform.position.WithY(0), HookedTo.Owner._rodEndPoint.position.WithY(0)) < minDist
+            if (StatArea != null)
+            {
+                if (fishHealth.healthBar.value == 0)
+                {
+                    StatArea.enabled = true;
+                }
+            }
             if (controller.iscatched && fishHealth.healthBar.value == 0)
             {
                 HookedTo.Owner._Linebroke.SetBool("Linebroke_Start", false);
@@ -328,7 +345,6 @@ public class FishEntity : MonoBehaviourPun
                 var anim = HookedTo.Owner.GetComponent<PlayerAnimator>();
                 PlayerFishingInventory inv = HookedTo.Owner.GetComponent<PlayerFishingInventory>();
                 Debug.Log("Fish with ID " + controller._scriptable.uniqueId + " caught!");
-
                 anim.FishCatch();
                 if (inv != null && controller != null)
                 {
@@ -499,5 +515,4 @@ public class FishEntity : MonoBehaviourPun
         controller.stamina = targetStamina;
         isStaminaTransitioning = false;
     }
-
 }

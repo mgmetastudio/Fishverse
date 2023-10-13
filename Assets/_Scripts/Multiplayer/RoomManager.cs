@@ -48,11 +48,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void InstantiationPlayer(int index)
     {
-        var spawnedPlayerObj = PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
-        if(_diContainer != null)
-            _diContainer.InjectGameObject(spawnedPlayerObj);
+        if (player_prefab != null)
+        {
+            var spawnedPlayerObj = PhotonNetwork.Instantiate(player_prefab.name, spawn_points[index].position, spawn_points[index].rotation);
 
-        boatController = spawnedPlayerObj.GetComponent<ArcadeVehicleController_Network>();
+            if (_diContainer != null)
+                _diContainer.InjectGameObject(spawnedPlayerObj);
+
+            boatController = spawnedPlayerObj.GetComponent<ArcadeVehicleController_Network>();
+        }
 
     }
     private int GetRandomUnusedSpawnIndex()

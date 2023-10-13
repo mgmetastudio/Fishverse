@@ -4106,6 +4106,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208265306}
   m_CullTransparentMesh: 1
+--- !u!1 &222257019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 222257020}
+  - component: {fileID: 222257021}
+  m_Layer: 0
+  m_Name: Stats Database
+  m_TagString: SoloMapStatsDatabase
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &222257020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222257019}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.41390243, y: -4.195644, z: 8.731453}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 959036064}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &222257021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222257019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37c4ddb247874e469a990ca76e72cfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataSource: 0
+  bundleName: 
+  assetName: 
+  path: 
+  loadOnAwake: 1
+  jsonActionSequences: []
+  attributes: []
+  backgrounds: []
+  classes: []
+  effects: []
+  events: []
+  languages: []
+  perks: []
+  races: []
+  statusConditions: []
+  levelRewards: []
+  customRewards: []
 --- !u!1 &232524555
 GameObject:
   m_ObjectHideFlags: 0
@@ -17241,6 +17302,741 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954033128}
   m_CullTransparentMesh: 0
+--- !u!1 &959036063
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 959036064}
+  - component: {fileID: 959036068}
+  - component: {fileID: 959036070}
+  m_Layer: 0
+  m_Name: '[ Solo Mode Controller ]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &959036064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959036063}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 222257020}
+  m_Father: {fileID: 2011786802}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &959036068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959036063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06c39cc8c756a946a3f07556c2c24e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OpenWorld_soloBtn: {fileID: 365233212}
+  m_Matchmakingpanel: {fileID: 2045283479}
+  m_RetourButton: {fileID: 2045283477}
+  m_HideGroupSinglePlayer:
+  - {fileID: 2065815740}
+  - {fileID: 2065815739}
+  - {fileID: 775044789}
+  - {fileID: 775044790}
+  m_LoadingText: {fileID: 2045283478}
+--- !u!114 &959036070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959036063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a6f098b661eb3439e0579ac7855607, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  register: 1
+  registryKey: Player
+  plugins: []
+  z_display_flags: 4385
+  m_statusConditions: []
+  m_attributeIds: []
+  m_conditionIds:
+  - exhausted
+  statSource:
+    m_stats:
+    - info:
+        id: experience
+        autoGenId: 1
+        title: Experience
+        abbr: XP
+        description: 
+        groupName: 
+        image:
+          sprite: {fileID: 21300000, guid: 111e77bafe288fd47a078aaaa118ce8f, type: 3}
+          source: 1
+          path: Textures\Stats\experience
+          bundleName: 
+          assetName: 
+          z_imageError: 0
+        color: {r: 0.8784314, g: 0.7921569, b: 0.11372549, a: 1}
+        hidden: 0
+        tags: []
+        z_expanded: 0
+      expressions:
+        minimum:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        maximum:
+          m_valueType: 0
+          m_value: 46500
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        value:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        special:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 1
+      regeneration:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        delay:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        rate:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        wholeIncrements: 0
+        z_expanded: 0
+      incrementation:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        incrementWhen: 1 = 0
+        incrementAmount:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 0
+      startMaxed: 0
+      z_expanded: 1
+    - info:
+        id: level
+        autoGenId: 1
+        title: Level
+        abbr: 
+        description: 
+        groupName: 
+        image:
+          sprite: {fileID: 0}
+          source: 0
+          path: 
+          bundleName: 
+          assetName: 
+          z_imageError: 0
+        color: {r: 1, g: 1, b: 1, a: 1}
+        hidden: 0
+        tags: []
+        z_expanded: 0
+      expressions:
+        minimum:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        maximum:
+          m_valueType: 0
+          m_value: 30
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        value:
+          m_valueType: 2
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions:
+          - condition: 330 > experience
+            value: 1
+          - condition: 650 > experience
+            value: 2
+          - condition: 1050 > experience
+            value: 3
+          - condition: 1400 > experience
+            value: 4
+          - condition: 1750 > experience
+            value: 5
+          - condition: 2200 > experience
+            value: 6
+          - condition: 2750 > experience
+            value: 7
+          - condition: 3150 > experience
+            value: 8
+          - condition: 3550 > experience
+            value: 9
+          - condition: 3950 > experience
+            value: 10
+          - condition: 5450 > experience
+            value: 11
+          - condition: 6900 > experience
+            value: 12
+          - condition: 8500 > experience
+            value: 13
+          - condition: 10050 > experience
+            value: 14
+          - condition: 11550 > experience
+            value: 15
+          - condition: 13020 > experience
+            value: 16
+          - condition: 14580 > experience
+            value: 17
+          - condition: 16150 > experience
+            value: 18
+          - condition: 17650 > experience
+            value: 19
+          - condition: 19240 > experience
+            value: 20
+          - condition: 21860 > experience
+            value: 21
+          - condition: 24510 > experience
+            value: 22
+          - condition: 27150 > experience
+            value: 23
+          - condition: 29780 > experience
+            value: 24
+          - condition: 32430 > experience
+            value: 25
+          - condition: 35530 > experience
+            value: 26
+          - condition: 39000 > experience
+            value: 27
+          - condition: 42650 > experience
+            value: 28
+          - condition: 46500 > experience
+            value: 29
+          - condition: 
+            value: 30
+        special:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 1
+      regeneration:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        delay:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        rate:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        wholeIncrements: 0
+        z_expanded: 0
+      incrementation:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        incrementWhen: experience >= xpToLevel
+        incrementAmount:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 0
+      startMaxed: 0
+      z_expanded: 0
+    - info:
+        id: xpBase
+        autoGenId: 1
+        title: XP Base
+        abbr: 
+        description: 
+        groupName: 
+        image:
+          sprite: {fileID: 0}
+          source: 0
+          path: 
+          bundleName: 
+          assetName: 
+          z_imageError: 0
+        color: {r: 1, g: 1, b: 1, a: 1}
+        hidden: 1
+        tags: []
+        z_expanded: 0
+      expressions:
+        minimum:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        maximum:
+          m_valueType: 0
+          m_value: 46500
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        value:
+          m_valueType: 2
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions:
+          - condition: level = 1
+            value: 0
+          - condition: level = 2
+            value: 330
+          - condition: level = 3
+            value: 650
+          - condition: level = 4
+            value: 1050
+          - condition: level = 5
+            value: 1400
+          - condition: level = 6
+            value: 1750
+          - condition: level = 7
+            value: 2200
+          - condition: level = 8
+            value: 2750
+          - condition: level = 9
+            value: 3150
+          - condition: level = 10
+            value: 3550
+          - condition: level = 11
+            value: 3950
+          - condition: level = 12
+            value: 5450
+          - condition: level = 13
+            value: 6900
+          - condition: level = 14
+            value: 8500
+          - condition: level = 15
+            value: 10050
+          - condition: level = 16
+            value: 11550
+          - condition: level = 17
+            value: 13020
+          - condition: level = 18
+            value: 14580
+          - condition: level = 19
+            value: 16150
+          - condition: level = 20
+            value: 17650
+          - condition: level = 21
+            value: 19240
+          - condition: level = 22
+            value: 21860
+          - condition: level = 23
+            value: 24510
+          - condition: level = 24
+            value: 27150
+          - condition: level = 25
+            value: 29780
+          - condition: level = 26
+            value: 32430
+          - condition: level = 27
+            value: 35530
+          - condition: level = 28
+            value: 39000
+          - condition: level = 29
+            value: 42650
+          - condition: 
+            value: 46500
+        special:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 1
+      regeneration:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        delay:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        rate:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        wholeIncrements: 0
+        z_expanded: 0
+      incrementation:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        incrementWhen: 1 = 0
+        incrementAmount:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 0
+      startMaxed: 0
+      z_expanded: 0
+    - info:
+        id: xpToLevel
+        autoGenId: 1
+        title: XP To Level
+        abbr: 
+        description: 
+        groupName: 
+        image:
+          sprite: {fileID: 0}
+          source: 0
+          path: 
+          bundleName: 
+          assetName: 
+          z_imageError: 0
+        color: {r: 1, g: 1, b: 1, a: 1}
+        hidden: 1
+        tags: []
+        z_expanded: 0
+      expressions:
+        minimum:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        maximum:
+          m_valueType: 0
+          m_value: 46500
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        value:
+          m_valueType: 2
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions:
+          - condition: level = 1
+            value: 330
+          - condition: level = 2
+            value: 650
+          - condition: level = 3
+            value: 1050
+          - condition: level = 4
+            value: 1400
+          - condition: level = 5
+            value: 1750
+          - condition: level = 6
+            value: 2200
+          - condition: level = 7
+            value: 2750
+          - condition: level = 8
+            value: 3150
+          - condition: level = 9
+            value: 3550
+          - condition: level = 10
+            value: 3950
+          - condition: level = 11
+            value: 5450
+          - condition: level = 12
+            value: 6900
+          - condition: level = 13
+            value: 8500
+          - condition: level = 14
+            value: 10050
+          - condition: level = 15
+            value: 11550
+          - condition: level = 16
+            value: 13020
+          - condition: level = 17
+            value: 14580
+          - condition: level = 18
+            value: 16150
+          - condition: level = 19
+            value: 17650
+          - condition: level = 20
+            value: 19240
+          - condition: level = 21
+            value: 21860
+          - condition: level = 22
+            value: 24510
+          - condition: level = 23
+            value: 27150
+          - condition: level = 24
+            value: 29780
+          - condition: level = 25
+            value: 32430
+          - condition: level = 26
+            value: 35530
+          - condition: level = 27
+            value: 39000
+          - condition: level = 28
+            value: 42650
+          - condition: 
+            value: 46500
+        special:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 1
+      regeneration:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        delay:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        rate:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        wholeIncrements: 0
+        z_expanded: 0
+      incrementation:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        incrementWhen: 1 = 0
+        incrementAmount:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 0
+      startMaxed: 0
+      z_expanded: 0
+    - info:
+        id: lockInput
+        autoGenId: 1
+        title: Lock Input
+        abbr: 
+        description: 
+        groupName: 
+        image:
+          sprite: {fileID: 0}
+          source: 0
+          path: 
+          bundleName: 
+          assetName: 
+          z_imageError: 0
+        color: {r: 1, g: 1, b: 1, a: 1}
+        hidden: 1
+        tags: []
+        z_expanded: 0
+      expressions:
+        minimum:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        maximum:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        value:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        special:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 1
+      regeneration:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        delay:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        rate:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        wholeIncrements: 0
+        z_expanded: 0
+      incrementation:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        incrementWhen: 1 = 0
+        incrementAmount:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 0
+      startMaxed: 0
+      z_expanded: 0
+    - info:
+        id: xpBoost
+        autoGenId: 1
+        title: XP Boost
+        abbr: 
+        description: 
+        groupName: 
+        image:
+          sprite: {fileID: 0}
+          source: 0
+          path: 
+          bundleName: 
+          assetName: 
+          z_imageError: 0
+        color: {r: 1, g: 1, b: 1, a: 1}
+        hidden: 1
+        tags: []
+        z_expanded: 0
+      expressions:
+        minimum:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        maximum:
+          m_valueType: 0
+          m_value: 3
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        value:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        special:
+          m_valueType: 0
+          m_value: 0
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 1
+      regeneration:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        delay:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        rate:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        wholeIncrements: 0
+        z_expanded: 0
+      incrementation:
+        enabled:
+          value: 0
+          useExpression: 0
+          expression: 1 = 0
+        incrementWhen: 1 = 0
+        incrementAmount:
+          m_valueType: 0
+          m_value: 1
+          m_randomMin: 0
+          m_randomMax: 1
+          m_conditions: []
+        z_expanded: 0
+      startMaxed: 0
+      z_expanded: 0
+  m_stats: []
+  respawnCondition: health = 0
+  savePosition: 1
+  saveRotation: 1
+  respawnModifiers: []
+  saveFilename: demo2d.dat
+  m_preventLevelGain: 0
+  m_raceId: 
+  m_backgroundId: 
+  m_levelId: level
+  m_classId: 
+  selectOptionUI: {fileID: 0}
 --- !u!1 &967386442
 GameObject:
   m_ObjectHideFlags: 0
@@ -28428,7 +29224,7 @@ GameObject:
   - component: {fileID: 1714498953}
   - component: {fileID: 1714498952}
   m_Layer: 0
-  m_Name: '[ Create Room Controller ]'
+  m_Name: '[ Create Multiplayer Room Controller ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28476,16 +29272,16 @@ MonoBehaviour:
   OpenWorldBtn: {fileID: 464655637}
   MiniGameBtn: {fileID: 1792896552}
   RaceBtn: {fileID: 1222294319}
-  OpenWorld_soloBtn: {fileID: 365233212}
   QuickMatch: {fileID: 545228922}
   m_Matchmakingpanel: {fileID: 2045283479}
   m_RetourButton: {fileID: 2045283477}
   m_HideGroupSinglePlayer:
-  - {fileID: 2065815740}
   - {fileID: 2065815739}
   - {fileID: 775044789}
   - {fileID: 775044790}
+  - {fileID: 2065815740}
   m_LoadingText: {fileID: 2045283478}
+  r_CreateSoloRoomControllerUI: {fileID: 959036068}
 --- !u!114 &1714498953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28513,7 +29309,7 @@ MonoBehaviour:
     m_MapImage: {fileID: 1073197116, guid: 076998b3c2f6cd84ca2705b07933ba35, type: 3}
   - m_MapName: Open_World
     m_MapImage: {fileID: 21300000, guid: a4fb6219b98cb4144bdd718c7382e1f7, type: 3}
-  - m_MapName: Open_World
+  - m_MapName: Open_World_Solo
     m_MapImage: {fileID: 21300000, guid: a4fb6219b98cb4144bdd718c7382e1f7, type: 3}
   m_CurrentGameMap: 0
   m_RoomUI: {fileID: 1714498952}
@@ -32210,6 +33006,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905871670}
   m_CullTransparentMesh: 1
+--- !u!1 &1911786605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1911786607}
+  - component: {fileID: 1911786606}
+  m_Layer: 0
+  m_Name: '[ Stats Database Controller ]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1911786606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911786605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c89c15aeabd2a418592e2484f3968a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerCharacterStats: {fileID: 959036070}
+  fileName: PlayerData.dat
+--- !u!4 &1911786607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911786605}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1914572032
 GameObject:
   m_ObjectHideFlags: 0
@@ -34353,6 +35195,7 @@ Transform:
   - {fileID: 695122137}
   - {fileID: 1015145037}
   - {fileID: 1128995693}
+  - {fileID: 959036064}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -34881,6 +35724,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1021238443304311401, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_stats
+      value: 
+      objectReference: {fileID: 959036070}
     - target: {fileID: 1274203706828556750, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -35285,6 +36132,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4342782497163742314, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_text
+      value: '{value}'
+      objectReference: {fileID: 0}
     - target: {fileID: 4505349315341901838, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: app_settings
       value: 
@@ -35423,7 +36274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4660269778406624574, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.4999695
+      value: -12.5
       objectReference: {fileID: 0}
     - target: {fileID: 4660269778460720020, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchorMax.x
@@ -35516,10 +36367,6 @@ PrefabInstance:
     - target: {fileID: 4660269778705477851, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: PlaySound
-      objectReference: {fileID: 0}
-    - target: {fileID: 4660269778742547428, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4660269778775859476, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_SizeDelta.y
@@ -35873,6 +36720,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4660269779431508020, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660269779431508023, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660269779431508023, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660269779431508023, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.087
+      objectReference: {fileID: 0}
     - target: {fileID: 4660269779474570304, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -36015,7 +36878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4660269779619440227, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 29.699188
+      value: 29.699219
       objectReference: {fileID: 0}
     - target: {fileID: 4660269779634090321, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchorMax.x
@@ -36528,6 +37391,10 @@ PrefabInstance:
     - target: {fileID: 5323226391753570189, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718153458176836140, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_Text
+      value: '{value}'
       objectReference: {fileID: 0}
     - target: {fileID: 5745850310685072213, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_IsActive
@@ -37197,6 +38064,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7927049106081202527, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
+      propertyPath: m_stats
+      value: 
+      objectReference: {fileID: 959036070}
     - target: {fileID: 8042234345636370227, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 40.29956
@@ -37251,7 +38122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8463558871203119645, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -23.599365
+      value: -23.599335
       objectReference: {fileID: 0}
     - target: {fileID: 8463558871389371550, guid: b1d76c12f6272e041949b8fda6b913f9, type: 3}
       propertyPath: m_AnchorMax.x

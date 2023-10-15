@@ -10,6 +10,8 @@ using UnityEngine.Events;
 using XpModule;
 using NullSave.TOCK.Inventory;
 using NullSave.TOCK.Stats;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerFishingInventory : MonoBehaviourPun
 {
@@ -104,8 +106,8 @@ public class PlayerFishingInventory : MonoBehaviourPun
     public int highestScore = 0;
     public int Fishcount = 0;
     private OpenWorld_Manager openWorldManager;
-
-
+    public PhotonView localPlayer;
+    private int previousFishCurrency;
     int _money;
     public int Money
     {
@@ -157,6 +159,15 @@ public class PlayerFishingInventory : MonoBehaviourPun
         Manager = GameObject.FindGameObjectWithTag("Manager");
         openWorldManager = FindObjectOfType<OpenWorld_Manager>();
         Camera = Camera.main;
+        previousFishCurrency = (int)inventoryCog.Fishcurrency;
+        if (localPlayer != null)
+        {
+            PhotonView localPlayerPhotonView = PhotonNetwork.GetPhotonView(localPlayer.ViewID);
+            Hashtable defaultPlayerCustomProps = new Hashtable() { { "Score", 0 } };
+            localPlayerPhotonView.Owner.SetCustomProperties(defaultPlayerCustomProps);
+            Debug.Log("Score initialized for local player.");
+        }
+
 
         // SetUpFloat();
 
@@ -472,9 +483,11 @@ public class PlayerFishingInventory : MonoBehaviourPun
     private void Update()
     {
         IsopenMenu = inventoryCog.IsMenuOpen;
+
         if (openWorldManager != null)
         {
             openWorldManager.Addscore((int)inventoryCog.Fishcurrency); // Update score in OpenWorld_Manager
+            UpdateScore();
             openWorldManager.AddFishCaught(fishInv.Count); // Update Total fish caught in OpenWorld_Manager
             int totalScore = openWorldManager.Score;
             photonView.RPC("UpdateHighScoreOnServer", RpcTarget.All, totalScore);
@@ -536,6 +549,41 @@ public class PlayerFishingInventory : MonoBehaviourPun
             return;
 
     }
+    private void UpdateScore()
+    {
+
+        if (localPlayer != null)
+        {
+            PhotonView localPlayerPhotonView = PhotonNetwork.GetPhotonView(localPlayer.ViewID);
+
+            if (localPlayerPhotonView != null)
+            {
+                // Check if the "Score" custom property is available
+                if (localPlayerPhotonView.Owner.CustomProperties.ContainsKey("Score"))
+
+                {
+                    if ((int)inventoryCog.Fishcurrency != previousFishCurrency)
+                    {
+                        int newScore = ((int)inventoryCog.Fishcurrency);
+
+                        // Update the local player's score in custom properties
+                        Hashtable playerCustomProps = new Hashtable() { { "Score", newScore } };
+                        localPlayerPhotonView.Owner.SetCustomProperties(playerCustomProps);
+                        Debug.Log("Score added for local player. New Score: " + newScore);
+
+                        previousFishCurrency = (int)inventoryCog.Fishcurrency;
+                    }
+
+                }
+            }
+            else
+            {
+                Debug.LogError("Local player PhotonView is null.");
+            }
+        }
+
+    }
+
 
     public async void SellAllFish(int amount)
     {

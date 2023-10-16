@@ -5,11 +5,21 @@ using Newtonsoft.Json;
 using TMPro;
 using Zenject;
 using LibEngine.Leaderboard;
+using NaughtyAttributes;
 
 public class LeaderboardManager : MonoBehaviour
 {
     [Inject]
     private LeaderboardController leaderboardController;
+
+    [SerializeField]
+    private ResultsDataDTO testResult;
+
+    [Button]
+    public void AddResultsDataDTO()
+    {
+        leaderboardController.AddMatchResult(testResult);
+    }
 
     public LeaderboardPlayerRecordDTO testCurrentPlayer;
 

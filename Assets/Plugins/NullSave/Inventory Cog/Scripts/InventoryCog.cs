@@ -440,6 +440,12 @@ namespace NullSave.TOCK.Inventory
             TriggerEnter(other.gameObject);
         }
 
+        public void OnTriggerStay(Collider other)
+        {
+            if (!other.enabled) return;
+            TriggerEnter(other.gameObject);
+        }
+
         public void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.enabled) return;

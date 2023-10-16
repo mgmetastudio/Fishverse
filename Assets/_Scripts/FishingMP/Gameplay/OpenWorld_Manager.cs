@@ -31,6 +31,7 @@ public class OpenWorld_Manager : MonoBehaviour
     public int LowScore = 0;
     private bool GameEnded=false;
     private bool solomode=false;
+    public ScoreManager ScoreManager;
     void Start()
     {
         startTime = Time.time;
@@ -111,7 +112,7 @@ public class OpenWorld_Manager : MonoBehaviour
 
     public void EndGame()
     {
-
+        ScoreManager.EndGame();
         ScoreText.text = Score.ToString();
         TotalFishCaughtText.text = TotalFishCaught.ToString();
         GameEndPanel.SetActive(true);
@@ -119,16 +120,14 @@ public class OpenWorld_Manager : MonoBehaviour
         HighScoreText.text = highScore.ToString();
 
         // Determine if the local player has won or lost
-        isLocalPlayerWinner = (Score >= highScore && Score > LowScore )|| PhotonNetwork.CurrentRoom.PlayerCount == 1;
-
-        if (isLocalPlayerWinner)
+        if (ScoreManager.wins==1)
         {
             WinningPanel.SetActive(true);
             LosePanel.SetActive(false);
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[0];
         }
-        else if(highScore == LowScore && Score == highScore)
+        else if(ScoreManager.draws == 1)
         {
             WinningPanel.SetActive(false);
             LosePanel.SetActive(false);

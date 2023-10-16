@@ -16,7 +16,7 @@ namespace NullSave.TOCK.Inventory
         public bool enableTriggers = true;
         public bool enableRaycast;
         public Vector3 raycastOffset;
-        public float maxDistance = 5f;
+        public float maxDistance = 15f;
         public bool enableUIClick = true;
         public RaycastSource raycastSource;
         public LayerMask raycastCulling;
@@ -479,6 +479,8 @@ namespace NullSave.TOCK.Inventory
             if (MerchantEnter(other.GetComponent<InventoryMerchant>())) return;
             if (CraftEnter(other.GetComponent<CraftingArea>())) return;
         }
+
+
 
         public void TriggerExit(GameObject other)
         {

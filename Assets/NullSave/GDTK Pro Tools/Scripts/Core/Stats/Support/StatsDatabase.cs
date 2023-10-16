@@ -94,7 +94,7 @@ namespace NullSave.GDTK.Stats
                 if (Application.isPlaying)
                 {
                     transform.SetParent(null);
-                    DontDestroyOnLoad(gameObject);
+                  //  DontDestroyOnLoad(gameObject);
                 }
 
                 if (dataSource == DataSource.Local)

@@ -70,7 +70,7 @@ public class r_CreateRoomController : MonoBehaviour
         m_RoomUI.RaceBtn.onClick.AddListener(() => { SetupAndCreateRoom(1); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
         m_RoomUI.OpenWorldBtn.onClick.AddListener(() => { SetupAndCreateRoom(2); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
         m_RoomUI.QuickMatch.onClick.AddListener(() => SetupAndCreateRoom(3));
-        m_RoomUI.OpenWorld_soloBtn.onClick.AddListener(() => { SetupAndCreateRoom(3); MatchmakingSolo(); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
+        m_RoomUI.r_CreateSoloRoomControllerUI.OpenWorld_soloBtn.onClick.AddListener(() => { SetupAndCreateRoom(3); MatchmakingSolo(); MixerManager.Instance.UpdateAudioSource(SoundType.WaitingMenu); });
 
         //Change Map Buttons
         m_RoomUI.m_NextGameModeButton.onClick.AddListener(() => { NextGameMap(true); r_AudioController.instance.PlayClickSound(); });

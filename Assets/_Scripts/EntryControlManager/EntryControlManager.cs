@@ -9,10 +9,12 @@ public class EntryControlManager : MonoBehaviour
     [Inject] protected IAuthManager _authManager;
     void Start()
     {
-        if(!_authManager.IsAuthorized(out _))
+        EntryControlManagerUI.E_Panel.SetActive(false);
+        if (!_authManager.IsAuthorized(out _))
         {
            EntryControlManagerUI.E_LoginPanel.SetActive(false);
            EntryControlManagerUI.E_FirstContentPanel.SetActive(true);
+            EntryControlManagerUI.E_Panel.SetActive(true);
         }
         else
         {
@@ -20,15 +22,14 @@ public class EntryControlManager : MonoBehaviour
             EntryControlManagerUI.E_FirstContentPanel.SetActive(false);
             r_AudioController.instance.PlayBackground();
         }
-        EntryControlManagerUI.E_Panel.SetActive(false);
         EntryControlManagerUI.E_Register.onClick.AddListener(() => { Register(); r_AudioController.instance.PlayClickSound(); });
         EntryControlManagerUI.E_Login.onClick.AddListener(() => { Login(); r_AudioController.instance.PlayClickSound(); });
-        EntryControlManagerUI.E_SkipButton.onClick.AddListener(() => { SkipVideo(); r_AudioController.instance.PlayClickSound(); });
+        EntryControlManagerUI.E_SkipButton.onClick.AddListener(() => { r_AudioController.instance.PlayClickSound(); });
 
-        if (EntryControlManagerUI.E_Video != null)
+     /*   if (EntryControlManagerUI.E_Video != null)
         {
             EntryControlManagerUI.E_Video.loopPointReached += OnVideoEnd;
-        }
+        }*/
     }
 
     // Update is called once per frame
@@ -55,7 +56,7 @@ public class EntryControlManager : MonoBehaviour
     private void OnVideoEnd(VideoPlayer vp)
     {
         // This method is called when the video reaches its end
-        SkipVideo();
+       // SkipVideo();
     }
 
 

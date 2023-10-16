@@ -275,9 +275,9 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
         text_best_score.text = best_score.ToString();
 
         isLocalPlayerWinner = (score >= best_score && score > LowScore ) || PhotonNetwork.CurrentRoom.PlayerCount == 1 ;
-
         if (isLocalPlayerWinner)
         {
+            //WIN
             WinningPanel.SetActive(true);
             LosePanel.SetActive(false);
             DrawPanel.SetActive(false);
@@ -285,6 +285,7 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
         }
         else if (best_score == LowScore && score == best_score && LowScore>=0 )
         {
+            //DRAW
             WinningPanel.SetActive(false);
             LosePanel.SetActive(false);
             DrawPanel.SetActive(true);
@@ -292,6 +293,7 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
         }
         else
         {
+            //LOSE
             WinningPanel.SetActive(false);
             LosePanel.SetActive(true);
             DrawPanel.SetActive(false);

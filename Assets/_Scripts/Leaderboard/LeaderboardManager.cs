@@ -3,8 +3,15 @@ using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
+using Zenject;
+using LibEngine.Leaderboard;
+
 public class LeaderboardManager : MonoBehaviour
 {
+    [Inject]
+    private LeaderboardController leaderboardController;
+
+    public LeaderboardPlayerRecordDTO testCurrentPlayer;
 
     public List<LeaderboardEntryDTO> leaderboardData = new List<LeaderboardEntryDTO>();
     string json;
@@ -18,6 +25,8 @@ public class LeaderboardManager : MonoBehaviour
     {
         LoadLeaderboardData();
         CreateLeaderboardUI();
+
+        testCurrentPlayer = leaderboardController.GetScheme();
     }
 
     private void LoadLeaderboardData()

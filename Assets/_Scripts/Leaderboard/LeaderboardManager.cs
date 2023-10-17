@@ -10,7 +10,7 @@ using NaughtyAttributes;
 public class LeaderboardManager : MonoBehaviour
 {
     [Inject]
-    private LeaderboardController leaderboardController;
+    private ILeaderboardController leaderboardController;
 
     [SerializeField]
     private ResultsDataDTO testResult;
@@ -36,15 +36,12 @@ public class LeaderboardManager : MonoBehaviour
     {
         LoadLeaderboardData();
         CreateLeaderboardUI();
-
-        testCurrentPlayer = leaderboardController.GetScheme();
     }
 
     private void LoadLeaderboardData()
     {
         leaderboardData = leaderboardController.GetCollection();
         return;
-
 
         if (MyItemJSONDatabase != null)
         {

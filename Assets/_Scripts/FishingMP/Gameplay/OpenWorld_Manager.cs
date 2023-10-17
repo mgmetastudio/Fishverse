@@ -4,8 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using LibEngine.Leaderboard;
+using Zenject;
+
 public class OpenWorld_Manager : MonoBehaviour
 {
+    [Inject]
+    private ILeaderboardController leaderboardController;
+
     public GameObject GameEndPanel;
     [Header("GameEndPanel Text")]
     [SerializeField] TMP_Text ScoreText;
@@ -45,9 +51,6 @@ public class OpenWorld_Manager : MonoBehaviour
         {
             solomode = true;
         }
- 
-
-
     }
 
     private void StartGame()
@@ -119,6 +122,8 @@ public class OpenWorld_Manager : MonoBehaviour
         Username.text = Fishverse_Core.instance.account_username;
         HighScoreText.text = highScore.ToString();
 
+        MatchResult resultMatch = default;
+
         // Determine if the local player has won or lost
         if (ScoreManager.wins==1)
         {
@@ -126,6 +131,8 @@ public class OpenWorld_Manager : MonoBehaviour
             LosePanel.SetActive(false);
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[0];
+
+            resultMatch = MatchResult.Win;
         }
         else if(ScoreManager.draws == 1)
         {
@@ -133,6 +140,8 @@ public class OpenWorld_Manager : MonoBehaviour
             LosePanel.SetActive(false);
             DrawPanel.SetActive(true);
             ImgWinLose.sprite = Sprites[0];
+
+            resultMatch = MatchResult.Draw;
         }
         else 
         {
@@ -140,10 +149,15 @@ public class OpenWorld_Manager : MonoBehaviour
             LosePanel.SetActive(true);
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[1];
+
+            resultMatch = MatchResult.Lose;
         }
         GameEnded = true;
+
+        var result = new ResultsDataDTO(Score, MatchModes.DuelFishing, resultMatch);
+        leaderboardController.AddMatchResult(result);
     }
-   
+
     IEnumerator SynchronizeStartTime()
     {
         yield return new WaitForSeconds(1.5f);

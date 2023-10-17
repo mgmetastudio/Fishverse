@@ -10,9 +10,17 @@ using Photon.Pun;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using LibEngine.Leaderboard;
+using Zenject;
 
 public class MiniGame_Manager : MonoBehaviourPunCallbacks
 {
+    [Inject]
+    private ILeaderboardController leaderboardController;
+
+    [SerializeField]
+    private MatchModes matchModes;
+
     [Header("Scene Refs:")]
     public ArcadeVehicleController vehicle_controller;
     public ArcadeVehicleNitro vehicle_nitro;
@@ -275,30 +283,43 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
         text_best_score.text = best_score.ToString();
 
         isLocalPlayerWinner = (score >= best_score && score > LowScore ) || PhotonNetwork.CurrentRoom.PlayerCount == 1 ;
+        MatchResult resultMatch = default;
 
         if (isLocalPlayerWinner)
         {
+            //WIN
             WinningPanel.SetActive(true);
             LosePanel.SetActive(false);
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[0];
+
+            resultMatch = MatchResult.Win;
         }
         else if (best_score == LowScore && score == best_score && LowScore>=0 )
         {
+            //DRAW
             WinningPanel.SetActive(false);
             LosePanel.SetActive(false);
             DrawPanel.SetActive(true);
             ImgWinLose.sprite = Sprites[0];
+
+            resultMatch = MatchResult.Draw;
         }
         else
         {
+            //LOSE
             WinningPanel.SetActive(false);
             LosePanel.SetActive(true);
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[1];
+
+            resultMatch = MatchResult.Draw;
         }
 
+        var result = new ResultsDataDTO(score, matchModes, resultMatch);
+        leaderboardController.AddMatchResult(result);
     }
+
     public void UpdateHighScore(int newScore , float time)
     {
        

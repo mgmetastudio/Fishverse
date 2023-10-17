@@ -30,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7373202682849445470}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fb36c85311afb04d8bfc6ec12a0f10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  matchModes: 0
   vehicle_controller: {fileID: 0}
   vehicle_nitro: {fileID: 0}
   panel_game_started: {fileID: 0}
@@ -74,9 +76,16 @@ MonoBehaviour:
   text_scoretime_played: {fileID: 0}
   text_coins: {fileID: 0}
   text_CurrentScore: {fileID: 0}
+  WinningPanel: {fileID: 0}
+  LosePanel: {fileID: 0}
+  DrawPanel: {fileID: 0}
+  ImgWinLose: {fileID: 0}
+  Sprites: []
   score: 0
   ScoreCoins: 0
   best_score: 0
+  LowScore: 0
+  HighTimePlayed: 0
   fishes: 0
   start_time: 120
   time: 120
@@ -196,6 +205,7 @@ MonoBehaviour:
   gameStartUIWait: 0.5
   gameStartControlsWait: 0.5
   gameLeaderBoard: 0
+  timePlayed: 0
   playerToStart: 2
   owner: {fileID: 0}
 --- !u!114 &7892231617639788644
@@ -226,3 +236,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 0}
+--- !u!1001 &2854911585956509044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 1028891350979068417}
+    m_Modifications:
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749698901868761522, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+      propertyPath: m_Name
+      value: SceneContext
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+--- !u!4 &7373202682849445470 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4741250477158003498, guid: f04d5b59270cd8e4c89cdc0764929a20, type: 3}
+  m_PrefabInstance: {fileID: 2854911585956509044}
+  m_PrefabAsset: {fileID: 0}

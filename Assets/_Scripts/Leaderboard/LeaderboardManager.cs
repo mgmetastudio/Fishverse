@@ -3,10 +3,27 @@ using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
+using Zenject;
+using LibEngine.Leaderboard;
+using NaughtyAttributes;
+
 public class LeaderboardManager : MonoBehaviour
 {
+    [Inject]
+    private ILeaderboardController leaderboardController;
 
-    public List<LeaderboardEntryDTO> leaderboardData = new List<LeaderboardEntryDTO>();
+    [SerializeField]
+    private ResultsDataDTO testResult;
+
+    [Button]
+    public void AddResultsDataDTO()
+    {
+        leaderboardController.AddMatchResult(testResult);
+    }
+
+    public LeaderboardPlayerRecordDTO testCurrentPlayer;
+
+    public List<LeaderboardPlayerRecordDTO> leaderboardData = new List<LeaderboardPlayerRecordDTO>();
     string json;
     public GameObject itemPrefab;
     public TextAsset MyItemJSONDatabase;
@@ -14,6 +31,7 @@ public class LeaderboardManager : MonoBehaviour
     public Transform BoatraceLayout;
     public Transform DuelFishingLayout;
     public Transform SurvivalFishingLayout;
+
     void Start()
     {
         LoadLeaderboardData();
@@ -22,13 +40,16 @@ public class LeaderboardManager : MonoBehaviour
 
     private void LoadLeaderboardData()
     {
+        leaderboardData = leaderboardController.GetCollection();
+        return;
+
         if (MyItemJSONDatabase != null)
         {
             json = MyItemJSONDatabase.text;
 
             if (!string.IsNullOrEmpty(json))
             {
-                leaderboardData = JsonConvert.DeserializeObject<List<LeaderboardEntryDTO>>(json);
+                leaderboardData = JsonConvert.DeserializeObject<List<LeaderboardPlayerRecordDTO>>(json);
             }
             else
             {
@@ -52,7 +73,7 @@ public class LeaderboardManager : MonoBehaviour
     private void CreateLeaderBoard_Modes(string Mode,Transform Layout)
     {
         // Sort leaderboardData for Modes
-        leaderboardData.Sort((a, b) => b.LeaderBoardData[Mode]["Score"].CompareTo(a.LeaderBoardData[Mode]["Score"]));
+        leaderboardData.Sort((a, b) => b.LeaderBoardData[Mode].Score.CompareTo(a.LeaderBoardData[Mode].Score));
 
         // Set initial place value
         int place = 0;
@@ -62,33 +83,21 @@ public class LeaderboardManager : MonoBehaviour
         foreach (var entry in leaderboardData)
         {
             // Check if the current player has a different score from the previous player
-            if (entry.LeaderBoardData[Mode]["Score"] != previousScore)
+            if (entry.LeaderBoardData[Mode].Score != previousScore)
             {
                 // If the score is different, increment the place
                 place++;
             }
 
             // Set the "place" value in the entry
-            entry.Place = place;
+            //entry.Place = place;
 
             GameObject item = Instantiate(itemPrefab, Layout);
             LeaderboardItemUI itemUI = item.GetComponent<LeaderboardItemUI>();
-            if(Mode== "BoatRace")
-            {
-                itemUI.SetBoatraceData(entry);
-            }
-            else if(Mode == "SurvivalFishing")
-            {
-                itemUI.SetSurvivalFishingData(entry);
-            }
-            else if (Mode == "DuelFishing")
-            {
-                itemUI.SetDuelFishingData(entry);
-            }
-           
+            itemUI.SetData(entry, Mode, place);
 
             // Update the previousScore for the next player
-            previousScore = entry.LeaderBoardData[Mode]["Score"];
+            previousScore = entry.LeaderBoardData[Mode].Score;
         }
 
     }

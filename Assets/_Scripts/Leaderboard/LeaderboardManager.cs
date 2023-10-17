@@ -31,6 +31,7 @@ public class LeaderboardManager : MonoBehaviour
     public Transform BoatraceLayout;
     public Transform DuelFishingLayout;
     public Transform SurvivalFishingLayout;
+    public Transform OpenWorldSoloLayout;
 
     void Start()
     {
@@ -68,12 +69,31 @@ public class LeaderboardManager : MonoBehaviour
         CreateLeaderBoard_Modes("BoatRace", BoatraceLayout);
         CreateLeaderBoard_Modes("SurvivalFishing", SurvivalFishingLayout);
         CreateLeaderBoard_Modes("DuelFishing", DuelFishingLayout);
+        CreateLeaderBoard_Modes("OpenWorldSolo", OpenWorldSoloLayout);
+  
     }
 
     private void CreateLeaderBoard_Modes(string Mode,Transform Layout)
     {
         // Sort leaderboardData for Modes
-        leaderboardData.Sort((a, b) => b.LeaderBoardData[Mode].Score.CompareTo(a.LeaderBoardData[Mode].Score));
+        leaderboardData.Sort((a, b) => {
+            if (a.LeaderBoardData.ContainsKey(Mode) && b.LeaderBoardData.ContainsKey(Mode))
+            {
+                return b.LeaderBoardData[Mode].Score.CompareTo(a.LeaderBoardData[Mode].Score);
+            }
+            else if (a.LeaderBoardData.ContainsKey(Mode))
+            {
+                return -1;  // b doesn't have Mode, so a should come before b
+            }
+            else if (b.LeaderBoardData.ContainsKey(Mode))
+            {
+                return 1;   // a doesn't have Mode, so b should come before a
+            }
+            else
+            {
+                return 0;   // both a and b don't have Mode, so their order doesn't matter
+            }
+        });
 
         // Set initial place value
         int place = 0;
@@ -82,6 +102,8 @@ public class LeaderboardManager : MonoBehaviour
         float previousScore = int.MaxValue; // Initialize previousScore with a high value
         foreach (var entry in leaderboardData)
         {
+            if (!entry.LeaderBoardData.ContainsKey(Mode))
+                continue;
             // Check if the current player has a different score from the previous player
             if (entry.LeaderBoardData[Mode].Score != previousScore)
             {

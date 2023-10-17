@@ -31,35 +31,38 @@ public class WaitRoomManager : MonoBehaviourPunCallbacks
         // roomCode.SetText(LobbyManager.lastRoomCode);
         roomCode.SetText(PhotonNetwork.CurrentRoom.CustomProperties["RoomCode"].ToString());
         GameMode.SetText(PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString());
-        GameMap.SetText(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString());
         GetComponent<UserListManager>().RefreshUserList();
-        if(PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString()== "Fishing")
-        {
-            PanlesMultiplayer.SetActive(true);
-            imageComponent.sprite = sprites[0];
-            PanlesSolo.SetActive(false);
-        }
-        else if(PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Racing")
-        {
-            PanlesMultiplayer.SetActive(true);
-            imageComponent.sprite = sprites[1];
-            PanlesSolo.SetActive(false);
-        }
-        else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Open World")
-        {
-            PanlesMultiplayer.SetActive(true);
-            imageComponent.sprite = sprites[2];
-            PanlesSolo.SetActive(false);
-        }
 
-        else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMode"].ToString() == "Open World Solo")
+        // Add Game map name
+        if (PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString()== "Open_World_Solo")
         {
+            GameMap.SetText("Open World Fishing");
             PanlesSolo.SetActive(true);
             imageComponent.sprite = sprites[2];
             PanlesMultiplayer.SetActive(false);
             StartCoroutine(LoadSceneAfterDelay_Solo());
         }
-
+        else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString() == "Open_World")
+        {
+            GameMap.SetText("Duel Fishing");
+            PanlesMultiplayer.SetActive(true);
+            imageComponent.sprite = sprites[2];
+            PanlesSolo.SetActive(false);
+        }
+        else if (PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString() == "MiniGame_Racing")
+        {
+            GameMap.SetText("Boat Race");
+            PanlesMultiplayer.SetActive(true);
+            imageComponent.sprite = sprites[1];
+            PanlesSolo.SetActive(false);
+        }
+        else
+        {
+            GameMap.SetText("Survival Boat Fishing");
+            PanlesMultiplayer.SetActive(true);
+            imageComponent.sprite = sprites[0];
+            PanlesSolo.SetActive(false);
+        }
         // await UniTask.WaitForSeconds(5f);
 
         // LoadScene();

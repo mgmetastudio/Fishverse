@@ -38,7 +38,26 @@ public class r_RoomBrowserItem : MonoBehaviour
         if(!m_RoomNameText) return;
 
         m_RoomNameText.text = m_RoomInfo.Name;
-        m_MapNameText.text = m_RoomInfo.CustomProperties["GameMap"].ToString();
+        //m_MapNameText.text = m_RoomInfo.CustomProperties["GameMap"].ToString();
+        if (m_RoomInfo.CustomProperties["GameMap"].ToString() == "Open_World_Solo")
+        {
+            m_MapNameText.SetText("Open World Fishing");
+        }
+        else if (m_RoomInfo.CustomProperties["GameMap"].ToString() == "Open_World")
+        {
+            m_MapNameText.SetText("Duel Fishing");
+
+        }
+        else if (m_RoomInfo.CustomProperties["GameMap"].ToString() == "MiniGame_Racing")
+        {
+            m_MapNameText.SetText("Boat Race");
+
+        }
+        else
+        {
+            m_MapNameText.SetText("Survival Boat Fishing");
+        }
+
         m_GameModeText.text = m_RoomInfo.CustomProperties["GameMode"].ToString();
         m_PlayersText.text = m_RoomInfo.PlayerCount + "/" + m_RoomInfo.MaxPlayers;
     }

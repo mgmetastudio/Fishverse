@@ -12,6 +12,9 @@ public class OpenWorld_Manager : MonoBehaviour
     [Inject]
     private ILeaderboardController leaderboardController;
 
+    [SerializeField]
+    private MatchModes matchMode;
+
     public GameObject GameEndPanel;
     [Header("GameEndPanel Text")]
     [SerializeField] TMP_Text ScoreText;
@@ -154,7 +157,7 @@ public class OpenWorld_Manager : MonoBehaviour
         }
         GameEnded = true;
 
-        var result = new ResultsDataDTO(Score, MatchModes.DuelFishing, resultMatch);
+        var result = new ResultsDataDTO(Score, matchMode, resultMatch);
         leaderboardController.AddMatchResult(result);
     }
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro; // Import the necessary namespace for TextMeshPro
+using LibEngine.Leaderboard;
 
 public class LeaderboardItemUI : MonoBehaviour
 {
@@ -11,38 +12,17 @@ public class LeaderboardItemUI : MonoBehaviour
     [SerializeField] private TMP_Text drawText;
     [SerializeField] private TMP_Text bestScoreText;
 
-    public void SetBoatraceData(LeaderboardEntryDTO entry)
+    public void SetData(LeaderboardPlayerRecordDTO entry, string mode, int place)
     {
-        // Populate the UI text elements with data from the leaderboard entry
-        placeText.text = entry.Place.ToString();
+        placeText.text = place.ToString();
         nickNameText.text = entry.NickName.ToString();
-        scoreText.text = entry.LeaderBoardData["BoatRace"]["Score"].ToString();
-        winText.text = entry.LeaderBoardData["BoatRace"]["Win"].ToString();
-        loseText.text = entry.LeaderBoardData["BoatRace"]["Lose"].ToString();
-        drawText.text = entry.LeaderBoardData["BoatRace"]["Draw"].ToString();
-        bestScoreText.text = entry.LeaderBoardData["BoatRace"]["BestScore"].ToString();
-    }
-    public void SetDuelFishingData(LeaderboardEntryDTO entry)
-    {
-        // Populate the UI text elements with data from the leaderboard entry
-        placeText.text = entry.Place.ToString();
-        nickNameText.text = entry.NickName.ToString();
-        scoreText.text = entry.LeaderBoardData["DuelFishing"]["Score"].ToString();
-        winText.text = entry.LeaderBoardData["DuelFishing"]["Win"].ToString();
-        loseText.text = entry.LeaderBoardData["DuelFishing"]["Lose"].ToString();
-        drawText.text = entry.LeaderBoardData["DuelFishing"]["Draw"].ToString();
-        bestScoreText.text = entry.LeaderBoardData["DuelFishing"]["BestScore"].ToString();
-    }
-    public void SetSurvivalFishingData(LeaderboardEntryDTO entry)
-    {
-        // Populate the UI text elements with data from the leaderboard entry
-        placeText.text = entry.Place.ToString();
-        nickNameText.text = entry.NickName.ToString();
-        scoreText.text = entry.LeaderBoardData["SurvivalFishing"]["Score"].ToString();
-        winText.text = entry.LeaderBoardData["SurvivalFishing"]["Win"].ToString();
-        loseText.text = entry.LeaderBoardData["SurvivalFishing"]["Lose"].ToString();
-        drawText.text = entry.LeaderBoardData["SurvivalFishing"]["Draw"].ToString();
-        bestScoreText.text = entry.LeaderBoardData["SurvivalFishing"]["BestScore"].ToString();
+        var gameModeData = entry.LeaderBoardData[mode];
+
+        scoreText.text = gameModeData.Score.ToString();
+        winText.text = gameModeData.Win.ToString();
+        loseText.text = gameModeData.Lose.ToString();
+        drawText.text = gameModeData.Draw.ToString();
+        bestScoreText.text = gameModeData.BestScore.ToString();
     }
 }
 

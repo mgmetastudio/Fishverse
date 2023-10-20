@@ -27,13 +27,23 @@ public class PlayerSoloController : MonoBehaviour
 
     public int MoneyEarned;
     public int FishCatched;
+    public int Xp;
+
     private int previousFishCurrency;
     private int previousTotalFishCatched;
+    private int previousXp;
     void Start()
     { 
         playerName = Fishverse_Core.instance.account_username;
         PlayerName.text = playerName;
-        PlayerCharacterStats.DataLoad(fileName);
+
+        if (PlayerCharacterStats != null)
+        {
+            //Load Stats
+            PlayerCharacterStats.DataLoad(fileName);
+            previousXp = (int)PlayerCharacterStats.stats["experience"].value;
+        }
+
         if (InventoryCog != null)
         {
             //Load Items
@@ -46,6 +56,20 @@ public class PlayerSoloController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PlayerCharacterStats != null)
+        {
+            if (PlayerCharacterStats.stats.ContainsKey("experience"))
+            {
+                int Xp_ = (int)PlayerCharacterStats.stats["experience"].value;
+
+                if (Xp_ != previousXp)
+                {
+                    // Xp count
+                    AddXpCount(Xp_ - previousXp);
+                    previousXp = Xp_;
+                }
+            }
+        }
         if (InventoryCog != null)
         {
             // Get the current amount of in-game currency (FishCurrency)
@@ -103,5 +127,10 @@ public class PlayerSoloController : MonoBehaviour
     void AddMoneyEarnedCount(int incrementValue)
     {
         MoneyEarned += incrementValue;
+    }
+
+    void AddXpCount(int incrementValue)
+    {
+        Xp += incrementValue;
     }
 }

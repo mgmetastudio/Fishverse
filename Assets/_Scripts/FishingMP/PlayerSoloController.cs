@@ -14,7 +14,7 @@ public class PlayerSoloController : MonoBehaviour
     public PlayerFishing PlayerFishing;
 
     [Header("PlayerCharacterStats")]
-     public PlayerCharacterStats PlayerCharacterStats;
+    public PlayerCharacterStats PlayerCharacterStats;
 
     [Header("File DataBase")]
     [SerializeField]
@@ -52,6 +52,8 @@ public class PlayerSoloController : MonoBehaviour
             previousFishCurrency = (int)InventoryCog.Fishcurrency;
             previousTotalFishCatched = InventoryCog.GetItems("Fishes").Count;
         }
+
+        SetLevel();
     }
 
     // Update is called once per frame
@@ -136,11 +138,19 @@ public class PlayerSoloController : MonoBehaviour
 
     void AddXpCount(int incrementValue)
     {
+        IncrementGameValues(new GameEventsIncrement(xpCount: incrementValue));
         Xp += incrementValue;
+        SetLevel();
     }
 
     private void IncrementGameValues(GameEventsIncrement gameEventsValuesIncrement)
     {
         leaderboardService.AddGameEventsValues(gameEventsValuesIncrement);
+    }
+
+    private void SetLevel()
+    {
+        var level = PlayerCharacterStats.GetCharacterLevel();
+        leaderboardService.AddGameEventsValues(new GameEventsIncrement(setLevel: level));
     }
 }

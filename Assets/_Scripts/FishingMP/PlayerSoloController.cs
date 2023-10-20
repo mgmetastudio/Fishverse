@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using NullSave.TOCK.Inventory;
 using NullSave.GDTK.Stats;
-using System.IO;
-using NullSave.TOCK.Stats;
 
 public class PlayerSoloController : MonoBehaviour
 {
@@ -60,7 +56,8 @@ public class PlayerSoloController : MonoBehaviour
                 // MoneyEarned count
                 if (FishCurrency > previousFishCurrency)
                 {
-                    AddMoneyEarnedCount(FishCurrency - previousFishCurrency);
+                    var incrementValue = FishCurrency - previousFishCurrency;
+                    AddMoneyEarnedCount(incrementValue);
                 }
 
                 previousFishCurrency = FishCurrency;
@@ -78,7 +75,8 @@ public class PlayerSoloController : MonoBehaviour
                 // FishCatched count
                 if (TotalFishCatched > previousTotalFishCatched)
                 {
-                    AddFishCatchCount(TotalFishCatched - previousTotalFishCatched);
+                    var incrementValue = TotalFishCatched - previousTotalFishCatched;
+                    AddFishCatchCount(incrementValue);
                 }
 
                 previousTotalFishCatched = TotalFishCatched;

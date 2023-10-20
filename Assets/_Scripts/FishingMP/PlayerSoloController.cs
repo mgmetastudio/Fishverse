@@ -1,6 +1,8 @@
 using UnityEngine;
 using NullSave.TOCK.Inventory;
 using NullSave.GDTK.Stats;
+using LibEngine.Leaderboard;
+using Zenject;
 
 public class PlayerSoloController : MonoBehaviour
 {
@@ -20,6 +22,9 @@ public class PlayerSoloController : MonoBehaviour
 
     [Header("InventoryCog")]
     public InventoryCog InventoryCog;
+
+    [Inject]
+    private ILeaderboardController leaderboardService;
 
     public int MoneyEarned;
     public int FishCatched;
@@ -95,11 +100,18 @@ public class PlayerSoloController : MonoBehaviour
     }
     void AddFishCatchCount(int incrementValue)
     {
+        IncrementGameValues(new GameEventsIncrement(fishCatched: incrementValue));
         FishCatched += incrementValue;
         
     }
     void AddMoneyEarnedCount(int incrementValue)
     {
+        IncrementGameValues(new GameEventsIncrement(moneyEarned: incrementValue));
         MoneyEarned += incrementValue;
+    }
+
+    private void IncrementGameValues(GameEventsIncrement gameEventsValuesIncrement)
+    {
+        leaderboardService.AddGameEventsValues(gameEventsValuesIncrement);
     }
 }

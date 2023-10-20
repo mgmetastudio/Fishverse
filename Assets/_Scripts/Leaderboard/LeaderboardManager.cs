@@ -14,11 +14,19 @@ public class LeaderboardManager : MonoBehaviour
 
     [SerializeField]
     private ResultsDataDTO testResult;
+    [SerializeField]
+    private GameEventsIncrement gameEventsIncrement;
 
     [Button]
     public void AddResultsDataDTO()
     {
         leaderboardController.AddMatchResult(testResult);
+    }
+
+    [Button]
+    public void AddGameEventsIncrement()
+    {
+        leaderboardController.AddGameEventsValues(gameEventsIncrement);
     }
 
     public LeaderboardPlayerRecordDTO testCurrentPlayer;

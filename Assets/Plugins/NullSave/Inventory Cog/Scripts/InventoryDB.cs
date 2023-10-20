@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NullSave.TOCK.Stats;
 using UnityEngine;
 
 namespace NullSave.TOCK.Inventory

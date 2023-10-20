@@ -26,7 +26,7 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
 
     [Space]
-    [SerializeField] InventoryItem fishBaseItem;
+    [SerializeField] List<InventoryItem> fishBaseItem;
     [SerializeField] Category fishCategory;
     [SerializeField] StatEffect fishWeightEffect;
     // public  XpTracker xpLevel;
@@ -678,25 +678,18 @@ public class PlayerFishingInventory : MonoBehaviourPun
 
         int maxRarity = currentRod.rarity + 1;
 
-        var fishItem = Instantiate(fishBaseItem);
-        fishItem.category = fishCategory;
-
-        fishItem.icon = fishInfo.FishSprite;
-        fishItem.value = fishValue;
-        fishItem.weight = fishLength;
-        fishItem.displayName = fishInfo.FishName;
-        fishItem.rarity = Random.Range(0, maxRarity);
-        fishItem.description = "Sell if in the store to get money and Win the game!";
-        var fishWeight = Instantiate(fishWeightEffect);
-        fishWeight.displayName = fishWeightValue + "cm";
-        fishWeight.description += fishWeight.displayName;
-        fishItem.statEffects.Add(fishWeight);
-        inventoryCog.AddToInventory(fishItem);
-        if (currentBait != null)
+        foreach (InventoryItem fishBaseItem_ in fishBaseItem)
         {
-            inventoryCog.RemoveItem(currentBait, 1);
-        }
+            if (fishBaseItem_.name == fishInfo.FishName)
+            {
+                inventoryCog.AddToInventory(fishBaseItem_);
 
+                if (currentBait != null)
+                {
+                    inventoryCog.RemoveItem(currentBait, 1);
+                }
+            }
+        }
         var xpStat = statsCog.Stats.First(x => x.displayName == "XP");
         xpStat.SetValue(xpStat.CurrentValue + fishValue);
 

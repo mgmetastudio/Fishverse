@@ -2707,11 +2707,17 @@ namespace NullSave.TOCK.Inventory
                 {
                     Debug.Log("Cannot find:" + baseItem);
                 }
+                
                 InventoryItem item = Instantiate(GetItemByName(itemName));
-                item.name = itemName;
-                item.Initialize(this);
-                item.StateLoad(stream, this);
-                Items.Add(item);
+                if (item != null)
+                {
+                    item.name = itemName;
+                    item.Initialize(this);
+                    item.StateLoad(stream, this);
+                    Items.Add(item);
+                }
+
+
             }
 
             if (version >= 1.4f)

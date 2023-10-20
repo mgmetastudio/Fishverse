@@ -25,6 +25,7 @@ public class FishAIController : MonoBehaviourPun
     private bool isStaminaBarStarted = true;
     private FishEntity fishEntity;
     [SerializeField] bool ispulling=false;
+    private float Staminabarspeed=.12f;
     private void Start()
     {
         StaminaBar = 0.5f;
@@ -168,51 +169,51 @@ public class FishAIController : MonoBehaviourPun
         }
         if (fishEntity.HookedTo != null)
         {
-            if (pullForce > .0f && fishEntity.HookedTo.Owner.isfishing)
+            if (pullForce > .0f && fishEntity.HookedTo.Owner.isfishing )
             {
                 pullForce -= frameTime * 1.6f;
-                if (!isUpgradeFishingRod)
+                if (!isUpgradeFishingRod && fishEntity.HookedTo.Owner.FishReelingSafeSpot.IsReelingInsafeSpot)
                 {
                     HealthBar -= frameTime * .12f;
-                    stamina -= frameTime * .2f;
+                    stamina -= frameTime * .6f;
                 }
-                StaminaBar -= frameTime * .3f;
+                StaminaBar -= frameTime * (.3f + Staminabarspeed);
                 isStaminaBarStarted = false;
-                if (StaminaBar < 0.25 && stamina < 0.60)
+                if (StaminaBar < 0.25 && stamina < 0.95)
                 {
-                    StaminaBar = ExponentialDecrease(StaminaBar, 0.27f, 8f, 1.2f); // Adjust exponent as needed
-                    if (!isUpgradeFishingRod) { HealthBar -= frameTime * .135f; }
+                    StaminaBar = ExponentialDecrease(StaminaBar, 0.27f , 8f, 1.2f); // Adjust exponent as needed
+                    if (!isUpgradeFishingRod && fishEntity.HookedTo.Owner.FishReelingSafeSpot.IsReelingInsafeSpot) { HealthBar -= frameTime * .135f ; }
 
                 }
 
                 if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina < 0.85)
                 {
-                    if (!isUpgradeFishingRod) { HealthBar -= frameTime * .145f; }
+                    if (!isUpgradeFishingRod && fishEntity.HookedTo.Owner.FishReelingSafeSpot.IsReelingInsafeSpot) { HealthBar -= frameTime * .145f; }
                     StaminaBar += frameTime * .10f;
                 }
             }
 
             else
             {
-                if (StaminaBar >= 0.77 && stamina != 1 && stamina < 8)
+                if (StaminaBar >= 0.77 && stamina < 1)
                 {
-                    StaminaBar = ExponentialIncrease(StaminaBar, 0.27f, 25f);
-                    if (!isUpgradeFishingRod) { HealthBar -= frameTime * .19f; }
+                    StaminaBar = ExponentialIncrease(StaminaBar, 0.27f , 25f);
+                    if (!isUpgradeFishingRod && fishEntity.HookedTo.Owner.FishReelingSafeSpot.IsReelingInsafeSpot) { HealthBar -= frameTime * .19f; }
                 }
                 if (StaminaBar > 0.4 && StaminaBar < 0.6 && stamina != 1 && stamina < 8)
                 {
-                    StaminaBar -= frameTime * .3f;
+                    StaminaBar -= frameTime * .3f ;
                 }
 
                 stamina += frameTime * .3f;
 
                 if (!isStaminaBarStarted)
                 {
-                    StaminaBar += frameTime * .5f;
+                    StaminaBar += frameTime * .5f ;
                 }
                 else if (doNotUpdateTarget && isStaminaBarStarted)
                 {
-                    StaminaBar += frameTime * .4f;
+                    StaminaBar += frameTime * .4f ;
                 }
 
             }
@@ -260,13 +261,13 @@ public class FishAIController : MonoBehaviourPun
         }
        // transform.forward = movementVector;
         Vector3 movement;
-        if (stamina > 0.2)
+        if (HealthBar != 0 && stamina > 0.2)
         {
             movement = movementVector * stamina;
         }
         else if (HealthBar != 0)
         { movement = movementVector * stamina_move; }
-        else 
+        else  
         {
             movement = movementVector * 0f;
         }

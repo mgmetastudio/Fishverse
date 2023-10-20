@@ -114,6 +114,8 @@ public class PlayerFishing : MonoBehaviourPun
     InputProxy _inputProxy;
     [Header("Audio Fishing ")]
     public r_AudioFishing r_AudioFishing;
+    [Header("FishReelingSafeSpot Script")]
+    public FishReelingSafeSpot FishReelingSafeSpot;
     [PunRPC]
     void SetFishingFloat(int value)
     {

@@ -24,6 +24,7 @@ public class FishReelingSafeSpot : MonoBehaviour
     public float maxScale = 1.1f;
     public float minMultiplier = 1.2f;
     public float maxMultiplier = 3.7f;
+    public bool IsReelingInsafeSpot =false;
     private void Start()
     {
         // Initialize the XCounterText as disabled.
@@ -82,7 +83,7 @@ public class FishReelingSafeSpot : MonoBehaviour
                         if (spriteBounds.Intersects(barBounds))
                         {
                             isInsideCondition = true;
-
+                            IsReelingInsafeSpot = true;
                             // Calculate the target scale based on how far the sprite is from the bar.
                             float targetScale = Mathf.Lerp(barScale, 1.1f, barScaleSpeed * Time.deltaTime);
 
@@ -110,6 +111,7 @@ public class FishReelingSafeSpot : MonoBehaviour
                         else
                         {
                             isInsideCondition = false;
+                            IsReelingInsafeSpot = false;
                             // Calculate the target scale for the bar.
                             float targetScale = PlayerFishing.FishingFloat.fish.controller._scriptable.SafeReelingSpot;
 

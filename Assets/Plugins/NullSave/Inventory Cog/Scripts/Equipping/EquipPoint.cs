@@ -131,6 +131,8 @@ namespace NullSave.TOCK.Inventory
                 Debug.Log(name + ".EquipItem requested item .canEquip = false; ignoring request");
                 return;
             }
+            // Check if item is currently equipped
+            if (item == Item) return;
             //if(Item.e)
             if (Inventory.activeAmmo.ContainsKey(item.ammoType))
             {
@@ -181,8 +183,7 @@ namespace NullSave.TOCK.Inventory
                 }
                 Inventory.activeAmmo.Add(item.ammoType, item);
             }
-            // Check if item is currently equipped
-            if (item == Item) return;
+
 
             int insertIndex = -1;
 

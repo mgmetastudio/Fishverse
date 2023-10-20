@@ -7079,6 +7079,7 @@ MonoBehaviour:
   _Linebroke: {fileID: 0}
   CameraController_: {fileID: 7482881158607771775}
   r_AudioFishing: {fileID: 7143780270694696952}
+  FishReelingSafeSpot: {fileID: 2888791061591998189}
 --- !u!114 &5683908539426016800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7132,7 +7133,34 @@ MonoBehaviour:
   inventoryCog: {fileID: 7673373076513939534}
   InventoryMerchant: {fileID: 0}
   statsCog: {fileID: 5725039192018758667}
-  fishBaseItem: {fileID: 11400000, guid: 7b9893c622e907443a2240f853fc7a2f, type: 2}
+  fishBaseItem:
+  - {fileID: 11400000, guid: dd26745a399a8c54d935184402026486, type: 2}
+  - {fileID: 11400000, guid: 75f410817a7b265429da8bb527836b2a, type: 2}
+  - {fileID: 11400000, guid: 7b9893c622e907443a2240f853fc7a2f, type: 2}
+  - {fileID: 11400000, guid: 20f2daaaeae99db439f788805c292606, type: 2}
+  - {fileID: 11400000, guid: 6e52f6ee58c17444ca3d2de0805f201b, type: 2}
+  - {fileID: 11400000, guid: c731d786b12cc754484c40af63ae1a05, type: 2}
+  - {fileID: 11400000, guid: 12b9ce8718c9bda4389ab4879a16fb54, type: 2}
+  - {fileID: 11400000, guid: 84c847989ba46824c85555d2fc632fd0, type: 2}
+  - {fileID: 11400000, guid: ff996dda2cf5c714f82fda928eb7033a, type: 2}
+  - {fileID: 11400000, guid: 57b120f0406f1c843babf7310f43433b, type: 2}
+  - {fileID: 11400000, guid: 0cddf76f05e0fa54b8767fb6edbef264, type: 2}
+  - {fileID: 11400000, guid: 99e7f0b286582a84d9fd98186e9d6f9a, type: 2}
+  - {fileID: 11400000, guid: a8f20623071192f499741b92817a7f2b, type: 2}
+  - {fileID: 11400000, guid: 7a8930c906fc3d84bb68aa45d3f319c7, type: 2}
+  - {fileID: 11400000, guid: 6ee3d7528802d014a82aa2c2d427a6e1, type: 2}
+  - {fileID: 11400000, guid: aea6c6d5b986c884e850734f3fb4baff, type: 2}
+  - {fileID: 11400000, guid: 9b2137d87b51b064aa0b04c11ff26a87, type: 2}
+  - {fileID: 11400000, guid: 854cd60afc156e4458c4401ee1982508, type: 2}
+  - {fileID: 11400000, guid: c8956a804db1b3646b45d05b22299379, type: 2}
+  - {fileID: 11400000, guid: 1378e1d53a5b15d4080e8c553b336671, type: 2}
+  - {fileID: 11400000, guid: bacc2db9af913cb41ae8a285c45a1e12, type: 2}
+  - {fileID: 11400000, guid: 00dce31ae3a409c418e72cc6ba4017b7, type: 2}
+  - {fileID: 11400000, guid: 3176fc01efeca774794eb6eb1d5c1ef8, type: 2}
+  - {fileID: 11400000, guid: 549f3f4d2f677234bb01dab2f3d621dd, type: 2}
+  - {fileID: 11400000, guid: 234788743c5e05044acc4dc988df7398, type: 2}
+  - {fileID: 11400000, guid: 9102f5c45b4f5554ebf9e704fd3ea460, type: 2}
+  - {fileID: 11400000, guid: 9fa58c6dcc56dea49a3908e0b427136b, type: 2}
   fishCategory: {fileID: 11400000, guid: 6b1a8ad9d86c2674fb0c2fa5a558dab8, type: 2}
   fishWeightEffect: {fileID: 11400000, guid: be78ab27e449cb74484a93ba12b35751, type: 2}
   GamePlayUI: {fileID: 8265000523226458997}
@@ -8257,6 +8285,7 @@ MonoBehaviour:
   maxScale: 1.1
   minMultiplier: 1.2
   maxMultiplier: 3.7
+  IsReelingInsafeSpot: 0
 --- !u!114 &6356358348395117620
 MonoBehaviour:
   m_ObjectHideFlags: 0

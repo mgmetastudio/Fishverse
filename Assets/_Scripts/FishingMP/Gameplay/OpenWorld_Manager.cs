@@ -50,7 +50,7 @@ public class OpenWorld_Manager : MonoBehaviour
 
         // Only the master client starts the game
         StartGame();
-        if((string)PhotonNetwork.CurrentRoom.CustomProperties["GameMode"] == "Open World Solo")
+        if(PhotonNetwork.CurrentRoom.CustomProperties["GameMap"].ToString() == "Open_World_Solo")
         {
             solomode = true;
         }
@@ -118,7 +118,10 @@ public class OpenWorld_Manager : MonoBehaviour
 
     public void EndGame()
     {
-        ScoreManager.EndGame();
+        if (ScoreManager != null)
+        {
+            ScoreManager.EndGame();
+        }
         ScoreText.text = Score.ToString();
         TotalFishCaughtText.text = TotalFishCaught.ToString();
         GameEndPanel.SetActive(true);
@@ -126,34 +129,36 @@ public class OpenWorld_Manager : MonoBehaviour
         HighScoreText.text = highScore.ToString();
 
         MatchResult resultMatch = default;
-
-        // Determine if the local player has won or lost
-        if (ScoreManager.wins==1)
+        if (ScoreManager != null)
         {
-            WinningPanel.SetActive(true);
-            LosePanel.SetActive(false);
-            DrawPanel.SetActive(false);
-            ImgWinLose.sprite = Sprites[0];
+            // Determine if the local player has won or lost
+            if (ScoreManager.wins == 1)
+            {
+                WinningPanel.SetActive(true);
+                LosePanel.SetActive(false);
+                DrawPanel.SetActive(false);
+                ImgWinLose.sprite = Sprites[0];
 
-            resultMatch = MatchResult.Win;
-        }
-        else if(ScoreManager.draws == 1)
-        {
-            WinningPanel.SetActive(false);
-            LosePanel.SetActive(false);
-            DrawPanel.SetActive(true);
-            ImgWinLose.sprite = Sprites[0];
+                resultMatch = MatchResult.Win;
+            }
+            else if (ScoreManager.draws == 1)
+            {
+                WinningPanel.SetActive(false);
+                LosePanel.SetActive(false);
+                DrawPanel.SetActive(true);
+                ImgWinLose.sprite = Sprites[0];
 
-            resultMatch = MatchResult.Draw;
-        }
-        else 
-        {
-            WinningPanel.SetActive(false);
-            LosePanel.SetActive(true);
-            DrawPanel.SetActive(false);
-            ImgWinLose.sprite = Sprites[1];
+                resultMatch = MatchResult.Draw;
+            }
+            else
+            {
+                WinningPanel.SetActive(false);
+                LosePanel.SetActive(true);
+                DrawPanel.SetActive(false);
+                ImgWinLose.sprite = Sprites[1];
 
-            resultMatch = MatchResult.Lose;
+                resultMatch = MatchResult.Lose;
+            }
         }
         GameEnded = true;
 

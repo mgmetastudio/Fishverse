@@ -2,6 +2,7 @@ using UnityEngine;
 using NullSave.TOCK.Inventory;
 using NullSave.GDTK.Stats;
 using LibEngine.Leaderboard;
+using System.Collections.Generic;
 using Zenject;
 
 public class PlayerSoloController : MonoBehaviour
@@ -22,10 +23,12 @@ public class PlayerSoloController : MonoBehaviour
 
     [Header("InventoryCog")]
     public InventoryCog InventoryCog;
+    [Header("Canvas Control")]
+    public List<GameObject> CanvasControl;
 
     [Inject]
     private ILeaderboardController leaderboardService;
-
+    public ControlSwitch ControlSwitch;
     public int MoneyEarned;
     public int FishCatched;
     public int Xp;
@@ -37,7 +40,7 @@ public class PlayerSoloController : MonoBehaviour
     { 
         playerName = Fishverse_Core.instance.account_username;
         PlayerName.text = playerName;
-
+        ControlSwitch = FindObjectOfType<ControlSwitch>();
         if (PlayerCharacterStats != null)
         {
             //Load Stats
@@ -120,6 +123,23 @@ public class PlayerSoloController : MonoBehaviour
                 if (PlayerFishing.FishingFloat.fish.controller.iscatched)
                 {
                     PlayerCharacterStats.DataSave(fileName);
+                }
+            }
+        }
+        if (ControlSwitch != null)
+        {
+            if (ControlSwitch.controllerToToggle.enabled)
+            {
+                foreach (GameObject obj in CanvasControl)
+                {
+                    obj.SetActive(false);
+                }
+            }
+            else
+            {
+                foreach (GameObject obj in CanvasControl)
+                {
+                    obj.SetActive(true);
                 }
             }
         }

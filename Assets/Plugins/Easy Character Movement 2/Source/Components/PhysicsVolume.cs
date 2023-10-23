@@ -115,7 +115,7 @@ namespace EasyCharacterMovement
 
         protected virtual void OnAwake()
         {
-            boxCollider.isTrigger = true;
+           // boxCollider.isTrigger = true;
         }
 
         #endregion

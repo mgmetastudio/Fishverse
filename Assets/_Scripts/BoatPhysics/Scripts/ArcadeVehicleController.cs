@@ -216,7 +216,26 @@ public class ArcadeVehicleController : MonoBehaviour
         }
         else { return false; }
     }
-  
+    public bool CheckGround(LayerMask drivableSurface) //checks for if vehicle is grounded or not
+    {
+       
+        var maxdistance = 2f;
+
+        if (GroundCheck == groundCheck.rayCast)
+        {
+            if (Physics.Raycast(rb.position, Vector3.down, out hit, maxdistance, drivableSurface))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+   
+        else { return false; }
+    }
     private void OnDrawGizmos()
     {
         //debug gizmos

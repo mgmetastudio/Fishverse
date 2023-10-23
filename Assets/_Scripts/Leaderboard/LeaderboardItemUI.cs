@@ -11,6 +11,7 @@ public class LeaderboardItemUI : MonoBehaviour
     [SerializeField] private TMP_Text loseText;
     [SerializeField] private TMP_Text drawText;
     [SerializeField] private TMP_Text bestScoreText;
+    [SerializeField] public RectTransform FishCaughtsRectTransform;
 
     public void SetData(LeaderboardPlayerRecordDTO entry, string mode, int place)
     {
@@ -18,11 +19,24 @@ public class LeaderboardItemUI : MonoBehaviour
         nickNameText.text = entry.NickName.ToString();
         var gameModeData = entry.LeaderBoardData[mode];
 
-        scoreText.text = gameModeData.Score.ToString();
-        winText.text = gameModeData.Win.ToString();
-        loseText.text = gameModeData.Lose.ToString();
-        drawText.text = gameModeData.Draw.ToString();
-        bestScoreText.text = gameModeData.BestScore.ToString();
+        if(mode== "OpenWorldSolo")
+        {
+            scoreText.text = gameModeData.MoneyEarned.ToString();
+            bestScoreText.text = gameModeData.Level.ToString();
+            winText.text = gameModeData.XpCount.ToString();
+            FishCaughtsRectTransform.anchoredPosition = new Vector2(-129f, FishCaughtsRectTransform.anchoredPosition.y);
+            loseText.text = gameModeData.FishCatched.ToString();
+            drawText.text = "";
+        }
+        else
+        {
+            scoreText.text = gameModeData.Score.ToString();
+            winText.text = gameModeData.Win.ToString();
+            loseText.text = gameModeData.Lose.ToString();
+            drawText.text = gameModeData.Draw.ToString();
+            bestScoreText.text = gameModeData.BestScore.ToString();
+        }
+
     }
 }
 

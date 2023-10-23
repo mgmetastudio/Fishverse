@@ -26,6 +26,8 @@ public class ControlSwitch : MonoBehaviour
     [SerializeField] public GameObject Joystick;
     CMFirstPersonCharacter _player;
     private bool isTouchingSand = false;
+    private bool StartDocksCollider = false;
+    [SerializeField] public Collider DocksCollider;
 
     void Start()
     {
@@ -83,6 +85,10 @@ public class ControlSwitch : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (!boatView.IsMine) return;
+        if (StartDocksCollider)
+        {
+            DocksCollider.enabled = false;
+        }
         if (controllerToToggle.enabled)
         {
             if (other.CompareTag("Ground"))
@@ -90,7 +96,7 @@ public class ControlSwitch : MonoBehaviour
                 Debug.Log("Is Touching Ground");
                 isTouchingSand = true;
             }
-            
+
         }
         if (!playerMask.Includes(other.gameObject.layer)) return;
 
@@ -98,7 +104,7 @@ public class ControlSwitch : MonoBehaviour
         {
             promptBtn.SetActive();
         }
-        
+
     }
 
     void OnTriggerExit(Collider other)
@@ -140,6 +146,7 @@ public class ControlSwitch : MonoBehaviour
         {
             return;
         }
+        StartDocksCollider = true;
         _player.StopSprinting();
         _player.SetMovementDirection(Vector3.zero);
         _player.handleInput = false;

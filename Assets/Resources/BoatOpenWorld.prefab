@@ -25008,6 +25008,7 @@ GameObject:
   - component: {fileID: 6647410165295620386}
   - component: {fileID: 6647410165295620384}
   - component: {fileID: 8558736947747382495}
+  - component: {fileID: 5490044081179802217}
   m_Layer: 0
   m_Name: EnterTrigger
   m_TagString: Untagged
@@ -25072,6 +25073,19 @@ MonoBehaviour:
   exitText: Exit Boat
   inputKey: 102
   Joystick: {fileID: 2266812046752269531}
+--- !u!65 &5490044081179802217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647410165295620387}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.49, y: 1.5991037, z: 3.39}
+  m_Center: {x: -3.02, y: -0.13868591, z: -0.5}
 --- !u!1 &6647410165301894322
 GameObject:
   m_ObjectHideFlags: 0

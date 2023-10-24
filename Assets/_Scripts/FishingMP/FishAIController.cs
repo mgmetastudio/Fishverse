@@ -25,7 +25,7 @@ public class FishAIController : MonoBehaviourPun
     private bool isStaminaBarStarted = true;
     private FishEntity fishEntity;
     [SerializeField] bool ispulling=false;
-    private float Staminabarspeed=.12f;
+    private float Staminabarspeed=.34f;
     private void Start()
     {
         StaminaBar = 0.5f;

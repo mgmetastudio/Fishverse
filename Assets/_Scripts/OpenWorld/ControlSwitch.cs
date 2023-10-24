@@ -160,9 +160,10 @@ public class ControlSwitch : MonoBehaviour
         _player.SetMovementDirection(Vector3.zero);
         _player.handleInput = false;
         controllerToToggle.enabled = true;
-        _player.gameObject.SetActive(false);
+        _player.transform.Find("GeometryThirdPerson").SetActive(false);
         _player.transform.SetParent(playerSitPos, true);
         _player.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        _player.transform.Find("Generated Foots Origin").SetActive(false);
 
         cam.Priority = 100;
         Joystick.SetActive(true);
@@ -178,7 +179,8 @@ public class ControlSwitch : MonoBehaviour
         }
         FadeAnim.gameObject.SetActive(true);
         Fisher.gameObject.SetActive(false);
-        _player.gameObject.SetActive(true);
+        _player.transform.Find("GeometryThirdPerson").SetActive(true);
+        _player.transform.Find("Generated Foots Origin").SetActive(true);
         _player.handleInput = true;
         controllerToToggle.enabled = false;
 

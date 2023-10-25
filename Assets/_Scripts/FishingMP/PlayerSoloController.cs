@@ -4,6 +4,7 @@ using NullSave.GDTK.Stats;
 using LibEngine.Leaderboard;
 using System.Collections.Generic;
 using Zenject;
+using System.IO;
 
 public class PlayerSoloController : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class PlayerSoloController : MonoBehaviour
     [Header("Canvas Control")]
     public List<GameObject> CanvasControl;
 
+    string relativePath = "InventoryDB.sav";
+    string fullPath;
+
     [Inject]
     private ILeaderboardController leaderboardService;
     public ControlSwitch ControlSwitch;
@@ -37,7 +41,15 @@ public class PlayerSoloController : MonoBehaviour
     private int previousTotalFishCatched;
     private int previousXp;
     void Start()
-    { 
+    {
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        fullPath = Path.Combine(Application.persistentDataPath, relativePath);
+#elif UNITY_IOS && !UNITY_EDITOR
+        fullPath = Path.Combine(Application.persistentDataPath, relativePath);
+#else
+        fullPath = Path.Combine(Application.dataPath, relativePath);
+#endif
         playerName = Fishverse_Core.instance.account_username;
         PlayerName.text = playerName;
         ControlSwitch = FindObjectOfType<ControlSwitch>();
@@ -51,7 +63,7 @@ public class PlayerSoloController : MonoBehaviour
         if (InventoryCog != null)
         {
             //Load Items
-            InventoryCog.InventoryStateLoad("InventoryDB.sav");
+            InventoryCog.InventoryStateLoad(fullPath);
             previousFishCurrency = (int)InventoryCog.Fishcurrency;
             previousTotalFishCatched = InventoryCog.GetItems("Fishes").Count;
         }
@@ -85,7 +97,7 @@ public class PlayerSoloController : MonoBehaviour
             if (FishCurrency != previousFishCurrency)
             {
                 // Save the game state
-                InventoryCog.InventoryStateSave("InventoryDB.sav");
+                InventoryCog.InventoryStateSave(fullPath);
 
                 // MoneyEarned count
                 if (FishCurrency > previousFishCurrency)
@@ -104,7 +116,7 @@ public class PlayerSoloController : MonoBehaviour
             if (TotalFishCatched != previousTotalFishCatched)
             {
                 // Save the game state
-                InventoryCog.InventoryStateSave("InventoryDB.sav");
+                InventoryCog.InventoryStateSave(fullPath);
 
                 // FishCatched count
                 if (TotalFishCatched > previousTotalFishCatched)

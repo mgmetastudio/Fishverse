@@ -19,7 +19,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [Inject]
     private DiContainer _diContainer;
     public ArcadeVehicleController_Network boatController;
-
+    [Header("Boat For Open World Solo")]
+    public GameObject Boat;
+    public Transform Boatspawn_point;
     private void Start()
     {
         GetComponent<UserListManager>().RefreshUserList();
@@ -28,7 +30,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             return;
         }
-
         // Create a copy of the spawn points list for randomization
         availableSpawnPoints.AddRange(spawn_points);
 
@@ -42,6 +43,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
                 photonView.RPC("InstantiationPlayer", pl, randomIndex);
                 //index++;
             }
+        }
+
+        //Add Boat for open world solo
+        if (Boat != null)
+        {
+            PhotonNetwork.Instantiate(Boat.name, Boatspawn_point.position, Boatspawn_point.rotation);
         }
     }
 

@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using EasyCharacterMovement;
+using DG.Tweening;
 
 public class ControlSwitch : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class ControlSwitch : MonoBehaviour
     [SerializeField] public GameObject Joystick;
     CMFirstPersonCharacter _player;
     private bool isTouchingSand = false;
+    private bool StartDocksCollider = false;
+    [SerializeField] public Collider DocksCollider;
+    [SerializeField] public GameObject Fisher;
+    public Animator FadeAnim; 
+
 
     void Start()
     {
@@ -34,6 +40,8 @@ public class ControlSwitch : MonoBehaviour
         promptBtn.onClick.AddListener(OnButton);
         Joystick.SetActive(false);
         if (!boatView.IsMine) enabled = false;
+        Fisher.gameObject.SetActive(false);
+        FadeAnim.gameObject.SetActive(false);
     }
 
     void OnButton()
@@ -83,6 +91,10 @@ public class ControlSwitch : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (!boatView.IsMine) return;
+        if (StartDocksCollider)
+        {
+            DocksCollider.enabled = false;
+        }
         if (controllerToToggle.enabled)
         {
             if (other.CompareTag("Ground"))
@@ -90,7 +102,6 @@ public class ControlSwitch : MonoBehaviour
                 Debug.Log("Is Touching Ground");
                 isTouchingSand = true;
             }
-            
         }
         if (!playerMask.Includes(other.gameObject.layer)) return;
 
@@ -98,7 +109,7 @@ public class ControlSwitch : MonoBehaviour
         {
             promptBtn.SetActive();
         }
-        
+
     }
 
     void OnTriggerExit(Collider other)
@@ -124,12 +135,14 @@ public class ControlSwitch : MonoBehaviour
     void ToggleController()
     {
         if (controllerToToggle.enabled && isTouchingSand)
-        { 
-            TogglePlayerController(); 
+        {
+            TogglePlayerController();
+            FadeAnim.SetTrigger("FadeIn");
         }
         else if(!controllerToToggle.enabled)
-        { 
-            ToggleBoatController(); 
+        {
+            ToggleBoatController();
+            FadeAnim.SetTrigger("FadeIn");
         }
 
     }
@@ -140,17 +153,22 @@ public class ControlSwitch : MonoBehaviour
         {
             return;
         }
+        FadeAnim.gameObject.SetActive(true);
+        Fisher.gameObject.SetActive(true);
+        StartDocksCollider = true;
         _player.StopSprinting();
         _player.SetMovementDirection(Vector3.zero);
         _player.handleInput = false;
         controllerToToggle.enabled = true;
-
+        _player.transform.Find("GeometryThirdPerson").SetActive(false);
         _player.transform.SetParent(playerSitPos, true);
         _player.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        _player.transform.Find("Generated Foots Origin").SetActive(false);
 
         cam.Priority = 100;
         Joystick.SetActive(true);
         SetPromptText(exitText);
+
     }
 
     void TogglePlayerController()
@@ -159,7 +177,10 @@ public class ControlSwitch : MonoBehaviour
         {
             return;
         }
-       // _player.SetMovementMode(MovementMode.Walking);
+        FadeAnim.gameObject.SetActive(true);
+        Fisher.gameObject.SetActive(false);
+        _player.transform.Find("GeometryThirdPerson").SetActive(true);
+        _player.transform.Find("Generated Foots Origin").SetActive(true);
         _player.handleInput = true;
         controllerToToggle.enabled = false;
 
@@ -178,3 +199,4 @@ public class ControlSwitch : MonoBehaviour
         }
     }
 }
+

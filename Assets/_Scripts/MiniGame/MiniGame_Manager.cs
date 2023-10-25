@@ -319,7 +319,7 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[1];
 
-            resultMatch = MatchResult.Draw;
+            resultMatch = MatchResult.Lose;
         }
 
         var result = new ResultsDataDTO(score, matchModes, resultMatch);

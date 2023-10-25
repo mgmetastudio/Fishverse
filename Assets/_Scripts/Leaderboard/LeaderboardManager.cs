@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using Newtonsoft.Json;
-using TMPro;
 using Zenject;
 using LibEngine.Leaderboard;
 using NaughtyAttributes;
+using System.Threading;
+using System;
 
 public class LeaderboardManager : MonoBehaviour
 {
@@ -16,6 +16,8 @@ public class LeaderboardManager : MonoBehaviour
     private ResultsDataDTO testResult;
     [SerializeField]
     private GameEventsIncrement gameEventsIncrement;
+
+    private SynchronizationContext unitySyncContext;
 
     [Button]
     public void AddResultsDataDTO()
@@ -41,8 +43,31 @@ public class LeaderboardManager : MonoBehaviour
     public Transform SurvivalFishingLayout;
     public Transform OpenWorldSoloLayout;
 
-    void Start()
+    private void Start()
     {
+        unitySyncContext = SynchronizationContext.Current;
+    }
+
+    private void OnEnable()
+    {
+        ReloadView();
+        CallReloadData();
+    }
+
+    public void CallReloadData()
+    {
+        leaderboardController.LoadUpdate(() => SyncPost(() => ReloadView()));
+    }
+
+    private void SyncPost(Action act)
+    {
+        unitySyncContext.Post(_ => act(), null);
+    }
+
+    private void ReloadView()
+    {
+        Debug.Log("Leaderboard View ReloadView");
+
         LoadLeaderboardData();
         CreateLeaderboardUI();
     }
@@ -50,26 +75,6 @@ public class LeaderboardManager : MonoBehaviour
     private void LoadLeaderboardData()
     {
         leaderboardData = leaderboardController.GetCollection();
-        return;
-
-        if (MyItemJSONDatabase != null)
-        {
-            json = MyItemJSONDatabase.text;
-
-            if (!string.IsNullOrEmpty(json))
-            {
-                leaderboardData = JsonConvert.DeserializeObject<List<LeaderboardPlayerRecordDTO>>(json);
-            }
-            else
-            {
-                Debug.LogError("JSON data is null or empty.");
-            }
-        }
-        else
-        {
-            Debug.LogError("MyItemJSONDatabase is not assigned.");
-        }
-
     }
 
     private void CreateLeaderboardUI()
@@ -78,11 +83,12 @@ public class LeaderboardManager : MonoBehaviour
         CreateLeaderBoard_Modes("SurvivalFishing", SurvivalFishingLayout);
         CreateLeaderBoard_Modes("DuelFishing", DuelFishingLayout);
         CreateLeaderBoard_Modes("OpenWorldSolo", OpenWorldSoloLayout);
-  
     }
 
     private void CreateLeaderBoard_Modes(string Mode,Transform Layout)
     {
+        Layout.DestroyAllChild();
+
         // Sort leaderboardData for Modes
         leaderboardData.Sort((a, b) => {
             if (a.LeaderBoardData.ContainsKey(Mode) && b.LeaderBoardData.ContainsKey(Mode))

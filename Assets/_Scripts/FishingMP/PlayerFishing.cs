@@ -425,6 +425,10 @@ public class PlayerFishing : MonoBehaviourPun
 #if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButtonDown(1))
         {
+            if (photonView.IsMine)
+            {
+                if (fishingFloat != null && FishingFloat.fish != null && FishingFloat.fish.controller.HealthBar == 0){ return;}
+            }
             // CmdDestroyFloat();
             photonView.RPC("CmdDestroyFloat", RpcTarget.All);
             _anim.SetFloat("Fishing_Up_Speed", 0);
@@ -849,12 +853,15 @@ public class PlayerFishing : MonoBehaviourPun
     }
     public void HideControllerButtons(bool isactive, float t)
     {
-        foreach (GameObject btn in HiddenButtons)
+        if (_inputProxy.mobileInput)
         {
-            btn.SetActive(isactive);
+            foreach (GameObject btn in HiddenButtons)
+            {
+                btn.SetActive(isactive);
+            }
+            Vector2 newPosition = new(btnholster.anchoredPosition.x, t);
+            btnholster.anchoredPosition = newPosition;
         }
-        Vector2 newPosition = new(btnholster.anchoredPosition.x, t);
-        btnholster.anchoredPosition = newPosition;
     }
 
 }

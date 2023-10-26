@@ -118,6 +118,10 @@ public class OpenWorld_Manager : MonoBehaviour
 
     public void EndGame()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+#endif
         if (ScoreManager != null)
         {
             ScoreManager.EndGame();

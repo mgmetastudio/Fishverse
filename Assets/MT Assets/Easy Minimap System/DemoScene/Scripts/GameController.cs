@@ -85,6 +85,10 @@ namespace MTAssets.EasyMinimapSystem
 
         public void OpenFullscreenMap()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+#endif
             fullScreenMapObj.SetActive(true);
             playerMinimapCamera.gameObject.SetActive(true);
             if(playerFieldOfView == null) { return; }
@@ -92,24 +96,29 @@ namespace MTAssets.EasyMinimapSystem
             {
              playerFieldOfView.enabled = false;
             }
-            Cursor.lockState = CursorLockMode.None;
             beforeFullscreenGlobalSizeMultiplier = MinimapDataGlobal.GetMinimapItemsSizeGlobalMultiplier();
             MinimapDataGlobal.SetMinimapItemsSizeGlobalMultiplier(1.5f);
             //player.canHideCursor = false;
-            if (cursor != null)
-                cursor.gameObject.SetActive(true);
+            //if (cursor != null)
+                //cursor.gameObject.SetActive(true);
         }
 
         public void CloseFullscreenMap()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+#endif
             fullScreenMapObj.SetActive(false);
             playerMinimapCamera.gameObject.SetActive(false);
-            playerFieldOfView.enabled = true;
-            Cursor.lockState = CursorLockMode.Locked;
+            if (playerFieldOfView != null)
+            {
+                playerFieldOfView.enabled = true;
+            }
             MinimapDataGlobal.SetMinimapItemsSizeGlobalMultiplier(beforeFullscreenGlobalSizeMultiplier);
-            player.canHideCursor = true;
-            if (cursor != null)
-                cursor.gameObject.SetActive(false);
+            //player.canHideCursor = true;
+            //if (cursor != null)
+                //cursor.gameObject.SetActive(false);
         }
 
         public void OnClickInMinimapRendererArea(Vector3 clickWorldPos, MinimapItem clickedMinimapItem)

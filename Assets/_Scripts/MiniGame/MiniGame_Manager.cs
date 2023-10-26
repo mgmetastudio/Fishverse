@@ -122,6 +122,7 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
     private bool isLocalPlayerWinner = false;
     public Dictionary<int, int> playerScores = new Dictionary<int, int>(); // Maps player IDs to their scores
 
+    private bool IsEndedGame = false;
 
     private void Start()
     {
@@ -266,6 +267,11 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
 
     public void EndGame()
     {
+        if (IsEndedGame)
+            return;
+
+        IsEndedGame = true;
+
         game_started = false;
         gameLeaderBoard = false;
         if (vehicle_controller)
@@ -316,7 +322,7 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
             DrawPanel.SetActive(false);
             ImgWinLose.sprite = Sprites[1];
 
-            resultMatch = MatchResult.Draw;
+            resultMatch = MatchResult.Lose;
         }
 
         var result = new ResultsDataDTO(score, matchModes, resultMatch);

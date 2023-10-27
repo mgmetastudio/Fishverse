@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-
 public class ArcadeVehicleController_Network : ArcadeVehicleController
 {
 
@@ -9,6 +8,8 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
 
     [SerializeField] bool disableOnStart;
 
+    [Header("Input script for Devices")]
+    public BoatInputProxy BoatInputProxy;
     public override void Start()
     {
         base.Start();
@@ -24,10 +25,6 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
         }
         else
         {
-#if UNITY_EDITOR
-#else
-        is_mobile = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
-#endif
             // joystick = FindObjectOfType<Joystick>(true);
             // carBody.useGravity = true;
             // carBody.isKinemat = true;
@@ -48,7 +45,6 @@ public class ArcadeVehicleController_Network : ArcadeVehicleController
         {
             return;
         }
-
         base.Update();
     }
 

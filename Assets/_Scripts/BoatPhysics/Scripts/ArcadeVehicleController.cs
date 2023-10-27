@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class ArcadeVehicleController : MonoBehaviour
 {
-    public Joystick joystick;
-    public bool is_mobile;
+    public bool mobileInput;
     public enum groundCheck { rayCast, sphereCaste };
     public enum MovementMode { Velocity, AngularVelocity };
     public MovementMode movementMode;
@@ -35,15 +34,13 @@ public class ArcadeVehicleController : MonoBehaviour
     [HideInInspector]
     public float radius, horizontalInput, verticalInput;
     private Vector3 origin;
-
+    private ArcadeVehicleController_Network networkController;
     public float maxFuel = 100f;
     public float fuel;
 
     public virtual void Start()
     {
-        if (!joystick)
-            joystick = FindObjectOfType<Joystick>(true);
-
+        networkController = GetComponent<ArcadeVehicleController_Network>();
         radius = rb.GetComponent<SphereCollider>().radius;
         if (movementMode == MovementMode.AngularVelocity)
         {
@@ -57,13 +54,8 @@ public class ArcadeVehicleController : MonoBehaviour
         // {
         // horizontalInput = joystick.Horizontal;
         // verticalInput = joystick.Vertical;
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-        if (is_mobile)
-        {
-            horizontalInput = joystick.Horizontal;
-            verticalInput = joystick.Vertical;
-        }
+        horizontalInput= networkController.BoatInputProxy.MoveBoatHorizontal();
+        verticalInput = networkController.BoatInputProxy.MoveBoatVertical();
         // else
         // {
         // }

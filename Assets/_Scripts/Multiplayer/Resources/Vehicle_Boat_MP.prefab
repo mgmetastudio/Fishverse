@@ -18565,6 +18565,7 @@ GameObject:
   - component: {fileID: 6805411913406118240}
   - component: {fileID: 3856750379081699964}
   - component: {fileID: 5050510733554546268}
+  - component: {fileID: 6750114196932389885}
   m_Layer: 0
   m_Name: Vehicle_Boat_MP
   m_TagString: Boat
@@ -18617,8 +18618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a3f203be3d6ad439e6eb6dbae01976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  is_mobile: 1
+  mobileInput: 0
   movementMode: 0
   GroundCheck: 0
   drivableSurface:
@@ -18713,6 +18713,7 @@ MonoBehaviour:
   photon_view: {fileID: 0}
   virtual_camera: {fileID: 7987859187079455038}
   disableOnStart: 0
+  BoatInputProxy: {fileID: 6750114196932389885}
 --- !u!54 &8787277135012178884
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18932,6 +18933,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6da66335ee48af94c8f95b714686f02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6750114196932389885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8787277135012178891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bad107ba73156148abfcbf06f6d932e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  photon_view: {fileID: 1112414805399653471}
+  joystick: {fileID: 0}
+  Buttons: []
+  mobileInput: 0
+  horizontalInput: 0
+  verticalInput: 0
 --- !u!1 &8787277135393040973
 GameObject:
   m_ObjectHideFlags: 0

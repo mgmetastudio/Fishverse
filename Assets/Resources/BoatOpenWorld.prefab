@@ -11104,6 +11104,7 @@ GameObject:
   - component: {fileID: 158178248326707388}
   - component: {fileID: 7621698443449734048}
   - component: {fileID: 1250792502798243079}
+  - component: {fileID: 8586446766656036948}
   m_Layer: 0
   m_Name: BoatOpenWorld
   m_TagString: Boat
@@ -11158,8 +11159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a3f203be3d6ad439e6eb6dbae01976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  is_mobile: 1
+  mobileInput: 0
   movementMode: 0
   GroundCheck: 0
   drivableSurface:
@@ -11254,6 +11254,7 @@ MonoBehaviour:
   photon_view: {fileID: 0}
   virtual_camera: {fileID: 3646450910576156898}
   disableOnStart: 1
+  BoatInputProxy: {fileID: 8586446766656036948}
 --- !u!54 &2716503645166021144
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11491,6 +11492,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.9717417, y: 0.8, z: 8.8}
   m_Center: {x: -0.010870695, y: -0.5, z: 0}
+--- !u!114 &8586446766656036948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2716503645166021143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bad107ba73156148abfcbf06f6d932e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  photon_view: {fileID: 5994378018477821315}
+  joystick: {fileID: 8988235557474740450}
+  Buttons:
+  - {fileID: 2266812046752269531}
+  mobileInput: 0
+  horizontalInput: 0
+  verticalInput: 0
 --- !u!1 &2716503645230697071
 GameObject:
   m_ObjectHideFlags: 0
@@ -25167,6 +25187,7 @@ MonoBehaviour:
   enterText: Enter Boat
   exitText: Exit Boat
   inputKey: 102
+  BoatInputProxy: {fileID: 8586446766656036948}
   Joystick: {fileID: 2266812046752269531}
   DocksCollider: {fileID: 733632860687336754}
   Fisher: {fileID: 352145984195428958}

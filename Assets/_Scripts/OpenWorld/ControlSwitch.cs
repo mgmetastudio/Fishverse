@@ -24,6 +24,7 @@ public class ControlSwitch : MonoBehaviour
     [SerializeField] string exitText = "Exit Boat";
 
     [SerializeField] KeyCode inputKey = KeyCode.F;
+    [SerializeField] public BoatInputProxy BoatInputProxy;
     [SerializeField] public GameObject Joystick;
     CMFirstPersonCharacter _player;
     private bool isTouchingSand = false;
@@ -38,7 +39,10 @@ public class ControlSwitch : MonoBehaviour
         promptText.SetText(enterText);
         promptBtn.SetInactive();
         promptBtn.onClick.AddListener(OnButton);
-        Joystick.SetActive(false);
+        if (BoatInputProxy.mobileInput)
+        {
+            Joystick.SetActive(false);
+        }
         if (!boatView.IsMine) enabled = false;
         Fisher.gameObject.SetActive(false);
         FadeAnim.gameObject.SetActive(false);
@@ -166,7 +170,10 @@ public class ControlSwitch : MonoBehaviour
         _player.transform.Find("Generated Foots Origin").SetActive(false);
 
         cam.Priority = 100;
-        Joystick.SetActive(true);
+        if (BoatInputProxy.mobileInput)
+        {
+            Joystick.SetActive(true);
+        }
         SetPromptText(exitText);
 
     }
@@ -187,7 +194,10 @@ public class ControlSwitch : MonoBehaviour
         _player.transform.parent = null;
 
         cam.Priority = -1;
-        Joystick.SetActive(false);
+        if (BoatInputProxy.mobileInput)
+        {
+            Joystick.SetActive(false);
+        }
         SetPromptText(enterText);
     }
 

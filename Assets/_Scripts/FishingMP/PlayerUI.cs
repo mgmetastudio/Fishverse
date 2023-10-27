@@ -24,7 +24,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] TMP_Text FishText;
     [SerializeField] public bool Isfishingfull = false;
     [SerializeField] Button FullscreenMap;
-    [SerializeField] private GameController GameController;
+    [SerializeField] public GameController GameController;
     private bool hasStartedTimer = false;
     private OpenWorld_Manager OpenWorld_Manager;
 

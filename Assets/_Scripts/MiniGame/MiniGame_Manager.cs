@@ -211,7 +211,10 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
             if (panel_pos) panel_pos.SetActive(true);
 
             yield return new WaitForSeconds(gameStartControlsWait);
-            joystick.SetActive(true);
+            if (owner.boatController.mobileInput)
+            {
+                joystick.SetActive(true);
+            }
             btn_boost.SetActive(true);
             btn_pause.SetActive(true);
 

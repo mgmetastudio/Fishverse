@@ -60,7 +60,7 @@ namespace MTAssets.EasyMinimapSystem
         private Vector2 lastMinimapRendererSize = Vector2.zero;
         private RaycastHit2D temporaryRaycastHit;
         private List<MinimapItemOfPool> minimapItemsForHighlightPool = new List<MinimapItemOfPool>();
-
+        public GameController GameController;
         //Enums of script
         public enum IconsRotationMethod
         {
@@ -1054,6 +1054,10 @@ namespace MTAssets.EasyMinimapSystem
 
             //Return a list that contains reference to all of this component in this scene
             return minimapDataHolder.instancesOfMinimapRendererInThisScene.ToArray();
+        }
+        public void CloseFullscreenMap()
+        {
+            GameController.CloseFullscreenMap();
         }
     }
 }

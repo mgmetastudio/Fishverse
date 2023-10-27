@@ -35,6 +35,10 @@ namespace NullSave.TOCK.Inventory
 
         public void ConfirmPrompt()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+#endif
             onConfirmPrompt?.Invoke();
         }
 

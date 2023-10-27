@@ -469,8 +469,18 @@ namespace NullSave.TOCK.Inventory
             if (activeTheme != null)
             {
                 activeTheme.UpdateUI();
-            }
 
+                if (activeTheme.ActiveMenus.Count > 0)
+                {
+#if UNITY_EDITOR || UNITY_STANDALONE
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+#endif
+                    // Debug.Log("all Menus Deactivated");
+                }
+            }
+          
             UpdateCraftingQueue();
         }
 

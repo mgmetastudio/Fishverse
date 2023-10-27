@@ -34,7 +34,6 @@ namespace NullSave.TOCK.Inventory
         {
             Inventory.ActiveTheme.OpenInventory();
         }
-
         public void LoadComponents()
         {
             MenuHostHelper.LoadComponents(this, gameObject);

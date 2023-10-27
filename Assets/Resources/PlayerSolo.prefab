@@ -8317,10 +8317,14 @@ MonoBehaviour:
   ButtonJump: {fileID: 943178106084476630}
   Buttonholster: {fileID: 8212199495856597925}
   ButtonInventory: {fileID: 6291215226647698384}
+  Buttons:
+  - {fileID: 6165545227530748296}
+  - {fileID: 2936163140624209988}
   Pausekey: 27
   PauseMenuPanel: {fileID: 4207525611806446718}
   Mapkey: 98
   FullScreenMap: {fileID: 6889266277575082830}
+  ToggleFishingRod: Mouse ScrollWheel
 --- !u!114 &3953449438741138305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23626,10 +23630,6 @@ PrefabInstance:
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: ee6b5adda1f542048b49c6173b174637, type: 2}
-    - target: {fileID: 3386912106225992653, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3387146436175750499, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -24673,6 +24673,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2746481227820724886, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
   m_PrefabInstance: {fileID: 4046590367104356383}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2936163140624209988 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1195486546623826011, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
+  m_PrefabInstance: {fileID: 4046590367104356383}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3103316150729005866 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1385228413293988661, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
@@ -24772,6 +24777,11 @@ RectTransform:
 --- !u!1 &6084882564044840010 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7807473791627005013, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
+  m_PrefabInstance: {fileID: 4046590367104356383}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6165545227530748296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7906081000148865431, guid: 42deeca2d0959fd4ba4ad8076ff55140, type: 3}
   m_PrefabInstance: {fileID: 4046590367104356383}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &6291215226647698384 stripped

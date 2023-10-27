@@ -41,6 +41,9 @@ public class InputProxy : MonoBehaviour
     [Header("Button Inventory")]
     [SerializeField] Button ButtonInventory;
 
+    [Header("Other [Android/IOS] Buttons To Hide For [Standalone]")]
+    [SerializeField] List<GameObject> Buttons;
+
     [Space]
     [Header("Input Keys [Standalone]")]
     [Header("Input Key / Pause Menu")]
@@ -58,6 +61,13 @@ public class InputProxy : MonoBehaviour
 
     #endregion
     public PlayerUI FullScreenMap;
+
+    [Header("Input Key / Toggle Fishing Rod")]
+    #region Variables
+
+    public string ToggleFishingRod ;
+
+    #endregion
     void Start()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -120,13 +130,16 @@ public class InputProxy : MonoBehaviour
                 }
             }
         }
-
     }
 
     void HideButtons()
     {
         moveJoystick.SetInactive();
         lookJoystick.SetInactive();
+        foreach (GameObject button in Buttons)
+        {
+            button.SetInactive();
+        }
     }
     public void OpenPauseMenu()
     {

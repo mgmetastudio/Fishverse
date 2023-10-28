@@ -32,13 +32,17 @@ namespace NullSave.TOCK.Inventory
         #endregion
 
         #region Public Methods
-
-        public void ConfirmPrompt()
+        public void Start()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            promptText.text = "Press 'F' to open the shop";
+#else
+            promptText.text = "Shop";
 #endif
+
+        }
+        public void ConfirmPrompt()
+        {
             onConfirmPrompt?.Invoke();
         }
 

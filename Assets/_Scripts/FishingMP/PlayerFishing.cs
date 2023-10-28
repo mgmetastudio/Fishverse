@@ -476,15 +476,23 @@ public class PlayerFishing : MonoBehaviourPun
             isLinebroke = false;
         }
         Btn_FishCast.SetActive(true);
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetAxis(_inputProxy.ToggleFishingRod) > 0)
         {
-            if (rodHolder.childCount > 1)
+            if (fishingRod.activeSelf) return;
+            if (rodHolder.childCount > 1 && _inv.currentRod !=null)
             {
-                photonView.RPC("DrawFishingRod", RpcTarget.All, !fishingRod.activeSelf);
+                photonView.RPC("DrawFishingRod", RpcTarget.All, true);
                 isLinebroke = false;
             }
-
-            // DrawFishingRod(!fishingRod.activeSelf);
+        }
+        else if (Input.GetAxis(_inputProxy.ToggleFishingRod) < 0)
+        {
+            if (!fishingRod.activeSelf) return;
+            if (rodHolder.childCount > 1)
+            {
+                photonView.RPC("DrawFishingRod", RpcTarget.All, false);
+                isLinebroke = false;
+            }
         }
         isreelrotate = false;
         forceSlider.SetActive(false);

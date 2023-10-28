@@ -517,6 +517,7 @@ namespace NullSave.TOCK.Inventory
                     target = null;
                 }
             }
+
         }
 
         #endregion
@@ -611,7 +612,7 @@ namespace NullSave.TOCK.Inventory
         private void ConfirmShop()
         {
             PromptUI prompt = ActivePrompt.GetComponent<PromptUI>();
-
+            //if (host.IsMenuOpen) return;
             if (merchantMenu != null)
             {
                 MerchantMenuUI newMenu = Instantiate(merchantMenu, targetCanvas.transform);
@@ -774,7 +775,8 @@ namespace NullSave.TOCK.Inventory
         private bool MerchantEnter(InventoryMerchant merchant)
         {
             if (merchant == null || !merchant.enabled) return false;
-
+            if (host.IsMenuOpen) return false;
+           // ActiveUI.Inventory.ClearUI();
             if (!promptTargets.Contains(merchant.gameObject)) promptTargets.Add(merchant.gameObject);
 
             if (promptTargets.Count == 1)

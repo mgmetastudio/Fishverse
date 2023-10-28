@@ -6,9 +6,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using EasyCharacterMovement;
 using DG.Tweening;
+using NullSave.GDTK.Stats;
+using TMPro;
 
 public class ControlSwitch : MonoBehaviour
 {
+    [Header("Required Level")]
+    public int requiredLevel;
+    [Header("Panel For Required Level")]
+    public GameObject PanelrequiredLevel;
+    public TMP_Text LevelRequirementText;
+    public bool CanDrive=false;
     [SerializeField] LayerMask playerMask;
     [SerializeField] LayerMask GroundMask;
     [SerializeField] public MonoBehaviour controllerToToggle;
@@ -30,12 +38,24 @@ public class ControlSwitch : MonoBehaviour
     private bool isTouchingSand = false;
     private bool StartDocksCollider = false;
     [SerializeField] public Collider DocksCollider;
+    [SerializeField] public Collider Boat;
     [SerializeField] public GameObject Fisher;
-    public Animator FadeAnim; 
+    public Animator FadeAnim;
+    private PlayerCharacterStats PlayerCharacterStats;
+
+
 
 
     void Start()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        enterText = "Press 'F' to drive the boat";
+        exitText = "Press 'F' to exit the boat";
+#else
+        enterText = "Enter Boat";
+        exitText = "Exit Boat";
+#endif
+        PlayerCharacterStats = FindObjectOfType<PlayerCharacterStats>();
         promptText.SetText(enterText);
         promptBtn.SetInactive();
         promptBtn.onClick.AddListener(OnButton);
@@ -58,47 +78,48 @@ public class ControlSwitch : MonoBehaviour
     void Update()
     {
         if (!_player) return;
-
-        if (Input.GetKeyDown(inputKey))
-            ToggleController();
-        if (ArcadeVehicleController_ != null && controllerToToggle != null)
+        if (CanDrive)
         {
-            if (isTouchingSand && controllerToToggle.enabled)
+            if (Input.GetKeyDown(inputKey))
+                ToggleController();
+            if (ArcadeVehicleController_ != null && controllerToToggle != null)
             {
-                promptBtn.SetActive();
+                if (isTouchingSand && controllerToToggle.enabled)
+                {
+                    promptBtn.SetActive();
+                }
+                else if (!isTouchingSand && controllerToToggle.enabled)
+                {
+                    promptBtn.SetInactive();
+
+                }
             }
-            else if (!isTouchingSand && controllerToToggle.enabled)
+            if (isTouchingSand && _player == null)
             {
                 promptBtn.SetInactive();
-
             }
-        }
-        if (isTouchingSand && _player == null)
-        {
-            promptBtn.SetInactive();
         }
         
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(!boatView.IsMine) return;
+        if (!boatView.IsMine) return;
         if (!playerMask.Includes(other.gameObject.layer)) return;
-
-        if (!controllerToToggle.enabled)
+        CheckPlayerLevel(PlayerCharacterStats.GetCharacterLevel());
+        if (CanDrive)
         {
-            promptBtn.SetActive();
-        }
+            if (!controllerToToggle.enabled)
+            {
+                promptBtn.SetActive();
+            }
 
-        _player = other.GetComponent<CMFirstPersonCharacter>();
+            _player = other.GetComponent<CMFirstPersonCharacter>();
+        }
     }
     void OnTriggerStay(Collider other)
     {
         if (!boatView.IsMine) return;
-        if (StartDocksCollider)
-        {
-            DocksCollider.enabled = false;
-        }
         if (controllerToToggle.enabled)
         {
             if (other.CompareTag("Ground"))
@@ -108,17 +129,26 @@ public class ControlSwitch : MonoBehaviour
             }
         }
         if (!playerMask.Includes(other.gameObject.layer)) return;
-
-        if (!controllerToToggle.enabled)
+        CheckPlayerLevel(PlayerCharacterStats.GetCharacterLevel());
+        if (CanDrive)
         {
-            promptBtn.SetActive();
+
+            if (StartDocksCollider)
+            {
+                DocksCollider.enabled = false;
+            }
+          
+            if (!controllerToToggle.enabled)
+            {
+                promptBtn.SetActive();
+            }
         }
 
     }
 
     void OnTriggerExit(Collider other)
     {
-        if(!boatView.IsMine) return;
+        if (!boatView.IsMine) return;
         if (controllerToToggle.enabled)
         {
             if (other.CompareTag("Ground"))
@@ -134,6 +164,11 @@ public class ControlSwitch : MonoBehaviour
 
         promptBtn.SetInactive();
         _player = null;
+        if(!CanDrive)
+        {
+            PanelrequiredLevel.SetInactive();
+        }
+
     }
 
     void ToggleController()
@@ -206,6 +241,20 @@ public class ControlSwitch : MonoBehaviour
         if (promptText)
         {
             promptText.text = text;
+        }
+    }
+    public void CheckPlayerLevel(int playerLevel)
+    {
+        if (playerLevel >= requiredLevel)
+        {
+            CanDrive = true;
+            PanelrequiredLevel.SetInactive();
+        }
+        else
+        {
+            CanDrive = false;
+            LevelRequirementText.text = "YOU CAN'T DRIVE THE BOAT. <br> LEVEL " + requiredLevel + " REQUIRED.";
+            PanelrequiredLevel.SetActive();
         }
     }
 }

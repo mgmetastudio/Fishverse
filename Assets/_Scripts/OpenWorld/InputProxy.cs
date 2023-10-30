@@ -125,7 +125,7 @@ public class InputProxy : MonoBehaviour
                     OpenPauseMenu();
                 }
             }
-            if (Input.GetKey(Mapkey))
+            if (Input.GetKey(Mapkey) || Input.GetKey(KeyCode.Semicolon))
             {
                 if (FullScreenMap != null)
                 {

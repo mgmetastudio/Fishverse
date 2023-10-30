@@ -133,6 +133,7 @@ public class InputProxy : MonoBehaviour
                 }
             }
         }
+#if UNITY_EDITOR || UNITY_STANDALONE
         if (tpCam != null)
         {
             if (IsOpenPauseMenu || PlayerInventory.IsMenuOpen )
@@ -151,7 +152,8 @@ public class InputProxy : MonoBehaviour
             }
 
         }
-       
+#endif
+
     }
 
     void HideButtons()

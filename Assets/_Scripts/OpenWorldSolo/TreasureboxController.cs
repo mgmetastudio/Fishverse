@@ -4,9 +4,14 @@ using EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using LibEngine.Reward;
+using Zenject;
 
 public class TreasureboxController : MonoBehaviour
 {
+    [Header("Treasure Reward Panel")]
+    public int rewardId = 1;
+
     [Header("Treasure Reward Panel")]
     
     [Header("Panel of TreasureBOX")]
@@ -19,6 +24,10 @@ public class TreasureboxController : MonoBehaviour
     public Button CloseBtn;
     [Header("Input Keys [Standalone]")]
     [Header("Input Key / Open TreasureBOX")]
+
+    [Inject]
+    private IRewardController rewardController;
+
     #region Variables
 
     public KeyCode OpenBoxKey = KeyCode.KeypadEnter;
@@ -94,6 +103,10 @@ public class TreasureboxController : MonoBehaviour
         IsBoxOpened = true;
         Panel.SetActive(true);
         promptBtn.SetActive(false);
+
+        rewardController.SendReachRewardAndGenerate(rewardId);
+        var playerReward = rewardController.GetRewardPlayerRecordDTO(rewardId);
+        codeInputField.text = playerReward.Code;
     }
     void CloseTreasurPanel()
     {

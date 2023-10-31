@@ -123,6 +123,8 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
     public Dictionary<int, int> playerScores = new Dictionary<int, int>(); // Maps player IDs to their scores
 
     private bool IsEndedGame = false;
+    bool Engine_started = false;
+    float delayTimer = 4f;
 
     private void Start()
     {
@@ -224,6 +226,20 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if (!Engine_started && panel_game_started.activeSelf)
+        {
+            delayTimer -= Time.deltaTime;
+            owner.boatController.enabled = false;
+            if (delayTimer <= 0f)
+            {
+                Enginestarted();
+            }
+        }
+        else if(!panel_game_started.activeSelf)
+        {
+            owner.boatController.enabled = false;
+        }
+
         if (game_started)
         {
             /*foreach (var kvp in playerScores)
@@ -506,5 +522,11 @@ public class MiniGame_Manager : MonoBehaviourPunCallbacks
             playerScores.Remove(otherPlayer.ActorNumber);
         }
     }
+    void Enginestarted()
+    {
+        Engine_started = true;
 
+        // Enable the boat controller
+        owner.boatController.enabled = true;
+    }
 }

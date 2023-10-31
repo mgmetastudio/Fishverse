@@ -5,6 +5,8 @@ using UnityEngine;
 using NullSave.TOCK.Inventory;
 using UnityEngine.UI;
 using Photon.Pun;
+using Cinemachine;
+
 public class InputProxy : MonoBehaviour
 {
 
@@ -68,6 +70,7 @@ public class InputProxy : MonoBehaviour
     public string ToggleFishingRod ;
 
     #endregion
+    private bool IsOpenPauseMenu=false;
     void Start()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -122,7 +125,7 @@ public class InputProxy : MonoBehaviour
                     OpenPauseMenu();
                 }
             }
-            if (Input.GetKey(Mapkey))
+            if (Input.GetKey(Mapkey) || Input.GetKey(KeyCode.Semicolon))
             {
                 if (FullScreenMap != null)
                 {
@@ -130,6 +133,27 @@ public class InputProxy : MonoBehaviour
                 }
             }
         }
+#if UNITY_EDITOR || UNITY_STANDALONE
+        if (tpCam != null)
+        {
+            if (IsOpenPauseMenu || PlayerInventory.IsMenuOpen )
+            {
+                // Disable mouse input during pause
+                tpCam.m_XAxis.m_InputAxisName = "";
+                tpCam.m_YAxis.m_InputAxisName = "";
+                character.enabled = false;
+            }
+            else
+            {
+                // Enable mouse input when not paused
+                tpCam.m_XAxis.m_InputAxisName = "Mouse X";
+                tpCam.m_YAxis.m_InputAxisName = "Mouse Y";
+                character.enabled = true;
+            }
+
+        }
+#endif
+
     }
 
     void HideButtons()
@@ -148,6 +172,7 @@ public class InputProxy : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 #endif
         PauseMenuPanel.SetActive();
+        IsOpenPauseMenu = true;
     }
     public void ClosePauseMenu()
     {
@@ -156,5 +181,6 @@ public class InputProxy : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 #endif
         PauseMenuPanel.SetInactive();
+        IsOpenPauseMenu = false;
     }
 }

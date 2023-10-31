@@ -19,7 +19,6 @@ public class CameraController : MonoBehaviour
 
     [Space]
     [SerializeField] PhotonView photonView;
-
     void Start()
     {
         if (photonView.IsMine)
@@ -34,11 +33,6 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         if (!photonView.IsMine) return;
-
-      /*   if (Input.GetKeyDown(KeyCode.F))
-         {
-             ToggleView();
-         }*/
 
     }
 

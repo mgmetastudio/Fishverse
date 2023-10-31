@@ -74,8 +74,8 @@ namespace MTAssets.EasyMinimapSystem
         void Update()
         {
             //On press M
-            if (Input.GetKeyDown(KeyCode.M) == true && fullScreenMapObj.activeSelf == false)
-                OpenFullscreenMap();
+            //if (Input.GetKey(KeyCode.M) == true && fullScreenMapObj.activeSelf == false)
+                //OpenFullscreenMap();
             if (Input.GetKeyDown(KeyCode.Escape) == true)
                 if (fullScreenMapObj.activeSelf == true)
                     CloseFullscreenMap();

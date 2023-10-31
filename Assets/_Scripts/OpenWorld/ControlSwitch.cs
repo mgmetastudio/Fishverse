@@ -101,22 +101,6 @@ public class ControlSwitch : MonoBehaviour
         }
         
     }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (!boatView.IsMine) return;
-        if (!playerMask.Includes(other.gameObject.layer)) return;
-        CheckPlayerLevel(PlayerCharacterStats.GetCharacterLevel());
-        if (CanDrive)
-        {
-            if (!controllerToToggle.enabled)
-            {
-                promptBtn.SetActive();
-            }
-
-            _player = other.GetComponent<CMFirstPersonCharacter>();
-        }
-    }
     void OnTriggerStay(Collider other)
     {
         if (!boatView.IsMine) return;
@@ -143,6 +127,8 @@ public class ControlSwitch : MonoBehaviour
                 promptBtn.SetActive();
             }
         }
+        _player = other.GetComponent<CMFirstPersonCharacter>();
+
 
     }
 

@@ -71,6 +71,7 @@ public class InputProxy : MonoBehaviour
 
     #endregion
     private bool IsOpenPauseMenu=false;
+    private TreasureboxController TreasureboxController;
     void Start()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -78,6 +79,7 @@ public class InputProxy : MonoBehaviour
 #else
         mobileInput = true;
 #endif
+        TreasureboxController = FindObjectOfType<TreasureboxController>();
 
         if (mobileInput)
         {
@@ -136,19 +138,25 @@ public class InputProxy : MonoBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE
         if (tpCam != null)
         {
-            if (IsOpenPauseMenu || PlayerInventory.IsMenuOpen )
+            if (IsOpenPauseMenu || PlayerInventory.IsMenuOpen)
             {
-                // Disable mouse input during pause
-                tpCam.m_XAxis.m_InputAxisName = "";
-                tpCam.m_YAxis.m_InputAxisName = "";
-                character.enabled = false;
+                character.ToggleCameraInput(true);
+
+            }
+            else if (TreasureboxController != null)
+            {
+                if (TreasureboxController.IsPanelOpened)
+                {
+                    character.ToggleCameraInput(true);
+                }
+                else
+                {
+                    character.ToggleCameraInput(false);
+                }
             }
             else
             {
-                // Enable mouse input when not paused
-                tpCam.m_XAxis.m_InputAxisName = "Mouse X";
-                tpCam.m_YAxis.m_InputAxisName = "Mouse Y";
-                character.enabled = true;
+                character.ToggleCameraInput(false);
             }
 
         }

@@ -51,7 +51,7 @@ public class AreaController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Boat"))
         {
             Debug.Log("Player entered the trigger zone");
             CheckPlayerLevel(FindObjectOfType<PlayerCharacterStats>().GetCharacterLevel());
@@ -60,7 +60,7 @@ public class AreaController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Boat"))
         {
             Debug.Log("Player exited the trigger zone");
             HideLevelRequirementPanel();

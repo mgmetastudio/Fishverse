@@ -89,6 +89,7 @@ public class LeaderboardManager : MonoBehaviour
     {
         Layout.DestroyAllChild();
 
+
         // Sort leaderboardData for Modes
         leaderboardData.Sort((a, b) => {
             if (a.LeaderBoardData.ContainsKey(Mode) && b.LeaderBoardData.ContainsKey(Mode))
@@ -114,10 +115,17 @@ public class LeaderboardManager : MonoBehaviour
 
         //Duel Fishing Data
         float previousScore = int.MaxValue; // Initialize previousScore with a high value
+        int maxViewCapacity = 50; 
+        int currentAmount = 0;
         foreach (var entry in leaderboardData)
         {
             if (!entry.LeaderBoardData.ContainsKey(Mode))
                 continue;
+
+            currentAmount++;
+            if (currentAmount > maxViewCapacity)
+                break;
+
             // Check if the current player has a different score from the previous player
             if (entry.LeaderBoardData[Mode].Score != previousScore)
             {

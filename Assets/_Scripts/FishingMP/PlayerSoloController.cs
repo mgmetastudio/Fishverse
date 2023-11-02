@@ -4,6 +4,7 @@ using NullSave.GDTK.Stats;
 using LibEngine.Leaderboard;
 using System.Collections.Generic;
 using Zenject;
+using TMPro;
 using System.IO;
 
 public class PlayerSoloController : MonoBehaviour
@@ -26,10 +27,19 @@ public class PlayerSoloController : MonoBehaviour
     public InventoryCog InventoryCog;
     [Header("Canvas Control")]
     public List<GameObject> CanvasControl;
+    [Header("Panel For Required Level")]
+    public GameObject PanelrequiredLevel;
+    public TMP_Text LevelRequirementText;
 
     string relativePath = "InventoryDB.sav";
     string fullPath;
-
+    public int PlayerLevel;
+    public int FishLevel ;
+    private int LastFishLevel;
+    private bool IsFishingSpot;
+    private float lastUpdateTime;
+    private float timeThreshold = 3f; // Set the time threshold in seconds
+    public bool IsLevelValid { get; set; }
     [Inject]
     private ILeaderboardController leaderboardService;
     public ControlSwitch ControlSwitch;
@@ -69,6 +79,8 @@ public class PlayerSoloController : MonoBehaviour
         }
 
         SetLevel();
+        LastFishLevel = 0;
+        lastUpdateTime = Time.time;
     }
 
     // Update is called once per frame
@@ -130,13 +142,58 @@ public class PlayerSoloController : MonoBehaviour
         }
         if (PlayerFishing.FishingFloat != null)
         {
+            PlayerLevel = PlayerCharacterStats.GetCharacterLevel();
+
+            // Check if Fishing float outside of Fishing Spot
+            int currentFishLevel = FishLevel;
+
+            if (currentFishLevel != LastFishLevel)
+            {
+                LastFishLevel = currentFishLevel;
+                lastUpdateTime = Time.time; // Update the last update time
+                //Debug.Log("Fish level changed. New level: " + LastFishLevel);
+                IsFishingSpot = false;
+            }
+            else
+            {
+                IsFishingSpot = true;
+            }
+
+            float elapsedTime = Time.time - lastUpdateTime;
+
+            if (elapsedTime >= timeThreshold)
+            {
+                PanelrequiredLevel.SetInactive();
+                //Debug.Log("Panel set inactive. Fish level: " + LastFishLevel);
+            }
+
+            // Check if Fishing float Inside Fishing Spot
+            if (IsLevelValid || FishLevel == 0)
+            {
+                //Debug.Log("The level is valid");
+                PanelrequiredLevel.SetInactive();
+            }
+            else if(FishLevel != 0 && !IsLevelValid && !IsFishingSpot)
+            {
+                LevelRequirementText.text = "YOU CAN'T FISH IN THIS FISHING SPOT. <br> LEVEL " + FishLevel + " REQUIRED.";
+                PanelrequiredLevel.SetActive();
+                //Debug.Log("The level is not valid");
+            }
+
             if (PlayerFishing.FishingFloat.fish != null)
             {
+
                 if (PlayerFishing.FishingFloat.fish.controller.iscatched)
                 {
                     PlayerCharacterStats.DataSave(fileName);
                 }
             }
+        }
+        else
+        {
+            FishLevel = 0;
+            LastFishLevel = 0;
+            PanelrequiredLevel.SetInactive();
         }
         if (ControlSwitch != null)
         {
@@ -184,5 +241,10 @@ public class PlayerSoloController : MonoBehaviour
     {
         var level = PlayerCharacterStats.GetCharacterLevel();
         leaderboardService.AddGameEventsValues(new GameEventsIncrement(setLevel: level));
+    }
+    public void SetLevelValid(bool _IsLevelValid, int _FishLevel)
+    {
+        IsLevelValid = _IsLevelValid;
+        FishLevel = _FishLevel;
     }
 }

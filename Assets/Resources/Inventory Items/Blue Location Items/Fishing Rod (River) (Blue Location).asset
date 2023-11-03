@@ -45,7 +45,7 @@ MonoBehaviour:
   condition: 1
   rarity: 1
   weight: 1
-  value: 10
+  value: 2000
   canStack: 0
   countPerStack: 64
   hasMaxStacks: 0
@@ -68,7 +68,8 @@ MonoBehaviour:
   canDrop: 0
   canStore: 1
   equipSource: 0
-  equipExpression: (Level) > 1
+  equipExpression: 
+  curCanEquip: 0
   dropObject: {fileID: 0}
   equipAnimatorMods: []
   unequipAnimatorMods: []

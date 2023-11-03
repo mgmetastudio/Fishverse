@@ -4414,6 +4414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808071746849564084}
   - component: {fileID: 1474066803416740737}
+  - component: {fileID: 3139699702252978589}
   m_Layer: 0
   m_Name: StorePoint_Spine
   m_TagString: Untagged
@@ -4455,6 +4456,21 @@ MonoBehaviour:
   - {fileID: 3331000217642364953}
   - {fileID: 1567046368762031188}
   - {fileID: 5261221572095642641}
+--- !u!114 &3139699702252978589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102985939306710826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ae85d7767efd44ebfabdd8178128c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TooltipBait_: {fileID: 7636495272843305745, guid: c58e99676d945b24dbe6dc272d6e276d, type: 3}
+  Parent: {fileID: 8323395733610780373}
+  AlertText: 
 --- !u!1 &1116337796837333112
 GameObject:
   m_ObjectHideFlags: 0
@@ -7138,7 +7154,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5333627587895582214}
   - component: {fileID: 1567046368762031188}
-  - component: {fileID: 6302162405770579213}
   m_Layer: 0
   m_Name: EquipPoint_LeftHand
   m_TagString: Untagged
@@ -7198,20 +7213,6 @@ MonoBehaviour:
   onItemAmmoChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6302162405770579213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2512850844392031281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36ae85d7767efd44ebfabdd8178128c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipBait_: {fileID: 7636495272843305745, guid: c58e99676d945b24dbe6dc272d6e276d, type: 3}
-  Parent: {fileID: 8323395733610780373}
 --- !u!1 &2553619076652715425
 GameObject:
   m_ObjectHideFlags: 0
@@ -8847,6 +8848,7 @@ MonoBehaviour:
   - displayName: 
     defaultEquipment: []
     loadoutItems: []
+  PlayerCharacterStats: {fileID: 0}
   z_display_flags: 1789
 --- !u!114 &5725039192018758667
 MonoBehaviour:

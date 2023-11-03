@@ -79,8 +79,8 @@ namespace NullSave.TOCK.Inventory
         [Tooltip("Can item be put into a Store Point")] public bool canStore = true;
 
         public BooleanSource equipSource = BooleanSource.Static;
-        [Tooltip("Expression used to determine if item can be equipped")] public string equipExpression = "1 > 0";
-        private bool curCanEquip;
+        [Tooltip("Expression used to determine if item can be equipped")] public string equipExpression ;
+        public bool curCanEquip;
         [Tooltip("Item to spawn when dropping object")] public LootItem dropObject;
         public List<AnimatorMod> equipAnimatorMods;
         public List<AnimatorMod> unequipAnimatorMods;

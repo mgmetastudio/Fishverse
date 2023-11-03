@@ -19,7 +19,7 @@ namespace NullSave.TOCK.Inventory
         public bool allowBuyBack = true;
         public float buybackModifier = 1;
         public bool limitVendorCurrency = true;
-        public float currency = 1000;
+        public float currency = 500000;
         public bool stockReplenishes = false;
         public float replenishTime = 3600;
 

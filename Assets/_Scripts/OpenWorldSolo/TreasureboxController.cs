@@ -4,9 +4,16 @@ using EasyCharacterMovement.Examples.Cinemachine.FirstPersonExample;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using LibEngine.Reward;
+using Zenject;
 
 public class TreasureboxController : MonoBehaviour
 {
+    [Header("Treasure Logic")]
+    public int rewardId = 1;
+
+    public Button copyButton;
+
     [Header("Treasure Reward Panel")]
     
     [Header("Panel of TreasureBOX")]
@@ -17,8 +24,13 @@ public class TreasureboxController : MonoBehaviour
     [Header("Buttons [Android/IOS]")]
     public Button promptBtn;
     public Button CloseBtn;
+
     [Header("Input Keys [Standalone]")]
     [Header("Input Key / Open TreasureBOX")]
+
+    [Inject]
+    private IRewardController rewardController;
+
     #region Variables
 
     public KeyCode OpenBoxKey = KeyCode.KeypadEnter;
@@ -45,6 +57,8 @@ public class TreasureboxController : MonoBehaviour
         promptText.SetText(OpenText);
         Panel.SetActive(false);
         promptBtn.SetActive(false);
+
+        copyButton.onClick.AddListener(CopyToClipboardText);
     }
 
     // Update is called once per frame
@@ -85,8 +99,14 @@ public class TreasureboxController : MonoBehaviour
             CloseTreasurPanel();
             Debug.Log("Is Not touching Treasurebox");
         }
-
     }
+
+    void CopyToClipboardText()
+    {
+        string text = codeInputField.text;
+        GUIUtility.systemCopyBuffer = text;
+    }
+
     void OpenTreasurPanel()
     {
         Boxanim.SetBool("TreasureOpened", true);
@@ -94,6 +114,10 @@ public class TreasureboxController : MonoBehaviour
         IsBoxOpened = true;
         Panel.SetActive(true);
         promptBtn.SetActive(false);
+
+        rewardController.SendReachRewardAndGenerate(rewardId);
+        var playerReward = rewardController.GetRewardPlayerRecordDTO(rewardId);
+        codeInputField.text = playerReward.Code;
     }
     void CloseTreasurPanel()
     {

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using Photon.Pun;
 using NullSave.GDTK.Stats;
+using LibEngine.Leaderboard;
 public class FishEntity : MonoBehaviourPun
 {
 
@@ -17,7 +18,9 @@ public class FishEntity : MonoBehaviourPun
                 photonView.RPC("SetFishUniqueId", RpcTarget.All, value);
         }
     }
+    public string MatchMode;
     public string Location;
+    public string Level;
     private static FishScriptable[] _fishScriptables;
     public FishScriptable _scriptable;
     public FishAIController controller;
@@ -57,6 +60,7 @@ public class FishEntity : MonoBehaviourPun
             }
         }
     }
+    public bool isLevelValid;
 
     [PunRPC]
     void SetFishUniqueId(int value) => fishUniqueId = value;
@@ -159,7 +163,26 @@ public class FishEntity : MonoBehaviourPun
         if (_targetFloat.fish) return;
         isreelrotate = _targetFloat.Owner.isreelrotate;
         currentfloat = _targetFloat.Owner.GetComponent<PlayerFishingInventory>().currentFloat.previewScale;
-        if (HookedTo == null && ((currentfloat == 2 && isreelrotate) || (currentfloat <= 1)))
+        if(MatchMode == MatchModes.OpenWorldSolo.ToString())
+        {
+            var _Owner = _targetFloat.Owner.GetComponentInChildren<PlayerSoloController>();
+
+            if (Level != "None")
+            {
+                CheckPlayerLevel(_Owner.PlayerLevel);
+                _Owner.SetLevelValid(isLevelValid, int.Parse(Level));
+            }
+            else
+            {
+                _Owner.SetLevelValid(isLevelValid, 0);
+                isLevelValid = true;
+            }
+        }
+        else
+        {
+            isLevelValid = true;
+        }
+        if ((HookedTo == null && ((currentfloat == 2 && isreelrotate) || (currentfloat <= 1)))&& isLevelValid)
         {
             // _targetFloat.GetComponent<NetworkTransform>().clientAuthority = false;
             // _targetFloat.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
@@ -514,5 +537,17 @@ public class FishEntity : MonoBehaviourPun
         }
         controller.stamina = targetStamina;
         isStaminaTransitioning = false;
+    }
+    public void CheckPlayerLevel(int playerLevel)
+    {
+        if (playerLevel >= int.Parse(Level))
+        {
+            isLevelValid = true;
+        }
+        else
+        {
+            isLevelValid = false;
+            Debug.Log("Level " + int.Parse(Level) + " is not required");
+        }
     }
 }

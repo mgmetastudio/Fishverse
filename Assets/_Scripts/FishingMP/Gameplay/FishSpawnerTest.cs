@@ -47,7 +47,7 @@ public class FishSpawnerTest : MonoBehaviour
     {
         // if (true)//Mirror.NetworkServer.active
         
-            spawner.Spawn(transform.position + _position, fishUniqueIds.GetRandom(), bounds, spawner.currentLocation);
+            spawner.Spawn(transform.position + _position, fishUniqueIds.GetRandom(), bounds, spawner.matchMode, spawner.currentLocation, spawner.LevelRequired);
     }
 
 #if UNITY_EDITOR

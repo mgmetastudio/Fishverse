@@ -1,6 +1,8 @@
 ﻿using LibEngine;
 using NullSave.TOCK.Stats;
 using System.Collections.Generic;
+using NullSave.TOCK.Inventory;
+using NullSave.GDTK.Stats;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -69,7 +71,7 @@ namespace NullSave.TOCK.Inventory
 
         // Themes
         private InventoryTheme activeTheme;
-
+        public PlayerCharacterStats PlayerCharacterStats;
         // Editor
         public int z_display_flags = 0;
 
@@ -260,6 +262,7 @@ namespace NullSave.TOCK.Inventory
         private void Start()
         {
             Init();
+            
         }
 
         private void Init()
@@ -269,7 +272,7 @@ namespace NullSave.TOCK.Inventory
                 StatsCog = GetComponentInChildren<StatsCog>();
             }
             Animator animator = GetComponentInChildren<Animator>();
-
+            PlayerCharacterStats = GetComponentInChildren<PlayerCharacterStats>();
             // Subscribe to points
             EquipPoints = GetComponentsInChildren<EquipPoint>();
             foreach (EquipPoint point in EquipPoints)
@@ -1237,7 +1240,7 @@ namespace NullSave.TOCK.Inventory
         public void EquipItem(InventoryItem item)
         {
             if (item == null) return;
-         
+
             if (item.itemType == ItemType.Ammo)
             {
 

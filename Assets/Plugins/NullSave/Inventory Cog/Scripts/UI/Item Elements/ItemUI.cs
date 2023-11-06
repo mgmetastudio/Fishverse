@@ -186,10 +186,37 @@ namespace NullSave.TOCK.Inventory
             Container = container;
             Item = inventoryItem;
 
-            if (lockedIndicator)
+            if (inventoryItem != null)
+            {
+                if (lockedIndicator)
+                {
+
+                    if (inventoryItem.customTags.Count < 3)
+                    {
+                        lockedIndicator.gameObject.SetActive(false);
+                    }
+                    else if (inventoryItem.customTags.Count > 2)
+                    {
+                        if (int.Parse(inventoryItem.customTags[2].Value) <= Inventory.PlayerCharacterStats.GetCharacterLevel())
+                        {
+                            lockedIndicator.gameObject.SetActive(false);
+                        }
+                        else
+                        {
+                            lockedIndicator.gameObject.SetActive(true);
+                        }
+                    }
+                  
+
+                }
+            }
+            else if (lockedIndicator)
             {
                 lockedIndicator.gameObject.SetActive(false);
             }
+
+
+
             if (Item != null && bkgItem != null)
             {
                 if (bkgItem.GetComponent<LocationIndicator>() != null)

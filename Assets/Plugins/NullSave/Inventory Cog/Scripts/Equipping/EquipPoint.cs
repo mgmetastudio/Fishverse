@@ -136,6 +136,7 @@ namespace NullSave.TOCK.Inventory
             //if(Item.e)
             if (Inventory.activeAmmo.ContainsKey(item.ammoType))
             {
+
                 if (Inventory.GetEquippedAmmoCount("Bait") != 0 && item.previewScale == 2 && item.equipPoints[0] == "Float")
                 {
                     Inventory.UnequipBaitItem();
@@ -144,19 +145,21 @@ namespace NullSave.TOCK.Inventory
 
                 if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
                 {
-                    PhotonView photonView = GetComponentInParent<PhotonView>();
-
-                    if (photonView != null && photonView.IsMine)
-                    {
-                        TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
-                        if (tooltipBaitComponent != null)
-                        {
-                            tooltipBaitComponent.ShowTooltipBait();
-                        }
-                    }
-                   
+                    string Text ="You can't equip this bait, it's only available for floats.";
+                    openTooltip(Text);
                     return;
                 }
+                if (item.customTags.Count > 2)
+                {
+                    if( !(int.Parse(item.customTags[2].Value) <= Inventory.PlayerCharacterStats.GetCharacterLevel()))
+                    {
+                        string Text = "You can't equip this fishing rod, Level"+ item.customTags[2].Value + " is required.";
+                        openTooltip(Text);
+                        return;
+                    }
+
+                }
+        
                 Inventory.activeAmmo[item.ammoType] = item;
             }
             else
@@ -169,18 +172,21 @@ namespace NullSave.TOCK.Inventory
 
                 if (item.equipPoints[0] == "Bait" && Inventory.GetEquippedAmmoSpinningCount("Float") != 0)
                 {
-                    PhotonView photonView = GetComponentInParent<PhotonView>();
-
-                    if (photonView != null && photonView.IsMine)
-                    {
-                        TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
-                        if (tooltipBaitComponent != null)
-                        {
-                            tooltipBaitComponent.ShowTooltipBait();
-                        }
-                    }
+                    string Text = "You can't equip this bait, it's only available for floats.";
+                    openTooltip(Text);
                     return;
                 }
+                if (item.customTags.Count > 2)
+                {
+                    if (!(int.Parse(item.customTags[2].Value) <= Inventory.PlayerCharacterStats.GetCharacterLevel()))
+                    {
+                        string Text = "You can't equip this fishing rod, Level" + item.customTags[2].Value + " is required.";
+                        openTooltip(Text);
+                        return;
+                    }
+
+                }
+
                 Inventory.activeAmmo.Add(item.ammoType, item);
             }
 
@@ -268,7 +274,20 @@ namespace NullSave.TOCK.Inventory
             // Raise Event
             onItemEquipped?.Invoke(item);
         }
+        public void openTooltip(string Text)
+        {
+            PhotonView photonView = GetComponentInParent<PhotonView>();
 
+            if (photonView != null && photonView.IsMine)
+            {
+                TooltipBait tooltipBaitComponent = FindObjectOfType<TooltipBait>();
+                if (tooltipBaitComponent != null)
+                {
+                    tooltipBaitComponent.AlertText = Text;
+                    tooltipBaitComponent.ShowTooltipBait();
+                }
+            }
+        }
         public virtual void QuickSwap()
         {
             if (PreviousItem != null) EquipItem(PreviousItem);

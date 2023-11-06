@@ -212,7 +212,11 @@ public class PlayerFishing : MonoBehaviourPun
 
     private void Update()
     {
-        if (!canFish) return;
+        if (!canFish)
+        {
+            photonView.RPC("CmdDestroyFloat", RpcTarget.All);
+            return;
+        }
 
         if (photonView.IsMine)
         {
@@ -663,6 +667,7 @@ public class PlayerFishing : MonoBehaviourPun
         {
             photonView.RPC("DrawFishingRod", RpcTarget.All, false);
         }
+        photonView.RPC("CmdDestroyFloat", RpcTarget.All);
         _floatDemo.SetActive(false);
         canFish = false;
         _animReel.SetBool("Hook_Reel", false);
